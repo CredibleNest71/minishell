@@ -2,7 +2,9 @@
 
 int main(void)
 {
+	t_command	*commands;
     char prompt[] = "tinyShell>> ";
+
     while (1)
     {
         printf("%s", prompt);

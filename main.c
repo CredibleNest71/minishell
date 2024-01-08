@@ -13,4 +13,4 @@ int main(void)
 		exec(commands);			//DO
     }
     return (0);
-}   
+}

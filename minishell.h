@@ -14,4 +14,3 @@ struct s_command {
 }	typedef t_command;
 
 #endif
-THIS IS A TEST

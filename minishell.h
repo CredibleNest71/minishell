@@ -7,6 +7,8 @@
 
 struct s_command {
 	char	**cmd;
+	void	*content;
+	s_command *next;
 }	typedef t_command;
 
 #endif

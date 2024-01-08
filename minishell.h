@@ -6,9 +6,11 @@
 # include "libft/libft.h"
 
 struct s_command {
-	char	**cmd;
-	void	*content;
-	s_command *next;
+	char				*cmd;
+	char				**args;
+	int					arg_num;
+	char				*nexus;
+	struct s_command 	*next;
 }	typedef t_command;
 
 #endif

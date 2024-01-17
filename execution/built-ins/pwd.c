@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 15:21:04 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/01/17 15:50:47 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/01/17 15:53:33 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,6 @@ void	ft_pwd()
 
 	cwd = getenv("PWD");
 	if (!cwd)
-		ft_printf("Current Working Directory Not Found");
-	ft_printf("%s\n", cwd);
+		ft_putstr_fd("Current Working Directory Not Found", 1);
+	ft_putstr_fd(cwd, 1);
 }

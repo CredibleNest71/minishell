@@ -7,7 +7,7 @@ int main(void)
 
     while (1)
     {
-        printf("%s", prompt);
+        printf("%s", prompt); // *
 
 		commands = parse(stdin)	//PARSE
 		exec(commands);			//DO

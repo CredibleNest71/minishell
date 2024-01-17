@@ -11,6 +11,8 @@ struct s_command {
 	int					arg_num;
 	char				*nexus;
 	struct s_command 	*next;
+
+	char			**env;
 }	typedef t_command;
 
 #endif

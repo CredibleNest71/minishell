@@ -3,14 +3,15 @@
 int main(void)
 {
 	t_command	*commands;
-    char prompt[] = "tinyShell>> ";
-
-    while (1)
-    {
-        printf("%s", prompt); // *
-
-		commands = parse(stdin)	//PARSE
-		exec(commands);			//DO
-    }
-    return (0);
+	char		*lineread;
+   // char prompt[] = "tinyShell>> ";
+	lineread = NULL; //?
+		while (1)
+	    {
+		    //printf("%s", prompt);
+		    lineread = readline("tinyshell: ");
+		    commands = parse(stdin); //PARSE
+		    exec(commands); //DO
+	    }
+	    return (0);
 }

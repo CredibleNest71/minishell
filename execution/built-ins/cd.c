@@ -6,13 +6,22 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 10:32:36 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/01/17 15:20:51 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/01/23 12:33:25 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
+#include <stdio.h>
 
-void	ft_cd(t_command content, )
+//relative or absolute path
+
+void	ft_cd(t_command paths)
 {
-	char	*
+	if (chdir(paths->path) == 0)
+	{
+		//probably do nothing, check bash
+	}
+	else {
+		perror("cd failure:");
+	}
 }

@@ -1,19 +1,12 @@
 #include "../minishell.h"
+#include "parse.h"
 
-t_token	*tokenify(char *str)
-{
-	t_token *token;
-
-	token = (t_token *) malloc(sizeof(t_token));
-	token->str = str;
-	return (token);
-}
 
 //compares string to seperating operators
 int	is_seperator(char *str)
 {
 	int	i;
-	char	*seperators[] = {"|", "||", "&", "&&", "<", ">", ">>", "<<", NULL};
+	char	*seperators[] = {"|", "||", "&", "&&", NULL};
 	
 	i = 0;
 	if (!str)
@@ -58,7 +51,7 @@ t_command	*create_command_struct(t_command *prev, char **args)
 	if (prev)
 		prev->next = ret;
 	ret->next = NULL;
-	ret->cmd = *args;
+	ret->cmd = tokenify(*args);
 	ret->args = (char **) malloc (sizeof(char *) * 10);
 	ret->tokens = (t_token **) malloc (sizeof(t_token *) * 10);
 	if (!ret->tokens)
@@ -68,7 +61,7 @@ t_command	*create_command_struct(t_command *prev, char **args)
 	{
 		if (is_seperator(args[i]))
 		{
-			ret->nexus = ft_strdup(args[i]);
+			ret->nexus = tokenify(args[i]);
 			break ;
 		}
 		ret->args[j] = ft_strdup(args[i]);
@@ -124,12 +117,19 @@ t_command   *parse(char *in)
 void	print_command(t_command *cmd)
 {
 	int	i;
-
+	char *typenames[] = {
+		"CMD",
+		"ARG",
+		"PATH",
+		"NEX",
+		"DIR"
+	};
 	i = 0;
-	printf("\n\nCOMMAND(%d): %s\n", cmd->arg_num, cmd->cmd);
+	printf("\n\nCOMMAND	(%d):	%s\n", cmd->arg_num, cmd->cmd->str);
 	while (i++ < cmd->arg_num)
-		printf("    (%s) %d: %s\n", typenames[cmd->tokens[i]->type], i, cmd->args[i] );
-	printf("SEPERATOR: %s\n", cmd->nexus);
+		printf(" (%s)	 %d:	%s\n", typenames[cmd->tokens[i]->type], i, cmd->args[i] );
+	if (cmd->nexus)
+		printf("SEP (%s): %s\n", typenames[cmd->nexus->type], cmd->nexus->str);
 }
 
 int main(int ac, char **av)

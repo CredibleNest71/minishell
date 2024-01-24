@@ -1,5 +1,14 @@
 #include "../minishell.h"
 
+t_token	*tokenify(char *str)
+{
+	t_token *token;
+
+	token = (t_token *) malloc(sizeof(t_token));
+	token->str = str;
+	return (token);
+}
+
 //compares string to seperating operators
 int	is_seperator(char *str)
 {
@@ -34,7 +43,7 @@ int	number_of_cmd(char **in)
 //creates instance of command struct and appends it to the linked
 //list if the first argument is another instance of a command struct
 //returns the newly added element
-t_command	*create_command_struct(t_command *prev, char **tokens)
+t_command	*create_command_struct(t_command *prev, char **args)
 {
 	t_command	*ret;
 	int			i;
@@ -43,24 +52,29 @@ t_command	*create_command_struct(t_command *prev, char **tokens)
 	j = 0;
 	i = 0;
 	ret = (t_command *) malloc(sizeof(t_command));
+	if (!ret)
+		return (NULL);
 	memset(ret, 0, sizeof(t_command));
 	if (prev)
 		prev->next = ret;
 	ret->next = NULL;
-	ret->cmd = *tokens;
+	ret->cmd = *args;
 	ret->args = (char **) malloc (sizeof(char *) * 10);
+	ret->tokens = (t_token **) malloc (sizeof(t_token *) * 10);
+	if (!ret->tokens)
+		return (NULL);
 	memset(ret->args, 0, sizeof(char *) * 10);
-	while (tokens[i])
+	while (args[i])
 	{
-		if (is_seperator(tokens[i]))
+		if (is_seperator(args[i]))
 		{
-			ret->nexus = ft_strdup(tokens[i]);
+			ret->nexus = ft_strdup(args[i]);
 			break ;
 		}
-		ret->args[j++] = ft_strdup(tokens[i]);
+		ret->args[j] = ft_strdup(args[i]);
+		ret->tokens[j++] = tokenify(args[i]);
 		i++;
 	}
-	//ret->args = &(tokens[1]);
 	ret->arg_num = i - 1;
 	return (ret);
 }
@@ -114,7 +128,7 @@ void	print_command(t_command *cmd)
 	i = 0;
 	printf("\n\nCOMMAND(%d): %s\n", cmd->arg_num, cmd->cmd);
 	while (i++ < cmd->arg_num)
-		printf("    ARG %d: %s\n", i, cmd->args[i]);
+		printf("    (%s) %d: %s\n", typenames[cmd->tokens[i]->type], i, cmd->args[i] );
 	printf("SEPERATOR: %s\n", cmd->nexus);
 }
 

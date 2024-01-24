@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 10:32:36 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/01/24 17:47:58 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/01/24 18:04:29 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,17 @@
 //if only cd was called, go to home directory
 //update env after chdir gets executed
 
-void	ft_cd(t_command paths)
+enum type {
+	ARG = 0,
+	PATH,
+	SEP,
+} typedef e_type;
+
+void	ft_cd(t_command cmd)
 {
 	char	*path;
-	if (paths->args[0]->type == PATH)
-		path = paths->args[0]->arg;
+	if (cmd->tokens[0]->type == (e_type) PATH)
+		path = cmd->tokens[0]->str;
 	else
 		path = getenv("HOME");
 	if (chdir(path) == -1)

@@ -4,12 +4,12 @@
 int	is_seperator(char *str)
 {
 	int	i;
-	char	*seperators[] = {"|", "<", ">", ">>", "<<", NULL};
+	char	*seperators[] = {"|", "||", "&", "&&", "<", ">", ">>", "<<", NULL};
 	
 	i = 0;
 	if (!str)
 		return (0);
-	while (i < 6 && seperators[i])
+	while (seperators[i])
 	{
 		if (!ft_strncmp(str, seperators[i++], 3))
 			return (1);
@@ -21,20 +21,13 @@ int	is_seperator(char *str)
 int	number_of_cmd(char **in)
 {
 	int		i;
-	int		j;
 	int		count;
-	char	*seperators[] = {"|", "<", ">", ">>", "<<", NULL};
 
 	i = -1;
 	count = 0;
 	while (in[++i])
-	{
-		j = -1;
-		//printf("%s\n", in[i]);
-		while (++j)
-			if (!ft_strncmp(in[i], seperators[j], 2))
+			if (is_seperator(in[i]))
 				count++;
-	}
 	return (count + 1);
 }
 
@@ -45,24 +38,30 @@ t_command	*create_command_struct(t_command *prev, char **tokens)
 {
 	t_command	*ret;
 	int			i;
+	int			j;
 
+	j = 0;
 	i = 0;
 	ret = (t_command *) malloc(sizeof(t_command));
+	memset(ret, 0, sizeof(t_command));
 	if (prev)
 		prev->next = ret;
 	ret->next = NULL;
 	ret->cmd = *tokens;
+	ret->args = (char **) malloc (sizeof(char *) * 10);
+	memset(ret->args, 0, sizeof(char *) * 10);
 	while (tokens[i])
 	{
 		if (is_seperator(tokens[i]))
 		{
-			ret->nexus = tokens[i];
+			ret->nexus = ft_strdup(tokens[i]);
 			break ;
 		}
+		ret->args[j++] = ft_strdup(tokens[i]);
 		i++;
 	}
-	ret->args = &(tokens[1]);
-	ret->arg_num = i;
+	//ret->args = &(tokens[1]);
+	ret->arg_num = i - 1;
 	return (ret);
 }
 
@@ -81,14 +80,17 @@ t_command *make_command_list(int num_cmd, char **tokens)
 		return (NULL);
 	ret->next = NULL;
 	temp = ret;
-	while (i++ < num_cmd)
+	while (tokens[j])
 	{
+		if (is_seperator(tokens[j]))
+			j++;
 		temp = create_command_struct(temp, &tokens[j]);
 		while (tokens[j] && !is_seperator(tokens[j]))
 			j++;
-		temp->nexus = tokens[j];
 	}
-	return (ret);
+	temp = ret->next;
+	free(ret);
+	return (temp);
 }
 
 t_command   *parse(char *in)
@@ -100,18 +102,29 @@ t_command   *parse(char *in)
 	if (!tokens)
 		return (NULL);
 	num_cmd = number_of_cmd(tokens);
+	printf("first: %s\n", tokens[1]);
+	printf("NUM_CMD: %d\n", num_cmd);
 	return (make_command_list(num_cmd, tokens));
 }
 
-int main(void)
+void	print_command(t_command *cmd)
 {
-	char text[] = "this is a test < second com";
+	int	i;
+
+	i = 0;
+	printf("\n\nCOMMAND(%d): %s\n", cmd->arg_num, cmd->cmd);
+	while (i++ < cmd->arg_num)
+		printf("    ARG %d: %s\n", i, cmd->args[i]);
+	printf("SEPERATOR: %s\n", cmd->nexus);
+}
+
+int main(int ac, char **av)
+{
+	char *text = av[1];
 	t_command *list = parse(text);
-	while (list->next)
+	while (list)
 	{
-		if (list->cmd)
-			printf("%s\n", list->cmd);
-		printf("%d\n", list->arg_num);
+		print_command(list);
 		list = list->next;
 	}
 	return 0;

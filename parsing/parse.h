@@ -6,5 +6,5 @@
 
 int	is_seperator(char *str);
 t_token	*tokenify(char *str);
-
+int count_elements(char *);
 #endif

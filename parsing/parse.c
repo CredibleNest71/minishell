@@ -141,5 +141,6 @@ int main(int ac, char **av)
 		print_command(list);
 		list = list->next;
 	}
+	printf("ELEMENTS: %d\n", count_elements(av[1]));
 	return 0;
 }

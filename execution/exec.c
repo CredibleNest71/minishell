@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 14:05:40 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/01/17 11:59:04 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/01/29 15:28:21 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,12 +25,21 @@
 		//struct->exitstatus = WEXITSTATUS(//struct->exitstatus);
 } */
 
+void	builtin_launch(/*cmd arg*/)
+{
+	// check if cmd is empty
+	// check if cmd is one of the built-ins
+		// store cmd names with  
+}
+
+
 void	exec(t_command *cmd_table) //do I want to modify the struct?
 {
 	int	pid;
 	int	i;
 
 	i = 0;
+	//builtin_launch(cmd arg);
 	while (i < cmd_table->arg_num)
 	{
 		pid = fork();

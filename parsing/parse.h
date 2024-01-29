@@ -7,4 +7,6 @@
 int	is_seperator(char *str);
 t_token	*tokenify(char *str);
 int count_elements(char *);
+char **token_splitter(char *str);
+t_command **commandlistmaker(char *str);
 #endif

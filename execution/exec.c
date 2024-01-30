@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 14:05:40 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/01/29 15:28:21 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/01/30 13:58:12 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,13 +25,25 @@
 		//struct->exitstatus = WEXITSTATUS(//struct->exitstatus);
 } */
 
-void	builtin_launch(/*cmd arg*/)
+void	builtin_exec(/*cmd arg*/)
 {
 	// check if cmd is empty
 	// check if cmd is one of the built-ins
 		// store cmd names with  
 }
 
+void	redir(t_command *cmd)
+{
+	if (cmd->output) // redirecting output
+	{
+		
+	}
+	if (cmd->input) // redirecting input
+	{
+		if (check_file() == -1)
+			//print "file does not exist"
+	}
+}
 
 void	exec(t_command *cmd_table) //do I want to modify the struct?
 {
@@ -39,7 +51,11 @@ void	exec(t_command *cmd_table) //do I want to modify the struct?
 	int	i;
 
 	i = 0;
-	//builtin_launch(cmd arg);
+	if (redirection == yes)//check for redirection
+		//dup2 the shit outta this
+		redir();
+	if (cmd_table->cmd[i] && !(cmd_table->cmd[i + 1])) //check if there's only one command or check that no pipes exist
+		//builtin_exec(cmd arg);
 	while (i < cmd_table->arg_num)
 	{
 		pid = fork();

@@ -6,11 +6,13 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 14:05:40 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/01/30 13:58:12 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/01/30 16:45:30 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+#include <stdio.h>
+#include <unistd.h>
 
 // use 0 for success, as for other shit check bash exit codes
 
@@ -32,16 +34,45 @@ void	builtin_exec(/*cmd arg*/)
 		// store cmd names with  
 }
 
-void	redir(t_command *cmd)
+int	check_file(void	*file, int mode)
 {
-	if (cmd->output) // redirecting output
+	int	permission;
+
+	permission = access(file, F_OK);
+	if (permission == -1 && mode == 0)
+		printf("no such file or directory: %s\n", file); //check later with mo about file beig void* && pronbably exit as well
+	if (mode == 0)
 	{
-		
+		permission = access(file, R_OK);
+		printf("permission denied: %s\n", file); //exit (make function)
 	}
-	if (cmd->input) // redirecting input
+	else if (mode == 1)
 	{
-		if (check_file() == -1)
-			//print "file does not exist"
+		permission = access(file, W_OK);
+		if (permission == -1)
+			printf("permission denied: %s\n", file); //exit (make function)
+	}
+	return (0);
+}
+
+void	redir(t_command *cmd_struct)
+{
+	int	fd_in;
+	int	fd_out;
+	
+	if (cmd_struct->input) // redirecting input "<"
+	{
+		check_file(cmd_struct->input, 0); //fix exit
+		fd_in = open(cmd_struct->input, O_RDONLY);
+		if (fd_in == -1)
+			//printf error & exit probably	
+	}
+	if (cmd_struct->output) // redirecting output ">"
+	{
+		fd_out = open(cmd_struct->output, O_CREAT | O_TRUNC | O_WRONLY, 00644);
+		if (fd_out == -1)
+			//printf error & exit probably
+		check_file(cmd_struct->output, 1);
 	}
 }
 

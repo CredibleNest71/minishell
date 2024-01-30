@@ -38,7 +38,7 @@ t_token	*tokenify(char *str)
 	t_token *token;
 
 	token = (t_token *) malloc(sizeof(t_token));
-	token->str = ft_strdup(str);
+	token->str = str;
     if (is_nexus(str))
         token->type = (e_type) NEX;    
     else if (is_redir(str))
@@ -176,6 +176,8 @@ t_token	**tokenize(char **elements)
 	int		j;
 
 	i = 0;
+	if (!elements)
+		return (NULL);
 	while (elements[i])
 		i++;
 	ret = (t_token **) ft_calloc (i + 1, sizeof(t_token *));
@@ -185,7 +187,6 @@ t_token	**tokenize(char **elements)
 	while (j < i)
 	{
 		ret[j] = tokenify(elements[j]);
-		free(elements[j]);
 		j++;
 	}
 	free(elements);
@@ -216,37 +217,96 @@ int	find_commands(t_token **tokens)
 	return (cmds);
 }
 
+void mark_path(t_token **tokens)
+{
+	int	i;
+
+	i = 0;
+	while (tokens[i])
+	{
+		if (tokens[i]->type == (enum type) DIR)
+			tokens[i + 1]->type = (enum type) PATH;
+		i++;
+	}
+}
+
+void	set_redirections(t_token **tokens, t_command *ret)
+{
+	int	dir;
+
+	dir = 0;
+	ret->input = NULL;
+	while (tokens[dir])
+	{
+		if (tokens[dir]->type == (enum type) DIR)
+			break ;
+		dir++;
+	}
+	if (!tokens[dir])
+		return ;
+	if (tokens[dir + 1]->type == (enum type) PATH)
+		tokens[dir + 1]->dir = tokens[dir]->str;
+	if (tokens[dir]->str == "<" || tokens[dir]->str == "<<")
+		ret->input = tokens[dir + 1];
+	else if (tokens[dir]->str == ">" || tokens[dir]->str == ">>")
+		ret->output = tokens[dir + 1];
+	printf("IN%s", ret->input->str);
+	return ;
+}
+
+int	count_args(t_token **tokens)
+{
+	int	count;
+	int	i;
+
+	i = 0;
+	count = 0;
+	while (tokens[i] && tokens[i]->type != (enum type) NEX)
+	{
+		if (tokens[i]->type == (enum type) ARG)
+			count++;
+		i++;
+	}
+	return (count);
+}
+
+//finds Arguments typed "ARG" belonging to the command pointed to
+// returns argument array
+t_token	**make_arg_list(t_token **tokens)
+{
+	int			args_amount;
+	t_token		**args;
+	int			i;
+	int			j;
+
+	args_amount = count_args(tokens);
+	args = (t_token **) ft_calloc (sizeof(t_token *), args_amount);
+	if (!args)
+		return (NULL);
+	i = 0;
+	j = 0;
+	while (j < args_amount && tokens[i])
+	{
+		if (tokens[i]->type == (enum type) ARG)
+			args[j++] = tokens[i];
+		i++;
+	}
+	return (args);
+}
+
 t_command	*make_command(t_token **tokens)
 {
 	int			i;
-	int			j;
 	t_command	*ret;
-	t_token		**args;
 
 	ret = (t_command *) ft_calloc (sizeof(t_command), 1);
 	if (!ret)
 		return (NULL);
-	i = 0;
-	ret->cmd = tokens[i];
-	while (tokens[i + 1]->type == (enum type) ARG)
-		i++;
-	args = (t_token **) ft_calloc (sizeof(t_token *), i + 1);
-	if (!args)
-		return (NULL);
-	j = 0;
-	while (j < i)
-	{
-		args[j] = tokens[j + 1];
-		j ++;
-	}
-	ret->args = args;
-	if (tokens[i + 1]->type == (enum type) DIR)
-	{
-		ret->nexus = tokens[i + 1];
-		ret->extra = tokens[i + 2];
-	}
-	else if (tokens[i + 1]->type == (enum type) NEX)
-		ret->nexus = tokens[i + 1];
+	ret->cmd = tokens[0];
+	mark_path(tokens);
+	set_redirections(tokens, ret);
+	ret->args = make_arg_list(tokens);
+
 	return (ret);
 }
 

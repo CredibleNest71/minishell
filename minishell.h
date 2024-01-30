@@ -11,24 +11,21 @@ enum type {
 	PATH,
 	NEX,
 	DIR,
-} typedef e_type;
+}	typedef e_type;
 
 struct s_token {
 	char 	*str;
 	int		type;
-} typedef t_token;
+	char	*dir;
+}	typedef t_token;
 
 struct s_command {
-	void				*input;
-	void				*output;
-	t_token				*extra;
-	t_token				*cmd;
-	char				**arg;
-	t_token				**args;
+	t_token				*input;		//<
+	t_token				*output;	//>
+	t_token				*cmd;		//command
+	t_token				**args;		//arguments
 	int					arg_num;
-	t_token				*nexus;
-	struct s_command 	*next;
+	t_token				*nexus;		//PIPE?
 }	typedef t_command;
-
 
 #endif

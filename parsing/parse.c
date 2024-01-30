@@ -129,16 +129,16 @@ void	print_command(t_command *cmd)
 	while (cmd->args[++i])
 		printf(" (%s)	 %d:	%s\n", typenames[cmd->args[i]->type], i, cmd->args[i]->str );
 	if (cmd->nexus)
-	{
 		printf("nex: %s\n", cmd->nexus->str);
-		if (cmd->extra)
-			printf("extra: %s\n", cmd->extra->str);
-	}
+	if (cmd->input)
+		printf("(INPUT):	%s\n", cmd->input->str);
+	if (cmd->output)
+		printf("(OUTPUT):	%s\n", cmd->output->str);
 }
 
 int main(int ac, char **av)
 {
-	char *text = "this is a test | \'this is a test\' << \'alpacas dont like carrots\'";
+	char *text = "this is a test << \'alpacas dont like carrots\' testytest";
 	// t_command *list = parse(text);
 	// while (list)
 	// {

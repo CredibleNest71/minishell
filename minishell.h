@@ -5,14 +5,27 @@
 # include <stdio.h>
 # include "libft/libft.h"
 
-struct s_command {
-	char				*cmd;
-	char				**args;
-	int					arg_num;
-	char				*nexus;
-	struct s_command 	*next;
+enum type {
+	CMD = 0,
+	ARG,
+	PATH,
+	NEX,
+	DIR,
+}	typedef e_type;
 
-	char			**env;
+struct s_token {
+	char 	*str;
+	int		type;
+	char	*dir;
+}	typedef t_token;
+
+struct s_command {
+	t_token				*input;		//<
+	t_token				*output;	//>
+	t_token				*cmd;		//command
+	t_token				**args;		//arguments
+	int					arg_num;
+	t_token				*nexus;		//PIPE?
 }	typedef t_command;
 
 #endif

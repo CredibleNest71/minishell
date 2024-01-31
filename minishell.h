@@ -29,4 +29,10 @@ struct s_command {
 	t_token				*nexus;		//PIPE?
 }	typedef t_command;
 
+struct	s_bigshell {
+	t_command	**command;
+	int			exit_stat;
+	char		*env;
+}	t_bigshell;
+
 #endif

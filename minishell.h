@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 17:34:54 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/01/31 18:08:25 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/01/31 18:33:33 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,9 +48,10 @@ struct	s_command
 
 struct	s_bigshell
 {
-	t_command	**command;
+	t_command	**commands;
 	int			exit_stat;
 	char		**env;
+	char		**variables;
 }	typedef t_bigshell;
 
 #endif

@@ -3,20 +3,30 @@
 # include <unistd.h>
 # include <stdlib.h>
 # include <stdio.h>
-# include <readline/readline.h>
-# include <readline/history.h>
 # include <fcntl.h>
-//# include "libft/libft.h" sacar el "//" antes de merge
-# include "execution/temp_libft/libft.h"
+# include "libft/libft.h"
+
+enum type {
+	CMD = 0,
+	ARG,
+	PATH,
+	NEX,
+	DIR,
+}	typedef e_type;
+
+struct s_token {
+	char 	*str;
+	int		type;
+	char	*dir;
+}	typedef t_token;
 
 struct s_command {
-	char				*cmd;
-	char				**args;
-	int					arg_num; // num of cmds
-	char				*nexus;
-	struct s_command 	*next;
-
-	char				**env;
+	t_token				*input;		//<
+	t_token				*output;	//>
+	t_token				*cmd;		//command
+	t_token				**args;		//arguments
+	int					arg_num;
+	t_token				*nexus;		//PIPE?
 }	typedef t_command;
 
 #endif

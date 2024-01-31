@@ -15,6 +15,9 @@
 # include <unistd.h>
 # include <stdlib.h>
 # include <stdio.h>
+# include <fcntl.h>
+# include <readline/readline.h>
+# include <readline/history.h>
 # include "libft/libft.h"
 
 enum type
@@ -42,5 +45,12 @@ struct	s_command
 	int					arg_num;
 	t_token				*nexus;		//PIPE?
 }	typedef t_command;
+
+struct	s_bigshell
+{
+	t_command	**command;
+	int			exit_stat;
+	char		**env;
+}	typedef t_bigshell;
 
 #endif

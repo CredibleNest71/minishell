@@ -5,6 +5,7 @@
 # include <stdio.h>
 # include <readline/readline.h>
 # include <readline/history.h>
+# include <fcntl.h>
 //# include "libft/libft.h" sacar el "//" antes de merge
 # include "execution/temp_libft/libft.h"
 

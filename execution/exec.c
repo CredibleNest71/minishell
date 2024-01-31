@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 14:05:40 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/01/30 16:45:30 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/01/31 12:53:43 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,8 @@ void	redir(t_command *cmd_struct)
 		check_file(cmd_struct->input, 0); //fix exit
 		fd_in = open(cmd_struct->input, O_RDONLY);
 		if (fd_in == -1)
-			//printf error & exit probably	
+			//printf error & store exit code & new prompt probably	(dont exit minishell)
+		dup2(fd_in, 0);
 	}
 	if (cmd_struct->output) // redirecting output ">"
 	{
@@ -73,6 +74,7 @@ void	redir(t_command *cmd_struct)
 		if (fd_out == -1)
 			//printf error & exit probably
 		check_file(cmd_struct->output, 1);
+		dup2(fd_out, 1);
 	}
 }
 
@@ -82,7 +84,7 @@ void	exec(t_command *cmd_table) //do I want to modify the struct?
 	int	i;
 
 	i = 0;
-	if (redirection == yes)//check for redirection
+	if (cmd_table->token->type == 4)//check for redirection
 		//dup2 the shit outta this
 		redir();
 	if (cmd_table->cmd[i] && !(cmd_table->cmd[i + 1])) //check if there's only one command or check that no pipes exist

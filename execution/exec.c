@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 14:05:40 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/01/31 12:53:43 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/01/31 16:34:56 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,35 @@ void	builtin_exec(/*cmd arg*/)
 		// store cmd names with  
 }
 
-int	check_file(void	*file, int mode)
+void	store_exit_code()
+{}
+
+void	error_handler(char	*message)
+{
+	printf("Failure: %s", message);
+	//call exit code function(?)
+	//new prompt
+}
+
+void	store_restore_fds(int mode)
+{
+	int	dup_stdin;
+	int	dup_stdout;
+	if (mode == 1)
+	{
+		if ((dup_stdin = dup(0)) == -1)
+			//print error, store exit code n new prompt
+		if ((dup_stdout = dup(1)) == -1)
+			//print error, store exit code n new prompt
+	}
+	else if (mode == 2)
+	{
+		bla = dup2(dup_stdin, 0)
+		bla = dup2(dup_stdout, 1)
+	}
+}
+
+int	check_file(t_token *file, int mode)
 {
 	int	permission;
 
@@ -66,7 +94,8 @@ void	redir(t_command *cmd_struct)
 		fd_in = open(cmd_struct->input, O_RDONLY);
 		if (fd_in == -1)
 			//printf error & store exit code & new prompt probably	(dont exit minishell)
-		dup2(fd_in, 0);
+		if ((dup2(fd_in, 0)) == -1)
+			//print error, store exit code n new prompt
 	}
 	if (cmd_struct->output) // redirecting output ">"
 	{
@@ -74,7 +103,8 @@ void	redir(t_command *cmd_struct)
 		if (fd_out == -1)
 			//printf error & exit probably
 		check_file(cmd_struct->output, 1);
-		dup2(fd_out, 1);
+		if ((dup2(fd_out, 1)) == -1)
+			//print error, store exit code n new prompt
 	}
 }
 
@@ -84,9 +114,8 @@ void	exec(t_command *cmd_table) //do I want to modify the struct?
 	int	i;
 
 	i = 0;
-	if (cmd_table->token->type == 4)//check for redirection
-		//dup2 the shit outta this
-		redir();
+	if (cmd_table->  )//check for redirection
+		redir(cmd_table);
 	if (cmd_table->cmd[i] && !(cmd_table->cmd[i + 1])) //check if there's only one command or check that no pipes exist
 		//builtin_exec(cmd arg);
 	while (i < cmd_table->arg_num)

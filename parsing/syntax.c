@@ -50,7 +50,7 @@ int check_quotes(char *str)
 				i++;
 		}
 		if (!str[i])
-			return (1);
+			return (printf("error with quotes\n"),1);
 		i++;
 	}
 	return (0);
@@ -69,9 +69,9 @@ int	check_inandout(char *str)
 			i++;
 			while (is_char(str[i], "\n\t\v \r\f") && str[i])
 				i++;
-		}
 		if (!ft_isalnum(str[i]) && !is_char(str[i], "\'\""))
-			return (1);
+			return (printf("error at in and out\n"),1);
+		}
 		i++;
 	}
 	return (0);
@@ -109,16 +109,16 @@ int	check_docandapp(char *str)
 		if (!strncmp(&str[i], "<<", 2))
 		{
 			if (check_heredoc(&str[i + 2]))
-				return (1);
+				return (printf("error at <<\n"),1);
 		}
 		else if (!strncmp(&str[i], ">>", 2))
 		{
 			i += 2;
 			while (is_char(str[i], "\n\t\v \r\f") && str[i])
 				i++;
+			if (!ft_isalnum(str[i]))
+				return (printf("error at >>\n"), 1);
 		}
-		if (!ft_isalnum(str[i]))
-			return (1);
 		i++;
 	}
 	return (0);
@@ -134,9 +134,14 @@ int check_redirs(char *str)
 
 int	check_syntax(char *str)
 {
-	check_quotes(str);
-	check_redirs(str);
+	if (check_quotes(str) || check_redirs(str))
+		return (1);
+	return (0);
 }
 
 int main()
-{return 0;}
+{
+	if (check_syntax("this is a test"))
+		printf("\nERROR\n");
+	return 0;
+}

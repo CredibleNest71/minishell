@@ -2,17 +2,17 @@
 
 int main(int argc, char **argv, char **env)
 {
-	t_command	*commands;
+	t_bigshell	shell_struct;
 	char		*lineread;
-   // char prompt[] = "tinyShell>> ";
-	lineread = NULL; //?
-	commands.env = env;
+
+	lineread = NULL;
+	shell_struct.env = env;
 		while (1)
 	    {
-		    //printf("%s", prompt);
 		    lineread = readline("tinyshell: ");
-		    commands = parse(stdin); //PARSE
-		    exec(commands); //DO
+		    commands = parse(stdin);
+			if (commands.)
+		    exec(commands);
 	    }
 	    return (0);
 }

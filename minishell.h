@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 17:34:54 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/01/31 18:33:33 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/02/01 12:07:41 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ struct	s_bigshell
 	int			exit_stat;
 	char		**env;
 	char		**variables;
+	char		**built_ins;
 }	typedef t_bigshell;
 
 #endif

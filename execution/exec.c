@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 14:05:40 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/01/31 18:00:39 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/02/01 12:06:57 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,11 +27,15 @@
 		//struct->exitstatus = WEXITSTATUS(//struct->exitstatus);
 } */
 
-void	builtin_exec(/*cmd arg*/)
+char	*builtin_exec(/*cmd arg*/)
 {
 	// check if cmd is empty
 	// check if cmd is one of the built-ins
-		// store cmd names with  
+		// store cmd names with 
+	int	len;
+
+	len = ft_strlen(cmd);
+	
 }
 
 void	store_exit_code()

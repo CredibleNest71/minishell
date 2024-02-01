@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 17:59:11 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/01/31 18:02:26 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/02/01 11:34:05 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ void	store_restore_fds(int mode)
 {
 	int	dup_stdin;
 	int	dup_stdout;
+	
 	if (mode == 1)
 	{
 		if ((dup_stdin = dup(0)) == -1)
@@ -25,8 +26,10 @@ void	store_restore_fds(int mode)
 	}
 	else if (mode == 2)
 	{
-		bla = dup2(dup_stdin, 0)
-		bla = dup2(dup_stdout, 1)
+		if ((dup2(dup_stdin, 0)) == -1)
+			//print error, exit code n new prompt
+		if ((dup2(dup_stdout, 1)) == -1)
+			//print error, exit code n new prompt
 	}
 }
 
@@ -51,7 +54,7 @@ int	check_file(t_token *file, int mode)
 	return (0);
 }
 
-void	redir(t_command *cmd_struct)
+void	redir(t_command *cmd_struct, t_bigshell **main_struct)
 {
 	int	fd_in;
 	int	fd_out;
@@ -61,7 +64,10 @@ void	redir(t_command *cmd_struct)
 		check_file(cmd_struct->input, 0); //fix exit
 		fd_in = open(cmd_struct->input, O_RDONLY);
 		if (fd_in == -1)
-			//printf error & store exit code & new prompt probably	(dont exit minishell)
+		{
+			main_struct->
+		}
+			//printf error & store exit code & new prompt probably (dont exit minishell)
 		if ((dup2(fd_in, 0)) == -1)
 			//print error, store exit code n new prompt
 	}

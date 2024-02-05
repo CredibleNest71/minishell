@@ -1,4 +1,4 @@
-# include "minishell.h"
+# include "../../minishell.h"
 
 int main(int argc, char **argv, char **env)
 {
@@ -13,8 +13,8 @@ int main(int argc, char **argv, char **env)
 		    lineread = readline("tinyshell: ");
 		    bigshell.commands = parse(stdin);
 			store_restore_fds(1); //will store stdin & stdout
-			if (bigshell.commands /*->to num of cmds || if cmds == 1*/)
-				simple_exec();
+			if (bigshell.num_cmd == 1)
+				simple_exec(bigshell);
 			else
 				complex_exec(bigshell);
 	    }

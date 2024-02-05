@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 10:32:36 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/01/31 14:12:41 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/02/05 18:07:43 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,11 @@
 	SEP,
 } typedef e_type;*/
 
-void	ft_cd(t_command *cmd)
+void	ft_cd(t_bigshell *data, int index)
 {
 	char	*path;
-	if (cmd->tokens->type == (e_type) PATH)
-		path = cmd->tokens[0]->str;
+	if (data->commands[index]->cmd->type == (e_type) PATH)
+		path = data->commands[index]->cmd->str;
 	else
 		path = getenv("HOME");
 	if (chdir(path) == -1)

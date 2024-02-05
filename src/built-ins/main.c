@@ -16,7 +16,7 @@ int main ()
 	cmd->str = "cat";
 	cmd->type = (enum type) CMD;
 
-	command->input = in;
+	command->input = &in;
 	command->output = out;
 	command->cmd = cmd;
 	command->args = 0;

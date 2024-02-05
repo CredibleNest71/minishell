@@ -6,11 +6,11 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 14:05:40 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/02/01 12:06:57 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/02/05 17:49:13 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "../../minishell.h"
 #include <stdio.h>
 #include <unistd.h>
 
@@ -27,47 +27,44 @@
 		//struct->exitstatus = WEXITSTATUS(//struct->exitstatus);
 } */
 
-char	*builtin_exec(/*cmd arg*/)
+void	store_exit_code(t_bigshell *data, int memo) //if smt drastically fails, free and exit minishell. (memory allocation fail, fork fail, dup, etc)
 {
-	// check if cmd is empty
-	// check if cmd is one of the built-ins
-		// store cmd names with 
-	int	len;
-
-	len = ft_strlen(cmd);
+	data->exit_stat = memo;
 	
 }
 
-void	store_exit_code()
-{}
-
-void	error_handler(char	*message)
+void	error_handler(char	*message) //irrelevant, unless critical fail: store exit status and return prompt, otherwise call free fucntion and exit minishell
 {
 	printf("Failure: %s", message);
 	//call exit code function(?)
 	//new prompt
 }
 
-void	complex_exec(t_command *cmd_table) //do I want to modify the struct?
+void	complex_exec(t_bigshell *data) //do I want to modify the struct?
 {
 	int	pid;
 	int	i;
+	int	j;
 
-	i = 0;
-	if (cmd_table->  )//check for redirection
-		redir(cmd_table);
-	if (cmd_table->cmd[i] && (cmd_table->cmd[i + 1]) == NULL) //check if there's only one command or check that no pipes exist
-		//builtin_exec(cmd arg);
-	while (i < cmd_table->arg_num)
+	i = -1;
+	j = 0;
+	while (++i <= data->num_cmd)
 	{
-		pid = fork();
-		if (pid == 0) //child
-			//execute cmd;
-			//remember to handle error (send correct exit code)
-		if (pid == -1) //fork failed (check errno?)
-			//handle error (send correct exit code)
-		//probably close fds;
-		//wait_for_offspring(struct);
+		if (data->commands[i]->input || data->commands[i]->output)
+			redir(data->commands[i], data);
+		while (i <= data->num_cmd) //tf?
+		{
+			pid = fork();
+			if (pid == 0) //child
+				printf("child");
+				//execute cmd;
+				//remember to handle error (send correct exit code)
+			if (pid == -1) //fork failed (check errno?)
+				printf("failed child");
+				//handle error (send correct exit code)
+			//probably close fds;
+			//wait_for_offspring(struct);
+		}
 	}
 	
 }

@@ -6,67 +6,11 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 12:10:32 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/02/01 16:21:28 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/02/05 18:09:23 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
-#include <stdio.h>
-#include <unistd.h>
-
-char	**find_and_split_path(char **env)
-{
-	int		i;
-	char	*path;
-	char	**paths;
-
-	i = -1;
-	while (env[++i] != 0)
-	{
-		if (ft_strncmp(env[i], "PATH=", 5) == 0)
-		{
-			path = ft_strdup(env[i]);
-			if (!path)
-				return (NULL);
-			paths = ft_split(path, ':');
-			free(path);
-			if (!paths)
-				return (NULL);
-			return (paths);
-		}
-	}
-	return (0);
-}
-
-char	*check_if_correct_path(char **paths, t_bigshell *main, t_token *str, int index)
-{
-	int		i;
-	int		j;
-	char	*tmp;
-	char	*to_check;
-
-	i = 0;
-	j = 0;
-	//check if paths &cmd exist?
-	//do I have to take care of absolute n relative paths 4 commands?
-	if (str[0] == '/' || str[0] == '.')
-		return ((char *)str);
-	while (paths[i] != NULL)
-	{
-		tmp = ft_strjoin(paths[i], "/");
-		if (!tmp)
-			//handle
-		to_check = ft_strjoin(tmp, (const char *)main->commands[index]->cmd);
-		if (!to_check)
-			//handle exit status?
-		if (access(to_check, W_OK) == 0)
-			return (to_check);
-		free(to_check);
-		i++;
-	}
-	return (NULL);
-}
-////////////////////////////////////////////////////////////////////////////////////////////////////
 
 char	*put_str(char *s)
 {
@@ -104,18 +48,18 @@ char	*put_built_in(int index)
 	return (NULL);
 }
 
-char	**built_in_list(t_bigshell *big)
+char	**built_in_list(t_bigshell *data)
 {
 	char	**list;
 	int		i;
 
-	big->commands[]
 	i = 0;
 	list = malloc(7 * sizeof(char *));
 	while (i < 7)
 	{
 		list[i] = put_built_in(i);
 		if (!list[i])
+			data->exit_stat = 1;
 			//protecc
 		i++;
 	}
@@ -123,7 +67,7 @@ char	**built_in_list(t_bigshell *big)
 	return (list);
 }
 
-char	*builtin_exec(t_bigshell *main, int index) //index = command index
+void	builtin_exec(t_bigshell *main, int index) //index = command index
 {
 	int		len;
 	int		i;
@@ -141,10 +85,10 @@ char	*builtin_exec(t_bigshell *main, int index) //index = command index
 	path = find_and_split_path(main->env);
 	if (!path)
 		printf("find&split failed"); //shit has been allocated
-	correct_path = check_if_correct_path(path, main, main->commands[index]->cmd, i);
+	correct_path = check_if_correct_path(path, main, main->commands[index]->cmd->str, i);
 	if (!correct_path)
 		printf("correct path not found"); //do smt
-	execve(correct_path, (char const *)main->commands[index]->cmd, main->env);
+	execve(correct_path, (char *const *)main->commands[index]->cmd, main->env);
 	//protect execve
 	
 }

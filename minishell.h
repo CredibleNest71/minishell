@@ -14,9 +14,10 @@ enum type {
 }	typedef e_type;
 
 struct s_token {
-	char 	*str;
-	int		type;
-	char	*dir;
+	char 			*str;
+	int				type;
+	char			*dir;
+	struct s_token	*next;
 }	typedef t_token;
 
 struct s_command {

@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 17:59:11 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/02/06 17:03:44 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/02/06 17:35:05 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,8 +74,9 @@ void	redir(t_command *cmd_struct, t_bigshell *main_struct)
 		printf("a\n");
 		if (fd_in == -1)
 		{
-			printf("b\n");
-			main_struct->exit_stat = 1; //segfault
+			printf("seg later b\n");
+			printf("segfault - %p\n", main_struct);
+			main_struct->exit_stat = 1;
 			printf("b1\n");
 			printf("fd_in open fail");
 			// main_struct->exit_stat = 

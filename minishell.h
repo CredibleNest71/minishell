@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 17:34:54 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/02/05 18:08:58 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/02/06 14:47:56 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,8 @@ struct	s_bigshell
 	t_command	**commands;
 	int			num_cmd;
 	int			exit_stat;
+	int			pipe_fd[2];
+	int			id;
 	char		**env;
 	char		**variables;
 	char		**built_ins;
@@ -68,5 +70,10 @@ char	*put_str(char *s);
 char	*put_built_in(int index);
 char	**built_in_list(t_bigshell *data);
 void	builtin_exec(t_bigshell *main, int index);
+
+void	simple_error(t_bigshell *main, int exit_code);
+void	fatal_error(t_bigshell *main, int exit_code);
+
+void	simple_exec(t_bigshell *data);
 
 #endif

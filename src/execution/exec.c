@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 14:05:40 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/02/05 17:49:13 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/02/06 15:03:28 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,19 +40,22 @@ void	error_handler(char	*message) //irrelevant, unless critical fail: store exit
 	//new prompt
 }
 
-void	complex_exec(t_bigshell *data) //do I want to modify the struct?
+void	complex_exec(t_bigshell *data, int index) //do I want to modify the struct?
 {
 	int	pid;
-	int	i;
 	int	j;
 
-	i = -1;
 	j = 0;
-	while (++i <= data->num_cmd)
+	while (++index <= data->num_cmd)
 	{
-		if (data->commands[i]->input || data->commands[i]->output)
-			redir(data->commands[i], data);
-		while (i <= data->num_cmd) //tf?
+		if (data->commands[index]->input || data->commands[index]->output)
+			redir(data->commands[index], data);
+	}
+	
+}
+
+//doing this in main:
+		/* while (i <= data->num_cmd) //tf?
 		{
 			pid = fork();
 			if (pid == 0) //child
@@ -64,7 +67,4 @@ void	complex_exec(t_bigshell *data) //do I want to modify the struct?
 				//handle error (send correct exit code)
 			//probably close fds;
 			//wait_for_offspring(struct);
-		}
-	}
-	
-}
+		} */

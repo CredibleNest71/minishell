@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 14:05:40 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/02/06 15:03:28 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/02/06 15:26:06 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,6 @@ void	error_handler(char	*message) //irrelevant, unless critical fail: store exit
 
 void	complex_exec(t_bigshell *data, int index) //do I want to modify the struct?
 {
-	int	pid;
 	int	j;
 
 	j = 0;

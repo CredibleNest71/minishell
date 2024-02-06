@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 17:34:54 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/02/06 14:47:56 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/02/06 16:08:03 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ struct	s_bigshell
 
 
 void	store_restore_fds(int mode);
-int		check_file(const char *file, int mode);
+void	check_file(const char *file, int mode);
 void	redir(t_command *cmd_struct, t_bigshell *main_struct);
 
 char	**find_and_split_path(char **env);

@@ -6,11 +6,12 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 11:33:48 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/02/06 15:04:54 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/02/06 16:00:58 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "../../minishell.h"
+#include <stdio.h>
 #include <unistd.h>
 
 int main(int argc, char **argv, char **env)

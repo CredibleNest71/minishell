@@ -6,11 +6,12 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 14:33:19 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/02/06 17:29:47 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/02/07 13:12:49 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
+#include <stdio.h>
 
 char	**find_and_split_path(char **env)
 {
@@ -21,7 +22,7 @@ char	**find_and_split_path(char **env)
 	i = -1;
 	while (env[++i] != 0)
 	{
-		if (ft_strncmp(env[i], "PATH=", 5) == 0) // segfaults here
+		if (ft_strncmp(env[i], "PATH=", 5) == 0)
 		{
 			path = ft_strdup(env[i]);
 			if (!path)
@@ -36,7 +37,7 @@ char	**find_and_split_path(char **env)
 	return (0);
 }
 
-char	*check_if_correct_path(char **paths, t_bigshell *main, char *str, int index)
+char	*check_if_correct_path(char **paths, t_bigshell *main, char *str)
 {
 	int		i;
 	int		j;
@@ -53,11 +54,11 @@ char	*check_if_correct_path(char **paths, t_bigshell *main, char *str, int index
 	{
 		tmp = ft_strjoin(paths[i], "/");
 		if (!tmp)
-			//handle
-		to_check = ft_strjoin(tmp, (const char *)main->commands[index]->cmd);
+			fatal_error(main, 1);
+		to_check = ft_strjoin(tmp, str);
 		if (!to_check)
-			//handle exit status?
-		if (access(to_check, W_OK) == 0)
+			fatal_error(main, 1);
+		if (access(to_check, X_OK) == 0)
 			return (to_check);
 		free(to_check);
 		i++;

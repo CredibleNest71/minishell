@@ -6,12 +6,13 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 17:54:30 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/02/06 16:58:24 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/02/07 13:11:27 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 #include <stdio.h>
+#include <unistd.h>
 
 void	simple_exec(t_bigshell *data) // needs to be a child bc execve will kill the process otherwise
 {
@@ -22,25 +23,27 @@ void	simple_exec(t_bigshell *data) // needs to be a child bc execve will kill th
 	//	fatal_error(data, 1);
 	//if (data->id == 0)
 	//{
-		printf("1\n");
 		if (data->commands[0]->input || data->commands[0]->output)
 		{
-			//printf("a\n");
 			redir(data->commands[0], data);
 		}
 		//builtin_exec(data, 0);
-		printf("2\n");
 		paths = find_and_split_path(data->env);
-		printf("paths: %s\n", paths[1]);
-		correct_path = check_if_correct_path(paths, data, data->commands[0]->cmd->str, 0);
-		printf("correct path: %s\n", correct_path);
+		correct_path = check_if_correct_path(paths, data, data->commands[0]->cmd->str);
+		if (!correct_path)
+		{
+			printf("correct path failed\n");
+			return ;
+		}
 		execve(correct_path, &data->commands[0]->cmd->str, data->env);
+		printf("hihi\n");
 		//protect execve
 	//}
 }
 
-int	main()
+int	main(int argc, char **argv, char **env)
 {
+	int j;
 	t_bigshell	data;
 	t_command	*command = (t_command *) malloc (sizeof(t_command));
 	t_token 	*input = (t_token *) malloc (sizeof(t_token));
@@ -72,8 +75,18 @@ int	main()
 	//printf("lol\n");
 	data.commands = &command;
 	//printf("lol\n");
+	data.env = env;
 
 	//printf("hello?\n");
-	simple_exec(&data);
+	if (argc && argv)
+		j = 2;
+	store_restore_fds(1);
+	data.id = fork();
+	if (data.id == -1)
+		fatal_error(&data, 1);
+	else if (data.id == 0)
+	{
+		simple_exec(&data);
+	}
 	return (0);
 }

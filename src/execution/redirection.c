@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 17:59:11 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/02/06 17:35:05 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/02/07 11:58:21 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,25 +67,17 @@ void	redir(t_command *cmd_struct, t_bigshell *main_struct)
 	
 	if (cmd_struct->input) // redirecting input "<"
 	{
-		printf("a\n");
 		check_file(cmd_struct->input->str, 0); //fix exit
-		printf("a\n");
 		fd_in = open(cmd_struct->input->str, O_RDONLY);
-		printf("a\n");
 		if (fd_in == -1)
 		{
-			printf("seg later b\n");
-			printf("segfault - %p\n", main_struct);
 			main_struct->exit_stat = 1;
-			printf("b1\n");
 			printf("fd_in open fail");
 			// main_struct->exit_stat = 
 		}
 			//printf error & store exit code & new prompt probably (dont exit minishell)
-		printf("b\n");
 		if ((dup2(fd_in, 0)) == -1)
 		{
-			printf("b\n");
 			main_struct->exit_stat = 1;
 			printf("fd_in dup2 fail\n");
 		}

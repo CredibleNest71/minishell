@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 09:57:03 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/01/16 10:29:26 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/02/07 16:26:41 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,19 @@
 
 //-n: this option is used to omit echoing trailing newline.
 
-void	ft_echo(char *s, int fd, int option)
+void	ft_echo(char **args, int option)
 {
+	int i = 0;
 	if (option == 1)
-		ft_putstr_fd(s, fd);
+	{
+		while (args[++i] != NULL)
+			ft_putstr_fd(args[i], 2);
+	}
 	else
 	{
-		ft_putstr_fd(s, fd);
-		ft_putchar_fd('\n', fd);
+		while(args[i] != NULL)
+			ft_putstr_fd(args[i++], 2);
+		ft_putchar_fd('\n', 2);
 	}
+	exit(0);
 }

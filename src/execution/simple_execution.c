@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 17:54:30 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/02/07 13:24:31 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/02/07 15:51:14 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	simple_exec(t_bigshell *data) // needs to be a child bc execve will kill th
 	
 	if (data->commands[0]->input || data->commands[0]->output)
 		redir(data->commands[0], data);
-	builtin_exec(data, data->commands[0]->cmd->str);
+	builtin_check_exec(data, data->commands[0]->cmd->str, 0);
 	paths = find_and_split_path(data->env);
 	if (!paths)
 		printf("find&split failed"); //shit has been allocated

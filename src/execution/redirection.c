@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 17:59:11 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/02/07 11:58:21 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/02/07 15:13:53 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ void	check_file(const char *file, int mode)
 	}
 }
 
-void	redir(t_command *cmd_struct, t_bigshell *main_struct)
+void	redir(t_command *cmd_struct, t_bigshell *main_struct) // fix to do: needs to be able to switch stdin&stdout multiple times (ex. cat <input >output <input2 >output3 >output4)
 {
 	int	fd_in;
 	int	fd_out;
@@ -95,3 +95,7 @@ void	redir(t_command *cmd_struct, t_bigshell *main_struct)
 			//print error, store exit code n new prompt
 	}
 }
+
+//1 cmd can have multiple input&output redirections, 
+//in which case the last <input & >output in the cmd
+//string should be used in dup2

@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 11:33:48 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/02/06 16:00:58 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/02/07 17:49:53 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int main(int argc, char **argv, char **env)
 
 	lineread = NULL;
 	bigshell.env = env;
-	bigshell.built_ins = built_in_list();
+	bigshell.built_ins = built_in_list(&bigshell);
 	i = 0;
 		while (1)
 	    {

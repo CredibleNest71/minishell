@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 12:10:32 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/02/07 16:13:43 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/02/07 18:34:32 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,19 +32,19 @@ char	*put_str(char *s)
 char	*put_built_in(int index)
 {
 	if (index == 0)
-		return (put_str("echo -n"));
+		return ("echo -n");
 	else if (index == 1)
-		return (put_str("cd"));
+		return ("cd");
 	else if (index == 2)
-		return (put_str("pwd"));
+		return ("pwd");
 	else if (index == 3)
-		return (put_str("export"));
+		return ("export");
 	else if (index == 4)
-		return (put_str("unset"));
+		return ("unset");
 	else if (index == 5)
-		return (put_str("env"));
+		return ("env");
 	else if (index == 6)
-		return (put_str("exit"));
+		return ("exit");
 	return (NULL);
 }
 
@@ -67,15 +67,15 @@ char	**built_in_list(t_bigshell *data)
 	return (list);
 }
 
-void	builtin_exec(t_bigshell *data, char *cmd, int builtin_index, int cmd_index)
+void	builtin_exec(t_bigshell *data, int builtin_index, int cmd_index)
 {
 	if (builtin_index == 0)
 	{
 		if (ft_strncmp(data->commands[cmd_index]->args[0]->str, "-n", 2) == 0)
 			ft_echo(data->commands[cmd_index]->args, 1);
-		ft_echo(, 0);
+		ft_echo(data->commands[cmd_index]->args, 0);
 	}
-	else if (builtin_index == 1)
+	/* else if (builtin_index == 1)
 		ft_cd();
 	else if (builtin_index == 2)
 		ft_pwd();
@@ -86,7 +86,7 @@ void	builtin_exec(t_bigshell *data, char *cmd, int builtin_index, int cmd_index)
 	else if (builtin_index == 5)
 		ft_env();
 	else if (builtin_index == 6)
-		ft_exit();
+		ft_exit(); */
 }
 
 void	builtin_check_exec(t_bigshell *main, char *cmd, int cmd_index)
@@ -98,13 +98,18 @@ void	builtin_check_exec(t_bigshell *main, char *cmd, int cmd_index)
 	len = ft_strlen(cmd);
 	while (main->built_ins[i] != NULL)
 	{
+		printf("%s\n", main->built_ins[i]);
+		printf("hola\n");
 		if (ft_strncmp(cmd, main->built_ins[i], len) == 0)
 		{
-			builtin_exec(main, cmd, i, cmd_index);
-			printf("built in found"); //exec built-in
+			printf("hola\n");
+			builtin_exec(main, i, cmd_index);
+			//printf("built in found"); //exec built-in
+			printf("hola\n");
 		}
 		i++;
 	}
+	printf("hej\n");
 	return ;
 }
 

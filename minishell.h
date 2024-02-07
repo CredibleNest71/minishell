@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 17:34:54 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/02/07 16:15:17 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/02/07 17:43:28 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,7 @@ char	*check_if_correct_path(char **paths, t_bigshell *main, char *str);
 char	*put_str(char *s);
 char	*put_built_in(int index);
 char	**built_in_list(t_bigshell *data);
+void	builtin_exec(t_bigshell *data, int builtin_index, int cmd_index);
 void	builtin_check_exec(t_bigshell *main, char *cmd, int cmd_exec);
 
 void	simple_error(t_bigshell *main, int exit_code);
@@ -76,6 +77,6 @@ void	fatal_error(t_bigshell *main, int exit_code);
 
 void	simple_exec(t_bigshell *data);
 
-void	ft_echo(char **args, int option);
+void	ft_echo(t_token **args, int option);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 17:54:30 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/02/07 13:11:27 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/02/07 13:24:31 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,26 +19,18 @@ void	simple_exec(t_bigshell *data) // needs to be a child bc execve will kill th
 	char	**paths;
 	char	*correct_path;
 	
-	//if ((data->id = fork()) == -1)
-	//	fatal_error(data, 1);
-	//if (data->id == 0)
-	//{
-		if (data->commands[0]->input || data->commands[0]->output)
-		{
-			redir(data->commands[0], data);
-		}
-		//builtin_exec(data, 0);
-		paths = find_and_split_path(data->env);
-		correct_path = check_if_correct_path(paths, data, data->commands[0]->cmd->str);
-		if (!correct_path)
-		{
-			printf("correct path failed\n");
-			return ;
-		}
-		execve(correct_path, &data->commands[0]->cmd->str, data->env);
-		printf("hihi\n");
-		//protect execve
-	//}
+	if (data->commands[0]->input || data->commands[0]->output)
+		redir(data->commands[0], data);
+	builtin_exec(data, data->commands[0]->cmd->str);
+	paths = find_and_split_path(data->env);
+	if (!paths)
+		printf("find&split failed"); //shit has been allocated
+	correct_path = check_if_correct_path(paths, data, data->commands[0]->cmd->str);
+	if (!correct_path)
+		printf("correct path failed\n"); // do smt probably
+	execve(correct_path, &data->commands[0]->cmd->str, data->env);
+	printf("hihi\n");
+	//protect execve
 }
 
 int	main(int argc, char **argv, char **env)

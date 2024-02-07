@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 12:10:32 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/02/05 18:09:23 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/02/07 13:23:55 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ char	**built_in_list(t_bigshell *data)
 	return (list);
 }
 
-void	builtin_exec(t_bigshell *main, int index) //index = command index
+void	builtin_exec(t_bigshell *main, char *cmd) //index = command index
 {
 	int		len;
 	int		i;
@@ -75,22 +75,14 @@ void	builtin_exec(t_bigshell *main, int index) //index = command index
 	char	*correct_path;
 	
 	i = 0;
-	len = ft_strlen((const char *)main->commands[index]->cmd);
+	len = ft_strlen(cmd);
 	while (main->built_ins[i] != NULL)
 	{
-		if (ft_strncmp((const char *)main->commands[index]->cmd, main->built_ins[i], len) == 0)
+		if (ft_strncmp(cmd, main->built_ins[i], len) == 0)
 			printf("built in found"); //exec built-in
 		i++;
 	}
-	path = find_and_split_path(main->env);
-	if (!path)
-		printf("find&split failed"); //shit has been allocated
-	correct_path = check_if_correct_path(path, main, main->commands[index]->cmd->str, i);
-	if (!correct_path)
-		printf("correct path not found"); //do smt
-	execve(correct_path, (char *const *)main->commands[index]->cmd, main->env);
-	//protect execve
-	
+	return ;
 }
 
 /* while (list[i])

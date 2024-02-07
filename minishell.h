@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 17:34:54 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/02/07 12:51:31 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/02/07 13:25:19 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ char	*check_if_correct_path(char **paths, t_bigshell *main, char *str);
 char	*put_str(char *s);
 char	*put_built_in(int index);
 char	**built_in_list(t_bigshell *data);
-void	builtin_exec(t_bigshell *main, int index);
+void	builtin_exec(t_bigshell *main, char *cmd);
 
 void	simple_error(t_bigshell *main, int exit_code);
 void	fatal_error(t_bigshell *main, int exit_code);

@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 12:10:32 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/02/08 12:31:11 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/02/08 16:32:54 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,18 +128,13 @@ void	builtin_check_exec(t_bigshell *main, char *cmd, int cmd_index)
 	len = ft_strlen(cmd);
 	while (main->built_ins[i] != NULL)
 	{
-		printf("%s\n", main->built_ins[i]);
-		printf("hola\n");
 		if (ft_strncmp(cmd, main->built_ins[i], len) == 0)
 		{
-			printf("hola\n");
 			builtin_exec(main, i, cmd_index);
 			//printf("built in found"); //exec built-in
-			printf("hola\n");
 		}
 		i++;
 	}
-	printf("hej\n");
 	return ;
 }
 

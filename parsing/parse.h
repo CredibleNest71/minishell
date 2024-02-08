@@ -4,6 +4,7 @@
 # include <stdlib.h>
 # include <stdio.h>
 
+char    	*ft_strndup(const char *s, int n);
 int			is_char(char c, char *chars);
 int			is_seperator(char *str);
 t_token	    *tokenify(char *str);

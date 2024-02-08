@@ -84,21 +84,48 @@ int	appender(char *str)
 	return (i);
 }
 
-int	redir_in(char *str)
+int	redir(char *str)
 {
 	int	i;
+	int	quotes;
 
+	quotes = -1;
 	i = 1;
 	while (is_char(str[i], "\n\t\v \r\f") && str[i])
 		i++;
 	if (str[i] == '\'')
-		return (i + single_quote(&str[i]));
+		quotes = single_quote(&str[i]);
 	else if (str[i] == '\"')
-		return (i + double_quote(&str[i]));
+		quotes = double_quote(&str[i]);
+	if (quotes == 0)
+		return (0);
+	else if (quotes > 0)
+		return (i + quotes);
 	while (!is_char(str[i], "\n\t\v \r\f") && str[i])
 		i++;
 	return (i);
 }
+// int	redir_out(char *str)
+// {
+// 	int	i;
+// 	int	quotes;
+
+// 	quotes = -1;
+// 	i = 1;
+// 	while (is_char(str[i], "\n\t\v \r\f") && str[i])
+// 		i++;
+// 	if (str[i] == '\'')
+// 		quotes = single_quote(&str[i]);
+// 	else if (str[i] == '\"')
+// 		quotes = double_quote(&str[i]);
+// 	if (!quotes)
+// 		return (0);
+// 	else if (quotes > 0);
+// 		return (i + quotes);
+// 	while (!is_char(str[i], "\n\t\v \r\f") && str[i])
+// 		i++;
+// 	return (i);
+// }
 
 int	redir_out(char *str)
 {
@@ -144,9 +171,9 @@ int	find_element(char *str)
 	else if (!strncmp(&str[i], ">>", 2))
 		return (appender(&str[i]));
 	else if (str[i] == '<')
-		return (redir_in(&str[i]));
+		return (redir(&str[i]));
 	else if (str[i] == '>')
-		return (redir_out(&str[i]));
+		return (redir(&str[i]));
 	else
 		return (findarg(&str[i]));
 	return (0);
@@ -160,15 +187,30 @@ t_token	*make_token(char *str, int end)
 	if (!token)
 		return (NULL);
 	token->str = ft_strndup(str, end);
-	printf("\n%s", token->str);
+	//printf("\n%s", token->str);
 	return (token);
+}
+
+void	delete_token_list(t_token **list)
+{
+	t_token	*temp;
+	t_token *next;
+
+	temp = *list;
+	while (temp)
+	{
+		free(temp->str);
+		next = temp->next;
+		free(temp);
+		temp = next;
+	}
+	free(list);
 }
 
 t_token	**parse(char *str)
 {
 	t_token	**list;
 	t_token	*temp;
-	t_token	*curr;
 	int		i;
 	int		end;
 
@@ -187,7 +229,7 @@ t_token	**parse(char *str)
 			temp = temp->next;
 		end = find_element(&str[i]);
 		if (end <= 0)
-			return (NULL);
+			return (delete_token_list(list), NULL);
 		temp->next = make_token(&str[i], end);
 		i += end;
 	}
@@ -197,8 +239,10 @@ t_token	**parse(char *str)
 int main(int ac, char **av)
 {
 	t_token **p;
-	//p = parse(av[1]);
-	p = parse("this is \' a test for \' me to >> know wther <\"or not the\" quotes work heyheayheay work");
+	if (ac == 2)
+		p = parse(av[1]);
+	else 
+		p = parse("this is  a test for \' me\' to >> know | wther <     or not hea asd the quotes \"work heyheayheay work");
 	t_token *t;
 	t = *p;
 

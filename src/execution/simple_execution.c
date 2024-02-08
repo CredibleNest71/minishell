@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 17:54:30 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/02/08 17:04:46 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/02/08 18:38:44 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,8 @@ int	main(int argc, char **argv, char **env)
 	//t_token 	*input = (t_token *) malloc (sizeof(t_token));
 	t_token 	*output = (t_token *) malloc (sizeof(t_token));
 	t_token 	*cmd = (t_token *) malloc (sizeof(t_token));
-	t_token 	*arg = (t_token *) malloc (sizeof(t_token));
-	t_token 	*arg2 = (t_token *) malloc (sizeof(t_token));
+	//t_token 	*arg = (t_token *) malloc (sizeof(t_token));
+	//t_token 	*arg2 = (t_token *) malloc (sizeof(t_token));
 	t_token 	*arg3 = (t_token *) malloc (sizeof(t_token));
 
 	//input->str = "motest";
@@ -59,9 +59,9 @@ int	main(int argc, char **argv, char **env)
 	//printf("what\n");
 	cmd->type = (enum type) CMD;
 	//printf("what\n");
-	arg->str = "-n";
+	//arg->str = "-n";
 	//printf("what\n");
-	arg2->str = "karaoke";
+	//arg2->str = "hola";
 	arg3 = NULL;
 	
 
@@ -71,9 +71,9 @@ int	main(int argc, char **argv, char **env)
 	//printf("lol\n");
 	command->cmd = cmd;
 	//printf("lol\n");
-	command->args[0] = arg;
-	command->args[1] = arg2;
-	command->args[2] = arg3;
+	//command->args[0] = arg;
+	//command->args[1] = arg2;
+	command->args = NULL;
 	//printf("lol\n");
 	data.commands = &command;
 	//printf("lol\n");

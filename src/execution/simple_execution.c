@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 17:54:30 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/02/07 18:42:53 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/02/08 12:32:59 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,8 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-void	simple_exec(t_bigshell *data) // needs to be a child bc execve will kill the process otherwise
+// needs to be a child bc execve will kill the process otherwise
+void	simple_exec(t_bigshell *data)
 {
 	char	**paths;
 	char	*correct_path;
@@ -76,10 +77,16 @@ int	main(int argc, char **argv, char **env)
 	data.commands = &command;
 	//printf("lol\n");
 	
-	data.built_ins = malloc(sizeof(char *) * 7);
-	data.built_ins = built_in_list(&data);
+	data.built_ins = (char **)malloc(sizeof(char *) * 7);
+	if (!data.built_ins)
+	{
+		printf("malloc failed\n");
+		exit(1);
+	}
+	//data.built_ins = built_in_list(&data);
 	data.env = env;
 
+	built_in_list(&data);
 	int e = 0;
 	int	k = 0;
 	while (e < 7)
@@ -89,7 +96,6 @@ int	main(int argc, char **argv, char **env)
 		k++;
 	}
 
-	//printf("hello?\n");
 	if (argc && argv)
 		j = 2;
 	store_restore_fds(1);

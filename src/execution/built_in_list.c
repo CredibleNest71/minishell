@@ -6,11 +6,12 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 12:10:32 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/02/07 18:34:32 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/02/08 12:31:11 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
+#include <stdlib.h>
 
 char	*put_str(char *s)
 {
@@ -29,42 +30,71 @@ char	*put_str(char *s)
 	return (str);
 }
 
-char	*put_built_in(int index)
+void	put_built_in(int index, t_bigshell *data)
 {
 	if (index == 0)
-		return ("echo -n");
+	{
+		data->built_ins[index] = malloc(sizeof(char) * 7);
+		data->built_ins[index] = "echo -n";
+	}
 	else if (index == 1)
-		return ("cd");
+	{
+		data->built_ins[index] = malloc(sizeof(char) * 2);
+		data->built_ins[index] = "cd";
+	}
 	else if (index == 2)
-		return ("pwd");
+	{
+		data->built_ins[index] = malloc(sizeof(char) * 3);
+		data->built_ins[index] = "pwd";
+	}
 	else if (index == 3)
-		return ("export");
+	{
+		data->built_ins[index] = malloc(sizeof(char) * 6);
+		data->built_ins[index] = "export";
+	}
 	else if (index == 4)
-		return ("unset");
+	{
+		data->built_ins[index] = malloc(sizeof(char) * 5);
+		data->built_ins[index] = "unset";
+	}
 	else if (index == 5)
-		return ("env");
+	{
+		data->built_ins[index] = malloc(sizeof(char) * 3);
+		data->built_ins[index] = "env";
+	}
 	else if (index == 6)
-		return ("exit");
-	return (NULL);
+	{
+		data->built_ins[index] = malloc(sizeof(char) * 4);
+		data->built_ins[index] = "exit";
+	}
 }
 
-char	**built_in_list(t_bigshell *data)
+void	built_in_list(t_bigshell *data)
 {
-	char	**list;
+	//char	**list;
 	int		i;
+	int		j;
 
 	i = 0;
-	list = malloc(7 * sizeof(char *));
+	j = 0;
+	//list = malloc(7 * sizeof(char *));
 	while (i < 7)
 	{
-		list[i] = put_built_in(i);
-		if (!list[i])
-			data->exit_stat = 1;
+		put_built_in(i, data);
+		/* if (!list[i])
+			data->exit_stat = 1; */
 			//protecc
 		i++;
 	}
-	list[i] = NULL;
-	return (list);
+	data->built_ins[i] = NULL;
+	//list[i] = NULL;
+	/* i = 0;
+	while (i <= 7)
+		data->built_ins[j++] = list[i++];
+	i = 0;
+	while (list[i] != NULL)
+		free(list[i++]);
+	free(list); */
 }
 
 void	builtin_exec(t_bigshell *data, int builtin_index, int cmd_index)

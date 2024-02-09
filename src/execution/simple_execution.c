@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 17:54:30 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/02/09 12:44:35 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/02/09 14:21:12 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ int	main(int argc, char **argv, char **env)
 	//printf("what\n");
 	//output->type = (enum type) PATH;
 	//printf("what\n");
-	cmd->str = "env";
+	cmd->str = "cd";
 	//printf("what\n");
 	cmd->type = (enum type) CMD;
 	//printf("what\n");
@@ -74,6 +74,7 @@ int	main(int argc, char **argv, char **env)
 	//command->args[1] = arg2;
 	command->args = NULL;
 	//printf("lol\n");
+	command->arg_num = 2;
 	data.commands = &command;
 	//printf("lol\n");
 	

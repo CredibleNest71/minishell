@@ -8,35 +8,35 @@
 # include <readline/history.h>
 # include "libft/libft.h"
 
-enum type {
+typedef enum type {
 	CMD = 0,
 	ARG,
 	PATH,
 	NEX,
 	DIR,
-}	typedef e_type;
+}	 e_type;
 
-struct s_token {
+typedef struct s_token {
 	char 			*str;
 	int				type;
 	char			*dir;
 	struct s_token	*next;
-}	typedef t_token;
+}	 t_token;
 
-struct s_command {
+typedef struct s_command {
 	t_token				*input;		//<
 	t_token				*output;	//>
 	t_token				*cmd;		//command
 	t_token				**args;		//arguments
 	int					arg_num;
 	t_token				*nexus;		//PIPE?
-}	typedef t_command;
+}	 t_command;
 
-struct	s_bigshell
+typedef struct	s_bigshell
 {
 	t_command	**command;
 	int			exit_stat;
 	char		**env;
-}	typedef t_bigshell;
+}	 t_bigshell;
 
 #endif

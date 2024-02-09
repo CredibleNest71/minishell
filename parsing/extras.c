@@ -9,9 +9,9 @@ char	*ft_strndup(const char *s, int n)
 	char	*ans;
 
 	i = 0;
-	ans = malloc(n + 1);
 	if (n <= 0)
 		return (0);
+	ans = malloc(n + 1);
 	if (!ans)
 		return (0);
 	while (s[i] && i < n)

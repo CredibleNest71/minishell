@@ -6,7 +6,7 @@
 /*   By: mresch <mresch@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 12:47:26 by mresch            #+#    #+#             */
-/*   Updated: 2024/02/05 15:36:52 by mresch           ###   ########.fr       */
+/*   Updated: 2024/02/09 15:28:05 by mresch           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,12 @@ int	double_quote(char *str)
 	int	i;
 
 	i = 1;
+	printf("ENTER in doublequote()");
+	if (!str)
+		return (0);
 	while (str[i] && str[i] != '\"')
 		i++;
+	printf("segfault not in doublequote()");
 	if (!str[i])
 		return (0);
 	return (i + 1);
@@ -89,8 +93,8 @@ int	redir(char *str)
 	int	i;
 	int	quotes;
 
-	quotes = -1;
 	i = 1;
+	quotes = -1;
 	while (is_char(str[i], "\n\t\v \r\f") && str[i])
 		i++;
 	if (str[i] == '\'')
@@ -105,6 +109,7 @@ int	redir(char *str)
 		i++;
 	return (i);
 }
+
 // int	redir_out(char *str)
 // {
 // 	int	i;
@@ -148,6 +153,8 @@ int	findarg(char *str)
 	int	i;
 
 	i = 0;
+	if (!str)
+		return (0);
 	while (is_char(str[i], "\n\t\v \r\f") && str[i])
 		i++;
 	while (!is_char(str[i], "\n\t\v \r\f") && str[i])
@@ -186,6 +193,8 @@ t_token	*make_token(char *str, int end)
 	token = (t_token *) ft_calloc (sizeof(t_token), 1);
 	if (!token)
 		return (NULL);
+	if (!str || end <= 0)
+		return (0);
 	token->str = ft_strndup(str, end);
 	//printf("\n%s", token->str);
 	return (token);
@@ -214,14 +223,21 @@ t_token	**parse(char *str)
 	int		i;
 	int		end;
 
+	if (!str)
+		return (NULL);
 	i = 0;
+	end = 0;
 	list = (t_token **) malloc (sizeof(t_token *));
+	if (!list)
+		return (NULL);
 	temp = (t_token *) ft_calloc(sizeof(t_token), 1);
-	end = find_element(&str[i]);
-	temp = make_token(&str[i], end);
+	if (!temp)
+		return (NULL);
+	end = find_element(str);
+	temp = make_token(str, end);
 	*list = temp;
 	i += end;
-	while (str[i] && i < ft_strlen(str))
+	while ( i < ft_strlen(str) && str[i])
 	{
 		while (is_char(str[i], "\n\t\v \r\f") && str[i])
 			i++;
@@ -239,10 +255,14 @@ t_token	**parse(char *str)
 int main(int ac, char **av)
 {
 	t_token **p;
+	char *test;
+	test = ft_strdup("this is  a test for \' me\' to >> \'know | wther <  adjsadfjfsd   \"or \"not hea asd the quotes work heyheayheay work");
 	if (ac == 2)
 		p = parse(av[1]);
 	else 
-		p = parse("this is  a test for \' me\' to >> know | wther <     or not hea asd the quotes \"work heyheayheay work");
+		p = parse(test);
+	if (!p)
+		return (1);
 	t_token *t;
 	t = *p;
 
@@ -252,7 +272,7 @@ int main(int ac, char **av)
 		if (t->str)
 			printf("\n%d	%s", i++, t->str);
 		if (t->next == NULL)
-			break ; 
+			break ;
 		t = t->next;
 	}
 	return (0);
@@ -275,10 +295,9 @@ TOKEN (STR)
 		- >>		x
 		- << 		x
 		- | 
-		strndup(element) 	##seperate token
+		strndup(element) 	##seperate token  
 		addtolist(list, el) ##add to tokenlist
 	
 	
 }
 */
-

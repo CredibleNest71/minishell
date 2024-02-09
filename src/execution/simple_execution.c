@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 17:54:30 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/02/08 18:38:44 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/02/09 10:55:41 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ void	simple_exec(t_bigshell *data)
 	char	**paths;
 	char	*correct_path;
 	
-	//printf("wtf\n");
 	if (data->commands[0]->input || data->commands[0]->output)
 		redir(data->commands[0], data);
 	builtin_check_exec(data, data->commands[0]->cmd->str, 0);
@@ -42,7 +41,7 @@ int	main(int argc, char **argv, char **env)
 	t_bigshell	data;
 	t_command	*command = (t_command *) malloc (sizeof(t_command));
 	//t_token 	*input = (t_token *) malloc (sizeof(t_token));
-	t_token 	*output = (t_token *) malloc (sizeof(t_token));
+	//t_token 	*output = (t_token *) malloc (sizeof(t_token));
 	t_token 	*cmd = (t_token *) malloc (sizeof(t_token));
 	//t_token 	*arg = (t_token *) malloc (sizeof(t_token));
 	//t_token 	*arg2 = (t_token *) malloc (sizeof(t_token));
@@ -51,11 +50,11 @@ int	main(int argc, char **argv, char **env)
 	//input->str = "motest";
 	//input->type = (enum type) PATH;
 	//printf("what\n");
-	output->str = "example";
+	//output->str = "example";
 	//printf("what\n");
-	output->type = (enum type) PATH;
+	//output->type = (enum type) PATH;
 	//printf("what\n");
-	cmd->str = "echo";
+	cmd->str = "pwd";
 	//printf("what\n");
 	cmd->type = (enum type) CMD;
 	//printf("what\n");
@@ -67,7 +66,7 @@ int	main(int argc, char **argv, char **env)
 
 	command->args = (t_token **)malloc(sizeof(t_token *) * 2);
 	//command->input = input;
-	command->output = output;
+	//command->output = output;
 	//printf("lol\n");
 	command->cmd = cmd;
 	//printf("lol\n");

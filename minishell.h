@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 17:34:54 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/02/08 12:30:45 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/02/09 10:55:09 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,11 +72,13 @@ void	built_in_list(t_bigshell *data);
 void	builtin_exec(t_bigshell *data, int builtin_index, int cmd_index);
 void	builtin_check_exec(t_bigshell *main, char *cmd, int cmd_exec);
 
-void	simple_error(t_bigshell *main, int exit_code);
-void	fatal_error(t_bigshell *main, int exit_code);
+void	simple_error(t_bigshell *data, int exit_code);
+void	fatal_error(t_bigshell *data, int exit_code);
 
 void	simple_exec(t_bigshell *data);
 
 void	ft_echo(t_token **args, int option);
+void	ft_cd(t_bigshell *data, int index);
+void	ft_pwd(t_bigshell *data);
 
 #endif

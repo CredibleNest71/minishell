@@ -5,5 +5,5 @@
 ◦ pwd with no options //NEEDS $? AGAINST BASH
 ◦ export with no options
 ◦ unset with no options
-◦ env with no options or arguments
+◦ env with no options or arguments //DONE
 ◦ exit with no options

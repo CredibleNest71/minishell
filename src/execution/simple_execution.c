@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 17:54:30 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/02/09 10:55:41 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/02/09 12:44:35 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ int	main(int argc, char **argv, char **env)
 	//printf("what\n");
 	//output->type = (enum type) PATH;
 	//printf("what\n");
-	cmd->str = "pwd";
+	cmd->str = "env";
 	//printf("what\n");
 	cmd->type = (enum type) CMD;
 	//printf("what\n");
@@ -94,12 +94,12 @@ int	main(int argc, char **argv, char **env)
 		j = 2;
 	store_restore_fds(1);
 	simple_exec(&data);
-	data.id = fork();
+/* 	data.id = fork();
 	if (data.id == -1)
 	 	fatal_error(&data, 1);
 	else if (data.id == 0)
 	{
 		simple_exec(&data);
 	}
-	return (0);
+	return (0); */
 }

@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 12:10:32 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/02/09 11:27:33 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/02/09 12:49:35 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,30 +71,14 @@ void	put_built_in(int index, t_bigshell *data)
 
 void	built_in_list(t_bigshell *data)
 {
-	//char	**list;
 	int		i;
 	int		j;
 
 	i = 0;
 	j = 0;
-	//list = malloc(7 * sizeof(char *));
 	while (i < 7)
-	{
-		put_built_in(i, data);
-		/* if (!list[i])
-			data->exit_stat = 1; */
-			//protecc
-		i++;
-	}
+		put_built_in(i++, data);
 	data->built_ins[i] = NULL;
-	//list[i] = NULL;
-	/* i = 0;
-	while (i <= 7)
-		data->built_ins[j++] = list[i++];
-	i = 0;
-	while (list[i] != NULL)
-		free(list[i++]);
-	free(list); */
 }
 
 void	builtin_exec(t_bigshell *data, int builtin_index, int cmd_index)

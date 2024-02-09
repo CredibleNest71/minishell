@@ -6,13 +6,13 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 11:02:30 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/02/09 11:28:21 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/02/09 12:50:07 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-void	ft_exit(t_bigshell *data)
+/* void	ft_exit(t_bigshell *data, int index)
 {
 	exit(0);
-}
+} */

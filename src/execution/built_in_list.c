@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 12:10:32 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/02/09 10:54:56 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/02/09 11:27:33 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,7 @@ void	builtin_exec(t_bigshell *data, int builtin_index, int cmd_index)
 	else if (builtin_index == 4)
 		ft_unset();
 	else if (builtin_index == 5)
-		ft_env();
+		ft_env(data, cmd_index);
 	else if (builtin_index == 6)
 		ft_exit(); */
 }

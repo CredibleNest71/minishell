@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 17:34:54 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/02/09 10:55:09 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/02/09 11:27:58 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,5 +80,7 @@ void	simple_exec(t_bigshell *data);
 void	ft_echo(t_token **args, int option);
 void	ft_cd(t_bigshell *data, int index);
 void	ft_pwd(t_bigshell *data);
+
+void	ft_env(t_bigshell *data, int index);
 
 #endif

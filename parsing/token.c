@@ -313,8 +313,8 @@ t_command	*make_command(t_token **tokens)
 t_command **commandlistmaker(char *str)
 {
 	t_command	**ret;
-	char		**seperated;
 	t_token		**tokenized;
+	char		**seperated;
 	int			cmds;
 	int			i;
 

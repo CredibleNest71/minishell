@@ -256,25 +256,33 @@ int main(int ac, char **av)
 {
 	t_token **p;
 	char *test;
-	test = ft_strdup("this is  a test for \' me\' to >> \'know | wther <  adjsadfjfsd   \"or \"not hea asd the quotes work heyheayheay work");
+	test = ft_strdup("this is  a test for \' me to >> know | wther <  adjsadfjfsd   not hea asd the quotes work heyheayheay work");
 	if (ac == 2)
 		p = parse(av[1]);
 	else 
 		p = parse(test);
 	if (!p)
-		return (1);
+		return (28);
 	t_token *t;
 	t = *p;
 
 	int i = 1;
+	classify(t);
+	mark_commands(t);
+	char *names[] = {"CMD", "ARG", "PIPE", "IN", "OUT", "APP", "HERE"};
 	while (1)
 	{
 		if (t->str)
-			printf("\n%d	%s", i++, t->str);
+		{
+			clean_token(t);
+			printf("\n%d: %s	%s", i++, names[t->type], t->str);
+		}
 		if (t->next == NULL)
 			break ;
 		t = t->next;
 	}
+	free(test);
+	delete_token_list(p);
 	return (0);
 }
 

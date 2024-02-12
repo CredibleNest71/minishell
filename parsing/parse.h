@@ -4,9 +4,17 @@
 # include <stdlib.h>
 # include <stdio.h>
 
+//classifier
+void	    classify(t_token *list);
+void	    mark_commands(t_token *list);
+void	    clean_token(t_token *token);
+
+//extras
 char    	*ft_strndup(const char *s, int n);
 int			is_char(char c, char *chars);
 int			is_seperator(char *str);
+
+//tokenv1
 t_token	    *tokenify(char *str);
 int         count_elements(char *);
 char        **token_splitter(char *str);

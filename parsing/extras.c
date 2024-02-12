@@ -3,6 +3,7 @@
 #include "parse.h"
 #include "../libft/libft.h"
 
+
 char	*ft_strndup(const char *s, int n)
 {
 	int		i;

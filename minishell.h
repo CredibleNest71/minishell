@@ -28,10 +28,13 @@ typedef struct s_token {
 typedef struct s_command {
 	t_token				*input;		//<
 	t_token				*output;	//>
+	t_token				*append;	//>>
+	t_token				*heredoc;	//<<
 	t_token				*cmd;		//command
-	t_token				**args;		//arguments
+	t_token				*args;		//arguments
 	int					arg_num;
 	t_token				*nexus;		//PIPE?
+	struct s_command	*next;
 }	 t_command;
 
 typedef struct	s_bigshell

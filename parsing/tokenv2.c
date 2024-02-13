@@ -267,19 +267,38 @@ int main(int ac, char **av)
 	t = *p;
 
 	int i = 1;
-	classify(t);
-	mark_commands(t);
+	//classify(t);
+	//mark_commands(t);
 	char *names[] = {"CMD", "ARG", "PIPE", "IN", "OUT", "APP", "HERE"};
 	while (1)
 	{
 		if (t->str)
 		{
-			clean_token(t);
+			//clean_token(t);
 			printf("\n%d: %s	%s", i++, names[t->type], t->str);
 		}
 		if (t->next == NULL)
 			break ;
 		t = t->next;
+	}
+	t_command *cmd = transform(*p);
+	if (!cmd)
+		printf("command creation failed \n");
+	for (;cmd; cmd = cmd->next)
+	{
+		printf("\n=====================");
+		printf("\nCOMMNAND:		%s", cmd->cmd->str);
+		for (t_token *curr = cmd->args;curr; curr = curr->next)
+			printf("\n	ARG:		%s", curr->str);
+		if (cmd->input)
+			printf("\nIN:			%s", cmd->input->str);
+		if (cmd->output)
+			printf("\nOUT:			%s", cmd->output->str);
+		if (cmd->append)
+			printf("\nAPP:			%s", cmd->append->str);
+		if (cmd->heredoc)
+			printf("\nHERE:			%s", cmd->heredoc->str);
+		printf("\n=====================");
 	}
 	free(test);
 	delete_token_list(p);

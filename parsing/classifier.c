@@ -10,9 +10,10 @@ void	clean_heredoc(t_token *token)
 
 	i = 0;
 	j = 0;
+	printf("\n:clean_heredoc: %s", token->str);
 	while (!is_char(token->str[i], "\n\t\v \r\f"))
 		i++;
-	new = (char *) ft_calloc (ft_strlen(&(token->str[i])) + 1, 1);
+	new = (char *) ft_calloc (ft_strlen(&(token->str[i])), 1);
 	if (!new)
 		return ;
 	while (token->str[i])
@@ -21,8 +22,8 @@ void	clean_heredoc(t_token *token)
 		new[j--] = 0;
 	free(token->str);
 	token->str = new;
+	printf("\n:clean_heredoc: %s", token->str);
 }
-
 
 void	clean_token(t_token *token)
 {
@@ -39,7 +40,7 @@ void	clean_token(t_token *token)
 	while (is_char(token->str[i], "\n\t\v \r\f") && token->str[i])
 		i++;
 	if (token->type == (e_type) HEREDOC)
-		clean_heredoc(token);
+		return (clean_heredoc(token));
 	if (is_char(token->str[i], "\"\'"))
 		i++;
 	new = (char *) ft_calloc (ft_strlen(token->str) + 1 - i, 1);
@@ -91,10 +92,11 @@ void	mark_commands(t_token *list)
 	}
 }
 
-void	fill_command(t_command *ret, t_token *temp)
+t_token	*fill_command(t_command *ret, t_token *temp)
 {
 	if (!ret || !temp)
-		return ;
+		return (NULL);
+	t_token	*freeme;
 	while (temp)
 	{
 		printf("\n:fill_command: %s", temp->str);
@@ -108,32 +110,35 @@ void	fill_command(t_command *ret, t_token *temp)
 				token_append(ret->args, token_dup(temp));
 		}
 		else if (temp->type == (e_type) IN)
-			ret->input = temp;
+			ret->input = token_dup(temp);
 		else if (temp->type == (e_type) OUT)
-			ret->output = temp;
+			ret->output = token_dup(temp);
 		else if (temp->type == (e_type) APP)
-			ret->append = temp;
+			ret->append = token_dup(temp);
 		else if (temp->type == (e_type) HEREDOC)
-			ret->heredoc = temp;
+			ret->heredoc = token_dup(temp);
+		freeme = temp;
 		temp = temp->next;
+		free(freeme->str);
+		free(freeme);
 		if (temp && temp->type == (e_type) CMD)
 			break ;
 	}
+	return (temp);
 }
 
 t_command	*create_commands(t_token *token)
 {
-	t_command	*og;
-	t_command	*ret;
-	t_command	*prev;
-	int			arg_num;
+	t_command	*og = NULL;
+	t_command	*ret = NULL;
+	t_command	*prev = NULL;
 
+	/*
 	ret = (t_command *) ft_calloc (sizeof(t_command), 1);
 	if (!ret)
 		return (NULL);
 	og = ret;
-	fill_command(ret, token);
-	/*
+	fill_command(ret, token);*/
 	while (token)
 	{
 		if (token->type == (e_type) CMD)
@@ -142,12 +147,14 @@ t_command	*create_commands(t_token *token)
 			ret = (t_command *) ft_calloc (sizeof(t_command), 1);
 			if (!ret)
 				return (NULL);
-			prev->next = ret;
-			fill_command(ret, token);
+			if (prev)
+				prev->next = ret;
+			else
+				og = ret;
+			token = fill_command(ret, token);
 		}
-		token = token->next;
+		//token = token->next;
 	}
-	*/
 	return (og);
 }
 

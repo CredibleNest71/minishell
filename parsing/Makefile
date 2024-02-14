@@ -5,7 +5,7 @@ NAME		=	parse
 all:		$(NAME)
 
 $(NAME):
-			$(CC)  ../libft/ft_split.c ../libft/ft_strncmp.c ../libft/ft_strdup.c ../libft/ft_strlen.c parse.c token.c expander.c ../libft/ft_calloc.c -o $(NAME)
+			$(CC) tokenv2.c extras.c classifier.c ../libft/*.c
 
 fclean:
 				rm -f $(NAME)

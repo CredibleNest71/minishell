@@ -200,12 +200,12 @@ t_token	*make_token(char *str, int end)
 	return (token);
 }
 
-void	delete_token_list(t_token **list)
+void	delete_token_list(t_token *list)
 {
 	t_token	*temp;
 	t_token *next;
 
-	temp = *list;
+	temp = list;
 	while (temp)
 	{
 		free(temp->str);
@@ -214,6 +214,24 @@ void	delete_token_list(t_token **list)
 		temp = next;
 	}
 	free(list);
+}
+
+void	delete_command_list(t_command *cmd)
+{
+	t_command	*prev;
+
+	while (cmd)
+	{
+		delete_token_list(cmd->input);
+		delete_token_list(cmd->output);
+		delete_token_list(cmd->append);
+		delete_token_list(cmd->heredoc);
+		delete_token_list(cmd->cmd);
+		delete_token_list(cmd->args);
+		prev = cmd;
+		cmd = cmd->next;
+		free(prev);
+	}
 }
 
 t_token	**parse(char *str)
@@ -241,13 +259,14 @@ t_token	**parse(char *str)
 	{
 		while (is_char(str[i], "\n\t\v \r\f") && str[i])
 			i++;
-		while (temp->next)
-			temp = temp->next;
+		temp = ft_tokenlast(temp);
 		end = find_element(&str[i]);
 		if (end <= 0)
-			return (delete_token_list(list), NULL);
+			return (delete_token_list(*list), NULL);
 		temp->next = make_token(&str[i], end);
 		i += end;
+		while (is_char(str[i], "\n\t\v \r\f") && str[i])
+			i++;
 	}
 	return (list);
 }
@@ -286,8 +305,8 @@ int main(int ac, char **av)
 		printf("command creation failed \n");
 	for (;cmd; cmd = cmd->next)
 	{
-		printf("\n=====================");
-		printf("\nCOMMNAND:		%s", cmd->cmd->str);
+		printf("\n==========================================");
+		printf("\nCOMMAND:		%s", cmd->cmd->str);
 		for (t_token *curr = cmd->args;curr; curr = curr->next)
 			printf("\n	ARG:		%s", curr->str);
 		if (cmd->input)
@@ -298,10 +317,11 @@ int main(int ac, char **av)
 			printf("\nAPP:			%s", cmd->append->str);
 		if (cmd->heredoc)
 			printf("\nHERE:			%s", cmd->heredoc->str);
-		printf("\n=====================");
+		printf("\n==========================================");
 	}
 	free(test);
-	delete_token_list(p);
+	delete_command_list(cmd);
+	//delete_token_list(*p);
 	return (0);
 }
 

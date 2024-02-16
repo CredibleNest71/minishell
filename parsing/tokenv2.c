@@ -105,6 +105,8 @@ int	redir(char *str)
 		return (0);
 	else if (quotes > 0)
 		return (i + quotes);
+	if (!isalnum(str[i]))
+		return (0);
 	while (!is_char(str[i], "\n\t\v \r\f") && str[i])
 		i++;
 	return (i);
@@ -189,13 +191,15 @@ int	find_element(char *str)
 t_token	*make_token(char *str, int end)
 {
 	t_token	*token;
-
+	static int	i = 0;
+	printf("\ncreated %d tokens", i++);
 	token = (t_token *) ft_calloc (sizeof(t_token), 1);
 	if (!token)
 		return (NULL);
 	if (!str || end <= 0)
 		return (0);
 	token->str = ft_strndup(str, end);
+	printf("\n	content: %s", token->str);
 	//printf("\n%s", token->str);
 	return (token);
 }
@@ -208,12 +212,12 @@ void	delete_token_list(t_token *list)
 	temp = list;
 	while (temp)
 	{
+		printf("\nfreeing: %s", temp->str);
 		free(temp->str);
 		next = temp->next;
 		free(temp);
 		temp = next;
 	}
-	free(list);
 }
 
 void	delete_command_list(t_command *cmd)
@@ -234,9 +238,9 @@ void	delete_command_list(t_command *cmd)
 	}
 }
 
-t_token	**parse(char *str)
+t_token	*parse(char *str)
 {
-	t_token	**list;
+	t_token	*list;
 	t_token	*temp;
 	int		i;
 	int		end;
@@ -245,15 +249,9 @@ t_token	**parse(char *str)
 		return (NULL);
 	i = 0;
 	end = 0;
-	list = (t_token **) malloc (sizeof(t_token *));
-	if (!list)
-		return (NULL);
-	temp = (t_token *) ft_calloc(sizeof(t_token), 1);
-	if (!temp)
-		return (NULL);
 	end = find_element(str);
 	temp = make_token(str, end);
-	*list = temp;
+	list = temp;
 	i += end;
 	while ( i < ft_strlen(str) && str[i])
 	{
@@ -262,7 +260,7 @@ t_token	**parse(char *str)
 		temp = ft_tokenlast(temp);
 		end = find_element(&str[i]);
 		if (end <= 0)
-			return (delete_token_list(*list), NULL);
+			return (delete_token_list(list), NULL);
 		temp->next = make_token(&str[i], end);
 		i += end;
 		while (is_char(str[i], "\n\t\v \r\f") && str[i])
@@ -271,11 +269,12 @@ t_token	**parse(char *str)
 	return (list);
 }
 
+
 int main(int ac, char **av)
 {
-	t_token **p;
+	t_token *p;
 	char *test;
-	test = ft_strdup("this is  a test for \' me to >> know | wther <  adjsadfjfsd   not hea asd the quotes work heyheayheay work");
+	//test = ft_strdup("this is  a test for \' me to >> know | wther <  adjsadfjfsd   not hea asd the quotes work heyheayheay work");
 	if (ac == 2)
 		p = parse(av[1]);
 	else 
@@ -283,7 +282,7 @@ int main(int ac, char **av)
 	if (!p)
 		return (28);
 	t_token *t;
-	t = *p;
+	t = p;
 
 	int i = 1;
 	//classify(t);
@@ -300,10 +299,11 @@ int main(int ac, char **av)
 			break ;
 		t = t->next;
 	}
-	t_command *cmd = transform(*p);
+	t_command *cmd = transform(p);
 	if (!cmd)
 		printf("command creation failed \n");
-	for (;cmd; cmd = cmd->next)
+	t_command *temp_cmd = cmd;
+	for (;temp_cmd; temp_cmd = temp_cmd->next)
 	{
 		printf("\n==========================================");
 		printf("\nCOMMAND:		%s", cmd->cmd->str);
@@ -319,9 +319,8 @@ int main(int ac, char **av)
 			printf("\nHERE:			%s", cmd->heredoc->str);
 		printf("\n==========================================");
 	}
-	free(test);
+	//free(test);
 	delete_command_list(cmd);
-	//delete_token_list(*p);
 	return (0);
 }
 

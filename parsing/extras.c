@@ -22,7 +22,7 @@ t_token	*token_dup(t_token *token)
 	dup = (t_token *) ft_calloc (sizeof(t_token), 1);
 	if (!dup)
 		return (NULL);
-	dup->str = token->str;
+	dup->str = ft_strdup(token->str);
 	dup->type = token->type;
 	return (dup);
 }

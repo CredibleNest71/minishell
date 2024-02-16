@@ -101,7 +101,7 @@ t_token	*fill_command(t_command *ret, t_token *temp)
 	{
 		printf("\n:fill_command: %s", temp->str);
 		if (temp->type == (e_type) CMD)
-			ret->cmd = temp;
+			ret->cmd = token_dup(temp);
 		else if (temp->type == (e_type) ARG)
 		{
 			if (!ret->args)
@@ -119,6 +119,7 @@ t_token	*fill_command(t_command *ret, t_token *temp)
 			ret->heredoc = token_dup(temp);
 		freeme = temp;
 		temp = temp->next;
+	
 		free(freeme->str);
 		free(freeme);
 		if (temp && temp->type == (e_type) CMD)

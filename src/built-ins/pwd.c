@@ -3,16 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
+/*   By: a <a@student.42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 15:21:04 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/02/09 10:57:11 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/02/14 09:48:59 by a                ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
-#include <stdlib.h>
-#include <unistd.h>
 
 void	ft_pwd(t_bigshell *data)
 {

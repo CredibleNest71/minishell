@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   simple_execution.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
+/*   By: a <a@student.42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 17:54:30 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/02/09 14:21:12 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/02/20 10:21:45 by a                ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,31 +21,40 @@ void	simple_exec(t_bigshell *data)
 	char	**paths;
 	char	*correct_path;
 	
-	if (data->commands[0]->input || data->commands[0]->output)
-		redir(data->commands[0], data);
-	builtin_check_exec(data, data->commands[0]->cmd->str, 0);
+	if (data->commands->input || data->commands->output)
+		redir(data->commands, data);
+	builtin_check_exec(data, data->commands->cmd->str);
 	paths = find_and_split_path(data->env);
 	if (!paths)
 		printf("find&split failed\n"); //shit has been allocated
-	correct_path = check_if_correct_path(paths, data, data->commands[0]->cmd->str);
+	correct_path = check_if_correct_path(paths, data, data->commands->cmd->str);
 	if (!correct_path)
 		printf("correct path failed\n"); // do smt probably
-	execve(correct_path, &data->commands[0]->cmd->str, data->env);
+	execve(correct_path, &data->commands->cmd->str, data->env);
 	printf("execve failed\n");
 	//protect execve
 }
 
+void print_env_list(t_bigshell *data)
+{
+    t_env *current = data->env;
+    while (current != NULL)
+    {
+        printf("%s\n", current->str);
+        current = current->next;
+    }
+}
+
 int	main(int argc, char **argv, char **env)
 {
-	int j;
 	t_bigshell	data;
 	t_command	*command = (t_command *) malloc (sizeof(t_command));
 	//t_token 	*input = (t_token *) malloc (sizeof(t_token));
 	//t_token 	*output = (t_token *) malloc (sizeof(t_token));
 	t_token 	*cmd = (t_token *) malloc (sizeof(t_token));
-	//t_token 	*arg = (t_token *) malloc (sizeof(t_token));
-	//t_token 	*arg2 = (t_token *) malloc (sizeof(t_token));
-	t_token 	*arg3 = (t_token *) malloc (sizeof(t_token));
+	t_token 	*arg = (t_token *) malloc (sizeof(t_token));
+	t_token 	*arg2 = (t_token *) malloc (sizeof(t_token));
+	//t_token 	*arg3 = (t_token *) malloc (sizeof(t_token));
 
 	//input->str = "motest";
 	//input->type = (enum type) PATH;
@@ -58,13 +67,15 @@ int	main(int argc, char **argv, char **env)
 	//printf("what\n");
 	cmd->type = (enum type) CMD;
 	//printf("what\n");
-	//arg->str = "-n";
+	arg->str = "cat hihi\n";
 	//printf("what\n");
-	//arg2->str = "hola";
-	arg3 = NULL;
+	arg2->str = "hola";
+	//arg3 = NULL;
+	arg->next = arg2;
+	arg2->next = NULL;
 	
 
-	command->args = (t_token **)malloc(sizeof(t_token *) * 2);
+	command->args = NULL;
 	//command->input = input;
 	//command->output = output;
 	//printf("lol\n");
@@ -72,13 +83,20 @@ int	main(int argc, char **argv, char **env)
 	//printf("lol\n");
 	//command->args[0] = arg;
 	//command->args[1] = arg2;
-	command->args = NULL;
+	//command->args = NULL;
 	//printf("lol\n");
-	command->arg_num = 2;
-	data.commands = &command;
+	command->arg_num = 1;
+	data.commands = command;
 	//printf("lol\n");
 	
-	data.env = env;
+	//data.og_env = env;
+
+    // Store environment strings in the linked list
+    store_env(&data, env);
+
+    // Print the linked list
+    print_env_list(&data);
+	
 	data.built_ins = (char **)malloc(sizeof(char *) * 7);
 /* 	if (!data.built_ins)
 	{
@@ -91,8 +109,12 @@ int	main(int argc, char **argv, char **env)
 	while (e < 7)
 		printf("%s\n", data.built_ins[e++]); */
 
+	/* int j;
 	if (argc && argv)
 		j = 2;
+	j = 0; */
+	if (argc == 10 || argv[1]) 
+		printf("unecessary stuff\n");
 	store_restore_fds(1);
 	simple_exec(&data);
 /* 	data.id = fork();

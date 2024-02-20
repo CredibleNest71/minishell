@@ -20,6 +20,7 @@ SRCS = ${SRC_DIR}${EXEC_DIR}exec.c\
 			${SRC_DIR}${EXEC_DIR}simple_execution.c\
 			${SRC_DIR}${EXEC_DIR}built_in_list.c\
 			${SRC_DIR}${EXEC_DIR}error_handlers.c\
+			${SRC_DIR}${EXEC_DIR}env_list.c\
 \
 			${SRC_DIR}${BUILT_INS}cd.c\
 			${SRC_DIR}${BUILT_INS}echo.c\

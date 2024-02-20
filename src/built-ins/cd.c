@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
+/*   By: a <a@student.42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 10:32:36 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/02/09 14:36:35 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/02/14 09:53:55 by a                ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,16 +24,16 @@
 	SEP,
 } typedef e_type;*/
 
-void	ft_cd(t_bigshell *data, int index)
+void	ft_cd(t_bigshell *data)
 {
 	char	*path;
-	char	*cwd; //somehow dynamically allocate this
-	if (data->commands[index]->arg_num > 1)
+	//pwdchar	*cwd; //somehow dynamically allocate this
+	if (data->commands->arg_num > 1)
 		simple_error(data, 1); //for whatever reason perror prints "success"?
-	if (!data->commands[index]->args)
+	if (!data->commands->args || ft_strncmp(data->commands->args->str, "~", 2) == 0) //~ means /home/user/
 		path = getenv("HOME");
 
-	if (ft_strncmp(data->commands[index]->args[0]->str, "..", 2) == 0)
+	/* if (ft_strncmp(data->commands->args->str, "..", 2) == 0)
 	{
 		cwd = getcwd(cwd, sizeof(cwd));
 		//delete everything including and after the last /
@@ -41,9 +41,9 @@ void	ft_cd(t_bigshell *data, int index)
 		getcwd again
 		chdir (cwd);
 		free(cwd);
-	}
-	/* else (data->commands[index]->args[0])
-		path = data->commands[index]->args[0]->str; */
+	} */
+	// else (data->commands->args[0])
+	//	path = data->commands->args[0]->str;
 	if (chdir(path) == -1)
 		perror("cd failure:");
 	exit(0);

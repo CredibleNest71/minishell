@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   built_in_list.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
+/*   By: a <a@student.42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 12:10:32 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/02/09 12:49:35 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/02/14 09:49:08 by a                ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,28 +72,26 @@ void	put_built_in(int index, t_bigshell *data)
 void	built_in_list(t_bigshell *data)
 {
 	int		i;
-	int		j;
 
 	i = 0;
-	j = 0;
 	while (i < 7)
 		put_built_in(i++, data);
 	data->built_ins[i] = NULL;
 }
 
-void	builtin_exec(t_bigshell *data, int builtin_index, int cmd_index)
+void	builtin_exec(t_bigshell *data, int builtin_index)
 {
 	if (builtin_index == 0)
 	{
-		if (!data->commands[cmd_index]->args)
-			ft_echo(data->commands[cmd_index]->args, 0);
-		else if (ft_strncmp(data->commands[cmd_index]->args[0]->str, "-n", 2) == 0)
-			ft_echo(data->commands[cmd_index]->args, 1);
+		if (!data->commands->args)
+			ft_echo(data->commands->args, 0);
+		else if (ft_strncmp(data->commands->args->str, "-n", 2) == 0)
+			ft_echo(data->commands->args, 1);
 		else 
-			ft_echo(data->commands[cmd_index]->args, 0);
+			ft_echo(data->commands->args, 0);
 	}
 	else if (builtin_index == 1)
-		ft_cd(data, cmd_index);
+		ft_cd(data);
 	else if (builtin_index == 2)
 		ft_pwd(data);
 	/*else if (builtin_index == 3)
@@ -101,23 +99,23 @@ void	builtin_exec(t_bigshell *data, int builtin_index, int cmd_index)
 	else if (builtin_index == 4)
 		ft_unset();
 	else if (builtin_index == 5)
-		ft_env(data, cmd_index);
+		ft_env(data);
 	else if (builtin_index == 6)
 		ft_exit(); */
 }
 
-void	builtin_check_exec(t_bigshell *main, char *cmd, int cmd_index)
+void	builtin_check_exec(t_bigshell *data, char *cmd)
 {
 	int		len;
 	int		i;
 	
 	i = 0;
 	len = ft_strlen(cmd);
-	while (main->built_ins[i] != NULL)
+	while (data->built_ins[i] != NULL)
 	{
-		if (ft_strncmp(cmd, main->built_ins[i], len) == 0)
+		if (ft_strncmp(cmd, data->built_ins[i], len) == 0)
 		{
-			builtin_exec(main, i, cmd_index);
+			builtin_exec(data, i);
 			//printf("built in found"); //exec built-in
 		}
 		i++;

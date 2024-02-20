@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirection.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
+/*   By: a <a@student.42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 17:59:11 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/02/07 18:22:54 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/02/13 12:45:55 by a                ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,36 +60,36 @@ void	check_file(const char *file, int mode)
 	}
 }
 
-void	redir(t_command *cmd_struct, t_bigshell *main_struct) // fix to do: needs to be able to switch stdin&stdout multiple times (ex. cat <input >output <input2 >output3 >output4)
+void	redir(t_command *command, t_bigshell *data) // fix to do: needs to be able to switch stdin&stdout multiple times (ex. cat <input >output <input2 >output3 >output4)
 {
 	int	fd_in;
 	int	fd_out;
 	
-	if (cmd_struct->input) // redirecting input "<"
+	if (command->input) // redirecting input "<"
 	{
-		check_file(cmd_struct->input->str, 0); //fix exit
-		fd_in = open(cmd_struct->input->str, O_RDONLY);
+		check_file(command->input->str, 0); //fix exit
+		fd_in = open(command->input->str, O_RDONLY);
 		if (fd_in == -1)
 		{
-			main_struct->exit_stat = 1;
+			data->exit_stat = 1;
 			printf("fd_in open fail");
-			// main_struct->exit_stat = 
+			// data->exit_stat = 
 		}
 			//printf error & store exit code & new prompt probably (dont exit minishell)
 		if ((dup2(fd_in, 0)) == -1)
 		{
-			main_struct->exit_stat = 1;
+			data->exit_stat = 1;
 			printf("fd_in dup2 fail\n");
 		}
 			//print error, store exit code n new prompt
 	}
-	if (cmd_struct->output) // redirecting output ">"
+	if (command->output) // redirecting output ">"
 	{
-		fd_out = open(cmd_struct->output->str, O_CREAT | O_TRUNC | O_WRONLY, 00644);
+		fd_out = open(command->output->str, O_CREAT | O_TRUNC | O_WRONLY, 00644);
 		if (fd_out == -1)
 			printf("fd_out open fail\n");
 			//printf error & exit probably
-		check_file(cmd_struct->output->str, 1);
+		check_file(command->output->str, 1);
 		if ((dup2(fd_out, 1)) == -1)
 			printf("fd_out dup2 fail\n");
 			//print error, store exit code n new prompt

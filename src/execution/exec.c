@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
+/*   By: a <a@student.42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 14:05:40 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/02/06 15:26:06 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/02/13 13:04:57 by a                ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	error_handler(char	*message) //irrelevant, unless critical fail: store exit
 	//new prompt
 }
 
-void	complex_exec(t_bigshell *data, int index) //do I want to modify the struct?
+/* void	complex_exec(t_bigshell *data, int index) //do I want to modify the struct?
 {
 	int	j;
 
@@ -51,7 +51,7 @@ void	complex_exec(t_bigshell *data, int index) //do I want to modify the struct?
 			redir(data->commands[index], data);
 	}
 	
-}
+} */
 
 //doing this in main:
 		/* while (i <= data->num_cmd) //tf?

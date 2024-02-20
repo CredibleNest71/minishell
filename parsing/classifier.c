@@ -10,19 +10,23 @@ void	clean_heredoc(t_token *token)
 
 	i = 0;
 	j = 0;
-	printf("\n:clean_heredoc: %s", token->str);
+	printf("\n:clean_heredoc: \"%s\"", token->str);
+	while (is_char(token->str[i], "\n\t\v \r\f<"))
+		i++;
 	while (!is_char(token->str[i], "\n\t\v \r\f"))
 		i++;
-	new = (char *) ft_calloc (ft_strlen(&(token->str[i])), 1);
+	i++;
+	new = (char *) malloc (ft_strlen(&(token->str[i])));
 	if (!new)
 		return ;
 	while (token->str[i])
 		new[j++] = token->str[i++];
-	while (!is_char(new[j], "\n\t\v \r\f"))
-		new[j--] = 0;
+	while (!is_char(new[--j], "\n\t\v \r\f") && j)
+		j--;
+	new[j] = 0;
 	free(token->str);
 	token->str = new;
-	printf("\n:clean_heredoc: %s", token->str);
+	printf("\n:clean_heredoc: \"%s\"", token->str);
 }
 
 void	clean_token(t_token *token)
@@ -54,6 +58,22 @@ void	clean_token(t_token *token)
 	token->str = new;
 }
 
+int	check_pipes(t_token *list)
+{
+	t_token	*temp;
+
+	temp = list;
+	while (temp)
+	{
+		if (temp->type == (e_type) PIPE && !temp->next)
+			return (0);
+		if (temp->type == (e_type) PIPE && temp->next->type == (e_type) PIPE)
+			return (0);
+		temp = temp->next;
+	}
+	return (1);
+}
+
 void	classify(t_token *list)
 {
 	t_token	*curr;
@@ -75,6 +95,8 @@ void	classify(t_token *list)
 			curr->type = (enum type) ARG;
 		curr = curr->next;
 	}
+	if (!check_pipes(list))
+		write(2, "SYNTAX ERROR\n", 14);
 }
 
 void	mark_commands(t_token *list)

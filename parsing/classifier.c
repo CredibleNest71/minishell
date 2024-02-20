@@ -99,7 +99,6 @@ t_token	*fill_command(t_command *ret, t_token *temp)
 	t_token	*freeme;
 	while (temp)
 	{
-		printf("\n:fill_command: %s", temp->str);
 		if (temp->type == (e_type) CMD)
 			ret->cmd = token_dup(temp);
 		else if (temp->type == (e_type) ARG)
@@ -118,6 +117,7 @@ t_token	*fill_command(t_command *ret, t_token *temp)
 		else if (temp->type == (e_type) HEREDOC)
 			ret->heredoc = token_dup(temp);
 		freeme = temp;
+		printf("\n:fill_command: %s", temp->str);
 		temp = temp->next;
 	
 		free(freeme->str);
@@ -134,12 +134,6 @@ t_command	*create_commands(t_token *token)
 	t_command	*ret = NULL;
 	t_command	*prev = NULL;
 
-	/*
-	ret = (t_command *) ft_calloc (sizeof(t_command), 1);
-	if (!ret)
-		return (NULL);
-	og = ret;
-	fill_command(ret, token);*/
 	while (token)
 	{
 		if (token->type == (e_type) CMD)
@@ -153,6 +147,7 @@ t_command	*create_commands(t_token *token)
 			else
 				og = ret;
 			token = fill_command(ret, token);
+			printf("cmd->cmd = %s\n", ret->cmd->str);
 		}
 		//token = token->next;
 	}

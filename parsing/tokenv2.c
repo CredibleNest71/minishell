@@ -306,17 +306,17 @@ int main(int ac, char **av)
 	for (;temp_cmd; temp_cmd = temp_cmd->next)
 	{
 		printf("\n==========================================");
-		printf("\nCOMMAND:		%s", cmd->cmd->str);
-		for (t_token *curr = cmd->args;curr; curr = curr->next)
+		printf("\nCOMMAND:		%s", temp_cmd->cmd->str);
+		for (t_token *curr = temp_cmd->args;curr; curr = curr->next)
 			printf("\n	ARG:		%s", curr->str);
-		if (cmd->input)
-			printf("\nIN:			%s", cmd->input->str);
-		if (cmd->output)
-			printf("\nOUT:			%s", cmd->output->str);
-		if (cmd->append)
-			printf("\nAPP:			%s", cmd->append->str);
-		if (cmd->heredoc)
-			printf("\nHERE:			%s", cmd->heredoc->str);
+		if (temp_cmd->input)
+			printf("\nIN:			%s", temp_cmd->input->str);
+		if (temp_cmd->output)
+			printf("\nOUT:			%s", temp_cmd->output->str);
+		if (temp_cmd->append)
+			printf("\nAPP:			%s", temp_cmd->append->str);
+		if (temp_cmd->heredoc)
+			printf("\nHERE:			%s", temp_cmd->heredoc->str);
 		printf("\n==========================================");
 	}
 	//free(test);

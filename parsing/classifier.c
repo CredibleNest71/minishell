@@ -16,6 +16,7 @@ void	clean_heredoc(t_token *token)
 	while (!is_char(token->str[i], "\n\t\v \r\f"))
 		i++;
 	i++;
+
 	new = (char *) malloc (ft_strlen(&(token->str[i])));
 	if (!new)
 		return ;
@@ -114,34 +115,37 @@ void	mark_commands(t_token *list)
 	}
 }
 
+void	replace_or_append(t_token **list, t_token *token)
+{
+	if (*list)
+		token_append(*list, token_dup(token));
+	else
+		*list = token_dup(token);
+}
+
 t_token	*fill_command(t_command *ret, t_token *temp)
 {
 	if (!ret || !temp)
 		return (NULL);
 	t_token	*freeme;
+
 	while (temp)
 	{
 		if (temp->type == (e_type) CMD)
 			ret->cmd = token_dup(temp);
 		else if (temp->type == (e_type) ARG)
-		{
-			if (!ret->args)
-				ret->args = token_dup(temp);
-			else
-				token_append(ret->args, token_dup(temp));
-		}
+			replace_or_append(&ret->args, temp);
 		else if (temp->type == (e_type) IN)
-			ret->input = token_dup(temp);
+			replace_or_append(&ret->input, temp);
 		else if (temp->type == (e_type) OUT)
-			ret->output = token_dup(temp);
+			replace_or_append(&ret->output, temp);
 		else if (temp->type == (e_type) APP)
-			ret->append = token_dup(temp);
+			replace_or_append(&ret->append, temp);
 		else if (temp->type == (e_type) HEREDOC)
-			ret->heredoc = token_dup(temp);
+			replace_or_append(&ret->heredoc, temp);
 		freeme = temp;
-		printf("\n:fill_command: %s", temp->str);
+		//printf("\n:fill_command: %s", temp->str);
 		temp = temp->next;
-	
 		free(freeme->str);
 		free(freeme);
 		if (temp && temp->type == (e_type) CMD)

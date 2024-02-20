@@ -8,7 +8,10 @@ void	token_append(t_token *lst, t_token *token)
 	if (!token)
 		return ;
 	if (!lst)
+	{
 		lst = token;
+		return ;
+	}
 	while (lst->next)
 		lst = lst->next;
 	lst->next = token;

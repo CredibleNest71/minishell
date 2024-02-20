@@ -309,14 +309,14 @@ int main(int ac, char **av)
 		printf("\nCOMMAND:		%s", temp_cmd->cmd->str);
 		for (t_token *curr = temp_cmd->args;curr; curr = curr->next)
 			printf("\n	ARG:		%s", curr->str);
-		if (temp_cmd->input)
-			printf("\nIN:			%s", temp_cmd->input->str);
-		if (temp_cmd->output)
-			printf("\nOUT:			%s", temp_cmd->output->str);
-		if (temp_cmd->append)
-			printf("\nAPP:			%s", temp_cmd->append->str);
-		if (temp_cmd->heredoc)
-			printf("\nHERE:			%s", temp_cmd->heredoc->str);
+		for (t_token *curr = temp_cmd->input;curr; curr = curr->next)
+			printf("\nIN:			%s", curr->str);
+		for (t_token *curr = temp_cmd->output;curr; curr = curr->next)
+			printf("\nOUT:			%s", curr->str);
+		for (t_token *curr = temp_cmd->append;curr; curr = curr->next)
+			printf("\nAPP:			%s", curr->str);
+		for (t_token *curr = temp_cmd->heredoc;curr; curr = curr->next)
+			printf("\nHere:			%s", curr->str);
 		printf("\n==========================================");
 	}
 	//free(test);

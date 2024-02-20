@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 10:32:36 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/02/09 14:36:35 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/02/09 15:47:27 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,6 @@
 //relative or absolute path
 //if only cd was called, go to home directory
 //update env after chdir gets executed
-
-/*enum type {
-	ARG = 0,
-	PATH,
-	SEP,
-} typedef e_type;*/
 
 void	ft_cd(t_bigshell *data, int index)
 {

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_list.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: a <a@student.42.fr>                        +#+  +:+       +#+        */
+/*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 09:46:40 by a                 #+#    #+#             */
-/*   Updated: 2024/02/17 08:35:57 by a                ###   ########.fr       */
+/*   Updated: 2024/02/20 16:03:24 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,11 @@
 
 t_env   *create_node(t_bigshell *data, char *str)
 {
-    t_env   *new_node = (t_env *)malloc(sizeof(t_env));
+    t_env   *new_node;
+	
+	new_node = (t_env *)malloc(sizeof(t_env));
     if (!new_node)
-        // handle critical failure
+        fatal_error(data, 1);
     new_node->str = ft_strdup(str);
     if (!new_node->str)
         fatal_error(data, 1);
@@ -24,14 +26,14 @@ t_env   *create_node(t_bigshell *data, char *str)
     return (new_node);
 }
 
-void    store_env(t_bigshell *data, char **env)
+void    store_env(t_bigshell *data, t_env *head, char **env)
 {
     int     i;
     t_env   *current_node;
 
     i = 0;
-    data->env = create_node(data, env[i]);
-    current_node = data->env;
+    head = create_node(data, env[i]);
+    current_node = head;
     while (env[++i])
     {
         current_node->next = create_node(data, env[i]);
@@ -40,20 +42,25 @@ void    store_env(t_bigshell *data, char **env)
     data->var_i = i; //this should be updated every time export adds a variable to the list
 }
 
+//check smt looks weird
 void    convert_env(t_bigshell *data)
 {
     int i;
+	t_env	*current;
     
     data->mod_env = (char **)malloc(sizeof(char *) * data->var_i);
     if (!data->mod_env)
         fatal_error(data, 1);
-    data->mod_env[data->var_i] = NULL;
-    i = -1;
-    while (data->mod_env[++i])
+    data->mod_env[data->var_i - 1] = NULL;
+    i = 0;
+	current = data->env;
+    while (current->next)
     {
-        data->mod_env[i] = ft_strdup(data->env->str);
+        data->mod_env[i] = ft_strdup(current->str);
         if (!data->mod_env[i])
             fatal_error(data, 1);
+		current = current->next;
+		i++;
     }
 }
 

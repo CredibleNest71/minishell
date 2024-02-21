@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   simple_execution.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: a <a@student.42.fr>                        +#+  +:+       +#+        */
+/*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 17:54:30 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/02/20 10:21:45 by a                ###   ########.fr       */
+/*   Updated: 2024/02/20 16:42:32 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,18 +24,19 @@ void	simple_exec(t_bigshell *data)
 	if (data->commands->input || data->commands->output)
 		redir(data->commands, data);
 	builtin_check_exec(data, data->commands->cmd->str);
-	paths = find_and_split_path(data->env);
+	convert_env(data);
+	paths = find_and_split_path(data->mod_env);
 	if (!paths)
 		printf("find&split failed\n"); //shit has been allocated
 	correct_path = check_if_correct_path(paths, data, data->commands->cmd->str);
 	if (!correct_path)
 		printf("correct path failed\n"); // do smt probably
-	execve(correct_path, &data->commands->cmd->str, data->env);
+	execve(correct_path, &data->commands->cmd->str, data->mod_env);
 	printf("execve failed\n");
 	//protect execve
 }
 
-void print_env_list(t_bigshell *data)
+/* void print_env_list(t_bigshell *data)
 {
     t_env *current = data->env;
     while (current != NULL)
@@ -43,7 +44,7 @@ void print_env_list(t_bigshell *data)
         printf("%s\n", current->str);
         current = current->next;
     }
-}
+} */
 
 int	main(int argc, char **argv, char **env)
 {
@@ -63,19 +64,19 @@ int	main(int argc, char **argv, char **env)
 	//printf("what\n");
 	//output->type = (enum type) PATH;
 	//printf("what\n");
-	cmd->str = "cd";
+	cmd->str = "export";
 	//printf("what\n");
 	cmd->type = (enum type) CMD;
 	//printf("what\n");
-	arg->str = "cat hihi\n";
+	arg->str = "amy=var";
 	//printf("what\n");
-	arg2->str = "hola";
+	arg2->str = "Zmyvar=0";
 	//arg3 = NULL;
 	arg->next = arg2;
 	arg2->next = NULL;
 	
 
-	command->args = NULL;
+	command->args = arg;
 	//command->input = input;
 	//command->output = output;
 	//printf("lol\n");
@@ -85,17 +86,23 @@ int	main(int argc, char **argv, char **env)
 	//command->args[1] = arg2;
 	//command->args = NULL;
 	//printf("lol\n");
-	command->arg_num = 1;
+	command->arg_num = 2;
 	data.commands = command;
 	//printf("lol\n");
 	
-	//data.og_env = env;
+	data.og_env = env;
 
     // Store environment strings in the linked list
-    store_env(&data, env);
+    store_env(&data, data.env, env);
 
     // Print the linked list
-    print_env_list(&data);
+    //print_env_list(&data);
+	convert_env(&data);
+	/* int e = -1;
+	while (data.mod_env[++e])
+	{
+		printf("%s\n", data.mod_env[e]);
+	} */
 	
 	data.built_ins = (char **)malloc(sizeof(char *) * 7);
 /* 	if (!data.built_ins)

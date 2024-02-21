@@ -5,7 +5,7 @@ NAME		=	parse
 all:		$(NAME)
 
 $(NAME):
-			$(CC) tokenv2.c extras.c classifier.c ../libft/*.c
+			$(CC) expander.c tokenv2.c extras.c classifier.c ../libft/*.c
 
 fclean:
 				rm -f $(NAME)

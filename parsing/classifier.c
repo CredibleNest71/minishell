@@ -1,6 +1,17 @@
 #include "../minishell.h"
 #include "parse.h"
 
+t_token	*expand_token(t_token *token)
+{
+	char	*temp;
+	if (token->type == (e_type) ARG)
+	{
+		temp = token->str;
+		token->str = expand(temp);
+	}
+	return (token);
+}
+
 void	clean_heredoc(t_token *token)
 {
 	char	*new;
@@ -115,7 +126,7 @@ void	mark_commands(t_token *list)
 	}
 }
 
-void	replace_or_append(t_token **list, t_token *token)
+static void	replace_or_append(t_token **list, t_token *token)
 {
 	if (*list)
 		token_append(*list, token_dup(token));
@@ -134,7 +145,7 @@ t_token	*fill_command(t_command *ret, t_token *temp)
 		if (temp->type == (e_type) CMD)
 			ret->cmd = token_dup(temp);
 		else if (temp->type == (e_type) ARG)
-			replace_or_append(&ret->args, temp);
+			replace_or_append(&ret->args, expand_token(temp));
 		else if (temp->type == (e_type) IN)
 			replace_or_append(&ret->input, temp);
 		else if (temp->type == (e_type) OUT)
@@ -179,6 +190,8 @@ t_command	*create_commands(t_token *token)
 	}
 	return (og);
 }
+
+
 
 t_command   *transform(t_token *list)
 {

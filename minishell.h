@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 17:34:54 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/02/23 13:22:13 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/02/23 14:45:30 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,6 +103,8 @@ void	print_env(t_env *head);
 void	make_copy(t_bigshell *data);
 
 void	ft_unset(t_bigshell *data);
+void	unset_var(t_bigshell *data, t_env *env, t_env *prev);
+
 void	ft_env(t_bigshell *data, int option);
 void	ft_exit(t_bigshell *data);
 

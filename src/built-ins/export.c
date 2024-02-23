@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 12:34:44 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/02/23 13:27:55 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/02/23 15:19:29 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,6 +151,6 @@ void	ft_export(t_bigshell *data)
 		data->commands->args = data->commands->args->next;
 	}
 	sort_env(data);
-	print_env(data->s_env);
+	//print_env(data->s_env);
 	exit (1);
 }

@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 17:54:30 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/02/23 13:09:18 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/02/23 15:20:49 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,12 +50,14 @@ int	main(int argc, char **argv, char **env)
 {
 	t_bigshell	data;
 	t_command	*command = (t_command *) malloc (sizeof(t_command));
+	t_command	*command2 = (t_command *) malloc (sizeof(t_command));
 	//t_token 	*input = (t_token *) malloc (sizeof(t_token));
 	//t_token 	*output = (t_token *) malloc (sizeof(t_token));
 	t_token 	*cmd = (t_token *) malloc (sizeof(t_token));
+	t_token 	*cmd2 = (t_token *) malloc (sizeof(t_token));
 	t_token 	*arg = (t_token *) malloc (sizeof(t_token));
 	t_token 	*arg2 = (t_token *) malloc (sizeof(t_token));
-	//t_token 	*arg3 = (t_token *) malloc (sizeof(t_token));
+	t_token 	*arg3 = (t_token *) malloc (sizeof(t_token));
 
 	//input->str = "motest";
 	//input->type = (enum type) PATH;
@@ -65,28 +67,33 @@ int	main(int argc, char **argv, char **env)
 	//output->type = (enum type) PATH;
 	//printf("what\n");
 	cmd->str = "export";
+	cmd2->str = "unset";
 	//printf("what\n");
 	cmd->type = (enum type) CMD;
 	//printf("what\n");
 	arg->str = "amy=var";
 	//printf("what\n");
 	arg2->str = "Zmyvar=0";
-	//arg3 = NULL;
+	arg3->str = "Zmyvar=0";
 	arg->next = arg2;
 	arg2->next = NULL;
+	arg3->next = NULL;
 	
 
 	command->args = arg;
+	command2->args = arg3;
 	//command->input = input;
 	//command->output = output;n
 	//printf("lol\n");
 	command->cmd = cmd;
+	command2->cmd = cmd2;
 	//printf("lol\n");
 	//command->args[0] = arg;
 	//command->args[1] = arg2;
 	//command->args = NULL;
 	//printf("lol\n");
 	command->arg_num = 2;
+	command->next = command2;
 	data.commands = command;
 	//printf("lol\n");
 	
@@ -96,7 +103,7 @@ int	main(int argc, char **argv, char **env)
 
     // Store environment strings in the linked list
     store_env(&data, env);
-	make_copy(&data, 0);
+	make_copy(&data);
 	//printf("%d\n", data.reference_i);
 
     // Print the linked list
@@ -124,10 +131,15 @@ int	main(int argc, char **argv, char **env)
 	if (argc && argv)
 		j = 2;
 	j = 0; */
+	
+	ft_export(&data);
+	data.commands = data.commands->next;
+	ft_unset(&data);
+
 	if (argc == 10 || argv[1]) 
 		printf("unecessary stuff\n");
-	store_restore_fds(1);
-	simple_exec(&data);
+	/* store_restore_fds(1);
+	simple_exec(&data); */
 /* 	data.id = fork();
 	if (data.id == -1)
 	 	fatal_error(&data, 1);

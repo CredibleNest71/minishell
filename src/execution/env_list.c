@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 09:46:40 by a                 #+#    #+#             */
-/*   Updated: 2024/02/20 16:03:24 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/02/22 11:17:51 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,14 +26,14 @@ t_env   *create_node(t_bigshell *data, char *str)
     return (new_node);
 }
 
-void    store_env(t_bigshell *data, t_env *head, char **env)
+void    store_env(t_bigshell *data, char **env)
 {
     int     i;
     t_env   *current_node;
 
     i = 0;
-    head = create_node(data, env[i]);
-    current_node = head;
+    data->env = create_node(data, env[i]);
+    current_node = data->env;
     while (env[++i])
     {
         current_node->next = create_node(data, env[i]);

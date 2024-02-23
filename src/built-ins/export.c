@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 12:34:44 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/02/21 12:02:50 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/02/23 12:33:47 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,38 +54,73 @@ void	sort_env(t_bigshell *data)
 
 void	print_env(t_env *head)
 {
-	while (head->next)
+	while (head)
 	{
 		printf("%s\n", head->str);
 		head = head->next;
 	}
 }
 
-void	make_copy(t_bigshell *data)
+void	make_copy(t_bigshell *data, int option)
 {
 	t_env	*current;
 	t_env	*current_env;
+	int		i;
 
-	data->s_env = create_node(data, data->env->str);
+	i = -1;
+	if (!data->s_env) //check that s-env is empty
+		data->s_env = create_node(data, data->env->str);
 	current = data->s_env;
-	current_env = data->env;
-	while (current_env->next)
+	current_env = data->env->next;
+	if (option == 0)
 	{
-		current = create_node(data, current_env->str);
-		current = current->next;
-		current_env = current_env->next; 
+		while (current_env)
+		{
+			current->next = create_node(data, current_env->str);
+			current = current->next;
+			current_env = current_env->next;
+			data->reference_i++;
+		}
+		sort_env(data);
+		return ;
 	}
+	while (current->next)
+		current = current->next;
+	while (++i < data->reference_i)
+		current_env = current_env->next;
+	sort_env(data);
+}
+
+int	check_reference(t_bigshell *data)
+{
+	int	i;
+	
+	if (data->reference_i == 0)
+		return (0); //option is 0 if s_env is empty
+	i = 0;
+	while (data->env->next)
+	{
+		data->env = data->env->next;
+		i++;
+	}
+	if (data->reference_i < i)
+		return (1); //option is 1 if theres new nodes
+	return (2); //2 if error bc wtf
 }
 
 void	ft_export(t_bigshell *data)
 {
 	int		i;
+	int		option;
 	t_env	*current;
+	
+	option = check_reference(data);
+	if (option == 2)
+		simple_error(data, 1);
 	if (!data->commands->args)
 	{
 		//store_env(data, data->s_env, data->og_env); //wont work, make copy of linked list
-		make_copy(data);
-		sort_env(data);
+		make_copy(data, option);
 		print_env(data->s_env);
 		data->exit_stat = 0;
 		exit (data->exit_stat);
@@ -94,6 +129,17 @@ void	ft_export(t_bigshell *data)
 	current = data->env;
 	while (current->next)
 		current = current->next;
-	while (++i < data->commands->arg_num)
-		current->next = create_node(data, data->commands->args[i].str);
+	//printf("a %s\n", data->commands->args->next->str);
+	while (data->commands->args)
+	{
+	//	printf("%s\n", current->str);
+		current->next = create_node(data, data->commands->args->str);
+	//	printf("%s\n", current->next->str);
+		current = current->next;
+		data->commands->args = data->commands->args->next;
+	}
+	//print_env(data->env);
+	make_copy(data, option);
+	print_env(data->s_env);
+	exit (1);
 }

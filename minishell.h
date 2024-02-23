@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 17:34:54 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/02/20 16:27:44 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/02/22 14:36:49 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ typedef struct	s_bigshell
 	int			pipe_fd[2];
 	int			id;
 	int			var_i;	//counts how many variables exist in the environment
+	int			reference_i; //keeps count of data->env 
 	char		*export_var;
 	char		**og_env;
 	char		**mod_env;
@@ -99,13 +100,14 @@ int		check_if_sorted(t_env *current);
 void	switch_values(t_env *current);
 void	sort_env(t_bigshell *data);
 void	print_env(t_env *head);
+void	make_copy(t_bigshell *data, int option);
 
 void	ft_unset(t_bigshell *data);
 void	ft_env(t_bigshell *data, int option);
 void	ft_exit(t_bigshell *data);
 
 t_env   *create_node(t_bigshell *data, char *str);
-void    store_env(t_bigshell *data, t_env *head, char **env);
+void    store_env(t_bigshell *data, char **env);
 void    convert_env(t_bigshell *data);
 
 #endif

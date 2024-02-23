@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 17:54:30 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/02/20 16:42:32 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/02/23 10:56:26 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ int	main(int argc, char **argv, char **env)
 
 	command->args = arg;
 	//command->input = input;
-	//command->output = output;
+	//command->output = output;n
 	//printf("lol\n");
 	command->cmd = cmd;
 	//printf("lol\n");
@@ -91,13 +91,15 @@ int	main(int argc, char **argv, char **env)
 	//printf("lol\n");
 	
 	data.og_env = env;
+	data.reference_i = 0;
+	data.s_env = NULL;
 
     // Store environment strings in the linked list
-    store_env(&data, data.env, env);
+    store_env(&data, env);
 
     // Print the linked list
     //print_env_list(&data);
-	convert_env(&data);
+	//convert_env(&data);
 	/* int e = -1;
 	while (data.mod_env[++e])
 	{

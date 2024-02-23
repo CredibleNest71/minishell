@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 17:34:54 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/02/22 14:36:49 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/02/23 13:22:13 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,7 @@ int		check_if_sorted(t_env *current);
 void	switch_values(t_env *current);
 void	sort_env(t_bigshell *data);
 void	print_env(t_env *head);
-void	make_copy(t_bigshell *data, int option);
+void	make_copy(t_bigshell *data);
 
 void	ft_unset(t_bigshell *data);
 void	ft_env(t_bigshell *data, int option);

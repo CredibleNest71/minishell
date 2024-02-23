@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 17:54:30 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/02/23 10:56:26 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/02/23 13:09:18 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,8 @@ int	main(int argc, char **argv, char **env)
 
     // Store environment strings in the linked list
     store_env(&data, env);
+	make_copy(&data, 0);
+	//printf("%d\n", data.reference_i);
 
     // Print the linked list
     //print_env_list(&data);

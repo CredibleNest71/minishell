@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 12:34:44 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/02/23 15:19:29 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/02/27 14:39:45 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,9 +55,10 @@ void	sort_env(t_bigshell *data)
 
 void	print_env(t_env *head)
 {
+	int i = 0;
 	while (head)
 	{
-		printf("%s\n", head->str);
+		printf("%d %s\n", i++, head->str);
 		head = head->next;
 	}
 }
@@ -120,6 +121,7 @@ void	ft_export(t_bigshell *data)
 	//int		option;
 	t_env	*current;
 	t_env	*current_env;
+	t_token	*arg;
 	
 	//option = check_reference(data);
 /* 	if (option == 2)
@@ -132,25 +134,29 @@ void	ft_export(t_bigshell *data)
 		//make_copy(data);
 		print_env(data->s_env);
 		data->exit_stat = 0;
-		exit (data->exit_stat);
+		//exit (data->exit_stat);
 	}
 	//i = -1;
 	current = data->s_env;
 	current_env = data->env;
+	arg = data->commands->args;
 	while (current->next && current_env->next)
+	{
 		current = current->next;
+		current_env = current_env->next;
+	}
 	//printf("a %s\n", data->commands->args->next->str);
-	while (data->commands->args)
+	while (arg)
 	{
 	//	printf("%s\n", current->str);
-		current->next = create_node(data, data->commands->args->str);
-		current_env->next = create_node(data, data->commands->args->str);
+		current->next = create_node(data, arg->str);
+		current_env->next = create_node(data, arg->str);
 	//	printf("%s\n", current->next->str);
 		current = current->next;
 		current_env = current_env->next;
-		data->commands->args = data->commands->args->next;
+		arg = arg->next;
 	}
 	sort_env(data);
-	//print_env(data->s_env);
-	exit (1);
+	//print_env(data->env);
+	//exit (1);
 }

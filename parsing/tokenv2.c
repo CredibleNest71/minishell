@@ -270,59 +270,59 @@ t_token	*parse(char *str)
 }
 
 
-int main(int ac, char **av)
-{
-	t_token *p;
-	char *test;
-	//test = ft_strdup("this is  a test for \' me to >> know | wther <  adjsadfjfsd   not hea asd the quotes work heyheayheay work");
-	if (ac == 2)
-		p = parse(av[1]);
-	else 
-		p = parse(test);
-	if (!p)
-		return (28);
-	t_token *t;
-	t = p;
+// int main(int ac, char **av)
+// {
+// 	t_token *p;
+// 	char *test;
+// 	//test = ft_strdup("this is  a test for \' me to >> know | wther <  adjsadfjfsd   not hea asd the quotes work heyheayheay work");
+// 	if (ac == 2)
+// 		p = parse(av[1]);
+// 	else 
+// 		p = parse(test);
+// 	if (!p)
+// 		return (28);
+// 	t_token *t;
+// 	t = p;
 
-	int i = 1;
-	//classify(t);
-	//mark_commands(t);
-	char *names[] = {"CMD", "ARG", "PIPE", "IN", "OUT", "APP", "HERE"};
-	while (1)
-	{
-		if (t->str)
-		{
-			//clean_token(t);
-			printf("\n%d: %s	%s", i++, names[t->type], t->str);
-		}
-		if (t->next == NULL)
-			break ;
-		t = t->next;
-	}
-	t_command *cmd = transform(p);
-	if (!cmd)
-		printf("command creation failed \n");
-	t_command *temp_cmd = cmd;
-	for (;temp_cmd; temp_cmd = temp_cmd->next)
-	{
-		printf("\n==========================================");
-		printf("\nCOMMAND:		%s", temp_cmd->cmd->str);
-		for (t_token *curr = temp_cmd->args;curr; curr = curr->next)
-			printf("\n	ARG:		%s", curr->str);
-		for (t_token *curr = temp_cmd->input;curr; curr = curr->next)
-			printf("\nIN:			%s", curr->str);
-		for (t_token *curr = temp_cmd->output;curr; curr = curr->next)
-			printf("\nOUT:			%s", curr->str);
-		for (t_token *curr = temp_cmd->append;curr; curr = curr->next)
-			printf("\nAPP:			%s", curr->str);
-		for (t_token *curr = temp_cmd->heredoc;curr; curr = curr->next)
-			printf("\nHere:			%s", curr->str);
-		printf("\n==========================================");
-	}
-	//free(test);
-	delete_command_list(cmd);
-	return (0);
-}
+// 	int i = 1;
+// 	//classify(t);
+// 	//mark_commands(t);
+// 	char *names[] = {"CMD", "ARG", "PIPE", "IN", "OUT", "APP", "HERE"};
+// 	while (1)
+// 	{
+// 		if (t->str)
+// 		{
+// 			//clean_token(t);
+// 			printf("\n%d: %s	%s", i++, names[t->type], t->str);
+// 		}
+// 		if (t->next == NULL)
+// 			break ;
+// 		t = t->next;
+// 	}
+// 	t_command *cmd = transform(p);
+// 	if (!cmd)
+// 		printf("command creation failed \n");
+// 	t_command *temp_cmd = cmd;
+// 	for (;temp_cmd; temp_cmd = temp_cmd->next)
+// 	{
+// 		printf("\n==========================================");
+// 		printf("\nCOMMAND:		%s", temp_cmd->cmd->str);
+// 		for (t_token *curr = temp_cmd->args;curr; curr = curr->next)
+// 			printf("\n	ARG:		%s", curr->str);
+// 		for (t_token *curr = temp_cmd->input;curr; curr = curr->next)
+// 			printf("\nIN:			%s", curr->str);
+// 		for (t_token *curr = temp_cmd->output;curr; curr = curr->next)
+// 			printf("\nOUT:			%s", curr->str);
+// 		for (t_token *curr = temp_cmd->append;curr; curr = curr->next)
+// 			printf("\nAPP:			%s", curr->str);
+// 		for (t_token *curr = temp_cmd->heredoc;curr; curr = curr->next)
+// 			printf("\nHere:			%s", curr->str);
+// 		printf("\n==========================================");
+// 	}
+// 	//free(test);
+// 	delete_command_list(cmd);
+// 	return (0);
+// }
 
 /*PSEUDO CODE:
 

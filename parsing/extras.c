@@ -46,7 +46,7 @@ char	*ft_strndup(const char *s, int n)
 
 	i = 0;
 	if (n <= 0)
-		return (0);
+		return (NULL);
 	ans = malloc(n + 1);
 	if (!ans)
 		return (0);

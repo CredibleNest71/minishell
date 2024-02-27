@@ -5,13 +5,22 @@ char	*ft_string_insert(char *str, char *in, int idx, int varlen)
 {
 	char	*ret;
 	char	*intro;
+	char	*outro;
 	char	*first;
 
+	if (!str || !in)
+		return (str);
 	intro = ft_strndup(str, idx);
+	outro = ft_strdup(str + idx + varlen + 1);
 	first = ft_strjoin(intro, in);
-	ret = ft_strjoin(first, &str[idx + varlen + 1]);
-	free(intro);
-	free(first);
+	ret = ft_strjoin(first, outro);
+	if (idx)
+	{
+		free(intro);
+		free(first);
+	}
+	free(outro);
+	free(str);
 	return (ret);
 }
 
@@ -36,29 +45,28 @@ char	*find_var_name(char *str)
 //expands $-variable
 char *expand(char *str)
 {
-	int		i;
+	char	*here;
     char	*var;
 	char	*val;
 	char	*new;
 
-	i = 0;
-	while (i < ft_strlen(str) && str[i])
+	while (1)
 	{
-		if (str[i] == '$')
+		here = ft_strchr(str, '$');
+		if (here)
 		{
-			var = find_var_name(str);
+			var = find_var_name(here);
 			if (!var)
 				return (printf("not found"), str);
 			val = getenv(var);
 			if (!val)
 				return (free(var),str);
-			new = ft_string_insert(str, val, i, ft_strlen(var));
-			i += ft_strlen(val);
+			new = ft_string_insert(str, val, here - str, ft_strlen(var));
 			free(var);
-			//free(str);
 			str = new;
 		}
-		i++;
+		else
+			break ; 
 	}
 	return (str);
 }

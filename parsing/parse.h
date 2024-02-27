@@ -25,6 +25,11 @@ int         count_elements(char *);
 char        **token_splitter(char *str);
 t_command	**commandlistmaker(char *str);
 
+//tokenv2
+t_token	    *parse(char *str);
+void	    delete_token_list(t_token *list);
+void	    delete_command_list(t_command *cmd);
+
 //expander
 char *expand(char *str);
 

@@ -18,6 +18,7 @@ SRCS = ${SRC_DIR}${EXEC_DIR}exec.c\
 			${SRC_DIR}${EXEC_DIR}built_in_list.c\
 			${SRC_DIR}${EXEC_DIR}env_list.c\
 			${SRC_DIR}${EXEC_DIR}error_handlers.c\
+			${SRC_DIR}${EXEC_DIR}helper_functions.c\
 			${SRC_DIR}${EXEC_DIR}pathfinder.c\
 			${SRC_DIR}${EXEC_DIR}redirection.c\
 			${SRC_DIR}${EXEC_DIR}simple_execution.c\

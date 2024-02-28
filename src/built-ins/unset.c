@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 11:00:47 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/02/27 15:35:37 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/02/27 17:32:16 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,56 +17,45 @@
 
 void	unset_var(t_bigshell *data, t_env **current, t_env **prev)
 {
-	t_env	*tmp;
+	/* t_env	*tmp;
 
-	tmp = NULL;
-	if (*current == data->env || *current == data->s_env) //check if head needs to be deleted
+	tmp = NULL; */
+	if (*current == data->env || *current == data->s_env)
 	{
 		if (*current == data->env)
 			data->env = (*current)->next;
 		else
 			data->s_env = (*current)->next;
-		tmp = *current;
-		*current = (*current)->next;
-		free(tmp); //need ft to properly free
+		//tmp = *current;
+		//*current = (*current)->next;
+		free_single_node(data, current); //need ft to properly free
 		return ;
 	}
-	if (!(*current)->next) //check if last node needs to be deleted
+	if (!(*current)->next)
 	{
-		free((*current));
+		free_single_node(data, current);
 		(*prev)->next = NULL;
-		return ; //need to exit here;
+		return ;
 	}
 	else
 	{
-		//printf("c %s\n", (*prev)->str);
-		//printf("c %s\n", (*current)->next->str);
 		(*prev)->next = (*current)->next;
-		free(*current);
-		//*current = (*prev)->next;
-		//printf("c %s\n", (*current)->str);
-	//printf("a\n");
+		free_single_node(data, current);
 		return ;
 	}
 }
 
-void	find_node_to_delete(t_bigshell *data, t_env **current, t_env **prev, int len, t_token *arg)
+void	find_node_to_delete(t_bigshell *data, t_env **current, t_env **prev, t_token *arg)
 {
+	int		len;
+	
+	len = ft_strlen(arg->str);
 	while (*current)
 	{
-		/* if (!data->commands->args)
-			return ; */
-		//printf("%s\n", arg->str);
 		if (ft_strncmp(arg->str, (*current)->str, len) == 0)
 		{
-				//printf("i\n");
 			unset_var(data, current, prev);
 			return ;
-		//*prev = (*current)->next;
-		//free(*current);
-		//*current = (*prev)->next;
-		//printf("(*current): %s\n", (*current)->str);
-				
 		}
 		else
 		{		
@@ -79,7 +68,6 @@ void	find_node_to_delete(t_bigshell *data, t_env **current, t_env **prev, int le
 
 void	ft_unset(t_bigshell *data)
 {
-	int		len;
 	t_env	*current;
 	t_env	*prev;
 	t_env	*current_env;
@@ -95,9 +83,8 @@ void	ft_unset(t_bigshell *data)
 	arg = data->commands->args;
 	while (arg)
 	{
-		len = ft_strlen(data->commands->args->str);
-		find_node_to_delete(data, &current, &prev, len, arg);
-		find_node_to_delete(data, &current_env, &prev_env, len, arg);
+		find_node_to_delete(data, &current, &prev, arg);
+		find_node_to_delete(data, &current_env, &prev_env, arg);
 		arg = arg->next;
 		current = data->s_env;
 		current_env = data->env;

@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 17:54:30 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/02/27 15:35:16 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/02/28 10:33:24 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,8 +107,9 @@ int	main(int argc, char **argv, char **env)
 	//data.commands->args = arg2;
 	//printf("%s\n", data.commands->args->str);
 	print_env(data.s_env);
-	ft_unset(&data);
-	print_env(data.env);
+	free_env(&data);
+	//ft_unset(&data);
+	//print_env(data.env);
 	//make_copy(&data);
 	//printf("%d\n", data.reference_i);
 
@@ -128,7 +129,7 @@ int	main(int argc, char **argv, char **env)
 		exit(1);qq
 	} */
 	//data.built_ins = built_in_list(&data);
-	built_in_list(&data);
+	//built_in_list(&data);
 	/* int e = 0;
 	while (e < 7)
 		printf("%s\n", data.built_ins[e++]); */

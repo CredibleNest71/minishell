@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 17:34:54 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/02/27 14:48:41 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/02/28 10:33:00 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,13 +104,18 @@ void	make_copy(t_bigshell *data);
 
 void	ft_unset(t_bigshell *data);
 void	unset_var(t_bigshell *data, t_env **current, t_env **prev);
-void	find_node_to_delete(t_bigshell *data, t_env **current, t_env **prev, int len, t_token *arg);
+void	find_node_to_delete(t_bigshell *data, t_env **current, t_env **prev, t_token *arg);
 
 void	ft_env(t_bigshell *data, int option);
+void	add_env_variable(t_bigshell *data);
+
 void	ft_exit(t_bigshell *data);
 
 t_env   *create_node(t_bigshell *data, char *str);
 void    store_env(t_bigshell *data, char **env);
 void    convert_env(t_bigshell *data);
+
+void	free_single_node(t_bigshell *data, t_env **node);
+void	free_env(t_bigshell *data);
 
 #endif

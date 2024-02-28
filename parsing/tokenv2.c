@@ -235,8 +235,6 @@ t_token	*parse(char *str)
 	i += end;
 	while ( i < ft_strlen(str) && str[i])
 	{
-		// while (is_char(str[i], "\n\t\v \r\f") && str[i])
-		// 	i++;
 		skip_white_space(str, &i);
 		temp = ft_tokenlast(temp);
 		end = find_element(&str[i]);
@@ -244,10 +242,7 @@ t_token	*parse(char *str)
 			return (delete_token_list(list), NULL);
 		temp->next = make_token(&str[i], end);
 		i += end;
-		//skip_white_space(str, &i);
-
-		// while (is_char(str[i], "\n\t\v \r\f") && str[i])
-		// 	i++;
+		skip_white_space(str, &i);
 	}
 	return (list);
 }

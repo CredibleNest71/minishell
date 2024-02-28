@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 17:54:30 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/02/28 10:33:24 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/02/28 18:10:51 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,7 @@ int	main(int argc, char **argv, char **env)
 	ft_export(&data);
 	//data.commands->args = arg2;
 	//printf("%s\n", data.commands->args->str);
-	print_env(data.s_env);
+	//print_env(data.s_env);
 	free_env(&data);
 	//ft_unset(&data);
 	//print_env(data.env);
@@ -122,14 +122,17 @@ int	main(int argc, char **argv, char **env)
 		printf("%s\n", data.mod_env[e]);
 	} */
 	
-	data.built_ins = (char **)malloc(sizeof(char *) * 7);
-/* 	if (!data.built_ins)
+	data.built_ins = (char **)malloc(sizeof(char *) * 8); //7 elements plus NULL
+ 	if (!data.built_ins)
 	{
 		printf("malloc failed\n");
-		exit(1);qq
-	} */
+	}
 	//data.built_ins = built_in_list(&data);
-	//built_in_list(&data);
+	built_in_list(&data);
+	//free(data.built_ins);
+	free_builtin_list(&data);
+	// free_builtin_list(&data);
+	return 0;
 	/* int e = 0;
 	while (e < 7)
 		printf("%s\n", data.built_ins[e++]); */

@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 17:04:24 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/02/28 10:36:11 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/02/28 18:18:35 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,3 +39,25 @@ void	free_env(t_bigshell *data)
 		free(tmp);
 	}
 }
+
+void	free_builtin_list(t_bigshell *data)
+{
+	int	i;
+
+	i = 0;
+	while (data->built_ins[i])
+	{
+		printf("%d %s\n", i, data->built_ins[i]);
+		free(data->built_ins[i++]);
+		//data->built_ins[i] = NULL;
+	
+	}
+		//printf("im finished\n");
+	free(data->built_ins);
+
+}
+
+/* void	free_struct(t_bigshell *data)
+{
+	//free everything before exiting minishell;
+} */

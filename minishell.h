@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 17:34:54 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/02/28 10:33:00 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/02/28 17:57:47 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,5 +117,6 @@ void    convert_env(t_bigshell *data);
 
 void	free_single_node(t_bigshell *data, t_env **node);
 void	free_env(t_bigshell *data);
+void	free_builtin_list(t_bigshell *data);
 
 #endif

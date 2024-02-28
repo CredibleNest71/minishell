@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 12:10:32 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/02/22 11:16:13 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/02/28 18:17:55 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,38 +34,38 @@ void	put_built_in(int index, t_bigshell *data)
 {
 	if (index == 0)
 	{
-		data->built_ins[index] = malloc(sizeof(char) * 7);
-		data->built_ins[index] = "echo -n";
+		//data->built_ins[index] = malloc(sizeof(char) * ft_strlen("echo -n") + 1);
+		data->built_ins[index] = ft_strdup("echo -n");
 	}
 	else if (index == 1)
 	{
-		data->built_ins[index] = malloc(sizeof(char) * 2);
-		data->built_ins[index] = "cd";
+		//data->built_ins[index] = malloc(sizeof(char) * ft_strlen("cd") + 1);
+		data->built_ins[index] = ft_strdup("cd");
 	}
 	else if (index == 2)
 	{
-		data->built_ins[index] = malloc(sizeof(char) * 3);
-		data->built_ins[index] = "pwd";
+		//data->built_ins[index] = malloc(sizeof(char) * ft_strlen("pwd") + 1);
+		data->built_ins[index] = ft_strdup("pwd");
 	}
 	else if (index == 3)
 	{
-		data->built_ins[index] = malloc(sizeof(char) * 6);
-		data->built_ins[index] = "export";
+		//data->built_ins[index] = malloc(sizeof(char) * ft_strlen("export") + 1);
+		data->built_ins[index] = ft_strdup("export");
 	}
 	else if (index == 4)
 	{
-		data->built_ins[index] = malloc(sizeof(char) * 5);
-		data->built_ins[index] = "unset";
+		//data->built_ins[index] = malloc(sizeof(char) * ft_strlen("unset") + 1);
+		data->built_ins[index] = ft_strdup("unset");
 	}
 	else if (index == 5)
 	{
-		data->built_ins[index] = malloc(sizeof(char) * 3);
-		data->built_ins[index] = "env";
+		//data->built_ins[index] = malloc(sizeof(char) * ft_strlen("env") + 1);
+		data->built_ins[index] = ft_strdup("env");
 	}
 	else if (index == 6)
 	{
-		data->built_ins[index] = malloc(sizeof(char) * 4);
-		data->built_ins[index] = "exit";
+		//data->built_ins[index] = malloc(sizeof(char) * ft_strlen("exit") + 1);
+		data->built_ins[index] = ft_strdup("exit");
 	}
 }
 
@@ -73,9 +73,9 @@ void	built_in_list(t_bigshell *data)
 {
 	int		i;
 
-	i = 0;
-	while (i < 7)
-		put_built_in(i++, data);
+	i = -1;
+	while (++i < 7)
+		put_built_in(i, data);
 	data->built_ins[i] = NULL;
 }
 

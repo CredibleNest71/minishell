@@ -19,12 +19,10 @@ int	double_quote(char *str)
 	int	i;
 
 	i = 1;
-	printf("ENTER in doublequote()");
 	if (!str)
 		return (0);
 	while (str[i] && str[i] != '\"')
 		i++;
-	printf("segfault not in doublequote()");
 	if (!str[i])
 		return (0);
 	return (i + 1);
@@ -112,28 +110,6 @@ int	redir(char *str)
 	return (i);
 }
 
-// int	redir_out(char *str)
-// {
-// 	int	i;
-// 	int	quotes;
-
-// 	quotes = -1;
-// 	i = 1;
-// 	while (is_char(str[i], "\n\t\v \r\f") && str[i])
-// 		i++;
-// 	if (str[i] == '\'')
-// 		quotes = single_quote(&str[i]);
-// 	else if (str[i] == '\"')
-// 		quotes = double_quote(&str[i]);
-// 	if (!quotes)
-// 		return (0);
-// 	else if (quotes > 0);
-// 		return (i + quotes);
-// 	while (!is_char(str[i], "\n\t\v \r\f") && str[i])
-// 		i++;
-// 	return (i);
-// }
-
 int	redir_out(char *str)
 {
 	int	i;
@@ -159,8 +135,12 @@ int	findarg(char *str)
 		return (0);
 	while (is_char(str[i], "\n\t\v \r\f") && str[i])
 		i++;
-	while (!is_char(str[i], "\n\t\v \r\f") && str[i])
+	while (!is_char(str[i], "\n\t\v \r\f|") && str[i])
+	{
+		if (is_char(str[i + 1], "|"))
+			return (i + 1);
 		i++;
+	}
 	return (i + 1);
 }
 
@@ -255,16 +235,19 @@ t_token	*parse(char *str)
 	i += end;
 	while ( i < ft_strlen(str) && str[i])
 	{
-		while (is_char(str[i], "\n\t\v \r\f") && str[i])
-			i++;
+		// while (is_char(str[i], "\n\t\v \r\f") && str[i])
+		// 	i++;
+		skip_white_space(str, &i);
 		temp = ft_tokenlast(temp);
 		end = find_element(&str[i]);
 		if (end <= 0)
 			return (delete_token_list(list), NULL);
 		temp->next = make_token(&str[i], end);
 		i += end;
-		while (is_char(str[i], "\n\t\v \r\f") && str[i])
-			i++;
+		//skip_white_space(str, &i);
+
+		// while (is_char(str[i], "\n\t\v \r\f") && str[i])
+		// 	i++;
 	}
 	return (list);
 }

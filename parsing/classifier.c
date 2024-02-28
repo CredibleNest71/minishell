@@ -120,7 +120,7 @@ void	mark_commands(t_token *list)
 		curr->type = (e_type) CMD;
 	while (curr)
 	{
-		if (curr->type == (e_type) PIPE && curr->next->type == (e_type) ARG)
+		if (curr->type == (e_type) PIPE && curr->next && curr->next->type == (e_type) ARG)
 			curr->next->type = (e_type) CMD;
 		curr = curr->next;
 	}
@@ -155,7 +155,6 @@ t_token	*fill_command(t_command *ret, t_token *temp)
 		else if (temp->type == (e_type) HEREDOC)
 			replace_or_append(&ret->heredoc, temp);
 		freeme = temp;
-		//printf("\n:fill_command: %s", temp->str);
 		temp = temp->next;
 		free(freeme->str);
 		free(freeme);

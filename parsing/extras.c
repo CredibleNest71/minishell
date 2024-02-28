@@ -69,3 +69,15 @@ int	is_char(char c, char *chars)
 			return (1);
 	return (0);
 }
+
+void	skip_chars(char *str, int *i)
+{
+	while (!is_char(str[*i], "\n\t\v \r\f") && str[*i])
+		*i += 1;
+}
+
+void	skip_white_space(char *str, int *i)
+{
+	while (str[*i] && is_char(str[*i], "\n\t\v \r\f"))
+		*i += 1;
+}

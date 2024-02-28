@@ -18,6 +18,8 @@ int			is_seperator(char *str);
 t_token	    *ft_tokenlast(t_token *lst);
 t_token     *token_dup(t_token *token);
 void	    token_append(t_token *lst, t_token *token);
+void	    skip_white_space(char *str, int *i);
+void	    skip_chars(char *str, int *i);
 
 //tokenv1
 t_token	    *tokenify(char *str);

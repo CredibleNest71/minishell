@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 17:04:24 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/02/28 18:18:35 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/02/29 11:35:49 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,19 +24,25 @@ void	free_single_node(t_bigshell *data, t_env **node)
 void	free_env(t_bigshell *data)
 {
 	t_env	*tmp;
-	while (data->s_env)
+	if (data->s_env)
 	{
-		tmp = data->s_env;
-		data->s_env = data->s_env->next;
-		free(tmp->str);
-		free(tmp);
+		while (data->s_env)
+		{
+			tmp = data->s_env;
+			data->s_env = data->s_env->next;
+			free(tmp->str);
+			free(tmp);
+		}
 	}
-	while (data->env)
+	if (data->env)
 	{
-		tmp = data->env;
-		data->env = data->env->next;
-		free(tmp->str);
-		free(tmp);
+		while (data->env)
+		{
+			tmp = data->env;
+			data->env = data->env->next;
+			free(tmp->str);
+			free(tmp);
+		}
 	}
 }
 
@@ -45,19 +51,60 @@ void	free_builtin_list(t_bigshell *data)
 	int	i;
 
 	i = 0;
-	while (data->built_ins[i])
+	if (data->built_ins)
 	{
-		printf("%d %s\n", i, data->built_ins[i]);
-		free(data->built_ins[i++]);
-		//data->built_ins[i] = NULL;
-	
+		while (data->built_ins[i])
+			free(data->built_ins[i++]);
+		free(data->built_ins);
 	}
-		//printf("im finished\n");
-	free(data->built_ins);
-
 }
 
-/* void	free_struct(t_bigshell *data)
+void	free_tokens(t_token *data)
+{
+	if (data->str)
+		free(data->str);
+	if (data->dir)
+		free(data->dir);
+}
+
+void	free_commands(t_bigshell *data)
+{
+	if (data->commands->input)
+	{
+		free_tokens(data->commands->input);
+		free(data->commands->input);
+	}
+	if (data->commands->output)
+	{
+		free_tokens(data->commands->output);
+		free(data->commands->output);
+	}
+	if (data->commands->cmd)
+	{
+		free_tokens(data->commands->cmd);
+		free(data->commands->cmd);
+	}
+	if (data->commands->args)
+	{
+		free_tokens(data->commands->args);
+		free(data->commands->args);
+	}
+	/* if (data->commands->nexus) //tf is nexus??
+	{} */
+}
+
+void	free_struct(t_bigshell *data)
 {
 	//free everything before exiting minishell;
-} */
+	free_env(data);
+	free_builtin_list(data);
+	if (data->commands)
+	{
+		while (data->commands)
+		{
+			free_commands(data);
+			data->commands = data->commands->next;
+		}
+		free(data->commands);
+	}
+}

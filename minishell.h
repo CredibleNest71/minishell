@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 17:34:54 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/02/28 17:57:47 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/02/29 11:30:56 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,9 +64,9 @@ typedef struct	s_bigshell
 	int			id;
 	int			var_i;	//counts how many variables exist in the environment
 	int			reference_i; //keeps count of data->env 
-	char		*export_var;
-	char		**og_env;
-	char		**mod_env;
+	char		*export_var; //tf is this
+	char		**og_env; //do I use u?
+	char		**mod_env; //do I use u?
 	t_env		*env;
 	t_env		*s_env;
 	char		**built_ins;
@@ -118,5 +118,8 @@ void    convert_env(t_bigshell *data);
 void	free_single_node(t_bigshell *data, t_env **node);
 void	free_env(t_bigshell *data);
 void	free_builtin_list(t_bigshell *data);
+void	free_tokens(t_token *data);
+void	free_commands(t_bigshell *data);
+void	free_struct(t_bigshell *data);
 
 #endif

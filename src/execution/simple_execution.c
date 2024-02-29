@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 17:54:30 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/02/28 18:10:51 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/02/29 11:48:21 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ int	main(int argc, char **argv, char **env)
 	//data.commands->args = arg2;
 	//printf("%s\n", data.commands->args->str);
 	//print_env(data.s_env);
-	free_env(&data);
+	//free_env(&data);
 	//ft_unset(&data);
 	//print_env(data.env);
 	//make_copy(&data);
@@ -130,8 +130,11 @@ int	main(int argc, char **argv, char **env)
 	//data.built_ins = built_in_list(&data);
 	built_in_list(&data);
 	//free(data.built_ins);
-	free_builtin_list(&data);
+	//free_builtin_list(&data);
 	// free_builtin_list(&data);
+	printf("a\n");
+	//proabbaly segfault bc there are uninitialized shit will be fixed with merge?
+	free_struct(&data);
 	return 0;
 	/* int e = 0;
 	while (e < 7)

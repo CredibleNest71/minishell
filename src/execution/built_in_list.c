@@ -6,14 +6,14 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 12:10:32 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/02/28 18:17:55 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/02/29 11:34:54 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 #include <stdlib.h>
 
-char	*put_str(char *s)
+/* char	*put_str(char *s) //do I even use this
 {
 	int		len;
 	int		i;
@@ -28,44 +28,51 @@ char	*put_str(char *s)
 	while (str[++i])
 		str[i] = s[i];
 	return (str);
-}
+} */
 
 void	put_built_in(int index, t_bigshell *data)
 {
 	if (index == 0)
 	{
-		//data->built_ins[index] = malloc(sizeof(char) * ft_strlen("echo -n") + 1);
 		data->built_ins[index] = ft_strdup("echo -n");
+		if (!data->built_ins[index])
+			fatal_error(data, 1);
 	}
 	else if (index == 1)
 	{
-		//data->built_ins[index] = malloc(sizeof(char) * ft_strlen("cd") + 1);
 		data->built_ins[index] = ft_strdup("cd");
+		if (!data->built_ins[index])
+			fatal_error(data, 1);
 	}
 	else if (index == 2)
 	{
-		//data->built_ins[index] = malloc(sizeof(char) * ft_strlen("pwd") + 1);
 		data->built_ins[index] = ft_strdup("pwd");
+		if (!data->built_ins[index])
+			fatal_error(data, 1);
 	}
 	else if (index == 3)
 	{
-		//data->built_ins[index] = malloc(sizeof(char) * ft_strlen("export") + 1);
 		data->built_ins[index] = ft_strdup("export");
+		if (!data->built_ins[index])
+			fatal_error(data, 1);
 	}
 	else if (index == 4)
 	{
-		//data->built_ins[index] = malloc(sizeof(char) * ft_strlen("unset") + 1);
 		data->built_ins[index] = ft_strdup("unset");
+		if (!data->built_ins[index])
+			fatal_error(data, 1);
 	}
 	else if (index == 5)
 	{
-		//data->built_ins[index] = malloc(sizeof(char) * ft_strlen("env") + 1);
 		data->built_ins[index] = ft_strdup("env");
+		if (!data->built_ins[index])
+			fatal_error(data, 1);
 	}
 	else if (index == 6)
 	{
-		//data->built_ins[index] = malloc(sizeof(char) * ft_strlen("exit") + 1);
 		data->built_ins[index] = ft_strdup("exit");
+		if (!data->built_ins[index])
+			fatal_error(data, 1);
 	}
 }
 
@@ -96,9 +103,9 @@ void	builtin_exec(t_bigshell *data, int builtin_index)
 		ft_pwd(data);
 	else if (builtin_index == 3)
 		ft_export(data);
-	/*else if (builtin_index == 4)
-		ft_unset();
-	else if (builtin_index == 5)
+	else if (builtin_index == 4)
+		ft_unset(data);
+	/*else if (builtin_index == 5)
 		ft_env(data);
 	else if (builtin_index == 6)
 		ft_exit(); */

@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 17:34:54 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/02/29 11:30:56 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/02/29 14:46:27 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,15 +20,22 @@
 //# include <readline/history.h>
 # include "libft/libft.h"
 
-typedef enum type
-{
+typedef enum type {
 	CMD = 0,
 	ARG,
-	PATH,
-	NEX,
-	DIR,
-}	e_type;
+	IN,
+	OUT,
+	HEREDOC,
+	APP,
+	PIPE,
+}	 e_type;
 
+typedef struct s_token {
+	char 			*str;
+	int				type;
+	char			*dir;
+	struct s_token	*next;
+}	 t_token;
 typedef struct	s_token
 {
 	char 			*str;
@@ -37,16 +44,17 @@ typedef struct	s_token
 	struct s_token	*next;
 }	t_token;
 
-typedef struct	s_command //linked list now (have to iterate through nodes)
-{
+typedef struct s_command {
 	t_token				*input;		//<
 	t_token				*output;	//>
+	t_token				*append;	//>>
+	t_token				*heredoc;	//<<
 	t_token				*cmd;		//command
 	t_token				*args;		//arguments
 	int					arg_num;
 	t_token				*nexus;		//PIPE?
 	struct s_command	*next;
-}	t_command;
+}	 t_command;
 
 typedef struct s_env
 {

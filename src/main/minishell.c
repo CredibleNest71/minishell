@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 11:33:48 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/02/07 17:49:53 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/02/29 12:00:43 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,34 +16,35 @@
 
 int main(int argc, char **argv, char **env)
 {
-	t_bigshell	bigshell;
+	t_bigshell	data;
 	char		*lineread;
 	int			i;
 
 	lineread = NULL;
-	bigshell.env = env;
-	bigshell.built_ins = built_in_list(&bigshell);
+	data.og_env = env;
+	data.built_ins = (char **)malloc(sizeof(char *) * 8);
+	built_in_list(&data);
 	i = 0;
 		while (1)
 	    {
 		    lineread = readline("tinyshell: ");
-		    bigshell.commands = parse(stdin);
+		    data.commands = parse(stdin);
 			store_restore_fds(1); //will store stdin & stdout
-			if (bigshell.num_cmd == 1)
+			if (data.num_cmd == 1)
 			{
-				if ((bigshell.id = fork()) == -1)
-					fatal_error(&bigshell, 1);
-				if (bigshell.id == 0)
-					simple_exec(&bigshell);
+				if ((data.id = fork()) == -1)
+					fatal_error(&data, 1);
+				if (data.id == 0)
+					simple_exec(&data);
 			}
 			else
 			{
-				while (i < bigshell.num_cmd)
+				while (i < data.num_cmd)
 				{
-					if ((bigshell.id = fork()) == -1)
-						fatal_error(&bigshell, 1);
-					if (bigshell.id == 0)
-						complex_exec(bigshell, i);	
+					if ((data.id = fork()) == -1)
+						fatal_error(&data, 1);
+					if (data.id == 0)
+						complex_exec(data, i);	
 					i++;
 				}
 			}

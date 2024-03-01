@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 12:47:26 by mresch            #+#    #+#             */
-/*   Updated: 2024/03/01 10:50:52 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/03/01 18:12:48 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ int	appender(char *str)
 	return (i);
 }
 
-static int	redir(char *str)
+static int	find_redir(char *str)
 {
 	int	i;
 	int	quotes;
@@ -160,9 +160,9 @@ int	find_element(char *str)
 	else if (!strncmp(&str[i], ">>", 2))
 		return (appender(&str[i]));
 	else if (str[i] == '<')
-		return (redir(&str[i]));
+		return (find_redir(&str[i]));
 	else if (str[i] == '>')
-		return (redir(&str[i]));
+		return (find_redir(&str[i]));
 	else
 		return (findarg(&str[i]));
 	return (0);
@@ -171,15 +171,15 @@ int	find_element(char *str)
 t_token	*make_token(char *str, int end)
 {
 	t_token	*token;
-	static int	i = 0;
-	printf("\ncreated %d tokens", i++);
+	//static int	i = 0;
+	//printf("\ncreated %d tokens", i++);
 	token = (t_token *) ft_calloc (sizeof(t_token), 1);
 	if (!token)
 		return (NULL);
 	if (!str || end <= 0)
 		return (0);
 	token->str = ft_strndup(str, end);
-	printf("\n	content: %s", token->str);
+	//printf("\n	content: %s", token->str);
 	//printf("\n%s", token->str);
 	return (token);
 }
@@ -218,7 +218,7 @@ void	delete_command_list(t_command *cmd)
 	}
 }
 
-t_token	*parse(char *str)
+t_token	*parse_tokens(char *str)
 {
 	t_token	*list;
 	t_token	*temp;
@@ -233,7 +233,7 @@ t_token	*parse(char *str)
 	temp = make_token(str, end);
 	list = temp;
 	i += end;
-	while ( i < ft_strlen(str) && str[i])
+	while ( i < (int) ft_strlen(str) && str[i])
 	{
 		skip_white_space(str, &i);
 		temp = ft_tokenlast(temp);

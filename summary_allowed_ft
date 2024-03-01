@@ -44,9 +44,9 @@ getcwd: Gets the current working directory.
 
 chdir: Changes the current working directory.
 
-stat, lstat, fstat: Retrieve information about a file or file descriptor.
+stat, lstat, fstat: Retrieve information about a file or file descriptor. ***
 
-unlink: Removes a file.
+unlink: Removes a file. ***
 
 execve: Executes a program.
 
@@ -54,13 +54,13 @@ dup, dup2: Duplicates file descriptors.
 
 pipe: Creates an interprocess communication channel.
 
-opendir, readdir, closedir: Functions for working with directories.
+opendir, readdir, closedir: Functions for working with directories. *
 
 strerror: Returns a string describing the last error.
 
 perror: Prints a description for the last error to the standard error.
 
-isatty: Tests whether a file descriptor refers to a terminal.
+isatty: Tests whether a file descriptor refers to a terminal. *?
 
 ttyname: Returns the name associated with a terminal.
 

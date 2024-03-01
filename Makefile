@@ -29,10 +29,11 @@ SRCS = ${SRC_DIR}${EXEC_DIR}exec.c\
 			${SRC_DIR}${BUILT_INS}pwd.c\
 			${SRC_DIR}${BUILT_INS}unset.c\
 \
-			# ${SRC_DIR}${PARSER_DIR}classifier.c\
-			# ${SRC_DIR}${PARSER_DIR}expander.c\
-			# ${SRC_DIR}${PARSER_DIR}extras.c\
-			# ${SRC_DIR}${PARSER_DIR}tokenv2.c\
+			${SRC_DIR}${PARSER_DIR}parse.c\
+			${SRC_DIR}${PARSER_DIR}classifier.c\
+			${SRC_DIR}${PARSER_DIR}expander.c\
+			${SRC_DIR}${PARSER_DIR}extras.c\
+			${SRC_DIR}${PARSER_DIR}tokenv2.c\
 
 OBJS := $(SRCS:%.c=%.o)
 
@@ -43,7 +44,7 @@ all: $(NAME)
 
 $(NAME): $(OBJS)
 	cd libft && $(MAKE) && $(MAKE) bonus
-	cc $(FLAGS) $(OBJS) ./libft/libft.a -o $(NAME)
+	cc $(FLAGS) $(OBJS) -lreadline ./libft/libft.a -o $(NAME)
 
 clean:
 	cd libft && $(MAKE) fclean

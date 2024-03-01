@@ -3,7 +3,7 @@
 # include <unistd.h>
 # include <stdlib.h>
 # include <stdio.h>
-//# include "../../minishell.h"
+# include "../../minishell.h"
 
 //classifier
 void	    classify(t_token *list);
@@ -29,11 +29,15 @@ char        **token_splitter(char *str);
 t_command	**commandlistmaker(char *str);
 
 //tokenv2
-t_token	    *parse(char *str);
+t_token	    *parse_tokens(char *str);
 void	    delete_token_list(t_token *list);
 void	    delete_command_list(t_command *cmd);
 
 //expander
-char *expand(char *str);
+char 		*expand(char *str);
+
+//parse
+t_command	*parse(char *input);
+void		print_cmds(t_command *cmd);
 
 #endif

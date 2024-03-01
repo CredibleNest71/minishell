@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: a <a@student.42.fr>                        +#+  +:+       +#+        */
+/*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 11:01:30 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/02/15 19:35:34 by a                ###   ########.fr       */
+/*   Updated: 2024/03/01 11:28:26 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,13 +21,14 @@ void	add_env_variable(t_bigshell *data)
 	int	i;
 
 	i = 0;
-	while (data->env[i])
+	while (data->og_env[i])
 		i++;
-	data->env = malloc((i + 1) * sizeof(char *)); //protect
-	data->env[i++] = data->export_var;
-	data->env[i] = NULL;
+	data->og_env = malloc((i + 1) * sizeof(char *)); //protect
+	data->og_env[i++] = data->export_var;
+	data->og_env[i] = NULL;
 	data->exit_stat = 0;
-	exit(data->exit_stat);
+	//exit(data->exit_stat);
+	return ;
 }
 
 //env should be a linked list and if export is used, add variable randomly

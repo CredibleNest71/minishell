@@ -185,7 +185,7 @@ t_command	*create_commands(t_token *token)
 			else
 				og = ret;
 			token = fill_command(ret, token);
-			printf("cmd->cmd = %s\n", ret->cmd->str);
+			//printf("cmd->cmd = %s\n", ret->cmd->str);
 		}
 		//token = token->next;
 	}

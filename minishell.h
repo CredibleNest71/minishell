@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 17:34:54 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/03/01 10:42:32 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/03/01 18:05:25 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,5 +125,7 @@ void	free_builtin_list(t_bigshell *data);
 void	free_tokens(t_token *data);
 void	free_commands(t_bigshell *data);
 void	free_struct(t_bigshell *data);
+
+void	ft_heredoc(t_bigshell *data);
 
 #endif

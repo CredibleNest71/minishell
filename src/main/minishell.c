@@ -6,11 +6,12 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 11:33:48 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/03/01 10:24:03 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/03/01 18:05:16 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "../../minishell.h"
+#include "../../minishell.h"
+#include "../parser/parse.h"
 #include <stdio.h>
 #include <unistd.h>
 
@@ -21,6 +22,7 @@ int main(int argc, char **argv, char **env)
 	int			i;
 
 	lineread = NULL;
+	ft_bzero(&data, sizeof(data));
 	data.og_env = env;
 	data.built_ins = (char **)malloc(sizeof(char *) * 8);
 	built_in_list(&data);
@@ -28,7 +30,8 @@ int main(int argc, char **argv, char **env)
 		while (1)
 	    {
 		    lineread = readline("tinyshell: ");
-		    data.commands = parse(stdin);
+		    data.commands = parse(lineread);
+			print_cmds(data.commands);
 			store_restore_fds(1); //will store stdin & stdout
 			if (data.num_cmd == 1)
 			{

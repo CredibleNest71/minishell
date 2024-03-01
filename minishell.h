@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 17:34:54 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/02/29 14:46:27 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/03/01 10:42:32 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,10 @@
 # include <stdlib.h>
 # include <stdio.h>
 # include <fcntl.h>
-//# include <readline/readline.h>
-//# include <readline/history.h>
+# include <readline/readline.h>
+# include <readline/history.h>
 # include "libft/libft.h"
+//# include "src/parser/parse.h"
 
 typedef enum type {
 	CMD = 0,
@@ -30,12 +31,6 @@ typedef enum type {
 	PIPE,
 }	 e_type;
 
-typedef struct s_token {
-	char 			*str;
-	int				type;
-	char			*dir;
-	struct s_token	*next;
-}	 t_token;
 typedef struct	s_token
 {
 	char 			*str;
@@ -44,7 +39,8 @@ typedef struct	s_token
 	struct s_token	*next;
 }	t_token;
 
-typedef struct s_command {
+typedef struct s_command
+{
 	t_token				*input;		//<
 	t_token				*output;	//>
 	t_token				*append;	//>>

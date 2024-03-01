@@ -1,4 +1,4 @@
-#include "../minishell.h"
+#include "../../minishell.h"
 #include "parse.h"
 
 char	*ft_string_insert(char *str, char *in, int idx, int varlen)
@@ -28,7 +28,7 @@ char	*find_var_name(char *str)
 {
 	int	i;
 	int	j;
-	char *name;
+	//char *name;
 	j = 0;
 	i = 0;
 

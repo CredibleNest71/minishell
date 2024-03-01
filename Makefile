@@ -28,6 +28,11 @@ SRCS = ${SRC_DIR}${EXEC_DIR}exec.c\
 			${SRC_DIR}${BUILT_INS}export.c\
 			${SRC_DIR}${BUILT_INS}pwd.c\
 			${SRC_DIR}${BUILT_INS}unset.c\
+\
+			# ${SRC_DIR}${PARSER_DIR}classifier.c\
+			# ${SRC_DIR}${PARSER_DIR}expander.c\
+			# ${SRC_DIR}${PARSER_DIR}extras.c\
+			# ${SRC_DIR}${PARSER_DIR}tokenv2.c\
 
 OBJS := $(SRCS:%.c=%.o)
 

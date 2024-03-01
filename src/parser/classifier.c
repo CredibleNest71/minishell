@@ -1,4 +1,4 @@
-#include "../minishell.h"
+#include "../../minishell.h"
 #include "parse.h"
 
 t_token	*expand_token(t_token *token)

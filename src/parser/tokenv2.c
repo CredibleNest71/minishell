@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   tokenv2.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mresch <mresch@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 12:47:26 by mresch            #+#    #+#             */
-/*   Updated: 2024/02/09 15:28:05 by mresch           ###   ########.fr       */
+/*   Updated: 2024/03/01 10:50:52 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "../../minishell.h"
 #include "parse.h"
-#include "../libft/libft.h"
+#include "../../libft/libft.h"
 
 int	double_quote(char *str)
 {
@@ -86,7 +86,7 @@ int	appender(char *str)
 	return (i);
 }
 
-int	redir(char *str)
+static int	redir(char *str)
 {
 	int	i;
 	int	quotes;

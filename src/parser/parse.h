@@ -3,6 +3,7 @@
 # include <unistd.h>
 # include <stdlib.h>
 # include <stdio.h>
+//# include "../../minishell.h"
 
 //classifier
 void	    classify(t_token *list);

@@ -1,7 +1,7 @@
 
-#include "../minishell.h"
+#include "../../minishell.h"
 #include "parse.h"
-#include "../libft/libft.h"
+#include "../../libft/libft.h"
 
 void	token_append(t_token *lst, t_token *token)
 {

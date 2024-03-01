@@ -1,7 +1,7 @@
 
-#include "../minishell.h"
+#include "../../minishell.h"
 #include "parse.h"
-#include "../libft/libft.h"
+#include "../../libft/libft.h"
 
 void	print_cmds(t_command *cmd)
 {
@@ -106,8 +106,8 @@ int main(void)
 		if (finished < 0)
 			return (write(2, "ERROR\n", 7));
 	}
-	parsed = parse(input);
-	cmds = transform(parsed);
+	parsed = parse(input); //
+	cmds = transform(parsed);//
 	print_cmds(cmds);
 	delete_command_list(cmds);
 	free(input);

@@ -1,4 +1,4 @@
-#include "../minishell.h"
+#include "../../minishell.h"
 #include "parse.h"
 
 int	is_char(char c, char *chars)

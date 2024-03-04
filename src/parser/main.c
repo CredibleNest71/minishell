@@ -68,24 +68,26 @@ int main(void)
 	t_command	*cmds;
 	int			finished;
 
-	finished = 0;
-	input = ft_strdup("");
-	printf("Enter commands:");
-	while (!finished)
+	while (1)
 	{
-		temp = input;
-		temp2 = readline(">");
-		input = ft_strjoin(input, temp2);
-		free(temp);
-		free(temp2);
-		finished = check_fin(input);
-		if (finished < 0)
-			return (write(2, "ERROR\n", 7));
+		finished = 0;
+		input = ft_strdup("");
+		printf("\nEnter commands:");
+		while (!finished)
+		{
+			temp = input;
+			temp2 = readline(">");
+			input = ft_strjoin(input, temp2);
+			free(temp);
+			free(temp2);
+			finished = check_fin(input);
+			if (finished < 0)
+				return (write(2, "ERROR\n", 7));
+		}
+		cmds = parse(input); //
+		print_cmds(cmds);
+		delete_command_list(cmds);
+		free(input);
 	}
-	parsed = parse(input); //
-	cmds = transform(parsed);//
-	print_cmds(cmds);
-	delete_command_list(cmds);
-	free(input);
 	return (0);
 }

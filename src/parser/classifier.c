@@ -51,7 +51,7 @@ void	clean_token(t_token *token)
 	j = 0;
 	if (!token)
 		return ;
-	if (token->type == (e_type) CMD || token->type == (e_type) PIPE)
+	if (token->type == (e_type) PIPE)
 		return ;
 	while (is_char(token->str[i], "<>") && token->str[i])
 		i++;

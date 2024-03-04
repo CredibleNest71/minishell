@@ -14,6 +14,8 @@
 #include "parse.h"
 #include "../../libft/libft.h"
 
+int	findarg(char *str);
+
 int	double_quote(char *str)
 {
 	int	i;
@@ -25,7 +27,11 @@ int	double_quote(char *str)
 		i++;
 	if (!str[i])
 		return (0);
-	return (i + 1);
+	if (str[i] == '\"')
+		i++;
+	if (str[i] && !is_char(str[i + 1], "\n\t\v \r\f"))
+		i += findarg(&str[++i]);
+	return (i);
 }
 
 int	single_quote(char *str)
@@ -33,11 +39,17 @@ int	single_quote(char *str)
 	int	i;
 
 	i = 1;
+	if (!str)
+		return (0);
 	while (str[i] && str[i] != '\'')
 		i++;
 	if (!str[i])
 		return (0);
-	return (i + 1);
+	if (str[i] == '\'')
+		i++;
+	if (str[i] && !is_char(str[i + 1], "\n\t\v \r\f"))
+		i += findarg(&str[++i]);
+	return (i);
 }
 
 int	delimiter(char *str)
@@ -137,11 +149,15 @@ int	findarg(char *str)
 		i++;
 	while (!is_char(str[i], "\n\t\v \r\f|") && str[i])
 	{
+		if (str[i] == '\"')
+			i += double_quote(&str[i]);
+		else if (str[i] == '\'')
+			i += single_quote(&str[i]);
 		if (is_char(str[i + 1], "|"))
 			return (i + 1);
 		i++;
 	}
-	return (i + 1);
+	return (i);
 }
 
 int	find_element(char *str)
@@ -179,8 +195,8 @@ t_token	*make_token(char *str, int end)
 	if (!str || end <= 0)
 		return (0);
 	token->str = ft_strndup(str, end);
-	//printf("\n	content: %s", token->str);
-	//printf("\n%s", token->str);
+	printf("\n	content: %s", token->str);
+	printf("\n%s", token->str);
 	return (token);
 }
 
@@ -233,9 +249,9 @@ t_token	*parse_tokens(char *str)
 	temp = make_token(str, end);
 	list = temp;
 	i += end;
-	while ( i < (int) ft_strlen(str) && str[i])
+	skip_white_space(str, &i);
+	while (/* i < (int) ft_strlen(str) && */ str[i])
 	{
-		skip_white_space(str, &i);
 		temp = ft_tokenlast(temp);
 		end = find_element(&str[i]);
 		if (end <= 0)

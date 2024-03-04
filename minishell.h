@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 17:34:54 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/03/01 18:05:25 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/03/04 12:21:43 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include "libft/libft.h"
-//# include "src/parser/parse.h"
+# include "src/parser/parse.h"
 
 typedef enum type {
 	CMD = 0,

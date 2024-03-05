@@ -58,35 +58,35 @@ int	single_quote(char *str)
 	return (i);
 }
 
-int	delimiter(char *str)
-{
-	int	i;
-	int	j;
+// int	delimiter(char *str)
+// {
+// 	int	i;
+// 	int	j;
 
-	j = 0;
-	i = 2;
-	while (is_char(str[i], "\n\t\v \r\f") && str[i])
-		i++;
-	while (!is_char(str[i + j], "\n\t\v \r\f") && str[i])
-		j++;
-	char delimiter[j];
-	j = 0;
-	while (!is_char(str[i], "\n\t\v \r\f") && str[i])
-		delimiter[j++] = str[i++];
-	delimiter[j] = 0;
-	if (!ft_strnstr(&str[i], delimiter, 10000))
-		return (0);
-	while (str[i])
-	{
-		j = 0;
-		while (str[i + j] == delimiter[j] && str[i])
-			j++;
-		if (!delimiter[j])
-			return (i + j);
-		i++;
-	}
-	return (0);
-}
+// 	j = 0;
+// 	i = 2;
+// 	while (is_char(str[i], "\n\t\v \r\f") && str[i])
+// 		i++;
+// 	while (!is_char(str[i + j], "\n\t\v \r\f") && str[i])
+// 		j++;
+// 	char delimiter[j];
+// 	j = 0;
+// 	while (!is_char(str[i], "\n\t\v \r\f") && str[i])
+// 		delimiter[j++] = str[i++];
+// 	delimiter[j] = 0;
+// 	if (!ft_strnstr(&str[i], delimiter, 10000))
+// 		return (0);
+// 	while (str[i])
+// 	{
+// 		j = 0;
+// 		while (str[i + j] == delimiter[j] && str[i])
+// 			j++;
+// 		if (!delimiter[j])
+// 			return (i + j);
+// 		i++;
+// 	}
+// 	return (0);
+// }
 
 int	appender(char *str)
 {
@@ -144,6 +144,11 @@ int	redir_out(char *str)
 	return (i);
 }
 
+int delimiter(char *str)
+{
+	return (find_redir(&str[1]) + 1);
+}
+
 int	findarg(char *str)
 {
 	int	i;
@@ -178,8 +183,8 @@ int	find_element(char *str)
 	else if (str[i] == '\'')
 		return (single_quote(&str[i]));
 	else if (!strncmp(&str[i], "<<", 2))
-		//return (delimiter(&str[i]));
-		find_redir(&str[i + 1]);
+		return (delimiter(&str[i]));
+		//find_redir(&str[i + 1]);
 	else if (!strncmp(&str[i], ">>", 2))
 		return (appender(&str[i]));
 	else if (str[i] == '<')
@@ -215,8 +220,10 @@ void	delete_token_list(t_token *list)
 	temp = list;
 	while (temp)
 	{
-		printf("\nfreeing: %s", temp->str);
+		//printf("\nfreeing: %s", temp->str);
 		free(temp->str);
+		if (temp->delimiter)
+			free(temp->delimiter);
 		next = temp->next;
 		free(temp);
 		temp = next;

@@ -29,7 +29,7 @@ void	clean_heredoc(t_token *token)
 	// 	i++;
 	// i++;
 	j = findarg(&token->str[i]);
-	new = strndup(&token->str[i], j);
+	new = ft_strndup(&token->str[i], j);
 	// new = (char *) malloc (ft_strlen(&(token->str[i])));
 	// if (!new)
 	// 	return ;
@@ -39,7 +39,7 @@ void	clean_heredoc(t_token *token)
 	// 	j--;
 	// new[j] = 0;
 	token->delimiter = new;
-	printf("\n:clean_heredoc: \"%s\"", token->delimiter);
+	//printf("\n:clean_heredoc:del: %s", token->delimiter);
 }
 
 void	clean_token(t_token *token)
@@ -154,9 +154,9 @@ t_token	*fill_command(t_command *ret, t_token *temp)
 		else if (temp->type == (e_type) OUT)
 			replace_or_append(&ret->output, temp);
 		else if (temp->type == (e_type) APP)
-			replace_or_append(&ret->append, temp);
+			replace_or_append(&ret->output, temp);
 		else if (temp->type == (e_type) HEREDOC)
-			replace_or_append(&ret->heredoc, temp);
+			replace_or_append(&ret->input, temp);
 		freeme = temp;
 		temp = temp->next;
 		free(freeme->str);

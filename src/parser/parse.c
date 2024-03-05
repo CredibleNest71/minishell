@@ -16,7 +16,11 @@ void	print_cmds(t_command *cmd)
 		for (t_token *curr = temp_cmd->args;curr; curr = curr->next)
 			printf("\n	ARG:		%s", curr->str);
 		for (t_token *curr = temp_cmd->input;curr; curr = curr->next)
+		{
 			printf("\nIN:			%s", curr->str);
+			if (curr->type == (e_type) HEREDOC)
+				printf("\nDelimiter: %s", curr->delimiter);
+		}
 		for (t_token *curr = temp_cmd->output;curr; curr = curr->next)
 			printf("\nOUT:			%s", curr->str);
 		for (t_token *curr = temp_cmd->append;curr; curr = curr->next)
@@ -33,7 +37,7 @@ t_command	*parse(char *input, t_bigshell *data)
 	t_command	*final;
 
 	parsed = parse_tokens(input);
-	if (parsed->type == (e_type) HEREDOC)
+	if (data && parsed->type == (e_type) HEREDOC)
 		data->heredoc = parsed;
 	if (!parsed)
 		return (NULL);

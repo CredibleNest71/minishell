@@ -67,7 +67,7 @@ int main(void)
 	t_token		*parsed;
 	t_command	*cmds;
 	int			finished;
-
+	t_bigshell	data;
 	while (1)
 	{
 		finished = 0;
@@ -83,11 +83,13 @@ int main(void)
 			finished = check_fin(input);
 			if (finished < 0)
 				return (write(2, "ERROR\n", 7));
+			break ;
 		}
-		cmds = parse(input); //
+		cmds = parse(input, &data); //
 		print_cmds(cmds);
 		delete_command_list(cmds);
 		free(input);
+		break ;
 	}
 	return (0);
 }

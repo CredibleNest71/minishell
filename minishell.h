@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 17:34:54 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/03/04 18:12:42 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/03/05 14:57:53 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ typedef enum type {
 typedef struct	s_token
 {
 	char 			*str;
+	char			*delimiter;
 	int				type;
 	char			*dir;
 	struct s_token	*next;
@@ -74,6 +75,7 @@ typedef struct	s_bigshell
 	t_env		*env;
 	t_env		*s_env;
 	char		**built_ins;
+	t_token		*heredoc;	//token with delimiter and str; 
 }	t_bigshell;
 
 

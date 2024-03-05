@@ -32,7 +32,7 @@ char	*delimiter_finder(t_bigshell *data)
 	return (delimiter);
 }
 
-//${SRC_DIR}${EXEC_DIR}heredoc.c\
+//${SRC_DIR}${EXEC_DIR}heredoc.c
 //00644 = S_IRUSR | S_IWUSR
 //ft_heredoc creates a tmp file that will be deleted the moment heredoc_fd is closed
 //heredoc_fd = open(".", O_TMPFILE | O_RDWR | S_IRUSR | S_IWUSR);

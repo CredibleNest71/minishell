@@ -32,12 +32,13 @@ t_command	**commandlistmaker(char *str);
 t_token	    *parse_tokens(char *str);
 void	    delete_token_list(t_token *list);
 void	    delete_command_list(t_command *cmd);
+int			findarg(char *str);
 
 //expander
 char 		*expand(char *str);
 
 //parse
-t_command	*parse(char *input);
+t_command	*parse(char *input, t_bigshell *data);
 void		print_cmds(t_command *cmd);
 
 #endif

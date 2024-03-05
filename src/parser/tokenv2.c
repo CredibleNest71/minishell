@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 12:47:26 by mresch            #+#    #+#             */
-/*   Updated: 2024/03/01 18:12:48 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/03/05 14:36:51 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,10 @@ int	double_quote(char *str)
 	if (str[i] == '\"')
 		i++;
 	if (str[i] && !is_char(str[i + 1], "\n\t\v \r\f"))
-		i += findarg(&str[++i]);
+	{
+		i++;
+		i += findarg(&str[i]);
+	}
 	return (i);
 }
 
@@ -48,7 +51,10 @@ int	single_quote(char *str)
 	if (str[i] == '\'')
 		i++;
 	if (str[i] && !is_char(str[i + 1], "\n\t\v \r\f"))
-		i += findarg(&str[++i]);
+	{
+		i++;
+		i += findarg(&str[i]);
+	}
 	return (i);
 }
 
@@ -172,7 +178,8 @@ int	find_element(char *str)
 	else if (str[i] == '\'')
 		return (single_quote(&str[i]));
 	else if (!strncmp(&str[i], "<<", 2))
-		return (delimiter(&str[i]));
+		//return (delimiter(&str[i]));
+		find_redir(&str[i + 1]);
 	else if (!strncmp(&str[i], ">>", 2))
 		return (appender(&str[i]));
 	else if (str[i] == '<')
@@ -195,8 +202,8 @@ t_token	*make_token(char *str, int end)
 	if (!str || end <= 0)
 		return (0);
 	token->str = ft_strndup(str, end);
-	printf("\n	content: %s", token->str);
-	printf("\n%s", token->str);
+	//printf("\n	content: %s", token->str);
+	//printf("\n%s", token->str);
 	return (token);
 }
 

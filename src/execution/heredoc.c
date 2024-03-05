@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 14:55:27 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/03/05 14:20:47 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/03/05 14:48:31 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@ char	*delimiter_finder(t_bigshell *data)
 	char	*delimiter;
 	
 	delimiter = NULL;
+	if (!data->commands)
+		return (NULL);
 	tmp_input = data->commands->input;
 	while (tmp_input)
 	{
@@ -59,7 +61,7 @@ void	ft_heredoc(t_bigshell *data)
 		 	break ;
 		lineread = expand(lineread);
 		write(heredoc_fd, lineread, ft_strlen(lineread));
-		write(heredoc_fd, "\n", 1);
+		write(heredoc_fd, "\n", 1); //possibly problematic
 		//printf("%s\n", lineread);
 	}
 	//pass tmpfile.txt to execution

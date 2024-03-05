@@ -1,5 +1,6 @@
 #include "../../minishell.h"
 #include "parse.h"
+#include <string.h>
 
 t_token	*expand_token(t_token *token)
 {
@@ -21,24 +22,24 @@ void	clean_heredoc(t_token *token)
 
 	i = 0;
 	j = 0;
-	printf("\n:clean_heredoc: \"%s\"", token->str);
+	//printf("\n:clean_heredoc: \"%s\"", token->str);
 	while (is_char(token->str[i], "\n\t\v \r\f<"))
 		i++;
-	while (!is_char(token->str[i], "\n\t\v \r\f"))
-		i++;
-	i++;
-
-	new = (char *) malloc (ft_strlen(&(token->str[i])));
-	if (!new)
-		return ;
-	while (token->str[i])
-		new[j++] = token->str[i++];
-	while (!is_char(new[--j], "\n\t\v \r\f") && j)
-		j--;
-	new[j] = 0;
-	free(token->str);
-	token->str = new;
-	printf("\n:clean_heredoc: \"%s\"", token->str);
+	// while (!is_char(token->str[i], "\n\t\v \r\f"))
+	// 	i++;
+	// i++;
+	j = findarg(&token->str[i]);
+	new = strndup(&token->str[i], j);
+	// new = (char *) malloc (ft_strlen(&(token->str[i])));
+	// if (!new)
+	// 	return ;
+	// while (token->str[i])
+	// 	new[j++] = token->str[i++];
+	// while (!is_char(new[--j], "\n\t\v \r\f") && j)
+	// 	j--;
+	// new[j] = 0;
+	token->delimiter = new;
+	printf("\n:clean_heredoc: \"%s\"", token->delimiter);
 }
 
 void	clean_token(t_token *token)

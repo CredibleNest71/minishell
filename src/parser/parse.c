@@ -27,12 +27,14 @@ void	print_cmds(t_command *cmd)
 	}
 }
 
-t_command	*parse(char *input)
+t_command	*parse(char *input, t_bigshell *data)
 {
 	t_token		*parsed;
 	t_command	*final;
 
 	parsed = parse_tokens(input);
+	if (parsed->type == (e_type) HEREDOC)
+		data->heredoc = parsed;
 	if (!parsed)
 		return (NULL);
 	final = transform(parsed);

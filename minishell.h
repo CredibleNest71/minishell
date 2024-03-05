@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 17:34:54 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/03/05 14:57:53 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/03/05 16:53:58 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,14 +42,11 @@ typedef struct	s_token
 
 typedef struct s_command
 {
-	t_token				*input;		//<
-	t_token				*output;	//>
-	t_token				*append;	//>>
-	t_token				*heredoc;	//<<
 	t_token				*cmd;		//command
 	t_token				*args;		//arguments
+	t_token				*input;		//< / heredoc
+	t_token				*output;	//> / append
 	int					arg_num;
-	t_token				*nexus;		//PIPE?
 	struct s_command	*next;
 }	 t_command;
 
@@ -129,5 +126,7 @@ void	free_commands(t_bigshell *data);
 void	free_struct(t_bigshell *data);
 
 void	ft_heredoc(t_bigshell *data);
+char	*delimiter_finder(t_bigshell *data);
+char	*check_for_quotes(char *eof);
 
 #endif

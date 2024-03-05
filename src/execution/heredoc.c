@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 14:55:27 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/03/05 16:45:19 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/03/05 17:23:19 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,4 +98,7 @@ void	ft_heredoc(t_bigshell *data)
 	}
 	//pass tmpfile.txt to execution
 	//after execution check for tmpfile and delete it
+	if (!data->commands)
+		return ;
+	simple_exec(data);
 }

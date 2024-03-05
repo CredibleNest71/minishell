@@ -37,7 +37,7 @@ char	*find_var_name(char *str)
 	if (!str[i])
 		return (NULL);
 	i++;
-	while (!is_char(str[i + j], "\n\t\v \r\f") && str[i + j])
+	while (!is_char(str[i + j], "\n\t\v \r\f$") && str[i + j])
 		j++;
 	return (ft_strndup(&str[i], j));
 }

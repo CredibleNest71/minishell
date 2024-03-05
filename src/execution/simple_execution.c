@@ -6,15 +6,12 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 17:54:30 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/03/04 18:13:31 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/03/05 12:02:36 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../parser/parse.h"
 #include "../../minishell.h"
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
 
 // needs to be a child bc execve will kill the process otherwise
 void	simple_exec(t_bigshell *data)

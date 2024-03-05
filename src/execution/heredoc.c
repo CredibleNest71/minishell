@@ -6,13 +6,16 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 14:55:27 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/03/04 18:51:40 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/03/05 14:20:47 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 #include "../parser/parse.h"
+#include <unistd.h>
 
+
+//checks for delimiter
 char	*delimiter_finder(t_bigshell *data)
 {
 	t_token *tmp_input;
@@ -54,24 +57,11 @@ void	ft_heredoc(t_bigshell *data)
 		lineread = readline("> ");
 		if (lineread == eof || lineread == NULL)
 		 	break ;
-		//have to check for expansions and access that
-		//ex. cat << heredoc EOF
-		//> print the path: $path
-		//EOF
 		lineread = expand(lineread);
 		write(heredoc_fd, lineread, ft_strlen(lineread));
+		write(heredoc_fd, "\n", 1);
 		//printf("%s\n", lineread);
 	}
 	//pass tmpfile.txt to execution
 	//after execution check for tmpfile and delete it
 }
-
-
-/* int	main()
-{
-	t_bigshell data;
-	char *lineread;
-	lineread = readline("tinyshell: ");
-	data.commands = parse(lineread);
-	ft_heredoc(&data);
-} */

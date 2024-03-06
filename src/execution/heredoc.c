@@ -51,7 +51,7 @@ char	*check_for_quotes(char *eof)
 	delimiter = NULL;
 	if (eof[i] == '"' || eof[i] == 27)
 	{
-		while (i < ft_strlen(eof))
+		while ((int) i < ft_strlen(eof))
 			delimiter[j++] = eof[++i];
 		delimiter[j] = '\0';
 		printf("%s\n", delimiter);
@@ -61,7 +61,7 @@ char	*check_for_quotes(char *eof)
 	return (delimiter);
 }
 
-//${SRC_DIR}${EXEC_DIR}heredoc.c\
+//${SRC_DIR}${EXEC_DIR}heredoc.c
 //00644 = S_IRUSR | S_IWUSR
 //ft_heredoc creates a tmp file that will be deleted the moment heredoc_fd is closed
 //heredoc_fd = open(".", O_TMPFILE | O_RDWR | S_IRUSR | S_IWUSR);

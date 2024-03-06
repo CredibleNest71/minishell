@@ -238,8 +238,6 @@ void	delete_command_list(t_command *cmd)
 	{
 		delete_token_list(cmd->input);
 		delete_token_list(cmd->output);
-		delete_token_list(cmd->append);
-		delete_token_list(cmd->heredoc);
 		delete_token_list(cmd->cmd);
 		delete_token_list(cmd->args);
 		prev = cmd;

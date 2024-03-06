@@ -51,7 +51,7 @@ char	*check_for_quotes(char *eof)
 	delimiter = NULL;
 	if (eof[i] == '"' || eof[i] == 27)
 	{
-		while (i < ft_strlen(eof))
+		while ((int) i < ft_strlen(eof))
 			delimiter[j++] = eof[++i];
 		delimiter[j] = '\0';
 		printf("%s\n", delimiter);

@@ -31,7 +31,7 @@ void	print_cmds(t_command *cmd)
 		//	printf("\nAPP:			%s", curr->str);
 		//for (t_token *curr = temp_cmd->heredoc;curr; curr = curr->next)
 		//	printf("\nHere:			%s", curr->str);
-		printf("\n==========================================");
+		printf("\n==========================================\n");
 	}
 }
 

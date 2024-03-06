@@ -22,11 +22,15 @@ void	print_cmds(t_command *cmd)
 				printf("\nDelimiter: %s", curr->delimiter);
 		}
 		for (t_token *curr = temp_cmd->output;curr; curr = curr->next)
-			printf("\nOUT:			%s", curr->str);
-		for (t_token *curr = temp_cmd->append;curr; curr = curr->next)
-			printf("\nAPP:			%s", curr->str);
-		for (t_token *curr = temp_cmd->heredoc;curr; curr = curr->next)
-			printf("\nHere:			%s", curr->str);
+		{
+			if (curr->type == (e_type) APP)
+				printf("\nAPP:		%s", curr->str);
+			else
+				printf("\nOUT:			%s", curr->str);
+		}//for (t_token *curr = temp_cmd->append;curr; curr = curr->next)
+		//	printf("\nAPP:			%s", curr->str);
+		//for (t_token *curr = temp_cmd->heredoc;curr; curr = curr->next)
+		//	printf("\nHere:			%s", curr->str);
 		printf("\n==========================================");
 	}
 }

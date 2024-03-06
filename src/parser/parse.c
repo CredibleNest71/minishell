@@ -19,12 +19,12 @@ void	print_cmds(t_command *cmd)
 		{
 			printf("\nIN:			%s", curr->str);
 			if (curr->type == (e_type) HEREDOC)
-				printf("\nDelimiter: %s", curr->delimiter);
+				printf("\n	Delimiter: 	%s", curr->delimiter);
 		}
 		for (t_token *curr = temp_cmd->output;curr; curr = curr->next)
 		{
 			if (curr->type == (e_type) APP)
-				printf("\nAPP:		%s", curr->str);
+				printf("\nAPP:			%s", curr->str);
 			else
 				printf("\nOUT:			%s", curr->str);
 		}//for (t_token *curr = temp_cmd->append;curr; curr = curr->next)

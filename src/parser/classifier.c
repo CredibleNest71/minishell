@@ -66,7 +66,11 @@ void	clean_token(t_token *token)
 	if (!new)
 		return ;
 	while (token->str[i])
+	{
+		while (is_char(token->str[i], "\"\'"))
+			i++;
 		new[j++] = token->str[i++];
+	}
 	if (is_char(new[j - 1], "\"\'"))
 		new[j - 1] = 0;
 	free(token->str);

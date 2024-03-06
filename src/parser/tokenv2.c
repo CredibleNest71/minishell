@@ -29,7 +29,7 @@ int	double_quote(char *str)
 		return (0);
 	if (str[i] == '\"')
 		i++;
-	if (str[i] && !is_char(str[i + 1], "\n\t\v \r\f"))
+	if (str[i] && !is_char(str[i], "\n\t\v \r\f"))
 	{
 		i++;
 		i += findarg(&str[i]);
@@ -50,7 +50,7 @@ int	single_quote(char *str)
 		return (0);
 	if (str[i] == '\'')
 		i++;
-	if (str[i] && !is_char(str[i + 1], "\n\t\v \r\f"))
+	if (str[i] && !is_char(str[i], "\n\t\v \r\f"))
 	{
 		i++;
 		i += findarg(&str[i]);

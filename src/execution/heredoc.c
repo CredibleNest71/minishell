@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 14:55:27 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/03/05 17:23:19 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/03/06 12:10:10 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,9 +38,6 @@ char	*delimiter_finder(t_bigshell *data)
 	return (delimiter);
 }
 
-<<<<<<< HEAD
-//${SRC_DIR}${EXEC_DIR}heredoc.c
-=======
 //checks for expansion suppression
 //hex code of ' == 27
 char	*check_for_quotes(char *eof)
@@ -65,7 +62,6 @@ char	*check_for_quotes(char *eof)
 }
 
 //${SRC_DIR}${EXEC_DIR}heredoc.c\
->>>>>>> df30aea88339862e3cc928b9e489c957881bcab7
 //00644 = S_IRUSR | S_IWUSR
 //ft_heredoc creates a tmp file that will be deleted the moment heredoc_fd is closed
 //heredoc_fd = open(".", O_TMPFILE | O_RDWR | S_IRUSR | S_IWUSR);

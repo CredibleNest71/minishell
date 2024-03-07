@@ -156,9 +156,9 @@ int	findarg(char *str)
 	i = 0;
 	if (!str)
 		return (0);
-	while (is_char(str[i], "\n\t\v \r\f") && str[i])
+	while (str[i] && (str[i], "\n\t\v \r\f"))
 		i++;
-	while (!is_char(str[i], "\n\t\v \r\f|") && str[i])
+	while (str[i] && !is_char(str[i], "\n\t\v \r\f|"))
 	{
 		if (str[i] == '\"')
 			i += double_quote(&str[i]);

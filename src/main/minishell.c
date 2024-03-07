@@ -31,12 +31,15 @@
 	return (1);
 } */
 
+t_sig	g_sig;
+
 int main(int argc, char **argv, char **env)
 {
 	t_bigshell	data;
 	char		*lineread;
 	int			i;
 
+	sig_init(&data);
 	lineread = NULL;
 	ft_bzero(&data, sizeof(data));
 	data.og_env = env;

@@ -76,6 +76,14 @@ typedef struct	s_bigshell
 }	t_bigshell;
 
 
+typedef struct s_signal
+{
+	int			sigint;
+	int			sigquit;
+	int			pid;
+	t_bigshell *data;
+}	t_sig;
+
 void	store_restore_fds(int mode);
 void	check_file(const char *file, int mode);
 void	redir(t_command *command, t_bigshell *data);

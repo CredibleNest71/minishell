@@ -41,4 +41,8 @@ char 		*expand(char *str);
 t_command	*parse(char *input, t_bigshell *data);
 void		print_cmds(t_command *cmd);
 
+//signal
+void    sig_init(t_bigshell *data);
+
+
 #endif

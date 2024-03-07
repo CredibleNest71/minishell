@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 12:47:26 by mresch            #+#    #+#             */
-/*   Updated: 2024/03/05 14:36:51 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/03/07 12:20:40 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,7 +156,7 @@ int	findarg(char *str)
 	i = 0;
 	if (!str)
 		return (0);
-	while (str[i] && (str[i], "\n\t\v \r\f"))
+	while (str[i] && is_char(str[i], "\n\t\v \r\f"))
 		i++;
 	while (str[i] && !is_char(str[i], "\n\t\v \r\f|"))
 	{

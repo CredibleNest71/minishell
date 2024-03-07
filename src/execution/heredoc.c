@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 14:55:27 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/03/07 11:56:14 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/03/07 12:39:38 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,10 +73,10 @@ char	*check_for_quotes(t_bigshell *data, char *eof)
 		while (++i < ft_strlen(eof))
 		{
 			delimiter[++j] = eof[i];
-			printf("%zu\n %zu\n", j, i);
+		//	printf("%zu\n %zu\n", j, i);
 		}
-		delimiter[j] = '\0';
-		printf("%zu\n", j);
+		delimiter[j] = '\0'; //am I overwriting shit?
+		//printf("%zu\n", j);
 		//printf("%s\n", delimiter);
 		return (delimiter);
 	}
@@ -112,7 +112,7 @@ void	ft_heredoc(t_bigshell *data)
 	{
 		lineread = readline("> ");
 		printf("%s\n", eof_mod);
-		if (lineread == eof_mod || lineread == NULL)
+		if (!(ft_strncmp(eof_mod, lineread, ft_strlen(eof_mod))) || lineread == NULL)
 		 	break ;
 		if (eof[i] == '"' || eof[i] == 27)
 			lineread = expand(lineread);

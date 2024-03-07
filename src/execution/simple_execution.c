@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 17:54:30 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/03/06 16:17:53 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/03/07 16:15:26 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,11 @@
 #include "../../minishell.h"
 
 // needs to be a child bc execve will kill the process otherwise
+//we 1st check if redir is needed. <input & <<heredoc are both stored in cmd->input
+//therefore if im coming from heredoc it'll enter redir. If <<heredoc is the final
+//file then ill try to access it. have to make tmpfile.txt accesible to redir()
+//overwrite input->str? (stupid? probably) make new struct member char *heredoc_file?
+
 void	simple_exec(t_bigshell *data)
 {
 	char	**paths;
@@ -44,7 +49,7 @@ void	simple_exec(t_bigshell *data)
     }
 } */
 
-int	main(/*int argc, char **argv, char **env*/)
+int	main(int argc, char **argv, char **env)
 {
 	t_bigshell	data;
 // 	t_command	*command = (t_command *) malloc (sizeof(t_command));
@@ -95,12 +100,12 @@ int	main(/*int argc, char **argv, char **env*/)
 // 	data.commands = command;
 // 	//printf("lol\n");
 	
-// 	data.og_env = env;
+ 	data.og_env = env;
 // 	data.reference_i = 0;
 // 	data.s_env = NULL;
 
 //     // Store environment strings in the linked list
-//     store_env(&data, env);
+     store_env(&data, env);
 // 	ft_export(&data);
 // 	//data.commands->args = arg2;
 // 	//printf("%s\n", data.commands->args->str);
@@ -120,13 +125,13 @@ int	main(/*int argc, char **argv, char **env*/)
 // 		printf("%s\n", data.mod_env[e]);
 // 	} */
 	
-// 	data.built_ins = (char **)malloc(sizeof(char *) * 8); //7 elements plus NULL
+ 	data.built_ins = (char **)malloc(sizeof(char *) * 8); //7 elements plus NULL
 //  	if (!data.built_ins)
 // 	{
 // 		printf("malloc failed\n");
 // 	}
 // 	//data.built_ins = built_in_list(&data);
-// 	built_in_list(&data);
+ 	built_in_list(&data);
 // 	//free(data.built_ins);
 // 	//free_builtin_list(&data);
 // 	// free_builtin_list(&data);
@@ -145,8 +150,8 @@ int	main(/*int argc, char **argv, char **env*/)
 	
 // 	//data.commands = data.commands->next;
 
-// 	if (argc && argv) 
-// 		printf("unecessary stuff\n");
+	if (argc && argv) 
+		printf("\n");
 // 	/* store_restore_fds(1);
 // 	simple_exec(&data); */
 // /* 	data.id = fork();

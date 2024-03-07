@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 17:54:30 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/03/05 15:02:31 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/03/06 16:17:53 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -161,5 +161,6 @@ int	main(/*int argc, char **argv, char **env*/)
 	lineread = readline("tinyshell: ");
 	data.commands = parse(lineread, &data);
 	//print_cmds(data.commands);
-	ft_heredoc(&data);
+	if (heredoc_finder(&data) == 0)
+			ft_heredoc(&data);
 }

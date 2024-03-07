@@ -6,13 +6,30 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 14:55:27 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/03/06 12:38:45 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/03/07 11:56:14 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 #include "../parser/parse.h"
+//#include <iterator>
+#include <stdio.h>
 #include <unistd.h>
+
+//heredoc_finder is in minishell.c (here 4 testing purposes)
+int	heredoc_finder(t_bigshell *data)
+{
+	t_token	*tmp;
+
+	tmp = data->commands->input;
+	while (tmp)
+	{
+		if (tmp->type == (enum type) HEREDOC)
+			return (0);
+		tmp = tmp->next;
+	}
+	return (1);
+}
 
 //checks for delimiter
 char	*delimiter_finder(t_bigshell *data)
@@ -40,21 +57,27 @@ char	*delimiter_finder(t_bigshell *data)
 
 //checks for expansion suppression
 //hex code of ' == 27
-char	*check_for_quotes(char *eof)
+char	*check_for_quotes(t_bigshell *data, char *eof)
 {
 	size_t	i;
 	size_t	j;
 	char	*delimiter;
 	
 	i = 0;
-	j = 0;
-	delimiter = NULL;
+	j = -1;
+	delimiter = malloc(sizeof(char) * (ft_strlen(eof) - 1));
+	if (!delimiter)
+		fatal_error(data, 1);
 	if (eof[i] == '"' || eof[i] == 27)
 	{
-		while ((int) i < ft_strlen(eof))
-			delimiter[j++] = eof[++i];
+		while (++i < ft_strlen(eof))
+		{
+			delimiter[++j] = eof[i];
+			printf("%zu\n %zu\n", j, i);
+		}
 		delimiter[j] = '\0';
-		printf("%s\n", delimiter);
+		printf("%zu\n", j);
+		//printf("%s\n", delimiter);
 		return (delimiter);
 	}
 	delimiter = eof;
@@ -79,15 +102,16 @@ void	ft_heredoc(t_bigshell *data)
 	i = 0;
 	lineread = NULL;
 	eof = delimiter_finder(data);
-	/* if (!eof)
-		simple_error(data, 1); */
-	eof_mod = check_for_quotes(eof);
+	if (!eof)
+		simple_error(data, 1);
+	eof_mod = check_for_quotes(data, eof);
 	heredoc_fd = open("tmpfile.txt", O_CREAT | O_TRUNC | O_RDWR, 00644);
 	if (heredoc_fd == -1)
 		simple_error(data, 1);
 	while (1)
 	{
 		lineread = readline("> ");
+		printf("%s\n", eof_mod);
 		if (lineread == eof_mod || lineread == NULL)
 		 	break ;
 		if (eof[i] == '"' || eof[i] == 27)
@@ -98,7 +122,7 @@ void	ft_heredoc(t_bigshell *data)
 	}
 	//pass tmpfile.txt to execution
 	//after execution check for tmpfile and delete it
-	if (!data->commands)
+	/* if (!data->commands)
 		return ;
-	simple_exec(data);
+	simple_exec(data); */
 }

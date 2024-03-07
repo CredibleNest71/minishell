@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 17:34:54 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/03/05 16:53:58 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/03/06 16:42:56 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,6 +127,7 @@ void	free_struct(t_bigshell *data);
 
 void	ft_heredoc(t_bigshell *data);
 char	*delimiter_finder(t_bigshell *data);
-char	*check_for_quotes(char *eof);
+char	*check_for_quotes(t_bigshell *data, char *eof);
+int		heredoc_finder(t_bigshell *data);
 
 #endif

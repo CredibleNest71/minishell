@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 11:33:48 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/03/05 14:46:04 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/03/06 16:19:03 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 
 
 //checks if there's a heredoc present in the cmd line
-int	heredoc_finder(t_bigshell *data)
+/* int	heredoc_finder(t_bigshell *data)
 {
 	t_token	*tmp;
 
@@ -29,7 +29,7 @@ int	heredoc_finder(t_bigshell *data)
 		tmp = tmp->next;
 	}
 	return (1);
-}
+} */
 
 int main(int argc, char **argv, char **env)
 {

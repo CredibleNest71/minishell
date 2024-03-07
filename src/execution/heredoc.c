@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 14:55:27 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/03/07 12:39:38 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/03/07 14:31:30 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,7 @@ void	ft_heredoc(t_bigshell *data)
 	while (1)
 	{
 		lineread = readline("> ");
-		printf("%s\n", eof_mod);
+		//printf("%s\n", eof_mod);
 		if (!(ft_strncmp(eof_mod, lineread, ft_strlen(eof_mod))) || lineread == NULL)
 		 	break ;
 		if (eof[i] == '"' || eof[i] == 27)
@@ -122,7 +122,7 @@ void	ft_heredoc(t_bigshell *data)
 	}
 	//pass tmpfile.txt to execution
 	//after execution check for tmpfile and delete it
-	/* if (!data->commands)
-		return ;
-	simple_exec(data); */
+	if (!data->commands)
+		return ; //heredoc no hace nada sin un cmd pero el tmpfile tiene que ser deleted
+	simple_exec(data);
 }

@@ -6,12 +6,13 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 17:54:30 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/03/07 16:15:26 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/03/08 17:09:19 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../parser/parse.h"
 #include "../../minishell.h"
+#include <strings.h>
 
 // needs to be a child bc execve will kill the process otherwise
 //we 1st check if redir is needed. <input & <<heredoc are both stored in cmd->input
@@ -100,7 +101,6 @@ int	main(int argc, char **argv, char **env)
 // 	data.commands = command;
 // 	//printf("lol\n");
 	
- 	data.og_env = env;
 // 	data.reference_i = 0;
 // 	data.s_env = NULL;
 
@@ -125,13 +125,11 @@ int	main(int argc, char **argv, char **env)
 // 		printf("%s\n", data.mod_env[e]);
 // 	} */
 	
- 	data.built_ins = (char **)malloc(sizeof(char *) * 8); //7 elements plus NULL
 //  	if (!data.built_ins)
 // 	{
 // 		printf("malloc failed\n");
 // 	}
 // 	//data.built_ins = built_in_list(&data);
- 	built_in_list(&data);
 // 	//free(data.built_ins);
 // 	//free_builtin_list(&data);
 // 	// free_builtin_list(&data);
@@ -162,10 +160,16 @@ int	main(int argc, char **argv, char **env)
 // 		simple_exec(&data);
 // 	}
 // 	return (0); */
+	bzero(&data, sizeof(data));
+ 	data.og_env = env;
+	store_env(&data, env);
+ 	data.built_ins = (char **)malloc(sizeof(char *) * 8); //7 elements plus NULL
+ 	built_in_list(&data);
 	char *lineread;
 	lineread = readline("tinyshell: ");
 	data.commands = parse(lineread, &data);
 	//print_cmds(data.commands);
-	if (heredoc_finder(&data) == 0)
-			ft_heredoc(&data);
+	/* if (heredoc_finder(&data) == 0)
+			ft_heredoc(&data); */
+	simple_exec(&data);
 }

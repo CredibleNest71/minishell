@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   simple_execution.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
+/*   By: a <a@student.42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 17:54:30 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/03/07 16:15:26 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/03/08 16:01:34 by a                ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,6 +162,7 @@ int	main(int argc, char **argv, char **env)
 // 		simple_exec(&data);
 // 	}
 // 	return (0); */
+	ft_bzero(&data, sizeof(data));
 	char *lineread;
 	lineread = readline("tinyshell: ");
 	data.commands = parse(lineread, &data);

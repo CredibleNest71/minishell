@@ -6,12 +6,11 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 10:32:36 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/03/08 19:17:27 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/03/08 19:24:17 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
-#include <cerrno>
 #include <stdio.h>
 #include <unistd.h>
 

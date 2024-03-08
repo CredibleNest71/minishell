@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 17:34:54 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/03/06 16:42:56 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/03/08 19:19:09 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,17 @@
 # include <fcntl.h>
 # include <readline/readline.h>
 # include <readline/history.h>
+# include <errno.h>
 # include "libft/libft.h"
 //# include "src/parser/parse.h"
+
+# ifndef BUFFER
+# define BUFFER 50
+# endif
+
+# ifndef BUFFER_INCREMENT
+# define BUFFER_INCREMENT 2
+# endif
 
 typedef enum type {
 	CMD = 0,

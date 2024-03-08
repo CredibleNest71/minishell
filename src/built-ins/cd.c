@@ -6,11 +6,12 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 10:32:36 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/03/01 11:27:17 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/03/08 19:17:27 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
+#include <cerrno>
 #include <stdio.h>
 #include <unistd.h>
 
@@ -27,15 +28,33 @@
 void	ft_cd(t_bigshell *data)
 {
 	char	*path;
-	//pwdchar	*cwd; //somehow dynamically allocate this
+	char	*cwd; //somehow dynamically allocate this
+	//int		getcwd_result;
+	size_t	buffer_size;
+	
 	if (data->commands->arg_num > 1)
-		simple_error(data, 1); //for whatever reason perror prints "success"?
-	if (!data->commands->args || ft_strncmp(data->commands->args->str, "~", 2) == 0) //~ means /home/user/
+		simple_error(data, 1); //perror prints "success"?
+	if (!data->commands->args || ft_strncmp(data->commands->args->str, "~", 1) == 0)
 		path = getenv("HOME");
 
-	/* if (ft_strncmp(data->commands->args->str, "..", 2) == 0)
+	if (ft_strncmp(data->commands->args->str, "..", 2) == 0)
 	{
-		cwd = getcwd(cwd, sizeof(cwd));
+		buffer_size = BUFFER;
+		cwd = malloc(sizeof(char) * BUFFER);
+		if (!cwd)
+			fatal_error(data, 1);
+		cwd = getcwd(cwd, BUFFER);
+		if (!cwd && errno == ERANGE)
+		{
+			//simple_error(data, 1); //perror: unable to get current dir
+			free(cwd);
+			while (!cwd)
+			{
+				buffer_size *= BUFFER_INCREMENT;
+				cwd = getcwd(cwd, buffer_size);
+			}
+		}
+		
 		//delete everything including and after the last /
 		
 		getcwd again

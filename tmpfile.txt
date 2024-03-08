@@ -1,0 +1,7 @@
+<<<<<<<<< Temporary merge branch 1
+a
+=========
+hoola
+"eof"
+$PATH
+>>>>>>>>> Temporary merge branch 2

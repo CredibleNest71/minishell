@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
+/*   By: a <a@student.42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 14:55:27 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/03/07 14:31:30 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/03/08 15:00:08 by a                ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,20 @@ int	heredoc_finder(t_bigshell *data)
 {
 	t_token	*tmp;
 
-	tmp = data->commands->input;
-	while (tmp)
+	if (!data->commands)
 	{
-		if (tmp->type == (enum type) HEREDOC)
-			return (0);
-		tmp = tmp->next;
+		if (data->heredoc)
+			return(0);
+	}
+	else
+	{
+		tmp = data->commands->input;
+		while (tmp)
+		{
+			if (tmp->type == (enum type) HEREDOC)
+				return (0);
+			tmp = tmp->next;
+		}
 	}
 	return (1);
 }

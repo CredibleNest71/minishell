@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirection.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: a <a@student.42.fr>                        +#+  +:+       +#+        */
+/*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 17:59:11 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/02/13 12:45:55 by a                ###   ########.fr       */
+/*   Updated: 2024/03/07 17:42:13 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,10 @@ void	redir(t_command *command, t_bigshell *data) // fix to do: needs to be able 
 	
 	if (command->input) // redirecting input "<"
 	{
-		check_file(command->input->str, 0); //fix exit
+		if (data->heredoc)
+			check_file("tmpfile.txt", 0);
+		else
+			check_file(command->input->str, 0); //fix exit
 		fd_in = open(command->input->str, O_RDONLY);
 		if (fd_in == -1)
 		{

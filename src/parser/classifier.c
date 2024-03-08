@@ -39,6 +39,8 @@ void	clean_heredoc(t_token *token)
 	// 	j--;
 	// new[j] = 0;
 	token->delimiter = new;
+	free(token->str);
+	token->str = NULL;
 	//printf("\n:clean_heredoc:del: %s", token->delimiter);
 }
 

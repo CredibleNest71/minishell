@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 10:32:36 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/03/11 16:32:38 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/03/11 17:07:23 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 	SEP,
 } typedef e_type;*/
 
+//This function takes a full path as input and removes the last directory from it.
 char	*delete_tail(t_bigshell *data, char *full_path)
 {
 	int		i;
@@ -30,6 +31,8 @@ char	*delete_tail(t_bigshell *data, char *full_path)
 	int		len;
 	char	*mod_path;
 	
+	i = 0;
+	j = 0;
 	len = ft_strlen(full_path);
 	while (full_path[i])
 		i++;
@@ -49,18 +52,18 @@ char	*delete_tail(t_bigshell *data, char *full_path)
 	return (mod_path);
 }
 
+//This function changes the current working directory based on
+//the provided arguments.
 void	ft_cd(t_bigshell *data)
 {
 	char	*path;
 	char	*cwd; //somehow dynamically allocate this
 	char	*mod_cwd;
-	//int		getcwd_result;
 	size_t	buffer_size;
 	
+	cwd = NULL;
 	if (data->commands->arg_num > 1)
 		simple_error(data, 1); //perror prints "success"? should be too many args
-	if (!data->commands->args || ft_strncmp(data->commands->args->str, "~", 1) == 0)
-		path = getenv("HOME");
 	if (ft_strncmp(data->commands->args->str, "..", 2) == 0)
 	{
 		buffer_size = BUFFER;
@@ -89,10 +92,15 @@ void	ft_cd(t_bigshell *data)
 		free(cwd);
 		free(mod_cwd);
 	}
+	if (!data->commands->args || ft_strncmp(data->commands->args->str, "~", 1) == 0)
+		path = getenv("HOME");
+	else
+		path = data->commands->args->str;
 	// else (data->commands->args[0])
 	//	path = data->commands->args[0]->str;
 	if (chdir(path) == -1)
-		perror("cd failure:");
+		simple_error(data, 1);
+		//perror("cd failure:");
 	return ;
 }
 

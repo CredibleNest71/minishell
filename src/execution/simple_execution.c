@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 17:54:30 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/03/08 19:26:18 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/03/11 17:28:03 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,9 @@ void	simple_exec(t_bigshell *data)
 	char	**paths;
 	char	*correct_path;
 	
-	if (data->commands->input || data->commands->output)
+	/* if (data->commands->input || data->commands->output)
 		redir(data->commands, data);
-	builtin_check_exec(data, data->commands->cmd->str);
+	builtin_check_exec(data, data->commands->cmd->str); */ //moved to main, redirection may cause segfault
 	convert_env(data);
 	paths = find_and_split_path(data->mod_env);
 	if (!paths)
@@ -163,8 +163,9 @@ int	main(int argc, char **argv, char **env)
 	bzero(&data, sizeof(data));
  	data.og_env = env;
 	store_env(&data, env);
- 	data.built_ins = (char **)malloc(sizeof(char *) * 8); //7 elements plus NULL
- 	built_in_list(&data);
+ 	//data.built_ins = (char **)malloc(sizeof(char *) * 8); //7 elements plus NULL
+ 	//built_in_list(&data);
+	builtin_allrounder(&data);
 	char *lineread;
 	lineread = readline("tinyshell: ");
 	data.commands = parse(lineread, &data);

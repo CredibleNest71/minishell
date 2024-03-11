@@ -158,14 +158,16 @@ int	findarg(char *str)
 		return (0);
 	while (str[i] && is_char(str[i], "\n\t\v \r\f"))
 		i++;
+	if (str[i] == '|')
+		return (i + 1);
 	while (str[i] && !is_char(str[i], "\n\t\v \r\f|"))
 	{
+		if (is_char(str[i + 1], "|"))
+			return (i + 1);
 		if (str[i] == '\"')
 			i += double_quote(&str[i]);
 		else if (str[i] == '\'')
 			i += single_quote(&str[i]);
-		if (is_char(str[i + 1], "|"))
-			return (i + 1);
 		i++;
 	}
 	return (i);
@@ -184,7 +186,6 @@ int	find_element(char *str)
 		return (single_quote(&str[i]));
 	else if (!strncmp(&str[i], "<<", 2))
 		return (delimiter(&str[i]));
-		//find_redir(&str[i + 1]);
 	else if (!strncmp(&str[i], ">>", 2))
 		return (appender(&str[i]));
 	else if (str[i] == '<')
@@ -256,7 +257,9 @@ t_token	*parse_tokens(char *str)
 	if (!str)
 		return (NULL);
 	i = 0;
-	end = 0;
+	skip_white_space(str, &i);
+	str = str + i;
+	i = 0;
 	end = find_element(str);
 	temp = make_token(str, end);
 	list = temp;
@@ -267,7 +270,7 @@ t_token	*parse_tokens(char *str)
 		temp = ft_tokenlast(temp);
 		end = find_element(&str[i]);
 		if (end <= 0)
-			return (delete_token_list(list), NULL);
+			return (write(2, "ERROR::parse_tokens::\n", 23), delete_token_list(list), NULL);
 		temp->next = make_token(&str[i], end);
 		i += end;
 		skip_white_space(str, &i);

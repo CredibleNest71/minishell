@@ -68,28 +68,15 @@ int main(void)
 	t_command	*cmds;
 	int			finished;
 	t_bigshell	data;
-	while (1)
-	{
-		finished = 0;
-		input = ft_strdup("");
-		printf("\nEnter commands:");
-		while (!finished)
-		{
-			temp = input;
-			temp2 = readline(">");
-			input = ft_strjoin(input, temp2);
-			free(temp);
-			free(temp2);
-			// finished = check_fin(input);
-			// if (finished < 0)
-			// 	return (write(2, "ERROR\n", 7));
-			break ;
-		}
-		cmds = parse(input, NULL); //
-		print_cmds(cmds);
-		delete_command_list(cmds);
-		free(input);
-		break ;
-	}
+
+	printf("\nEnter commands:");
+	input = readline(">");
+	printf("::parse::");
+	cmds = parse(input, NULL); //
+	printf("::parsed::\n");
+	printf("::transformed::\n");
+	print_cmds(cmds);
+	delete_command_list(cmds);
+	free(input);
 	return (0);
 }

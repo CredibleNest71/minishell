@@ -5,11 +5,8 @@
 t_token	*expand_token(t_token *token)
 {
 	char	*temp;
-	if (token->type == (e_type) ARG)
-	{
-		temp = token->str;
-		token->str = expand(temp);
-	}
+	temp = token->str;
+	token->str = expand(temp);
 	return (token);
 }
 
@@ -54,6 +51,7 @@ void	clean_token(t_token *token)
 	j = 0;
 	if (!token)
 		return ;
+	token = expand_token(token);
 	if (token->type == (e_type) PIPE)
 		return ;
 	while (is_char(token->str[i], "<>") && token->str[i])
@@ -123,14 +121,19 @@ void	classify(t_token *list)
 void	mark_commands(t_token *list)
 {
 	t_token *curr;
+	int		need_cmd;
 
+	need_cmd = 1;
 	curr = list;
-	if (curr->type == (e_type) ARG)
-		curr->type = (e_type) CMD;
 	while (curr)
 	{
-		if (curr->type == (e_type) PIPE && curr->next && curr->next->type == (e_type) ARG)
-			curr->next->type = (e_type) CMD;
+		if (need_cmd && curr && curr->type == (e_type) ARG)
+		{
+			curr->type = (e_type) CMD;
+			need_cmd = 0;
+		}
+		if (curr->type == (e_type) PIPE)
+			need_cmd = 1;
 		curr = curr->next;
 	}
 }
@@ -154,7 +157,7 @@ t_token	*fill_command(t_command *ret, t_token *temp)
 		if (temp->type == (e_type) CMD)
 			ret->cmd = token_dup(temp);
 		else if (temp->type == (e_type) ARG)
-			replace_or_append(&ret->args, expand_token(temp));
+			replace_or_append(&ret->args, temp);
 		else if (temp->type == (e_type) IN)
 			replace_or_append(&ret->input, temp);
 		else if (temp->type == (e_type) OUT)
@@ -167,7 +170,9 @@ t_token	*fill_command(t_command *ret, t_token *temp)
 		temp = temp->next;
 		free(freeme->str);
 		free(freeme);
-		if (temp && temp->type == (e_type) CMD)
+		if (!ret->cmd)
+			continue ;
+		if (temp && temp->type == (e_type) PIPE)
 			break ;
 	}
 	return (temp);
@@ -178,10 +183,11 @@ t_command	*create_commands(t_token *token)
 	t_command	*og = NULL;
 	t_command	*ret = NULL;
 	t_command	*prev = NULL;
+	int			i = 0;
 
 	while (token)
 	{
-		if (token->type == (e_type) CMD)
+		if (!i++ || token->type == (e_type) PIPE)
 		{
 			prev = ret;
 			ret = (t_command *) ft_calloc (sizeof(t_command), 1);
@@ -192,7 +198,10 @@ t_command	*create_commands(t_token *token)
 			else
 				og = ret;
 			token = fill_command(ret, token);
-			//printf("cmd->cmd = %s\n", ret->cmd->str);
+			if (!ret->cmd)
+			{
+				return (delete_command_list(og), write(2, "missing command", 16), NULL);
+			}
 		}
 		//token = token->next;
 	}

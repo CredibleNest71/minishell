@@ -37,7 +37,7 @@ char	*find_var_name(char *str)
 	if (!str[i])
 		return (NULL);
 	i++;
-	while (!is_char(str[i + j], "\n\t\v \r\f$") && str[i + j])
+	while (str[i + j] && !is_char(str[i + j], "\n\t\v \r\f$\"\'") && str[i + j])
 		j++;
 	return (ft_strndup(&str[i], j));
 }
@@ -50,9 +50,18 @@ char *expand(char *str)
 	char	*val;
 	char	*new;
 
+	printf("TO EXPAND: %s\n", str);
+	int i = 0;
 	while (1)
 	{
-		here = ft_strchr(str, '$');
+		while (str[i] && str[i] != '$')
+		{
+			if (str[i] == '\'')
+				while (str[i] && str[i] != '\'')
+					i++;
+			i++;
+		}
+		here = ft_strchr(&str[i], '$');
 		if (here)
 		{
 			var = find_var_name(here);

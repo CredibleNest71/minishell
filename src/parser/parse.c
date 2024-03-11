@@ -5,14 +5,15 @@ void	print_cmds(t_command *cmd)
 {
 	if (!cmd)
 	{
-		write(2, "(NULL)\n", 8);
+		write(2, "(NO COMMANDS)\n", 8);
 		return ;
 	}
 	t_command *temp_cmd = cmd;
 	for (;temp_cmd; temp_cmd = temp_cmd->next)
 	{
 		printf("\n==========================================");
-		printf("\nCOMMAND:		%s", temp_cmd->cmd->str);
+		if (temp_cmd->cmd)
+			printf("\nCOMMAND(%d):		%s",temp_cmd->arg_num, temp_cmd->cmd->str);
 		for (t_token *curr = temp_cmd->args;curr; curr = curr->next)
 			printf("\n	ARG:		%s", curr->str);
 		for (t_token *curr = temp_cmd->input;curr; curr = curr->next)
@@ -32,6 +33,33 @@ void	print_cmds(t_command *cmd)
 	}
 }
 
+static int set_counts(t_command *cmd, t_bigshell *data)
+{
+	t_command	*temp;
+	t_token		*arg;
+	int	i;
+	int j;
+
+	j = 0;
+	temp = cmd;
+	while (temp)
+	{
+		i = 0;
+		arg = temp->args;
+		while (arg)
+		{
+			i++;
+			arg = arg->next;
+		}
+		temp->arg_num = i;
+		temp = temp->next;
+		j++;
+	}
+	if (data)
+		data->num_cmd = j;
+	return (j);
+}
+
 t_command	*parse(char *input, t_bigshell *data)
 {
 	t_token		*parsed;
@@ -41,9 +69,9 @@ t_command	*parse(char *input, t_bigshell *data)
 	if (data && parsed->type == (e_type) HEREDOC)
 		data->heredoc = parsed;
 	if (!parsed)
-		return (NULL);
+		return (write(2, "ERROR in::parse::parsed\n", 25), NULL);
 	final = transform(parsed);
 	if (!final)
-		return (NULL);
+		return (write(2, "ERROR in::parse::final\n", 24), NULL);
 	return (final);
 }

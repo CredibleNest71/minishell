@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 10:32:36 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/03/11 17:07:23 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/03/11 18:22:43 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,13 +58,13 @@ void	ft_cd(t_bigshell *data)
 {
 	char	*path;
 	char	*cwd; //somehow dynamically allocate this
-	char	*mod_cwd;
-	size_t	buffer_size;
+	//char	*mod_cwd;
+	//size_t	buffer_size;
 	
 	cwd = NULL;
 	if (data->commands->arg_num > 1)
 		simple_error(data, 1); //perror prints "success"? should be too many args
-	if (ft_strncmp(data->commands->args->str, "..", 2) == 0)
+	/* if (ft_strncmp(data->commands->args->str, "..", 2) == 0)
 	{
 		buffer_size = BUFFER;
 		while (1)
@@ -91,7 +91,8 @@ void	ft_cd(t_bigshell *data)
 		chdir (mod_cwd);
 		free(cwd);
 		free(mod_cwd);
-	}
+	} */
+	printf("csm\n");
 	if (!data->commands->args || ft_strncmp(data->commands->args->str, "~", 1) == 0)
 		path = getenv("HOME");
 	else

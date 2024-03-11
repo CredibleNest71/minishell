@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 17:54:30 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/03/11 18:08:41 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/03/11 18:23:20 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -167,6 +167,11 @@ int	main(int argc, char **argv, char **env)
  	//built_in_list(&data);
 	char *lineread;
 	lineread = NULL;
+	/* lineread = readline("tinyshell: ");
+	data.commands = parse(lineread, &data);
+	data.commands->arg_num = 0;
+	printf("%d\n", data.commands->arg_num);
+	ft_cd(&data); */
 	while (1)
 	{
 		lineread = readline("tinyshell: ");
@@ -179,8 +184,8 @@ int	main(int argc, char **argv, char **env)
 		if (builtin_allrounder(&data) == 0)
 			continue ;
 		//print_cmds(data.commands);
-		/* if (heredoc_finder(&data) == 0)
-				ft_heredoc(&data); */
+		 if (heredoc_finder(&data) == 0)
+				ft_heredoc(&data);
 		simple_exec(&data);
 	}
 }

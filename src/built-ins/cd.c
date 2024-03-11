@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 10:32:36 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/03/08 19:24:17 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/03/11 12:58:59 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,26 +32,29 @@ void	ft_cd(t_bigshell *data)
 	size_t	buffer_size;
 	
 	if (data->commands->arg_num > 1)
-		simple_error(data, 1); //perror prints "success"?
+		simple_error(data, 1); //perror prints "success"? should be too many args
 	if (!data->commands->args || ft_strncmp(data->commands->args->str, "~", 1) == 0)
 		path = getenv("HOME");
 
 	if (ft_strncmp(data->commands->args->str, "..", 2) == 0)
 	{
 		buffer_size = BUFFER;
-		cwd = malloc(sizeof(char) * BUFFER);
-		if (!cwd)
-			fatal_error(data, 1);
-		cwd = getcwd(cwd, BUFFER);
-		if (!cwd && errno == ERANGE)
+		while (1)
 		{
-			//simple_error(data, 1); //perror: unable to get current dir
-			free(cwd);
-			while (!cwd)
+			if (cwd)
+				break ;
+			cwd = malloc(sizeof(char) * BUFFER);
+			if (!cwd)
+				fatal_error(data, 1); //free cwd!
+			cwd = getcwd(cwd, buffer_size);
+			if (!cwd && errno == ERANGE)
 			{
-				buffer_size *= BUFFER_INCREMENT;
-				cwd = getcwd(cwd, buffer_size);
+				//simple_error(data, 1); //perror: unable to get current dir
+				free(cwd);
+				buffer_size += BUFFER_INCREMENT;
 			}
+			if (!cwd && errno != ERANGE)
+				simple_error(data, 1); // unable to get current directory
 		}
 		
 		//delete everything including and after the last /

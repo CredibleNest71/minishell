@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 17:34:54 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/03/08 19:19:09 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/03/11 12:35:38 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@
 # endif
 
 # ifndef BUFFER_INCREMENT
-# define BUFFER_INCREMENT 2
+# define BUFFER_INCREMENT 50
 # endif
 
 typedef enum type {

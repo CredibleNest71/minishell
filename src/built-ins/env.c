@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 11:01:30 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/03/01 11:28:26 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/03/11 17:43:42 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,8 @@
 //what should happen if env -i is run?
 //how does env work with args?
 
-void	add_env_variable(t_bigshell *data)
+//tf is this ft for
+/* void	add_env_variable(t_bigshell *data)
 {
 	//if we make data->env a linked list maybe its better
 	int	i;
@@ -29,21 +30,25 @@ void	add_env_variable(t_bigshell *data)
 	data->exit_stat = 0;
 	//exit(data->exit_stat);
 	return ;
-}
+} */
 
 //env should be a linked list and if export is used, add variable randomly
-
-void	ft_env(t_bigshell *data, int option)
+// env with no options or arguments --> returning prompt
+void	ft_env(t_bigshell *data)
 {
-	int	i;
-	if (option == 1)
-		add_env_variable(data);
+	t_env	*tmp;
+
+	tmp = data->env;
+	/* if (option == 1) is this trying to do exports work?
+		add_env_variable(data); */
 	if (data->commands->arg_num == 0)
 	{
-		i = 0;
-		while (data->env[i] != NULL)
-			printf("%s\n", data->env[i++]);
-		exit(0);
+		while (tmp)
+		{	
+			printf("%s\n", tmp->str);
+			tmp = tmp->next;
+		}
+		return ;
 	}
-	exit(0);
+	return ;
 }

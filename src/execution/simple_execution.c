@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 17:54:30 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/03/11 17:28:03 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/03/11 18:08:41 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,7 @@ int	main(int argc, char **argv, char **env)
 // 	data.s_env = NULL;
 
 //     // Store environment strings in the linked list
-     store_env(&data, env);
+     //store_env(&data, env);
 // 	ft_export(&data);
 // 	//data.commands->args = arg2;
 // 	//printf("%s\n", data.commands->args->str);
@@ -165,12 +165,22 @@ int	main(int argc, char **argv, char **env)
 	store_env(&data, env);
  	//data.built_ins = (char **)malloc(sizeof(char *) * 8); //7 elements plus NULL
  	//built_in_list(&data);
-	builtin_allrounder(&data);
 	char *lineread;
-	lineread = readline("tinyshell: ");
-	data.commands = parse(lineread, &data);
-	//print_cmds(data.commands);
-	/* if (heredoc_finder(&data) == 0)
-			ft_heredoc(&data); */
-	simple_exec(&data);
+	lineread = NULL;
+	while (1)
+	{
+		lineread = readline("tinyshell: ");
+		data.commands = parse(lineread, &data);
+		store_restore_fds(1);
+		if (heredoc_finder(&data) == 0)
+			ft_heredoc(&data);
+		if (data.commands->input || data.commands->output)
+			redir(data.commands, &data);
+		if (builtin_allrounder(&data) == 0)
+			continue ;
+		//print_cmds(data.commands);
+		/* if (heredoc_finder(&data) == 0)
+				ft_heredoc(&data); */
+		simple_exec(&data);
+	}
 }

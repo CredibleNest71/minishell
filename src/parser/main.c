@@ -80,12 +80,12 @@ int main(void)
 			input = ft_strjoin(input, temp2);
 			free(temp);
 			free(temp2);
-			finished = check_fin(input);
-			if (finished < 0)
-				return (write(2, "ERROR\n", 7));
+			// finished = check_fin(input);
+			// if (finished < 0)
+			// 	return (write(2, "ERROR\n", 7));
 			break ;
 		}
-		cmds = parse(input, &data); //
+		cmds = parse(input, NULL); //
 		print_cmds(cmds);
 		delete_command_list(cmds);
 		free(input);

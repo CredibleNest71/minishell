@@ -59,8 +59,8 @@ char	*delimiter_finder(t_bigshell *data)
 //hex code of ' == 27
 char	*check_for_quotes(t_bigshell *data, char *eof)
 {
-	size_t	i;
-	size_t	j;
+	int		i;
+	int		j;
 	char	*delimiter;
 	
 	i = 0;

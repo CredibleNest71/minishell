@@ -35,7 +35,7 @@ void	print_cmds(t_command *cmd)
 t_command	*parse(char *input, t_bigshell *data)
 {
 	t_token		*parsed;
-	t_command	*final;
+	t_command	*final; 
 
 	parsed = parse_tokens(input);
 	if (data && parsed->type == (e_type) HEREDOC)

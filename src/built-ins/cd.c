@@ -6,12 +6,11 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 10:32:36 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/03/11 12:58:59 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/03/11 16:32:38 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
-#include <stdio.h>
 #include <unistd.h>
 
 //relative or absolute path
@@ -24,10 +23,37 @@
 	SEP,
 } typedef e_type;*/
 
+char	*delete_tail(t_bigshell *data, char *full_path)
+{
+	int		i;
+	int		j;
+	int		len;
+	char	*mod_path;
+	
+	len = ft_strlen(full_path);
+	while (full_path[i])
+		i++;
+	while (full_path[i] && full_path[i] != '/')
+	{
+		i--;
+		j++;
+	}
+	len -= j;
+	i = -1;
+	mod_path = malloc(sizeof(char) * len);
+	if (!mod_path)
+		fatal_error(data, 1);
+	while (full_path[++i] && i < len)
+		mod_path[i] = full_path[i];
+	mod_path[i] = '\0';
+	return (mod_path);
+}
+
 void	ft_cd(t_bigshell *data)
 {
 	char	*path;
 	char	*cwd; //somehow dynamically allocate this
+	char	*mod_cwd;
 	//int		getcwd_result;
 	size_t	buffer_size;
 	
@@ -35,7 +61,6 @@ void	ft_cd(t_bigshell *data)
 		simple_error(data, 1); //perror prints "success"? should be too many args
 	if (!data->commands->args || ft_strncmp(data->commands->args->str, "~", 1) == 0)
 		path = getenv("HOME");
-
 	if (ft_strncmp(data->commands->args->str, "..", 2) == 0)
 	{
 		buffer_size = BUFFER;
@@ -43,9 +68,12 @@ void	ft_cd(t_bigshell *data)
 		{
 			if (cwd)
 				break ;
-			cwd = malloc(sizeof(char) * BUFFER);
+			cwd = malloc(sizeof(char) * buffer_size);
 			if (!cwd)
-				fatal_error(data, 1); //free cwd!
+			{
+				free(cwd);
+				fatal_error(data, 1); //malloc fails
+			}
 			cwd = getcwd(cwd, buffer_size);
 			if (!cwd && errno == ERANGE)
 			{
@@ -54,15 +82,13 @@ void	ft_cd(t_bigshell *data)
 				buffer_size += BUFFER_INCREMENT;
 			}
 			if (!cwd && errno != ERANGE)
-				simple_error(data, 1); // unable to get current directory
+				simple_error(data, 1); // built-in fails: unable to get current directory
 		}
-		
-		//delete everything including and after the last /
-		
-		getcwd again
-		chdir (cwd);
+		mod_cwd = delete_tail(data, cwd);
+		chdir (mod_cwd);
 		free(cwd);
-	} */
+		free(mod_cwd);
+	}
 	// else (data->commands->args[0])
 	//	path = data->commands->args[0]->str;
 	if (chdir(path) == -1)

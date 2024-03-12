@@ -1,7 +1,7 @@
 #include "../../minishell.h"
 #include "parse.h"
 
-void	print_cmds(t_command *cmd)
+void	print_cmds(t_command *cmd, t_bigshell *data)
 {
 	if (!cmd)
 	{
@@ -9,6 +9,8 @@ void	print_cmds(t_command *cmd)
 		return ;
 	}
 	t_command *temp_cmd = cmd;
+	printf("\n==========================================\n");
+	printf("NUMBER OF COMMANDS: %d\n", data->num_cmd);
 	for (;temp_cmd; temp_cmd = temp_cmd->next)
 	{
 		printf("\n==========================================");
@@ -76,5 +78,7 @@ t_command	*parse(char *input, t_bigshell *data)
 	final = transform(parsed);
 	if (!final)
 		return (write(2, "ERROR in::parse::final\n", 24), NULL);
+	set_counts(final, data);
+
 	return (final);
 }

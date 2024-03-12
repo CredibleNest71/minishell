@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 14:55:27 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/03/12 14:14:04 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/03/12 15:13:24 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ char	*check_for_quotes(t_bigshell *data, char *eof)
 		fatal_error(data, 1);
 	if (eof[i] == '"' || eof[i] == 27)
 	{
-		while (++i < ft_strlen(eof))
+		while (++i < (int)ft_strlen(eof))
 		{
 			delimiter[++j] = eof[i];
 		//	printf("%zu\n %zu\n", j, i);

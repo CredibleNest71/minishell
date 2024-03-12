@@ -123,7 +123,7 @@ void	ft_heredoc(t_bigshell *data)
 		if (!(ft_strncmp(eof_mod, lineread, ft_strlen(eof_mod))) || lineread == NULL)
 		 	break ;
 		if (eof[i] == '"' || eof[i] == 27)
-			lineread = expand(lineread);
+			lineread = expand(lineread, data);
 		write(heredoc_fd, lineread, ft_strlen(lineread));
 		write(heredoc_fd, "\n", 1); //possibly problematic
 		//printf("%s\n", lineread);

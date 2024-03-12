@@ -28,15 +28,16 @@ char	*find_var_name(char *str)
 {
 	int	i;
 	int	j;
-	//char *name;
+
 	j = 0;
 	i = 0;
-
 	while (str[i] && str[i] != '$')
 		i++;
 	if (!str[i])
 		return (NULL);
 	i++;
+	if (!ft_isalnum(str[i]) && !is_char(str[i], "_"))
+		return (NULL);
 	while (str[i + j] && !is_char(str[i + j], "\n\t\v \r\f$\"\'") && str[i + j])
 		j++;
 	return (ft_strndup(&str[i], j));
@@ -47,11 +48,11 @@ char	*get_val(char *var, t_bigshell *data)
 	t_env	*curr;
 
 	if (!data)
-		return (NULL);
+		return (printf("EYYYY WHERES MY VAL"), NULL);
 	curr = data->env;
 	while (curr)
 	{
-		if (ft_strnstr(var, curr->str, ft_strlen(var)))
+		if (ft_strnstr(curr->str, var, ft_strlen(var)))
 			break ;
 		curr = curr->next;
 	}
@@ -84,11 +85,12 @@ char *expand(char *str, t_bigshell *data)
 		{
 			var = find_var_name(here);
 			if (!var)
-				return (printf("not found"), str);
+				return (printf("NOT A LEGIT VARIABLE NAME\n"), str);
 			//val = getenv(var);
 			val = get_val(var, data);
 			if (!val)
 				return (free(var),str);
+			printf("val = %s", val);
 			new = ft_string_insert(str, val, here - str, ft_strlen(var));
 			free(var);
 			str = new;

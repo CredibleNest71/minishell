@@ -6,11 +6,12 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 10:32:36 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/03/12 10:32:26 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/03/12 11:03:07 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
+#include <stdio.h>
 #include <unistd.h>
 
 //relative or absolute path
@@ -85,26 +86,31 @@ void	ft_cd(t_bigshell *data)
 				buffer_size += BUFFER_INCREMENT;
 			}
 			if (!cwd && errno != ERANGE)
+			{
+				free(cwd);
 				simple_error(data, 1); // built-in fails: unable to get current directory
+			}
 		}
 		mod_cwd = delete_tail(data, cwd);
 		chdir (mod_cwd);
 		free(cwd);
 		free(mod_cwd);
 	}
-	printf("shiet\n");
 	if (!data->commands->args || ft_strncmp(data->commands->args->str, "~", 1) == 0)
-		{
 		path = getenv("HOME");
-			printf("alo\n");
-		}
 	else
 		path = data->commands->args->str;
 	// else (data->commands->args[0])
 	//	path = data->commands->args[0]->str;
+	printf("%s\n", path);
 	if (chdir(path) == -1)
-		simple_error(data, 1);
+		printf("fucking chdir\n");
+		//simple_error(data, 1);
 		//perror("cd failure:");
+	char	*test;
+	test = malloc(sizeof(char) * BUFFER);
+	test = getcwd(test, BUFFER);
+	printf("%s\n", test);
 	return ;
 }
 

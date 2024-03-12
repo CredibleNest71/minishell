@@ -69,7 +69,6 @@ char *expand(char *str, t_bigshell *data)
 	char	*val;
 	char	*new;
 
-	printf("TO EXPAND: %s\n", str);
 	int i = 0;
 	while (1)
 	{

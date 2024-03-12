@@ -39,7 +39,7 @@ char 		*expand(char *str, t_bigshell *data);
 
 //parse
 t_command	*parse(char *input, t_bigshell *data);
-void		print_cmds(t_command *cmd);
+void		print_cmds(t_command *cmd, t_bigshell *data);
 
 //signal
 void    sig_init(t_bigshell *data);

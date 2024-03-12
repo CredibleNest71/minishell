@@ -78,5 +78,6 @@ t_command	*parse(char *input, t_bigshell *data)
 	final = transform(parsed, data);
 	if (!final)
 		return (write(2, "ERROR in::parse::final\n", 24), NULL);
+	set_counts(final, data);
 	return (final);
 }

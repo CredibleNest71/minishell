@@ -42,8 +42,26 @@ char	*find_var_name(char *str)
 	return (ft_strndup(&str[i], j));
 }
 
+char	*get_val(char *var, t_bigshell *data)
+{
+	t_env	*curr;
+
+	if (!data)
+		return (NULL);
+	curr = data->env;
+	while (curr)
+	{
+		if (ft_strnstr(var, curr->str, ft_strlen(var)))
+			break ;
+		curr = curr->next;
+	}
+	if (!curr)
+		return (NULL);
+	return (ft_strchr(curr->str, '=') + 1);
+}
+
 //expands $-variable
-char *expand(char *str)
+char *expand(char *str, t_bigshell *data)
 {
 	char	*here;
     char	*var;
@@ -67,7 +85,8 @@ char *expand(char *str)
 			var = find_var_name(here);
 			if (!var)
 				return (printf("not found"), str);
-			val = getenv(var);
+			//val = getenv(var);
+			val = get_val(var, data);
 			if (!val)
 				return (free(var),str);
 			new = ft_string_insert(str, val, here - str, ft_strlen(var));
@@ -79,7 +98,6 @@ char *expand(char *str)
 	}
 	return (str);
 }
-
 
 // int main ()
 // {

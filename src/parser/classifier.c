@@ -2,11 +2,11 @@
 #include "parse.h"
 #include <string.h>
 
-t_token	*expand_token(t_token *token)
+t_token	*expand_token(t_token *token, t_bigshell *data)
 {
 	char	*temp;
 	temp = token->str;
-	token->str = expand(temp);
+	token->str = expand(temp, data);
 	return (token);
 }
 
@@ -41,7 +41,7 @@ void	clean_heredoc(t_token *token)
 	//printf("\n:clean_heredoc:del: %s", token->delimiter);
 }
 
-void	clean_token(t_token *token)
+void	clean_token(t_token *token, t_bigshell *data)
 {
 	char	*new;
 	int		i;
@@ -51,7 +51,7 @@ void	clean_token(t_token *token)
 	j = 0;
 	if (!token)
 		return ;
-	token = expand_token(token);
+	token = expand_token(token, data);
 	if (token->type == (e_type) PIPE)
 		return ;
 	while (is_char(token->str[i], "<>") && token->str[i])
@@ -210,7 +210,7 @@ t_command	*create_commands(t_token *token)
 
 
 
-t_command   *transform(t_token *list)
+t_command   *transform(t_token *list, t_bigshell *data)
 {
 	t_token		*temp;
 	t_command	*cmd;
@@ -220,7 +220,7 @@ t_command   *transform(t_token *list)
 	mark_commands(list);
 	while (temp)
 	{
-		clean_token(temp);
+		clean_token(temp, data);
 		temp = temp->next;
 	}
 	cmd = create_commands(list);

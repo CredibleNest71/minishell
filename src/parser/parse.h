@@ -8,8 +8,8 @@
 //classifier
 void	    classify(t_token *list);
 void	    mark_commands(t_token *list);
-void	    clean_token(t_token *token);
-t_command   *transform(t_token *list);
+void	    clean_token(t_token *token, t_bigshell *data);
+t_command   *transform(t_token *list, t_bigshell *data);
 
 
 //extras
@@ -35,7 +35,7 @@ void	    delete_command_list(t_command *cmd);
 int			findarg(char *str);
 
 //expander
-char 		*expand(char *str);
+char 		*expand(char *str, t_bigshell *data);
 
 //parse
 t_command	*parse(char *input, t_bigshell *data);

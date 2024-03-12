@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 10:32:36 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/03/12 15:02:13 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/03/12 15:10:39 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -178,7 +178,9 @@ void	ft_cd(t_bigshell *data)
 	else
 	{
 		path = data->commands->args->str;
-		delete_tail(path);
+		if (path[ft_strlen(path) - 1] == '/')
+			path[ft_strlen(path) - 1] = 0;
+		//delete_tail(path);
 		connect_path(data, path);
 	}
 	// else (data->commands->args[0])

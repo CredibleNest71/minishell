@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 10:32:36 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/03/12 13:01:57 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/03/12 14:57:09 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,32 +26,45 @@
 } typedef e_type;*/
 
 //This function takes a full path as input and removes the last directory from it.
-char	*delete_tail(t_bigshell *data, char *full_path)
+char	*delete_tail(char *full_path)
 {
-	int		i;
-	int		j;
-	int		len;
-	char	*mod_path;
+	char	*end; 
+	//int		diff;
 	
-	i = 0;
-	j = 0;
-	len = ft_strlen(full_path);
-	while (full_path[i])
-		i++;
-	while (full_path[i] && full_path[i] != '/')
-	{
-		i--;
-		j++;
-	}
-	len -= j;
-	i = -1;
-	mod_path = malloc(sizeof(char) * len);
-	if (!mod_path)
-		fatal_error(data, 1);
-	while (full_path[++i] && i < len)
-		mod_path[i] = full_path[i];
-	mod_path[i] = '\0';
-	return (mod_path);
+	if (!full_path)
+		return (NULL);
+	end = ft_strrchr(full_path, '/');
+	if (!end)
+		return (NULL);
+	*end = 0;
+	// diff = end - full_path;
+	// full_path[diff] = 0;
+	return (full_path);
+	// int		i;
+	// int		j;
+	// int		len;
+	// char	*mod_path;
+	
+	// i = 0;
+	// j = 0;
+	// len = ft_strlen(full_path);
+	// while (full_path[i])
+	// 	i++;
+	// while (full_path[i] && full_path[i] != '/')
+	// {
+	// 	i--;
+	// 	j++;
+	// }
+	// len -= j;
+	// i = -1;
+	// mod_path = malloc(sizeof(char) * len);
+	// if (!mod_path)
+	// 	fatal_error(data, 1);
+	// while (full_path[++i] && i < len)
+	// 	mod_path[i] = full_path[i];
+	// mod_path[i] = '\0';
+	// printf("mod: %s\n", mod_path);
+	// return (mod_path);
 }
 
 //this function will change the contents of data->env at pos PWD= 
@@ -133,25 +146,27 @@ void	ft_cd(t_bigshell *data)
 				free(cwd);
 				fatal_error(data, 1); //malloc fails
 			}
-			cwd = getcwd(cwd, buffer_size);
+			getcwd(cwd, buffer_size);
 			if (!cwd && errno == ERANGE)
 			{
 				//simple_error(data, 1); //perror: unable to get current dir
 				free(cwd);
+				cwd = NULL;
 				buffer_size += BUFFER_INCREMENT;
 			}
 			if (!cwd && errno != ERANGE)
 			{
 				free(cwd);
+				cwd = NULL;
 				simple_error(data, 1); // built-in fails: unable to get current directory
 			}
 		}
-		mod_cwd = delete_tail(data, cwd);
+		mod_cwd = delete_tail(cwd);
 		//printf("mod_cwd: %s\n", mod_cwd);
 		overwrite_pwd(data, mod_cwd);
 		chdir (mod_cwd);
 		free(cwd);
-		free(mod_cwd);
+		return ;
 	}
 	if (!data->commands->args || ft_strncmp(data->commands->args->str, "~", 1) == 0)
 	{
@@ -162,19 +177,20 @@ void	ft_cd(t_bigshell *data)
 	else
 	{
 		path = data->commands->args->str;
+		delete_tail(path);
 		connect_path(data, path);
 	}
 	// else (data->commands->args[0])
 	//	path = data->commands->args[0]->str;
 	//printf("%s\n", path);
-	if (chdir(path) == -1)
+	if (chdir(path) == -1) //this is probably fuckin unnecessary at this point
 		printf("fucking chdir\n");
 		//simple_error(data, 1);
 		//perror("cd failure:");
-	char	*test;
+	/*char	*test;
 	test = malloc(sizeof(char) * BUFFER);
 	test = getcwd(test, BUFFER);
-	//printf("%s\n", test);
+	//printf("%s\n", test);*/
 	return ;
 }
 

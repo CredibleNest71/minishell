@@ -6,18 +6,19 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 09:57:03 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/03/01 11:27:40 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/03/08 17:19:27 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
 //-n: this option is used to omit echoing trailing newline.
-
-void	ft_echo(t_token *args, int option) //maybe check if args is empty
+//maybe check if args is empty
+void	ft_echo(t_token *args, int option)
 {
 	if (option == 1)
 	{
+		args = args->next;
 		if (!args)
 			return ;
 		while (args)

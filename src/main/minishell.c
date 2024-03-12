@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 11:33:48 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/03/06 16:19:03 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/03/11 17:49:48 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,16 @@
 
 t_sig	g_sig;
 
+//moved to built_in_list 4 testing
+/* int	builtin_allrounder(t_bigshell *data)
+{
+	int	result;
+	
+	data->built_ins = (char **)malloc(sizeof(char *) * 8);
+	built_in_list(data);
+	result = builtin_check_exec(data, data->commands->cmd->str);
+} */
+
 int main(int argc, char **argv, char **env)
 {
 	t_bigshell	data;
@@ -43,18 +53,18 @@ int main(int argc, char **argv, char **env)
 	lineread = NULL;
 	ft_bzero(&data, sizeof(data));
 	data.og_env = env;
-	data.built_ins = (char **)malloc(sizeof(char *) * 8);
-	built_in_list(&data);
 	i = 0;
 	while (1)
 	{
 	    lineread = readline("shitshell: ");
-		data.commands = parse(lineread);
+		data.commands = parse(lineread, &data);
 		//print_cmds(data.commands);
 		store_restore_fds(1); //will store stdin & stdout
 		if (heredoc_finder(&data) == 0)
 			ft_heredoc(&data);
-		if (data.num_cmd == 1)
+		if (data.commands->input || data.commands->output) //segfault? moved from simple_exec
+			redir(data.commands, &data);
+		if (builtin_allrounder(&data) == 1 && data.num_cmd == 1) //check&exec builtins if found, if not& only 1cmd=fork
 		{
 			if ((data.id = fork()) == -1)
 				fatal_error(&data, 1);

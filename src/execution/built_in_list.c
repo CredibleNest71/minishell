@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 12:10:32 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/02/29 11:34:54 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/03/11 17:50:25 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,16 @@
 		str[i] = s[i];
 	return (str);
 } */
+
+int	builtin_allrounder(t_bigshell *data)
+{
+	int	result;
+	
+	data->built_ins = (char **)malloc(sizeof(char *) * 8);
+	built_in_list(data);
+	result = builtin_check_exec(data, data->commands->cmd->str);
+	return (result);
+}
 
 void	put_built_in(int index, t_bigshell *data)
 {
@@ -105,13 +115,13 @@ void	builtin_exec(t_bigshell *data, int builtin_index)
 		ft_export(data);
 	else if (builtin_index == 4)
 		ft_unset(data);
-	/*else if (builtin_index == 5)
+	else if (builtin_index == 5)
 		ft_env(data);
-	else if (builtin_index == 6)
+	/*else if (builtin_index == 6)
 		ft_exit(); */
 }
 
-void	builtin_check_exec(t_bigshell *data, char *cmd)
+int	builtin_check_exec(t_bigshell *data, char *cmd)
 {
 	int		len;
 	int		i;
@@ -123,11 +133,11 @@ void	builtin_check_exec(t_bigshell *data, char *cmd)
 		if (ft_strncmp(cmd, data->built_ins[i], len) == 0)
 		{
 			builtin_exec(data, i);
-			//printf("built in found"); //exec built-in
+			return(0);
 		}
 		i++;
 	}
-	return ;
+	return(1);
 }
 
 /* while (list[i])

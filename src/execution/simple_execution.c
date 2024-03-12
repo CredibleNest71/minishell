@@ -6,12 +6,13 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 17:54:30 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/03/07 16:15:26 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/03/12 14:57:01 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../parser/parse.h"
 #include "../../minishell.h"
+#include <strings.h>
 
 // needs to be a child bc execve will kill the process otherwise
 //we 1st check if redir is needed. <input & <<heredoc are both stored in cmd->input
@@ -24,9 +25,9 @@ void	simple_exec(t_bigshell *data)
 	char	**paths;
 	char	*correct_path;
 	
-	if (data->commands->input || data->commands->output)
+	/* if (data->commands->input || data->commands->output)
 		redir(data->commands, data);
-	builtin_check_exec(data, data->commands->cmd->str);
+	builtin_check_exec(data, data->commands->cmd->str); */ //moved to main, redirection may cause segfault
 	convert_env(data);
 	paths = find_and_split_path(data->mod_env);
 	if (!paths)
@@ -100,12 +101,11 @@ int	main(int argc, char **argv, char **env)
 // 	data.commands = command;
 // 	//printf("lol\n");
 	
- 	data.og_env = env;
 // 	data.reference_i = 0;
 // 	data.s_env = NULL;
 
 //     // Store environment strings in the linked list
-     store_env(&data, env);
+     //store_env(&data, env);
 // 	ft_export(&data);
 // 	//data.commands->args = arg2;
 // 	//printf("%s\n", data.commands->args->str);
@@ -125,13 +125,11 @@ int	main(int argc, char **argv, char **env)
 // 		printf("%s\n", data.mod_env[e]);
 // 	} */
 	
- 	data.built_ins = (char **)malloc(sizeof(char *) * 8); //7 elements plus NULL
 //  	if (!data.built_ins)
 // 	{
 // 		printf("malloc failed\n");
 // 	}
 // 	//data.built_ins = built_in_list(&data);
- 	built_in_list(&data);
 // 	//free(data.built_ins);
 // 	//free_builtin_list(&data);
 // 	// free_builtin_list(&data);
@@ -162,10 +160,33 @@ int	main(int argc, char **argv, char **env)
 // 		simple_exec(&data);
 // 	}
 // 	return (0); */
+	bzero(&data, sizeof(data));
+ 	data.og_env = env;
+	store_env(&data, env);
+ 	//data.built_ins = (char **)malloc(sizeof(char *) * 8); //7 elements plus NULL
+ 	//built_in_list(&data);
 	char *lineread;
-	lineread = readline("tinyshell: ");
+	lineread = NULL;
+	/* lineread = readline("tinyshell: ");
 	data.commands = parse(lineread, &data);
-	//print_cmds(data.commands);
-	if (heredoc_finder(&data) == 0)
+	data.commands->arg_num = 0;
+	printf("%d\n", data.commands->arg_num);
+	ft_cd(&data); */
+	while (1)
+	{
+		lineread = readline("tinyshell: ");
+		data.commands = parse(lineread, &data);
+		print_cmds(data.commands);
+		store_restore_fds(1);
+		if (heredoc_finder(&data) == 0)
 			ft_heredoc(&data);
+		if (data.commands->input || data.commands->output)
+			redir(data.commands, &data);
+		if (builtin_allrounder(&data) == 0)
+			continue ;
+		//print_cmds(data.commands);
+		if (heredoc_finder(&data) == 0)
+				ft_heredoc(&data);
+		simple_exec(&data);
+	}
 }

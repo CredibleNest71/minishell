@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 17:34:54 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/03/06 16:42:56 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/03/11 17:37:40 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,17 @@
 # include <fcntl.h>
 # include <readline/readline.h>
 # include <readline/history.h>
+# include <errno.h>
 # include "libft/libft.h"
 //# include "src/parser/parse.h"
+
+# ifndef BUFFER
+# define BUFFER 50
+# endif
+
+# ifndef BUFFER_INCREMENT
+# define BUFFER_INCREMENT 50
+# endif
 
 typedef enum type {
 	CMD = 0,
@@ -95,7 +104,9 @@ char	*put_str(char *s);
 void	put_built_in(int index, t_bigshell *data);
 void	built_in_list(t_bigshell *data);
 void	builtin_exec(t_bigshell *data, int builtin_index);
-void	builtin_check_exec(t_bigshell *data, char *cmd);
+int		builtin_check_exec(t_bigshell *data, char *cmd);
+
+int		builtin_allrounder(t_bigshell *data);
 
 void	simple_error(t_bigshell *data, int exit_code);
 void	fatal_error(t_bigshell *data, int exit_code);
@@ -117,8 +128,8 @@ void	ft_unset(t_bigshell *data);
 void	unset_var(t_bigshell *data, t_env **current, t_env **prev);
 void	find_node_to_delete(t_bigshell *data, t_env **current, t_env **prev, t_token *arg);
 
-void	ft_env(t_bigshell *data, int option);
-void	add_env_variable(t_bigshell *data);
+void	ft_env(t_bigshell *data);
+//void	add_env_variable(t_bigshell *data);
 
 void	ft_exit(t_bigshell *data);
 

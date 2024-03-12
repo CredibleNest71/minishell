@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 12:34:44 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/02/28 10:24:36 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/03/12 18:11:25 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 
 int	check_if_sorted(t_env *current)
 {
-	if (ft_strncmp(current->str, current->next->str, 1) > 0)
+	if (ft_strncmp(current->var, current->next->var, 1) > 0)
 		return (1);
 	else
 	 	return (0);
@@ -29,9 +29,9 @@ void	switch_values(t_env *current)
 {
 	char	*tmp;
 
-	tmp = current->str;
-	current->str = current->next->str;
-	current->next->str = tmp;
+	tmp = current->var;
+	current->var = current->next->var;
+	current->next->var = tmp;
 }
 
 void	sort_env(t_bigshell *data)
@@ -55,10 +55,11 @@ void	sort_env(t_bigshell *data)
 
 void	print_env(t_env *head)
 {
-	int i = 0;
 	while (head)
 	{
-		printf("%d %s\n", i++, head->str);
+		printf("%s", head->var);
+		printf("=");
+		printf("%s\n", head->value);
 		head = head->next;
 	}
 }

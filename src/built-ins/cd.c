@@ -6,12 +6,13 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 10:32:36 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/03/12 11:03:07 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/03/12 13:01:57 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 #include <stdio.h>
+#include <string.h>
 #include <unistd.h>
 
 //relative or absolute path
@@ -53,6 +54,60 @@ char	*delete_tail(t_bigshell *data, char *full_path)
 	return (mod_path);
 }
 
+//this function will change the contents of data->env at pos PWD= 
+void	overwrite_pwd(t_bigshell *data, char *to_join)
+{
+	t_env	*tmp;
+	char	*new_str;
+
+	tmp = data->env;
+	new_str = ft_strjoin("PWD=", to_join);
+	if (!new_str)
+		fatal_error(data, 1);
+	while (tmp)
+	{
+		if (ft_strncmp(tmp->str, "PWD", 3) == 0)
+		{
+			free(tmp->str);
+			tmp->str = NULL;
+			tmp->str = ft_strdup(new_str);
+			if (!tmp->str)
+				fatal_error(data, 1);
+			break ;
+		}
+		tmp = tmp->next;
+	}
+}
+
+void	connect_path(t_bigshell *data, char *to_join)
+{
+	t_env	*tmp;
+	//char	*str;
+	char	*new_str;
+	//int		i;
+
+	//i = -1;
+	tmp = data->env;
+	new_str = ft_strjoin("/", to_join);
+	/* new_str = malloc(sizeof(char) * ft_strlen(str));
+	while (++i < ft_strlen(str))
+		new_str[i] = str[i]; */
+	while (tmp)
+	{
+		if (ft_strncmp(tmp->str, "PWD=", 4) == 0)
+		{
+			new_str = ft_strjoin(tmp->str, new_str);
+			free(tmp->str);
+			tmp->str = NULL;
+			tmp->str = ft_strdup(new_str);
+			if (!tmp->str)
+				fatal_error(data, 1);
+			break ;		
+		}
+		tmp = tmp->next;
+	}
+}
+
 //This function changes the current working directory based on
 //the provided arguments.
 void	ft_cd(t_bigshell *data)
@@ -92,17 +147,26 @@ void	ft_cd(t_bigshell *data)
 			}
 		}
 		mod_cwd = delete_tail(data, cwd);
+		//printf("mod_cwd: %s\n", mod_cwd);
+		overwrite_pwd(data, mod_cwd);
 		chdir (mod_cwd);
 		free(cwd);
 		free(mod_cwd);
 	}
 	if (!data->commands->args || ft_strncmp(data->commands->args->str, "~", 1) == 0)
+	{
 		path = getenv("HOME");
+		//printf("path: %s\n", path);
+		overwrite_pwd(data, path);
+	}
 	else
+	{
 		path = data->commands->args->str;
+		connect_path(data, path);
+	}
 	// else (data->commands->args[0])
 	//	path = data->commands->args[0]->str;
-	printf("%s\n", path);
+	//printf("%s\n", path);
 	if (chdir(path) == -1)
 		printf("fucking chdir\n");
 		//simple_error(data, 1);
@@ -110,7 +174,7 @@ void	ft_cd(t_bigshell *data)
 	char	*test;
 	test = malloc(sizeof(char) * BUFFER);
 	test = getcwd(test, BUFFER);
-	printf("%s\n", test);
+	//printf("%s\n", test);
 	return ;
 }
 

@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 09:46:40 by a                 #+#    #+#             */
-/*   Updated: 2024/03/12 18:43:39 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/03/13 11:06:41 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,8 @@ t_env   *create_node(t_bigshell *data, char *str)
 	var_len = separator - str;
 	value_len = ft_strlen(separator + 1);
 	new_node = (t_env *)malloc(sizeof(t_env));
-    if (!new_node)
-        fatal_error(data, 1);
+	if (!new_node)
+    	fatal_error(data, 1);
 	new_node->var = (char *)malloc(sizeof(char) * (var_len + 1));
 	if (!new_node->var)
 		fatal_error(data, 1);
@@ -62,6 +62,7 @@ void    store_env(t_bigshell *data, char **env)
 }
 
 //check smt looks weird
+//ft makes data->env into a char ** for execve
 void    convert_env(t_bigshell *data)
 {
     int		i;

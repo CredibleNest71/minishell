@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 17:04:24 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/02/29 11:35:49 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/03/13 11:02:00 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,8 @@
 //frees the node_to_delete in unset
 void	free_single_node(t_bigshell *data, t_env **node)
 {
-	free((*node)->str);
+	free((*node)->var);
+	free((*node)->value);
 	free(*node);
 	data->exit_stat = 0;
 }
@@ -30,7 +31,8 @@ void	free_env(t_bigshell *data)
 		{
 			tmp = data->s_env;
 			data->s_env = data->s_env->next;
-			free(tmp->str);
+			free(tmp->var);
+			free(tmp->value);
 			free(tmp);
 		}
 	}
@@ -40,7 +42,8 @@ void	free_env(t_bigshell *data)
 		{
 			tmp = data->env;
 			data->env = data->env->next;
-			free(tmp->str);
+			free(tmp->var);
+			free(tmp->value);
 			free(tmp);
 		}
 	}

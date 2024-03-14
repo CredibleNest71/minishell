@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 12:34:44 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/03/14 14:40:18 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/03/14 14:44:47 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -239,11 +239,8 @@ void	ft_export(t_bigshell *data)
 	
 	/*if (!data->s_env)*/
 		make_copy(data);
-	//print_env(data->s_env);
-	//printf("after make copy\n\n\n\n");
 	if (!data->commands->args)
 	{
-		//printf("I should be printing twice after this:\n");
 		print_env(data->s_env);
 		data->exit_stat = 0;
 		return ;
@@ -273,7 +270,4 @@ void	ft_export(t_bigshell *data)
 		data->var_i++;
 	}
 	sort_env(data);
-	//printf("before add &sort:\n\n\n\n");
-	//print_env(data->env);
-	//printf("after adding var &sort\n\n\n\n");
 }

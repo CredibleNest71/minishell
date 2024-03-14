@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 12:34:44 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/03/14 11:17:11 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/03/14 12:08:40 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -176,6 +176,18 @@ int	check_var(t_bigshell *data, char *key)
 	return (0);
 }
 
+void
+
+int	var_exist(t_bigshell *data, char *str)
+{
+	t_env	*env;
+	t_env	*s_env;
+
+	env = data->env;
+	s_env = data->s_env;
+	
+}
+
 void	ft_export(t_bigshell *data)
 {
 	t_env	*current;
@@ -205,6 +217,8 @@ void	ft_export(t_bigshell *data)
 	{
 		if (check_var(data, arg->str) == 1)
 			return ;
+		if (var_exists(data, arg->str) == 0)
+			continue ;
 		current->next = create_node(data, arg->str);
 		current_env->next = create_node(data, arg->str);
 		current = current->next;

@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 17:54:30 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/03/14 10:51:01 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/03/14 11:22:39 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	simple_exec(t_bigshell *data)
 	/* if (data->commands->input || data->commands->output)
 		redir(data->commands, data);
 	builtin_check_exec(data, data->commands->cmd->str); */ //moved to main, redirection may cause segfault
-	convert_env(data);
+	convert_env(data); //check this function env struct has changed
 	paths = find_and_split_path(data->mod_env);
 	if (!paths)
 		printf("find&split failed\n"); //shit has been allocated

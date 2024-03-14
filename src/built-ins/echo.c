@@ -19,32 +19,41 @@ void	ft_echo(t_token *args, int option)
 	int	count;
 
 	count = 0;
-	if (option == 1)
+	while (args)
 	{
-		args = args->next;
-		if (!args)
-			return ;
-		while (args)
-		{
-			ft_putstr_fd(args->str, 1);
-			args = args->next;	
-		}
-	}
-	else
-	{
-		if (!args)
-		{
+		if (count++)
+			ft_putchar_fd(' ', 1);
+		ft_putstr_fd(args->str, 1);
+		if (!option)
 			ft_putchar_fd('\n', 1);
-			exit(0);
-		}
-		while(args)
-		{
-			if (count++)
-				write(1, " ", 1);
-			ft_putstr_fd(args->str, 1);
-			args = args->next;
-		}
-		ft_putchar_fd('\n', 1);
+		args = args->next;
 	}
+	// if (option == 1)
+	// {
+	// 	args = args->next;
+	// 	if (!args)
+	// 		return ;
+	// 	while (args)
+	// 	{
+	// 		ft_putstr_fd(args->str, 1);
+	// 		args = args->next;	
+	// 	}
+	// }
+	// else
+	// {
+	// 	if (!args)
+	// 	{
+	// 		ft_putchar_fd('\n', 1);
+	// 		exit(0);
+	// 	}
+	// 	while(args)
+	// 	{
+	// 		if (count++)
+	// 			write(1, " ", 1);
+	// 		ft_putstr_fd(args->str, 1);
+	// 		args = args->next;
+	// 	}
+	// 	ft_putchar_fd('\n', 1);
+	// }
 	return ;
 }

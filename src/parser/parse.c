@@ -68,13 +68,13 @@ t_command	*parse(char *input, t_bigshell *data)
 	t_command	*final; 
 
 	parsed = parse_tokens(input);
+	if (!parsed)
+		return (write(2, "ERROR in::parse::parsed\n", 25), NULL);
 	if (data && parsed->type == (e_type) HEREDOC)
 	{
 		data->heredoc = parsed;
 		parsed = parsed->next;
 	}
-	if (!parsed)
-		return (write(2, "ERROR in::parse::parsed\n", 25), NULL);
 	final = transform(parsed, data);
 	if (!final)
 		return (write(2, "ERROR in::parse::final\n", 24), NULL);

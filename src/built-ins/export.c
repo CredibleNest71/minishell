@@ -176,17 +176,16 @@ int	check_var(t_bigshell *data, char *key)
 	return (0);
 }
 
-void
 
-int	var_exist(t_bigshell *data, char *str)
-{
-	t_env	*env;
-	t_env	*s_env;
+// int	var_exist(t_bigshell *data, char *str)
+// {
+// 	t_env	*env;
+// 	t_env	*s_env;
 
-	env = data->env;
-	s_env = data->s_env;
+// 	env = data->env;
+// 	s_env = data->s_env;
 	
-}
+// }
 
 void	ft_export(t_bigshell *data)
 {
@@ -217,8 +216,8 @@ void	ft_export(t_bigshell *data)
 	{
 		if (check_var(data, arg->str) == 1)
 			return ;
-		if (var_exists(data, arg->str) == 0)
-			continue ;
+		// if (var_exist(data, arg->str) == 0)
+		// 	continue ;
 		current->next = create_node(data, arg->str);
 		current_env->next = create_node(data, arg->str);
 		current = current->next;

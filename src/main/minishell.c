@@ -31,7 +31,6 @@
 	return (1);
 } */
 
-t_sig	g_sig;
 
 //moved to built_in_list 4 testing
 /* int	builtin_allrounder(t_bigshell *data)
@@ -42,6 +41,8 @@ t_sig	g_sig;
 	built_in_list(data);
 	result = builtin_check_exec(data, data->commands->cmd->str);
 } */
+
+t_sig	g_sig;
 
 int main(int argc, char **argv, char **env)
 {

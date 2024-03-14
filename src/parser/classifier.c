@@ -6,7 +6,9 @@ t_token	*expand_token(t_token *token, t_bigshell *data)
 {
 	char	*temp;
 	temp = token->str;
+	printf("expanded: %s\n", token->str);
 	token->str = expand(temp, data);
+	printf("expanded: %s\n", token->str);
 	return (token);
 }
 
@@ -46,12 +48,13 @@ void	clean_token(t_token *token, t_bigshell *data)
 	char	*new;
 	int		i;
 	int		j;
+	char	c;
 
 	i = 0;
 	j = 0;
 	if (!token)
 		return ;
-	token = expand_token(token, data);
+	printf("::clean_token::%s\n", token->str);
 	if (token->type == (e_type) PIPE)
 		return ;
 	while (is_char(token->str[i], "<>") && token->str[i])
@@ -60,21 +63,29 @@ void	clean_token(t_token *token, t_bigshell *data)
 		i++;
 	if (token->type == (e_type) HEREDOC)
 		return (clean_heredoc(token));
-	if (is_char(token->str[i], "\"\'"))
-		i++;
+	// if (is_char(token->str[i], "\"\'"))
+	// 	i++;
 	new = (char *) ft_calloc (ft_strlen(token->str) + 1 - i, 1);
 	if (!new)
 		return ;
 	while (token->str[i])
 	{
-		while (is_char(token->str[i], "\"\'"))
+		if (is_char(token->str[i], "\"\'"))
+			c = token->str[i];
+		if (is_char(c, "\"\'") && ft_strchr(&token->str[i], c))
+		{
 			i++;
+			while (token->str[i] != c)
+				new[j++] = token->str[i++];
+			i++;
+		}
 		new[j++] = token->str[i++];
 	}
 	if (is_char(new[j - 1], "\"\'"))
 		new[j - 1] = 0;
 	free(token->str);
 	token->str = new;
+	token = expand_token(token, data);
 }
 
 int	check_pipes(t_token *list)

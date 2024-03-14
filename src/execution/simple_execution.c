@@ -175,7 +175,10 @@ int	main(int argc, char **argv, char **env)
 	while (1)
 	{
 		lineread = readline("tinyshell: ");
+		add_history(lineread);
 		data.commands = parse(lineread, &data);
+		if (!data.commands)
+			continue ;
 		print_cmds(data.commands, &data);
 		store_restore_fds(1);
 		if (heredoc_finder(&data) == 0)

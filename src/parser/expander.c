@@ -74,7 +74,7 @@ char *expand(char *str, t_bigshell *data)
 	{
 		while (str[i] && str[i] != '$')
 		{
-			if (str[i] == '\'')
+			if (str[i] == '\'' && ft_strchr(str + 1, '\''))
 				while (str[i] && str[i] != '\'')
 					i++;
 			i++;
@@ -89,7 +89,7 @@ char *expand(char *str, t_bigshell *data)
 			val = get_val(var, data);
 			if (!val)
 				return (free(var),str);
-			printf("val = %s", val);
+			printf("val = %s\n", val);
 			new = ft_string_insert(str, val, here - str, ft_strlen(var));
 			free(var);
 			str = new;

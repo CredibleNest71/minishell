@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 11:00:47 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/02/27 17:32:16 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/03/13 12:19:16 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,10 +49,10 @@ void	find_node_to_delete(t_bigshell *data, t_env **current, t_env **prev, t_toke
 {
 	int		len;
 	
-	len = ft_strlen(arg->str);
+	len = ft_strlen((*current)->var);
 	while (*current)
 	{
-		if (ft_strncmp(arg->str, (*current)->str, len) == 0)
+		if (ft_strncmp((*current)->var, arg->str, len) == 0)
 		{
 			unset_var(data, current, prev);
 			return ;

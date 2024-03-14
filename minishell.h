@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 17:34:54 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/03/12 18:02:06 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/03/14 12:37:21 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,7 +120,7 @@ void	ft_pwd(t_bigshell *data);
 
 void	ft_export(t_bigshell *data);
 int		check_if_sorted(t_env *current);
-void	switch_values(t_env *current);
+void	switch_nodes(t_env *current);
 void	sort_env(t_bigshell *data);
 void	print_env(t_env *head);
 void	make_copy(t_bigshell *data);

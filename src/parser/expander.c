@@ -52,13 +52,13 @@ char	*get_val(char *var, t_bigshell *data)
 	curr = data->env;
 	while (curr)
 	{
-		if (ft_strnstr(curr->str, var, ft_strlen(var)))
+		if (ft_strnstr(curr->var, var, ft_strlen(var)))
 			break ;
 		curr = curr->next;
 	}
 	if (!curr)
 		return (NULL);
-	return (ft_strchr(curr->str, '=') + 1);
+	return (ft_strchr(curr->var, '=') + 1);
 }
 
 //expands $-variable

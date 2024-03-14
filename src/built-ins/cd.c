@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 10:32:36 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/03/12 15:10:39 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/03/12 18:03:35 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,12 +80,12 @@ void	overwrite_pwd(t_bigshell *data, char *to_join)
 		fatal_error(data, 1);
 	while (tmp)
 	{
-		if (ft_strncmp(tmp->str, "PWD", 3) == 0)
+		if (ft_strncmp(tmp->var, "PWD", 3) == 0)
 		{
-			free(tmp->str);
-			tmp->str = NULL;
-			tmp->str = ft_strdup(new_str);
-			if (!tmp->str)
+			free(tmp->var);
+			tmp->var = NULL;
+			tmp->var = ft_strdup(new_str);
+			if (!tmp->var)
 				fatal_error(data, 1);
 			break ;
 		}
@@ -108,13 +108,13 @@ void	connect_path(t_bigshell *data, char *to_join)
 		new_str[i] = str[i]; */
 	while (tmp)
 	{
-		if (ft_strncmp(tmp->str, "PWD=", 4) == 0)
+		if (ft_strncmp(tmp->var, "PWD", 3) == 0)
 		{
-			new_str = ft_strjoin(tmp->str, new_str);
-			free(tmp->str);
-			tmp->str = NULL;
-			tmp->str = ft_strdup(new_str);
-			if (!tmp->str)
+			new_str = ft_strjoin(tmp->var, new_str);
+			free(tmp->var);
+			tmp->var = NULL;
+			tmp->var = ft_strdup(new_str);
+			if (!tmp->var)
 				fatal_error(data, 1);
 			break ;		
 		}

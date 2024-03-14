@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 17:34:54 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/03/11 17:37:40 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/03/12 18:02:06 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,8 @@ typedef struct s_command
 
 typedef struct s_env
 {
-	char			*str;
+	char			*var; //previously str
+	char			*value;
 	struct s_env	*next;
 }	t_env;
 

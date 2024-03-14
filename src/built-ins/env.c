@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 11:01:30 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/03/11 17:43:42 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/03/13 11:03:58 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,13 +39,15 @@ void	ft_env(t_bigshell *data)
 	t_env	*tmp;
 
 	tmp = data->env;
-	/* if (option == 1) is this trying to do exports work?
-		add_env_variable(data); */
+	if (!tmp)
+		return ;
 	if (data->commands->arg_num == 0)
 	{
 		while (tmp)
 		{	
-			printf("%s\n", tmp->str);
+			printf("%s", tmp->var);
+			printf("=");
+			printf("%s\n", tmp->value);
 			tmp = tmp->next;
 		}
 		return ;

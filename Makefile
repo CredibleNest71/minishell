@@ -27,6 +27,7 @@ SRCS = ${SRC_DIR}${EXEC_DIR}exec.c\
 			${SRC_DIR}${BUILT_INS}cd.c\
 			${SRC_DIR}${BUILT_INS}echo.c\
 			${SRC_DIR}${BUILT_INS}env.c\
+			${SRC_DIR}${BUILT_INS}exit.c\
 			${SRC_DIR}${BUILT_INS}export.c\
 			${SRC_DIR}${BUILT_INS}pwd.c\
 			${SRC_DIR}${BUILT_INS}unset.c\
@@ -51,6 +52,8 @@ $(NAME): $(OBJS)
 clean:
 	cd libft && $(MAKE) fclean
 	rm -f $(OBJS)
+
+nice: all clean
 
 fclean: clean
 	rm -f $(NAME)

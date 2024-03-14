@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 09:57:03 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/03/08 17:19:27 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/03/14 12:11:13 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,30 @@ void	ft_echo(t_token *args, int option)
 	int	count;
 
 	count = 0;
-	while (args)
+	if (option == 1)
 	{
-		if (count++)
-			ft_putchar_fd(' ', 1);
-		if (strncmp(args->str, "-n", 2))
+		args = args->next;
+		if (!args)
+			return ;
+		while (args)
+		{			
+			if (count++)
+				write(1, " ", 1);
+			ft_putstr_fd(args->str, 1);
+			args = args->next;	
+		}
+	}
+	else
+	{
+		if (!args)
+		{
+			ft_putchar_fd('\n', 1);
+			return ;
+		}
+		while(args)
+		{
+			if (count++)
+				write(1, " ", 1);
 			ft_putstr_fd(args->str, 1);
 		args = args->next;
 	}

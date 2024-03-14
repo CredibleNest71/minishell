@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 15:21:04 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/03/12 12:43:32 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/03/13 11:15:41 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,10 @@ void	ft_pwd(t_bigshell *data)
 	cwd = NULL;
 	while (tmp)
 	{
-		if (ft_strncmp(tmp->str, "PWD=", 4) == 0)
+		if (ft_strncmp(tmp->var, "PWD=", 4) == 0)
 		{
 			//maybe protect in case PWD= is only 4char long
-			cwd = ft_strdup(tmp->str + 4);
+			cwd = ft_strdup(tmp->value);
 			if (!cwd)
 				fatal_error(data, 1);
 			break ;

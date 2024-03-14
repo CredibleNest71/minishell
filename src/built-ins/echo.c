@@ -16,6 +16,9 @@
 //maybe check if args is empty
 void	ft_echo(t_token *args, int option)
 {
+	int	count;
+
+	count = 0;
 	if (option == 1)
 	{
 		args = args->next;
@@ -36,6 +39,8 @@ void	ft_echo(t_token *args, int option)
 		}
 		while(args)
 		{
+			if (count++)
+				write(1, " ", 1);
 			ft_putstr_fd(args->str, 1);
 			args = args->next;
 		}

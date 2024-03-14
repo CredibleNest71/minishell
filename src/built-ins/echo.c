@@ -23,11 +23,12 @@ void	ft_echo(t_token *args, int option)
 	{
 		if (count++)
 			ft_putchar_fd(' ', 1);
-		ft_putstr_fd(args->str, 1);
-		if (!option)
-			ft_putchar_fd('\n', 1);
+		if (strncmp(args->str, "-n", 2))
+			ft_putstr_fd(args->str, 1);
 		args = args->next;
 	}
+	if (!option)
+		ft_putchar_fd('\n', 1);
 	// if (option == 1)
 	// {
 	// 	args = args->next;

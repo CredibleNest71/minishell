@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 12:34:44 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/03/14 14:44:47 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/03/14 16:50:23 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,8 +69,10 @@ void	print_env(t_env *head)
 	{
 		printf("declare -x ");
 		printf("%s", head->var);
-		printf("=");
-		printf("%s\n", head->value);
+		head->value = NULL;
+		printf("\n\nvalue: %s\n\n", head->value);
+		if (head->value)
+			printf("=%s\n", head->value);
 		head = head->next;
 	}
 }
@@ -157,11 +159,13 @@ int	check_var(t_bigshell *data, char *key)
 	if (!var)
 		fatal_error(data, 1);
 	end = ft_strchr(var, '=');
-	*end = 0;
+	if (end)
+		*end = 0;
 	i = 0;
 	if (!(var[0] == '_' || (var[0] >= 'A' && var[0] <= 'Z') || (var[0] >= 'a' && var[0] <= 'z')))
 	{
 		free(var);
+		printf("tinyshell: export: `%s': not a valid identifier\n", key); //key? tiene que ser full str
 		return (1);
 	}
 	while (var[++i])
@@ -190,7 +194,7 @@ int	check_var(t_bigshell *data, char *key)
 	}
 }  */
 
-void	switch_values(t_bigshell *data, t_env *node, char	*new_value, int len)
+void	switch_values(t_bigshell *data, t_env *node, char *new_value, int len)
 {
 	free(node->value);
 	node->value = (char *)malloc(sizeof(char) * len + 1);
@@ -208,8 +212,6 @@ int	var_exists(t_bigshell *data, char *str)
 	env = data->env;
 	s_env = data->s_env;
 	separator = ft_strchr(str, '=');
-	if (!separator)
-		fatal_error(data, 1);
 	while (env)
 	{
 		if (ft_strncmp(env->var, str, (size_t)(separator - str)) == 0)
@@ -223,7 +225,7 @@ int	var_exists(t_bigshell *data, char *str)
 	{
 		if (ft_strncmp(s_env->var, str, (size_t)(separator - str)) == 0)
 		{
-			switch_values(data, env, separator + 1, ft_strlen(separator +1));
+			switch_values(data, s_env, separator + 1, ft_strlen(separator +1));
 			return (0);
 		}
 		s_env = s_env->next;

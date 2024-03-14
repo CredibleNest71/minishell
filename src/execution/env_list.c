@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 09:46:40 by a                 #+#    #+#             */
-/*   Updated: 2024/03/13 11:06:41 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/03/13 17:06:47 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ t_env   *create_node(t_bigshell *data, char *str)
     return (new_node);
 }
 
+//this ft stores the initial env given when the executable is 1st ran
 void    store_env(t_bigshell *data, char **env)
 {
     int     i;

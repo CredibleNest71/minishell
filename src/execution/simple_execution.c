@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 17:54:30 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/03/12 17:27:33 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/03/14 10:51:01 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -185,8 +185,6 @@ int	main(int argc, char **argv, char **env)
 		if (builtin_allrounder(&data) == 0)
 			continue ;
 		//print_cmds(data.commands);
-		if (heredoc_finder(&data) == 0)
-				ft_heredoc(&data);
 		simple_exec(&data);
 	}
 }

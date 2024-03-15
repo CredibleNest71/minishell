@@ -51,6 +51,8 @@ char	*get_val(char *var, t_bigshell *data)
 
 	if (!data)
 		return (printf("EYYYY WHERES MY VAL"), NULL);
+	//if (var[1] == '?')
+	//	return (ft_strdup(ft_itoa(data->exit_stat)));	//must be freed
 	curr = data->env;
 	while (curr)
 	{

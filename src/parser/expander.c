@@ -58,7 +58,7 @@ char	*get_val(char *var, t_bigshell *data)
 	}
 	if (!curr)
 		return (NULL);
-	return (curr->value);
+	return (ft_strchr(curr->var, '=') + 1);
 }
 
 //expands $-variable

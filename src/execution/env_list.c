@@ -6,11 +6,27 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 09:46:40 by a                 #+#    #+#             */
-/*   Updated: 2024/03/13 17:06:47 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/03/14 16:38:24 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
+
+t_env	*create_var(t_bigshell *data, char *str)
+{
+	t_env	*new_node;
+	
+	new_node = (t_env *)malloc(sizeof(t_env));
+	if (!new_node)
+		fatal_error(data, 1);
+	new_node->var = (char *)malloc(sizeof(char) * (ft_strlen(str) + 1));
+	if (!new_node->var)
+		fatal_error(data, 1);
+	new_node->var = str;
+	new_node->value = NULL;
+	new_node->next = NULL;
+	return (new_node);
+}
 
    /*  new_node->var = ft_strdup(str);
     if (!new_node->var)
@@ -22,6 +38,8 @@ t_env   *create_node(t_bigshell *data, char *str)
 	int		var_len;
 	int		value_len;
 	
+	if (ft_strlen(str) == 1)
+		return(create_var(data, str));
 	separator = ft_strchr(str, '=');
 	if (!separator)
 		simple_error(data, 1);

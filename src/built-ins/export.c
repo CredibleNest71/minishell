@@ -6,13 +6,14 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 12:34:44 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/03/14 12:08:40 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/03/14 16:50:23 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 #include <fcntl.h>
 #include <stdio.h>
+#include <string.h>
 
 //when u run export with no args, env sorted alphabetically should be printed
 //+ variables
@@ -27,7 +28,7 @@ int	check_if_sorted(t_env *current)
 }
 
 //switches the contents of the node
-void	switch_values(t_env *current)
+void	switch_nodes(t_env *current)
 {
 	char	*tmp_var;
 	char	*tmp_value;
@@ -54,7 +55,7 @@ void	sort_env(t_bigshell *data)
 		while (env_j->next)
 		{
 			if (check_if_sorted(env_j) == 1)
-				switch_values(env_j);
+				switch_nodes(env_j);
 			env_j = env_j->next;
 		}
 		env_i = env_i->next;
@@ -68,8 +69,10 @@ void	print_env(t_env *head)
 	{
 		printf("declare -x ");
 		printf("%s", head->var);
-		printf("=");
-		printf("%s\n", head->value);
+		head->value = NULL;
+		printf("\n\nvalue: %s\n\n", head->value);
+		if (head->value)
+			printf("=%s\n", head->value);
 		head = head->next;
 	}
 }
@@ -156,11 +159,13 @@ int	check_var(t_bigshell *data, char *key)
 	if (!var)
 		fatal_error(data, 1);
 	end = ft_strchr(var, '=');
-	*end = 0;
+	if (end)
+		*end = 0;
 	i = 0;
 	if (!(var[0] == '_' || (var[0] >= 'A' && var[0] <= 'Z') || (var[0] >= 'a' && var[0] <= 'z')))
 	{
 		free(var);
+		printf("tinyshell: export: `%s': not a valid identifier\n", key); //key? tiene que ser full str
 		return (1);
 	}
 	while (var[++i])
@@ -176,16 +181,57 @@ int	check_var(t_bigshell *data, char *key)
 	return (0);
 }
 
+/* t_env *check_existence(t_env *node, char *str)
+{
+	int	len;
 
-// int	var_exist(t_bigshell *data, char *str)
-// {
-// 	t_env	*env;
-// 	t_env	*s_env;
+	len = ft_strlen(str);
+	while (node)
+	{
+		if (ft_strncmp(node->var, str, len) == 0)
+			return (node);
+		node = node->next;
+	}
+}  */
 
-// 	env = data->env;
-// 	s_env = data->s_env;
-	
-// }
+void	switch_values(t_bigshell *data, t_env *node, char *new_value, int len)
+{
+	free(node->value);
+	node->value = (char *)malloc(sizeof(char) * len + 1);
+	if (!node->value)
+		fatal_error(data, 1);
+	memcpy(node->value, new_value, len);
+}
+
+int	var_exists(t_bigshell *data, char *str)
+{
+	t_env	*env;
+	t_env	*s_env;
+	char	*separator;
+
+	env = data->env;
+	s_env = data->s_env;
+	separator = ft_strchr(str, '=');
+	while (env)
+	{
+		if (ft_strncmp(env->var, str, (size_t)(separator - str)) == 0)
+		{
+			switch_values(data, env, separator + 1, ft_strlen(separator + 1));
+			return (0);
+		}
+		env = env->next;
+	}
+	while (s_env)
+	{
+		if (ft_strncmp(s_env->var, str, (size_t)(separator - str)) == 0)
+		{
+			switch_values(data, s_env, separator + 1, ft_strlen(separator +1));
+			return (0);
+		}
+		s_env = s_env->next;
+	}
+	return (1);
+}
 
 void	ft_export(t_bigshell *data)
 {
@@ -195,11 +241,8 @@ void	ft_export(t_bigshell *data)
 	
 	/*if (!data->s_env)*/
 		make_copy(data);
-	//print_env(data->s_env);
-	//printf("after make copy\n\n\n\n");
 	if (!data->commands->args)
 	{
-		//printf("I should be printing twice after this:\n");
 		print_env(data->s_env);
 		data->exit_stat = 0;
 		return ;
@@ -216,8 +259,11 @@ void	ft_export(t_bigshell *data)
 	{
 		if (check_var(data, arg->str) == 1)
 			return ;
-		// if (var_exist(data, arg->str) == 0)
-		// 	continue ;
+		if (var_exists(data, arg->str) == 0)
+		{
+			arg = arg->next;
+			continue ;
+		}
 		current->next = create_node(data, arg->str);
 		current_env->next = create_node(data, arg->str);
 		current = current->next;
@@ -226,7 +272,4 @@ void	ft_export(t_bigshell *data)
 		data->var_i++;
 	}
 	sort_env(data);
-	//printf("before add &sort:\n\n\n\n");
-	//print_env(data->env);
-	//printf("after adding var &sort\n\n\n\n");
 }

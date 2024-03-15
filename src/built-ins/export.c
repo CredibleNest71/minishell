@@ -181,18 +181,6 @@ int	check_var(t_bigshell *data, char *key)
 	return (0);
 }
 
-<<<<<<< HEAD
-
-// int	var_exist(t_bigshell *data, char *str)
-// {
-// 	t_env	*env;
-// 	t_env	*s_env;
-
-// 	env = data->env;
-// 	s_env = data->s_env;
-	
-// }
-=======
 /* t_env *check_existence(t_env *node, char *str)
 {
 	int	len;
@@ -244,7 +232,6 @@ int	var_exists(t_bigshell *data, char *str)
 	}
 	return (1);
 }
->>>>>>> ed0bb43b7dc138a57c3f041d67ae7c9c1b1bdbd9
 
 void	ft_export(t_bigshell *data)
 {
@@ -272,16 +259,11 @@ void	ft_export(t_bigshell *data)
 	{
 		if (check_var(data, arg->str) == 1)
 			return ;
-<<<<<<< HEAD
-		// if (var_exist(data, arg->str) == 0)
-		// 	continue ;
-=======
 		if (var_exists(data, arg->str) == 0)
 		{
 			arg = arg->next;
 			continue ;
 		}
->>>>>>> ed0bb43b7dc138a57c3f041d67ae7c9c1b1bdbd9
 		current->next = create_node(data, arg->str);
 		current_env->next = create_node(data, arg->str);
 		current = current->next;

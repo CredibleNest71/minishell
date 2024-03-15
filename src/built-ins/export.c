@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 12:34:44 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/03/14 16:50:23 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/03/15 17:22:08 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,8 +69,8 @@ void	print_env(t_env *head)
 	{
 		printf("declare -x ");
 		printf("%s", head->var);
-		head->value = NULL;
-		printf("\n\nvalue: %s\n\n", head->value);
+		if (!head->value)
+			printf("\n");
 		if (head->value)
 			printf("=%s\n", head->value);
 		head = head->next;
@@ -239,7 +239,7 @@ void	ft_export(t_bigshell *data)
 	t_env	*current_env;
 	t_token	*arg;
 	
-	/*if (!data->s_env)*/
+	if (!data->s_env)
 		make_copy(data);
 	if (!data->commands->args)
 	{

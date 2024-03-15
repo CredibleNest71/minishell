@@ -65,8 +65,11 @@ static int set_counts(t_command *cmd, t_bigshell *data)
 t_command	*parse(char *input, t_bigshell *data)
 {
 	t_token		*parsed;
-	t_command	*final; 
+	t_command	*final;
 
+	//input = prexpand(input, data);
+	if (!input)
+		return (NULL);
 	parsed = parse_tokens(input);
 	if (!parsed)
 		return (write(2, "ERROR in::parse::parsed\n", 25), NULL);

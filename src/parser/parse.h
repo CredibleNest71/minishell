@@ -36,6 +36,8 @@ int			findarg(char *str);
 
 //expander
 char 		*expand(char *str, t_bigshell *data);
+char	    *prexpand(char *str, t_bigshell *data);
+
 
 //parse
 t_command	*parse(char *input, t_bigshell *data);

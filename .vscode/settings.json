@@ -1,6 +1,7 @@
 {
     "files.associations": {
         "parse.h": "c",
-        "sstream": "c"
+        "sstream": "c",
+        "history.h": "c"
     }
 }

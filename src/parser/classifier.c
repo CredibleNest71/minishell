@@ -55,6 +55,7 @@ void	clean_token(t_token *token, t_bigshell *data)
 	if (!token)
 		return ;
 	printf("::clean_token::%s\n", token->str);
+	token = expand_token(token, data);
 	if (token->type == (e_type) PIPE)
 		return ;
 	while (is_char(token->str[i], "<>") && token->str[i])
@@ -85,7 +86,6 @@ void	clean_token(t_token *token, t_bigshell *data)
 		new[j - 1] = 0;
 	free(token->str);
 	token->str = new;
-	token = expand_token(token, data);
 }
 
 int	check_pipes(t_token *list)

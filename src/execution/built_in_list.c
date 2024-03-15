@@ -101,11 +101,9 @@ void	builtin_exec(t_bigshell *data, int builtin_index)
 	if (builtin_index == 0)
 	{
 		if (!data->commands->args)
-			ft_echo(data->commands->args, 0);
-		else if (ft_strncmp(data->commands->args->str, "-n", 2) == 0)
-			ft_echo(data->commands->args, 1);
+			ft_echo(data->commands->args);
 		else 
-			ft_echo(data->commands->args, 0);
+			ft_echo(data->commands->args);
 	}
 	else if (builtin_index == 1)
 		ft_cd(data);

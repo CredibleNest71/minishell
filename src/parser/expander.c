@@ -52,13 +52,53 @@ char	*get_val(char *var, t_bigshell *data)
 	curr = data->env;
 	while (curr)
 	{
-		if (ft_strnstr(curr->var, var, ft_strlen(var)))
+		if (!ft_strncmp(curr->var, var, ft_strlen(var) + 1))
 			break ;
 		curr = curr->next;
 	}
 	if (!curr)
 		return (NULL);
 	return (curr->value);
+}
+
+char	*prexpand(char *str, t_bigshell *data)
+{
+	int		i;
+	char	*new;
+	char	c;
+	char	*var;
+	char	*val;
+
+	i = 0;
+	if (!str)
+		return (NULL);
+	new = str;
+	while (str[i])
+	{
+		if (is_char(str[i], "\"\'"))
+		{
+			c = str[i];
+			while (str[i] && str[i] != c)
+				i++;
+			if (!str[i])
+				break ;
+			else if (str[i] == c)
+				i++;
+		}
+		if (str[i] == '$')
+		{
+			var = find_var_name(&str[i]);
+			val = get_val(var, data);
+			if (!val)
+				return (free(var), NULL);
+			new = ft_string_insert(str, val, &str[i] - str, ft_strlen(var));
+			free(var);
+			str = new;
+			i = 0;
+		}
+		i++;
+	}
+	return (new);
 }
 
 //expands $-variable
@@ -85,7 +125,6 @@ char *expand(char *str, t_bigshell *data)
 			var = find_var_name(here);
 			if (!var)
 				return (printf("NOT A LEGIT VARIABLE NAME\n"), str);
-			//val = getenv(var);
 			val = get_val(var, data);
 			if (!val)
 				return (free(var),str);

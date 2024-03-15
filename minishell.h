@@ -114,7 +114,7 @@ void	fatal_error(t_bigshell *data, int exit_code);
 
 void	simple_exec(t_bigshell *data);
 
-void	ft_echo(t_token *args, int option);
+void	ft_echo(t_token *args);
 void	ft_cd(t_bigshell *data);
 void	ft_pwd(t_bigshell *data);
 

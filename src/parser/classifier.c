@@ -6,7 +6,7 @@ t_token	*expand_token(t_token *token, t_bigshell *data)
 {
 	char	*temp;
 	temp = token->str;
-	printf("expanded: %s\n", token->str);
+	printf("not expanded: %s\n", token->str);
 	token->str = expand(temp, data);
 	printf("expanded: %s\n", token->str);
 	return (token);

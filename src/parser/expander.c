@@ -10,7 +10,9 @@ char	*ft_string_insert(char *str, char *in, int idx, int varlen)
 
 	if (!str || !in)
 		return (str);
-	intro = ft_strndup(str, idx);
+	intro = NULL;
+	if (idx)
+		intro = ft_strndup(str, idx);
 	outro = ft_strdup(str + idx + varlen + 1);
 	first = ft_strjoin(intro, in);
 	ret = ft_strjoin(first, outro);
@@ -58,7 +60,7 @@ char	*get_val(char *var, t_bigshell *data)
 	}
 	if (!curr)
 		return (NULL);
-	return (ft_strchr(curr->var, '=') + 1);
+	return (curr->value);
 }
 
 char	*prexpand(char *str, t_bigshell *data)
@@ -128,7 +130,7 @@ char *expand(char *str, t_bigshell *data)
 			val = get_val(var, data);
 			if (!val)
 				return (free(var),str);
-			printf("val = %s\n", val);
+			//printf("val = %s\n", val);
 			new = ft_string_insert(str, val, here - str, ft_strlen(var));
 			free(var);
 			str = new;

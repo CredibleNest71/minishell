@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 11:01:30 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/03/13 11:03:58 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/03/15 17:23:53 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,10 @@ void	ft_env(t_bigshell *data)
 		while (tmp)
 		{	
 			printf("%s", tmp->var);
-			printf("=");
-			printf("%s\n", tmp->value);
+			if (!tmp->value)
+				printf("\n");
+			if (tmp->value)
+				printf("=%s\n", tmp->value);
 			tmp = tmp->next;
 		}
 		return ;

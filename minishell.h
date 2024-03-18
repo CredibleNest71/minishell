@@ -46,6 +46,7 @@ typedef struct	s_token
 	char			*delimiter;
 	int				type;
 	char			*dir;
+	int				connected;
 	struct s_token	*next;
 }	t_token;
 

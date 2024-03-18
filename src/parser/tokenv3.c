@@ -51,6 +51,8 @@ int	no_quotes(t_token *token, char *str, int *i)
 		return (0);
 	token->str = content;
 	*i += found;
+	if (!str[*i])
+		return (1);
 	if (str[*i + 1] && !is_char(str[*i + 1], "\n\t\v \r\f"))
 		token->connected = 1;
 }

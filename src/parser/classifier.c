@@ -260,7 +260,7 @@ t_command   *transform(t_token *list, t_bigshell *data)
 	t_command	*cmd;
 
 	temp = list;
-	expand_token_list(list, data);
+	//expand_token_list(list, data);
 	classify(list);
 	while (temp)
 	{

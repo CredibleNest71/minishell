@@ -1,39 +1,24 @@
 #include "parse.h"
-#include "../minishell.h"
+#include "../../minishell.h"
 #include "../../libft/libft.h"
 
-int	d_quotes(t_token *token,char *str,int *i)
+int	quotes(t_token *token, char *str, int *i, char quote)
 {
 	char	*content;
 	char	*found;
 
-	found = ft_strchr(&str[*i + 1], '\"');
+	found = ft_strchr(&str[*i + 1], quote);
 	if (!found)
 		return (0);
-	content = ft_strndup(&str[*i], found - &str[*i]);
+	content = ft_strndup(&str[*i], found - &str[*i] + 1);
 	if (!content)
 		return (0);
 	token->str = content;
-	*i += found - &str[*i];
-	if (str[*i + 1] && !is_char(str[*i + 1], "\n\t\v \r\f"))
+	printf("::quotes::content: %s\n", content);
+	*i += found - &str[*i] + 1;
+	if (str[*i] && !is_char(str[*i], "\n\t\v \r\f"))
 		token->connected = 1;
-}
-
-int	d_quotes(t_token *token, char *str, int *i)
-{
-	char	*content;
-	char	*found;
-
-	found = ft_strchr(&str[*i + 1], '\'');
-	if (!found)
-		return (0);
-	content = ft_strndup(&str[*i], found - &str[*i]);
-	if (!content)
-		return (0);
-	token->str = content;
-	*i += found - &str[*i];
-	if (str[*i + 1] && !is_char(str[*i + 1], "\n\t\v \r\f"))
-		token->connected = 1;
+	return (1);
 }
 
 int	no_quotes(t_token *token, char *str, int *i)
@@ -42,7 +27,7 @@ int	no_quotes(t_token *token, char *str, int *i)
 	int		found;
 
 	found = 0;
-	while (str[*i + found] && !is_char(str[*i + found], "\n\t\v \r\f"))
+	while (str[*i + found] && !is_char(str[*i + found], "\"\'\n\t\v \r\f"))
 		found++;
 	if (!found)
 		return (0);
@@ -51,14 +36,15 @@ int	no_quotes(t_token *token, char *str, int *i)
 		return (0);
 	token->str = content;
 	*i += found;
-	if (!str[*i])
-		return (1);
-	if (str[*i + 1] && !is_char(str[*i + 1], "\n\t\v \r\f"))
+	if (str[*i] && !is_char(str[*i], "\n\t\v \r\f"))
 		token->connected = 1;
+	return (1);
 }
 
 void	set_type(t_token *token, char *str, int *i)
 {
+	if (!token)
+		return ;
 	if (is_char(str[*i], "\"\'"))
 		token->type = (e_type) ARG;
 	else if (!strncmp(&str[*i], "<<", 2))
@@ -77,18 +63,23 @@ void	set_type(t_token *token, char *str, int *i)
 		*i += 1;
 }
 
-int	fill_token(t_token *token,char *str,int *i)
+int	fill_token(t_token *token, char *str, int *i)
 {
-	skip_white_space(&str[*i], &i);
+	int	check;
+
+	skip_white_space(str, i);
 	set_type(token, str, i);
-	skip_white_space(&str[*i], &i);
+	skip_white_space(str, i);
 	if (str[*i] == '\"')
-		d_quotes(token, str, i);
+		check = quotes(token, str, i, '\"');
 	else if (str[*i] == '\'')
-		s_quotes(token, str, i);
+		check = quotes(token, str, i, '\'');
 	else
-		no_quotes(token, str, i);
-	return (0);
+		check = no_quotes(token, str, i);
+	//printf("tokencontent: %s\n", token->str);
+	if (!check)
+		return (0);
+	return (1);
 }
 
 
@@ -97,24 +88,69 @@ t_token	*create_token(char *str, int *i)
 	int		start;
 	t_token	*token;
 
-	token = (t_token *) ft_calloc (sizeof(token), 1);
+	token = (t_token *) ft_calloc (sizeof(t_token), 1);
 	if (!token)
 		return (NULL);
-	fill_token(token, str, i);
+	token->next = NULL;
+	if (!fill_token(token, str, i))
+		return (free(token), NULL);
+	return (token);
 }
 
-
-t_token	*tokenmaker(char *str)
+void	token_list_add(t_token **tokenlist, t_token *token)
 {
-	t_token	*tokenlist;
+	t_token	*temp;
+
+	if (!tokenlist || !token)
+		return ;
+	if (!(*tokenlist))
+	{
+		*tokenlist = token;
+		return ;
+	}
+	temp = *tokenlist;
+	while (temp->next)
+		temp = temp->next;
+	temp->next = token;
+	return ;	
+}
+
+t_token	**tokenmaker(char *str)
+{
+	t_token	**tokenlist;
+	t_token	*new;
 	int		i;
 
 	i = 0;
-	while (str[i])
+	tokenlist = (t_token **) malloc (sizeof(t_token **));
+	if (!tokenlist)
+		return (NULL);
+	*tokenlist = create_token(str, &i);
+	while (1)
 	{
-		skip_white_space(&str[i], &i);
+		skip_white_space(str, &i);
 		if (!str[i])
 			return (tokenlist);
-		token_append(tokenlist, create_token(str, &i));
+		new = create_token(str, &i);
+		if (!new)
+			return (tokenlist);
+		token_list_add(tokenlist, new);
+	}
+	return (tokenlist);
+}
+
+int	main(int ac, char **av)
+{
+	t_token	**tokens;
+	t_token	*curr;
+
+	tokens = tokenmaker(av[1]);
+	curr = *tokens;
+	while (curr && curr->str)
+	{
+		printf("%s\n", curr->str);
+		printf("type %d\n", curr->type);
+		printf("connected: %d\n\n", curr->connected);
+		curr = curr->next;
 	}
 }

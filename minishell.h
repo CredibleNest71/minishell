@@ -55,6 +55,7 @@ typedef struct s_command
 {
 	t_token				*cmd;		//command
 	t_token				*args;		//arguments
+	char				**args_exec;
 	t_token				*input;		//< / heredoc
 	t_token				*output;	//> / append
 	int					arg_num;

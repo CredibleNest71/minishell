@@ -29,6 +29,7 @@ void	pipe_fork(t_bigshell *data)
 	{
 		//do shit
 	}
+	wait(NULL);
 }
 
 void	complex_exec(t_bigshell *data, t_token *cmd)

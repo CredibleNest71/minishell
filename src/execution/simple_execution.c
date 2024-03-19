@@ -35,7 +35,9 @@ void	simple_exec(t_bigshell *data)
 	correct_path = check_if_correct_path(paths, data, data->commands->cmd->str);
 	if (!correct_path)
 		printf("correct path failed\n"); // do smt probably
-	execve(correct_path, &data->commands->cmd->str, data->mod_env);
+	execve(correct_path, data->commands->args_exec, data->mod_env);
+	free(correct_path);
+	//free paths & args_exec
 	printf("execve failed\n");
 	//protect execve
 }
@@ -195,12 +197,20 @@ int	main(int argc, char **argv, char **env)
 				fatal_error(&data, 1);
 			if (data.id == 0)
 				simple_exec(&data);
+			wait(NULL);
 		}
 		else if (data.num_cmd > 1)
 		{
-			while (i < data.num_cmd)
+			while (i < (data.num_cmd - 1))
 			{
-				pipe_fork(&data);
+				if (pipe(data.pipe_fd) == -1)
+				{
+					printf("pipe failed\n");
+					fatal_error(&data, 1);
+				}
+				int j = i;
+				while (i < data.num_cmd)
+				{}
 				i++;
 				if (i == data.num_cmd)
 				{

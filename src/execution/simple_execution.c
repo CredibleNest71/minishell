@@ -195,5 +195,9 @@ int	main(int argc, char **argv, char **env)
 			if (data.id == 0)
 				simple_exec(&data);
 		}
+		else if (data.num_cmd > 1)
+		{
+			
+		}
 	}
 }

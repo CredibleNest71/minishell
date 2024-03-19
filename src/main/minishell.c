@@ -72,7 +72,7 @@ int main(int argc, char **argv, char **env)
 			if (data.id == 0)
 				simple_exec(&data);
 		}
-		else
+		else if (data.num_cmd > 1)
 		{
 			while (i < data.num_cmd)
 			{

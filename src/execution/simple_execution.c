@@ -172,6 +172,7 @@ int	main(int argc, char **argv, char **env)
 	data.commands->arg_num = 0;
 	printf("%d\n", data.commands->arg_num);
 	ft_cd(&data); */
+	int i = 0;
 	while (1)
 	{
 		lineread = readline("tinyshell: ");
@@ -197,7 +198,16 @@ int	main(int argc, char **argv, char **env)
 		}
 		else if (data.num_cmd > 1)
 		{
-			
+			while (i < data.num_cmd)
+			{
+				pipe_fork(&data);
+				i++;
+				if (i == data.num_cmd)
+				{
+					close(data.pipe_fd[1]);
+					close(data.pipe_fd[0]);
+				}
+			}
 		}
 	}
 }

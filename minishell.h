@@ -20,6 +20,8 @@
 # include <readline/history.h>
 # include <errno.h>
 # include "libft/libft.h"
+# include <sys/types.h>
+# include <sys/wait.h>
 //# include "src/parser/parse.h"
 
 # ifndef BUFFER
@@ -113,6 +115,9 @@ void	simple_error(t_bigshell *data, int exit_code);
 void	fatal_error(t_bigshell *data, int exit_code);
 
 void	simple_exec(t_bigshell *data);
+
+void	pipe_fork(t_bigshell *data);
+void	complex_exec(t_bigshell *data, t_token *cmd);
 
 void	ft_echo(t_token *args);
 void	ft_cd(t_bigshell *data);

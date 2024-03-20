@@ -13,6 +13,7 @@ t_token	*make_t(char *str)
 		return (NULL);
 	token->str = str;
 	token->type = (e_type) ARG;
+	return (token);
 }
 
 t_token **split_to_token(char **split, int join)
@@ -22,6 +23,7 @@ t_token **split_to_token(char **split, int join)
 	int	i;
 
 	i = 0;
+	ret = (t_token **) ft_calloc (sizeof(t_token *), 1);
 	while (split[i])
 	{
 		new = make_t(split[i]);
@@ -30,6 +32,7 @@ t_token **split_to_token(char **split, int join)
 	}
 	if (join)
 		new->connected = 1;
+	return (ret);
 }
 
 void	insert_tokenlist(t_token *prev, t_token *curr, t_token **addlist)
@@ -46,7 +49,7 @@ void	insert_tokenlist(t_token *prev, t_token *curr, t_token **addlist)
 }
 
 
-t_token **expand_no_quotes(t_token *prev, t_token *curr, t_bigshell *data)
+void	expand_no_quotes(t_token *prev, t_token *curr, t_bigshell *data)
 {
 	char	*expanded;
     char    **split;
@@ -60,8 +63,7 @@ t_token **expand_no_quotes(t_token *prev, t_token *curr, t_bigshell *data)
     split = ft_split(expanded, ' ');
 	addlist = split_to_token(split, join);
 	insert_tokenlist(prev, curr, addlist);
-	// now split into tokens (no quotes)
-	// remember join flag (last token inherits)
+
 }
 
 char	*remove_quotes(char *str)

@@ -35,13 +35,16 @@ t_token **split_to_token(char **split, int join)
 	return (ret);
 }
 
-void	insert_tokenlist(t_token *prev, t_token *curr, t_token **addlist)
+void	insert_tokenlist(t_token **list, t_token *prev, t_token *curr, t_token **addlist)
 {
 	t_token	*next;
 	t_token	*last;
 
 	next = curr->next;
-	prev->next = *addlist;
+	if (prev)
+		prev->next = *addlist;
+	else
+		*list = *addlist;
 	last = ft_tokenlast(*addlist);
 	last->next = next;
 	free(curr->str);
@@ -49,7 +52,7 @@ void	insert_tokenlist(t_token *prev, t_token *curr, t_token **addlist)
 }
 
 
-void	expand_no_quotes(t_token *prev, t_token *curr, t_bigshell *data)
+void	expand_no_quotes(t_token **list, t_token *prev, t_token *curr, t_bigshell *data)
 {
 	char	*expanded;
     char    **split;
@@ -58,11 +61,11 @@ void	expand_no_quotes(t_token *prev, t_token *curr, t_bigshell *data)
 	
 	expanded = expand(curr->str, data);
 	join = 0;
-	if (is_char(expanded[ft_strlen(expanded) - 1], "\n\t\v \r\f"))
+	if (!is_char(expanded[ft_strlen(expanded) - 1], "\n\t\v \r\f"))
 		join = 1;
     split = ft_split(expanded, ' ');
 	addlist = split_to_token(split, join);
-	insert_tokenlist(prev, curr, addlist);
+	insert_tokenlist(list, prev, curr, addlist);
 
 }
 
@@ -82,7 +85,7 @@ char	*remove_quotes(char *str)
 }
 
 
-void    launch_expansion(t_token *prev, t_token *curr, t_bigshell *data)
+void    launch_expansion(t_token **list, t_token *prev, t_token *curr, t_bigshell *data)
 {
 	if (curr->str[0] == '\'')
 	{
@@ -92,10 +95,11 @@ void    launch_expansion(t_token *prev, t_token *curr, t_bigshell *data)
 	else if (curr->str[0] == '\"')
 	{
 		curr->str = remove_quotes(curr->str);
-		expand(curr->str, data);
+		curr->str = expand(curr->str, data);
+		printf("::launch_expansion:: %s", curr->str);
 	}
 	else if (curr->str[0] == '$')
-		expand_no_quotes(prev, curr, data);
+		expand_no_quotes(list, prev, curr, data);
 	return ;
 }
 
@@ -137,7 +141,7 @@ t_token **expander(t_token **list, t_bigshell *data)
     {
 		next = curr->next;
         if (ft_strchr(curr->str, '$'))
-            launch_expansion(prev, curr, data);
+            launch_expansion(list, prev, curr, data);
 		else
 			curr->str = remove_quotes(curr->str);
         prev = curr;

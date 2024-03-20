@@ -149,7 +149,7 @@ void	mark_commands(t_token *list)
 	}
 }
 
-static void	replace_or_append(t_token **list, t_token *token)
+void	replace_or_append(t_token **list, t_token *token)
 {
 	if (*list)
 		token_append(*list, token_dup(token));

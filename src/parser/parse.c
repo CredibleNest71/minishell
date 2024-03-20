@@ -92,6 +92,8 @@ void	set_all_char_arrays(t_command *final)
 	}
 	return ;
 }
+
+/*
 t_command	*parse(char *input, t_bigshell *data)
 {
 	t_token		*parsed;
@@ -112,6 +114,18 @@ t_command	*parse(char *input, t_bigshell *data)
 	if (!final)
 		return (write(2, "ERROR in::parse::final\n", 24), NULL);
 	set_counts(final, data);
-	set_all_char_arrays(final);
-	return (final);
+*/
+t_command	*parse(char *input, t_bigshell *data)
+{
+	t_token		**tokens;
+	t_command	**cmds;
+
+	if (!input)
+		return (NULL);
+	tokens = tokenmaker(input);
+	tokens = expander(tokens, data);
+	cmds = commands_finalized(tokens, data);
+	set_counts(*cmds, data);
+	set_all_char_arrays(*cmds);
+	return (*cmds);
 }

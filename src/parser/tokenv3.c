@@ -9,7 +9,7 @@ int	quotes(t_token *token, char *str, int *i, char quote)
 
 	found = ft_strchr(&str[*i + 1], quote);
 	if (!found)
-		return (0);
+		return (-1);
 	content = ft_strndup(&str[*i], found - &str[*i] + 1);
 	if (!content)
 		return (0);
@@ -84,6 +84,8 @@ int	fill_token(t_token *token, char *str, int *i)
 	else
 		check = no_quotes(token, str, i);
 	//printf("tokencontent: %s\n", token->str);
+	if (check < 0)
+		return (-1);
 	if (!check)
 		return (0);
 	return (1);
@@ -92,14 +94,15 @@ int	fill_token(t_token *token, char *str, int *i)
 
 t_token	*create_token(char *str, int *i)
 {
-	int		start;
 	t_token	*token;
+	int		check;
 
 	token = (t_token *) ft_calloc (sizeof(t_token), 1);
 	if (!token)
 		return (NULL);
 	token->next = NULL;
-	if (!fill_token(token, str, i))
+	check = fill_token(token, str, i);
+	if (check <= 0)
 		return (free(token), NULL);
 	return (token);
 }
@@ -146,6 +149,7 @@ t_token	**tokenmaker(char *str)
 	return (tokenlist);
 }
 
+/*
 int	main(int ac, char **av)
 {
 	t_token	**tokens;
@@ -167,3 +171,4 @@ int	main(int ac, char **av)
 		curr = curr->next;
 	}
 }
+*/

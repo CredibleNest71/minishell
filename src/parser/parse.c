@@ -32,7 +32,7 @@ void	print_cmds(t_command *cmd, t_bigshell *data)
 				printf("\nOUT:			%s", curr->str);
 		}
 		for (int i = 0; i < temp_cmd->arg_num; i++)
-			printf("chars: %s\n", temp_cmd->args_exec[i]);
+			printf("\nchars: %s", temp_cmd->args_exec[i]);
 		printf("\n==========================================\n");
 	}
 }

@@ -27,8 +27,13 @@ int	no_quotes(t_token *token, char *str, int *i)
 	int		found;
 
 	found = 0;
-	while (str[*i + found] && !is_char(str[*i + found], "\"\'\n\t\v \r\f"))
+	if (str[*i] == '|')
 		found++;
+	else
+	{
+		while (str[*i + found] && !is_char(str[*i + found], "|\"\'\n\t\v \r\f"))
+			found++;
+	}
 	if (!found)
 		return (0);
 	content = ft_strndup(&str[*i], found);
@@ -145,10 +150,16 @@ int	main(int ac, char **av)
 {
 	t_token	**tokens;
 	t_token	*curr;
+	t_bigshell	data;
 
 	tokens = tokenmaker(av[1]);
-	curr = *tokens;
-	while (curr && curr->str)
+	tokens = expander(tokens, NULL);
+	
+	if (tokens)
+		curr = *tokens;
+	else
+		return (printf("ERROR"));
+	while (curr &&curr->str)
 	{
 		printf("%s\n", curr->str);
 		printf("type %d\n", curr->type);

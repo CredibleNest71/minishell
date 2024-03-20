@@ -55,6 +55,8 @@ void	set_type(t_token *token, char *str, int *i)
 		token->type = (e_type) IN;
 	else if (str[*i] == '>')
 		token->type = (e_type) OUT;
+	else if (str[*i] == '|')
+		token->type = (e_type) PIPE;
 	else
 		token->type = (e_type) ARG;
 	if (token->type == (e_type) HEREDOC || token->type == (e_type) APP)

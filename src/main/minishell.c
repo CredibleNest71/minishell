@@ -12,77 +12,67 @@
 
 #include "../../minishell.h"
 #include "../parser/parse.h"
+#include "sig.h"
 #include <stdio.h>
 #include <unistd.h>
 
-
-//checks if there's a heredoc present in the cmd line
-/* int	heredoc_finder(t_bigshell *data)
-{
-	t_token	*tmp;
-
-	tmp = data->commands->input;
-	while (tmp)
-	{
-		if (tmp->type == (enum type) HEREDOC)
-			return (0);
-		tmp = tmp->next;
-	}
-	return (1);
-} */
-
-
-//moved to built_in_list 4 testing
-/* int	builtin_allrounder(t_bigshell *data)
-{
-	int	result;
-	
-	data->built_ins = (char **)malloc(sizeof(char *) * 8);
-	built_in_list(data);
-	result = builtin_check_exec(data, data->commands->cmd->str);
-} */
-
 t_sig	g_sig;
 
-int main(int argc, char **argv, char **env)
+/* int	main(int argc, char **argv, char **env)
 {
-	t_bigshell	data;
-	char		*lineread;
-	int			i;
+	t_bigshell			data;
 
-	sig_init(&data);
-	lineread = NULL;
-	ft_bzero(&data, sizeof(data));
-	data.og_env = env;
-	i = 0;
+	sig_init(&data, &handler);
+	if (argc && argv) 
+		printf("\n");
+	bzero(&data, sizeof(data));
+ 	data.og_env = env;
+	store_env(&data, env);
+	char *lineread;
 	while (1)
 	{
-	    lineread = readline("shitshell: ");
+		lineread = NULL;
+		if (g_sig.sigquit && !lineread)
+			exit(data.exit_stat);
+		lineread = readline("tinyshell: ");
+		if (g_sig.sigint)
+		{
+			g_sig.sigint = 0;
+			write(1, "\n", 1);
+			continue ;
+		}
+		add_history(lineread);
 		data.commands = parse(lineread, &data);
-		//print_cmds(data.commands);
-		store_restore_fds(1); //will store stdin & stdout
+		if (!data.commands)
+			continue ;
+		print_cmds(data.commands, &data);
+		store_restore_fds(&data, 1);
 		if (heredoc_finder(&data) == 0)
 			ft_heredoc(&data);
-		if (data.commands->input || data.commands->output) //segfault? moved from simple_exec
+		if (data.commands->input || data.commands->output)
 			redir(data.commands, &data);
-		if (builtin_allrounder(&data) == 1 && data.num_cmd == 1) //check&exec builtins if found, if not& only 1cmd=fork
+		if (builtin_allrounder(&data) == 0)
+			continue ;
+		if (data.num_cmd == 1)
 		{
-			if ((data.id = fork()) == -1)
+			data.id = fork();
+			printf("data id is %d \n", data.id);
+			if (data.id == -1)
 				fatal_error(&data, 1);
 			if (data.id == 0)
 				simple_exec(&data);
 		}
-		else
-		{
-			while (i < data.num_cmd)
-			{
-				if ((data.id = fork()) == -1)
-					fatal_error(&data, 1);
-				if (data.id == 0)
-					complex_exec(data, i);
-				i++;
-			}
-		}
+		// else if (data.num_cmd > 1)
+		// {
+		// 	while (i < data.num_cmd)
+		// 	{
+		// 		if ((data.id = fork()) == -1)
+		// 			fatal_error(&data, 1);
+		// 		if (data.id == 0)
+		// 			complex_exec(data, i);
+		// 		i++;
+		// 	}
+		// }
 	}
-	return (0);
-}
+} */
+

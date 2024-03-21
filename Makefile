@@ -37,6 +37,13 @@ SRCS = ${SRC_DIR}${EXEC_DIR}exec.c\
 			${SRC_DIR}${PARSER_DIR}expander.c\
 			${SRC_DIR}${PARSER_DIR}extras.c\
 			${SRC_DIR}${PARSER_DIR}tokenv2.c\
+\
+			${SRC_DIR}${PARSER_DIR}tokenv3.c\
+			${SRC_DIR}${PARSER_DIR}expandv2.c\
+			${SRC_DIR}${PARSER_DIR}commander.c\
+\
+			${SRC_DIR}${MAIN_DIR}minishell.c\
+			${SRC_DIR}${MAIN_DIR}sig.c\
 
 OBJS := $(SRCS:%.c=%.o)
 

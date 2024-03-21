@@ -20,6 +20,10 @@
 # include <readline/history.h>
 # include <errno.h>
 # include "libft/libft.h"
+# include <sys/types.h>
+# include <sys/wait.h>
+# include <signal.h>
+
 //# include "src/parser/parse.h"
 
 # ifndef BUFFER
@@ -46,6 +50,8 @@ typedef struct	s_token
 	char			*delimiter;
 	int				type;
 	char			*dir;
+	int				connected;
+	int				preconnected;
 	struct s_token	*next;
 }	t_token;
 
@@ -53,6 +59,7 @@ typedef struct s_command
 {
 	t_token				*cmd;		//command
 	t_token				*args;		//arguments
+	char				**args_exec;
 	t_token				*input;		//< / heredoc
 	t_token				*output;	//> / append
 	int					arg_num;
@@ -69,20 +76,22 @@ typedef struct s_env
 
 typedef struct	s_bigshell
 {
-	t_command	*commands;
 	int			num_cmd;
 	int			exit_stat;
 	int			pipe_fd[2];
 	int			id;
 	int			var_i;	//counts how many variables exist in the environment
-	int			reference_i; //keeps count of data->env 
+	int			reference_i; //keeps count of data->env
+	int			std_in;
+	int			std_out; 
 	char		*export_var; //tf is this
 	char		**og_env; //do I use u?
 	char		**mod_env; //do I use u?
-	t_env		*env;
-	t_env		*s_env;
 	char		**built_ins;
 	t_token		*heredoc;	//token with delimiter and str; 
+	t_command	*commands;
+	t_env		*env;
+	t_env		*s_env;
 }	t_bigshell;
 
 
@@ -94,8 +103,8 @@ typedef struct s_signal
 	t_bigshell *data;
 }	t_sig;
 
-void	store_restore_fds(int mode);
-void	check_file(const char *file, int mode);
+void	store_restore_fds(t_bigshell *data, int mode);
+void	check_file(t_bigshell *data, const char *file, int mode);
 void	redir(t_command *command, t_bigshell *data);
 
 char	**find_and_split_path(char **env);
@@ -113,6 +122,9 @@ void	simple_error(t_bigshell *data, int exit_code);
 void	fatal_error(t_bigshell *data, int exit_code);
 
 void	simple_exec(t_bigshell *data);
+
+void	pipe_fork(t_bigshell *data);
+void	complex_exec(t_bigshell *data, t_token *cmd);
 
 void	ft_echo(t_token *args);
 void	ft_cd(t_bigshell *data);

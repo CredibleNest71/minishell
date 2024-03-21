@@ -51,7 +51,12 @@ void	simple_exec(t_bigshell *data)
 	correct_path = check_if_correct_path(paths, data, data->commands->cmd->str);
 	if (!correct_path)
 		printf("correct path failed\n"); // do smt probably
+	printf("correct_path = %s\n", correct_path);
+	int i = 0;
+	while (data->commands->args_exec[i])
+		printf("args_exec = %s\n", data->commands->args_exec[i++]);
 	execve(correct_path, data->commands->args_exec, data->mod_env);
+	printf("hello2\n");
 	free(correct_path);
 	//free paths & args_exec
 	printf("execve failed\n");
@@ -190,7 +195,6 @@ int	main(int argc, char **argv, char **env)
 	data.commands->arg_num = 0;
 	printf("%d\n", data.commands->arg_num);
 	ft_cd(&data); */
-	int i = 0;
 	while (1)
 	{
 		lineread = readline("tinyshell: ");
@@ -217,7 +221,8 @@ int	main(int argc, char **argv, char **env)
 				simple_exec(&data);
 			wait(NULL);
 		}
-		else if (data.num_cmd > 1)
+	//int i = 0;
+		/* else if (data.num_cmd > 1)
 		{
 			while (i < (data.num_cmd - 1))
 			{
@@ -236,6 +241,6 @@ int	main(int argc, char **argv, char **env)
 					close(data.pipe_fd[0]);
 				}
 			}
-		}
+		} */
 	}
 }

@@ -70,19 +70,23 @@ void	redir(t_command *command, t_bigshell *data) // fix to do: needs to be able 
 		if (data->heredoc)
 			check_file("tmpfile.txt", 0);
 		else
+		{
+			while (command->input->next)
+				command->input = command->input->next;
 			check_file(command->input->str, 0); //fix exit
-		fd_in = open(command->input->str, O_RDONLY);
-		if (fd_in == -1)
-		{
-			data->exit_stat = 1;
-			printf("fd_in open fail");
-			// data->exit_stat = 
-		}
+			fd_in = open(command->input->str, O_RDONLY);
+			if (fd_in == -1)
+			{
+				data->exit_stat = 1;
+				printf("fd_in open fail");
+				// data->exit_stat = 
+			}
 			//printf error & store exit code & new prompt probably (dont exit minishell)
-		if ((dup2(fd_in, 0)) == -1)
-		{
-			data->exit_stat = 1;
-			printf("fd_in dup2 fail\n");
+			if ((dup2(fd_in, 0)) == -1)
+			{
+				data->exit_stat = 1;
+				printf("fd_in dup2 fail\n");
+			}
 		}
 			//print error, store exit code n new prompt
 	}

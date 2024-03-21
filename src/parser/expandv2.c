@@ -31,7 +31,10 @@ t_token **split_to_token(char **split, int join)
 		i++;
 	}
 	if (join)
+	{
+		printf("split_to_token::join==1\n");
 		new->connected = 1;
+	}
 	return (ret);
 }
 
@@ -60,9 +63,7 @@ void	expand_no_quotes(t_token **list, t_token *prev, t_token *curr, t_bigshell *
 	int		join;
 	
 	expanded = expand(curr->str, data);
-	join = 0;
-	if (!is_char(expanded[ft_strlen(expanded) - 1], "\n\t\v \r\f"))
-		join = 1;
+	join = curr->connected;
     split = ft_split(expanded, ' ');
 	addlist = split_to_token(split, join);
 	insert_tokenlist(list, prev, curr, addlist);

@@ -12,6 +12,7 @@
 
 #include "../../minishell.h"
 #include "../parser/parse.h"
+#include "sig.h"
 #include <stdio.h>
 #include <unistd.h>
 
@@ -20,8 +21,8 @@ t_sig	g_sig;
 int	main(int argc, char **argv, char **env)
 {
 	t_bigshell			data;
-	struct sigaction	sa;
 
+	sig_init(&data, &handler);
 	if (argc && argv) 
 		printf("\n");
 	bzero(&data, sizeof(data));
@@ -30,7 +31,16 @@ int	main(int argc, char **argv, char **env)
 	char *lineread;
 	while (1)
 	{
+		lineread = NULL;
+		if (g_sig.sigquit && !lineread)
+			exit(data.exit_stat);
 		lineread = readline("tinyshell: ");
+		if (g_sig.sigint)
+		{
+			g_sig.sigint = 0;
+			write(1, "\n", 1);
+			continue ;
+		}
 		add_history(lineread);
 		data.commands = parse(lineread, &data);
 		if (!data.commands)

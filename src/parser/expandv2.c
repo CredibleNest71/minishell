@@ -16,6 +16,7 @@ t_token	*make_t(char *str)
 	return (token);
 }
 
+/*
 static void	set_connects(char *str, int *pre, int *post)
 {
 	int	len;
@@ -32,34 +33,34 @@ static void	set_connects(char *str, int *pre, int *post)
 	else
 		*post = 1;
 }
-
+*/
 t_token **split_to_token(char *expanded)
 {
 	t_token **ret;
 	t_token *new;
 	char	**split;
-	int		prejoin;
-	int		postjoin;
+	//int		prejoin;
+	//int		postjoin;
 	int		i;
 
 	i = 0;
 	split = ft_split(expanded, ' ');
-	prejoin = 0;
-	postjoin = 0;
-	set_connects(expanded, &prejoin, &postjoin);
+	//prejoin = 0;
+	//postjoin = 0;
+	//set_connects(expanded, &prejoin, &postjoin);
 	ret = (t_token **) ft_calloc (sizeof(t_token *), 1);
 	while (split[i])
 	{
 		new = make_t(split[i]);
-		if (!i && prejoin)
-			new->preconnected = 1;
-		else if (!i && !prejoin)
-			new->preconnected = -1;
+		//if (!i && prejoin)
+		//	new->preconnected = 1;
+		//else if (!i && !prejoin)
+		//	new->preconnected = -1;
 		token_list_add(ret, new);
 		i++;
 	}
-	if (postjoin)
-		ft_tokenlast(*ret)->connected = 1;
+	//if (postjoin)
+	//	ft_tokenlast(*ret)->connected = 1;
 	return (ret);
 }
 
@@ -127,7 +128,7 @@ void    launch_expansion(t_token **list, t_token *prev, t_token *curr, t_bigshel
 		printf("launch:: %s\n", temp->str);
 	return ;
 }
-
+/*
 static	void mark_join(t_token **list)
 {
 	t_token	*curr; 
@@ -146,7 +147,7 @@ static	void mark_join(t_token **list)
 	} 
 
 }
-
+*/
 void	join(t_token **list)
 {
 	t_token	*curr;
@@ -156,7 +157,7 @@ void	join(t_token **list)
 	curr = *list;
 	for (t_token *temp = *list; temp; temp = temp->next)
 		printf("prejoin:: %s(%d)\n", temp->str, temp->connected);
-	mark_join(list);
+	//mark_join(list);
 	while (curr)
 	{
 		next = curr->next;

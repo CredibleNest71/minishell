@@ -205,7 +205,10 @@ int	main(int argc, char **argv, char **env)
 		if (data.commands->input || data.commands->output)
 			redir(data.commands, &data);
 		if (builtin_allrounder(&data) == 0)
+		{
+			store_restore_fds(&data, 2);
 			continue ;
+		}
 		//print_cmds(data.commands);
 		if (data.num_cmd == 1)
 		{

@@ -53,8 +53,8 @@ void	simple_exec(t_bigshell *data)
 		printf("correct path failed\n"); // do smt probably
 	printf("correct_path = %s\n", correct_path);
 	int i = 0;
-	while (data->commands->args_exec[i])
-		printf("args_exec = %s\n", data->commands->args_exec[i++]);
+	while (data->mod_env[i])
+		printf("args_exec = %s\n", data->mod_env[i++]);
 	execve(correct_path, data->commands->args_exec, data->mod_env);
 	printf("hello2\n");
 	free(correct_path);

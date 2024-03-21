@@ -51,6 +51,10 @@ void	simple_exec(t_bigshell *data)
 	correct_path = check_if_correct_path(paths, data, data->commands->cmd->str);
 	if (!correct_path)
 		printf("correct path failed\n"); // do smt probably
+	int i = -1;
+	while (data->commands->args_exec[++i])
+		printf("args_exec = %s\n", data->commands->args_exec[i]);
+	printf("args_exec = %s\n", data->commands->args_exec[i]);
 	execve(correct_path, &data->commands->args->str, data->mod_env); //args needs to be a char ** otherwise exceve wont work. in case of redir args would be NULL and execve will inherit the correct fds
 	printf("execve failed\n");
 	//protect execve

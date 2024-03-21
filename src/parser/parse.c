@@ -70,8 +70,11 @@ void	set_char_array(t_command *final)
 	int			i;
 
 	final->args_exec = (char **) ft_calloc (sizeof(char *), final->arg_num + 1);
-	temparg = final->args;
+	if (!final->args_exec)
+		return ;
 	i = 0;
+	final->args_exec[i++] = ft_strdup(final->cmd->str);
+	temparg = final->args;
 	while (temparg)
 	{
 		final->args_exec[i++] = ft_strdup(temparg->str);

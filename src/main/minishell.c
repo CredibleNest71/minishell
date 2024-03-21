@@ -18,7 +18,7 @@
 
 t_sig	g_sig;
 
-int	main(int argc, char **argv, char **env)
+/* int	main(int argc, char **argv, char **env)
 {
 	t_bigshell			data;
 
@@ -46,7 +46,7 @@ int	main(int argc, char **argv, char **env)
 		if (!data.commands)
 			continue ;
 		print_cmds(data.commands, &data);
-		store_restore_fds(1);
+		store_restore_fds(&data, 1);
 		if (heredoc_finder(&data) == 0)
 			ft_heredoc(&data);
 		if (data.commands->input || data.commands->output)
@@ -62,17 +62,17 @@ int	main(int argc, char **argv, char **env)
 			if (data.id == 0)
 				simple_exec(&data);
 		}
-		else if (data.num_cmd > 1)
-		{
-			while (i < data.num_cmd)
-			{
-				if ((data.id = fork()) == -1)
-					fatal_error(&data, 1);
-				if (data.id == 0)
-					complex_exec(data, i);
-				i++;
-			}
-		}
+		// else if (data.num_cmd > 1)
+		// {
+		// 	while (i < data.num_cmd)
+		// 	{
+		// 		if ((data.id = fork()) == -1)
+		// 			fatal_error(&data, 1);
+		// 		if (data.id == 0)
+		// 			complex_exec(data, i);
+		// 		i++;
+		// 	}
+		// }
 	}
-}
+} */
 

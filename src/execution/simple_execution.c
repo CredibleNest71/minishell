@@ -51,10 +51,6 @@ void	simple_exec(t_bigshell *data)
 	correct_path = check_if_correct_path(paths, data, data->commands->cmd->str);
 	if (!correct_path)
 		printf("correct path failed\n"); // do smt probably
-	printf("correct_path = %s\n", correct_path);
-	int i = 0;
-	while (data->mod_env[i])
-		printf("args_exec = %s\n", data->mod_env[i++]);
 	execve(correct_path, data->commands->args_exec, data->mod_env);
 	printf("hello2\n");
 	free(correct_path);
@@ -213,13 +209,13 @@ int	main(int argc, char **argv, char **env)
 		//print_cmds(data.commands);
 		if (data.num_cmd == 1)
 		{
-			data.id = fork();
-			printf("data id is %d \n", data.id);
-			if (data.id == -1)
-				fatal_error(&data, 1);
-			if (data.id == 0)
+			//data.id = fork();
+			//printf("data id is %d \n", data.id);
+			//if (data.id == -1)
+			//	fatal_error(&data, 1);
+			//if (data.id == 0)
 				simple_exec(&data);
-			wait(NULL);
+			//wait(NULL);
 		}
 	//int i = 0;
 		/* else if (data.num_cmd > 1)

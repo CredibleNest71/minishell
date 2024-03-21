@@ -31,9 +31,7 @@ void	print_cmds(t_command *cmd, t_bigshell *data)
 			else
 				printf("\nOUT:			%s", curr->str);
 		}
-		int i = 0;
-		for (char *curr = temp_cmd->args_exec[i]; curr; curr = temp_cmd->args_exec[i])
-		{
+		for (int i = 0; i < temp_cmd->arg_num + 1; i++)
 			printf("\nchars: %s", temp_cmd->args_exec[i]);
 			i++;
 		}
@@ -73,13 +71,17 @@ void	set_char_array(t_command *final)
 	t_token		*temparg;
 	int			i;
 
-	final->args_exec = (char **) ft_calloc (sizeof(char *), final->arg_num + 1);
-	temparg = final->args;
+	final->args_exec = (char **) ft_calloc (sizeof(char *), final->arg_num + 3);
+	if (!final->args_exec)
+		return ;
 	i = 0;
+	final->args_exec[i++] = ft_strdup(final->cmd->str);
+	temparg = final->args;
 	while (temparg)
 	{
-		final->args_exec[i++] = ft_strdup(temparg->str);
+		final->args_exec[i] = ft_strdup(temparg->str);
 		temparg = temparg->next;
+		i++;
 	}
 	return ;
 }
@@ -96,6 +98,8 @@ void	set_all_char_arrays(t_command *final)
 	}
 	return ;
 }
+
+/*
 t_command	*parse(char *input, t_bigshell *data)
 {
 	t_token		*parsed;
@@ -116,6 +120,18 @@ t_command	*parse(char *input, t_bigshell *data)
 	if (!final)
 		return (write(2, "ERROR in::parse::final\n", 24), NULL);
 	set_counts(final, data);
-	set_all_char_arrays(final);
-	return (final);
+*/
+t_command	*parse(char *input, t_bigshell *data)
+{
+	t_token		**tokens;
+	t_command	**cmds;
+
+	if (!input)
+		return (NULL);
+	tokens = tokenmaker(input);
+	tokens = expander(tokens, data);
+	cmds = commands_finalized(tokens);
+	set_counts(*cmds, data);
+	set_all_char_arrays(*cmds);
+	return (*cmds);
 }

@@ -3,7 +3,7 @@
 #include <unistd.h>
 #include <signal.h>
 #include "../../minishell.h"
-#include "../libft/libft.h"
+#include "../../libft/libft.h"
 
 void	handler(int sig, siginfo_t *info, void *v)
 {
@@ -13,11 +13,15 @@ void	handler(int sig, siginfo_t *info, void *v)
         g_sig.sigquit = 1;
 }
 
-void    sig_init(t_bigshell *data)
+void    sig_init(t_bigshell *data, struct sigaction sa, void *handler)
 {
     ft_bzero(&g_sig, sizeof(g_sig));
     if (data)
         g_sig.data = data;
+    sa.sa_sigaction = &handler;
+    sa.sa_flags = SA_SIGINFO;
+    sigaction(SIGINT, &sa, NULL);
+    sigaction(SIGQUIT, &sa, NULL);
 }
 
 /*

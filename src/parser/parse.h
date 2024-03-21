@@ -33,9 +33,15 @@ t_token	    *parse_tokens(char *str);
 void	    delete_token_list(t_token *list);
 void	    delete_command_list(t_command *cmd);
 int			findarg(char *str);
+void	    replace_or_append(t_token **list, t_token *token);
+
 
 //tokenv3
 void	token_list_add(t_token **tokenlist, t_token *token);
+t_token	**tokenmaker(char *str);
+
+//commander
+t_command   **commands_finalized(t_token **list);
 
 //expandv2
 t_token **expander(t_token **list, t_bigshell *data);

@@ -210,7 +210,7 @@ int	main(int argc, char **argv, char **env)
 		if (data.num_cmd == 1)
 		{
 			data.id = fork();
-			printf("data id is %d \n", data.id);
+			//printf("data id is %d \n", data.id);
 			if (data.id == -1)
 				fatal_error(&data, 1);
 			if (data.id == 0)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   simple_execution.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
+/*   By: a <a@student.42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 17:54:30 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/03/15 17:59:34 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/03/18 15:43:28 by a                ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -193,7 +193,7 @@ int	main(int argc, char **argv, char **env)
 			if ((data.id = fork()) == -1)
 				fatal_error(&data, 1);
 			if (data.id == 0)
-				simple_exec(&data);
+				simple_exec(&data)
 		}
 	}
 }

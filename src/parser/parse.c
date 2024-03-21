@@ -31,7 +31,7 @@ void	print_cmds(t_command *cmd, t_bigshell *data)
 			else
 				printf("\nOUT:			%s", curr->str);
 		}
-		for (int i = 0; i < temp_cmd->arg_num; i++)
+		for (int i = 0; i < temp_cmd->arg_num + 1; i++)
 			printf("\nchars: %s", temp_cmd->args_exec[i]);
 		printf("\n==========================================\n");
 	}
@@ -69,7 +69,7 @@ void	set_char_array(t_command *final)
 	t_token		*temparg;
 	int			i;
 
-	final->args_exec = (char **) ft_calloc (sizeof(char *), final->arg_num + 1);
+	final->args_exec = (char **) ft_calloc (sizeof(char *), final->arg_num + 3);
 	if (!final->args_exec)
 		return ;
 	i = 0;
@@ -77,8 +77,9 @@ void	set_char_array(t_command *final)
 	temparg = final->args;
 	while (temparg)
 	{
-		final->args_exec[i++] = ft_strdup(temparg->str);
+		final->args_exec[i] = ft_strdup(temparg->str);
 		temparg = temparg->next;
+		i++;
 	}
 	return ;
 }

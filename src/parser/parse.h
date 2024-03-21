@@ -34,6 +34,12 @@ void	    delete_token_list(t_token *list);
 void	    delete_command_list(t_command *cmd);
 int			findarg(char *str);
 
+//tokenv3
+void	token_list_add(t_token **tokenlist, t_token *token);
+
+//expandv2
+t_token **expander(t_token **list, t_bigshell *data);
+
 //expander
 char 		*expand(char *str, t_bigshell *data);
 char	    *prexpand(char *str, t_bigshell *data);
@@ -45,6 +51,7 @@ void		print_cmds(t_command *cmd, t_bigshell *data);
 
 //signal
 void    sig_init(t_bigshell *data);
+
 
 
 #endif

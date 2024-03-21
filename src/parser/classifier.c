@@ -218,8 +218,41 @@ t_command	*create_commands(t_token *token)
 	}
 	return (og);
 }
+////////////////////////////////////////////////////////////////
+void	unify(t_token *og, t_token *ad)
+{
+	t_token	*cont;
+	t_token	*temp;
 
+	cont = og->next;
+	free(og->str);
+	og->str = ad->str;
+	og->next = ad->next;
+	temp = ft_tokenlast(ad);
+	temp->next = cont;
+}
 
+//expands token strings, creates new tokens if necessary
+void	expand_token_list(t_token *list, t_bigshell *data)
+{
+	t_token	*temp;
+	t_token	*new;
+
+	temp = list;
+	while (temp)
+	{
+		if (ft_strchr(temp->str, '$'))
+		{
+			expand(temp->str, data);
+			new = parse_tokens(temp->str);
+			for (t_token *tp = new; tp; tp = tp->next)
+				printf("new token: %s\n", tp->str);
+			unify(temp, new);
+		}
+		temp = temp->next;
+	}
+}
+////////////////////////////////////////////////////////////////
 
 t_command   *transform(t_token *list, t_bigshell *data)
 {
@@ -227,13 +260,14 @@ t_command   *transform(t_token *list, t_bigshell *data)
 	t_command	*cmd;
 
 	temp = list;
+	//expand_token_list(list, data);
 	classify(list);
-	mark_commands(list);
 	while (temp)
 	{
 		clean_token(temp, data);
 		temp = temp->next;
 	}
+	mark_commands(list);
 	cmd = create_commands(list);
 	return (cmd);
 }

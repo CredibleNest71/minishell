@@ -200,16 +200,13 @@ int	find_element(char *str)
 t_token	*make_token(char *str, int end)
 {
 	t_token	*token;
-	//static int	i = 0;
-	//printf("\ncreated %d tokens", i++);
+
 	token = (t_token *) ft_calloc (sizeof(t_token), 1);
 	if (!token)
 		return (NULL);
 	if (!str || end <= 0)
 		return (0);
 	token->str = ft_strndup(str, end);
-	//printf("\n	content: %s", token->str);
-	//printf("\n%s", token->str);
 	return (token);
 }
 
@@ -265,7 +262,7 @@ t_token	*parse_tokens(char *str)
 	list = temp;
 	i += end;
 	skip_white_space(str, &i);
-	while (/* i < (int) ft_strlen(str) && */ str[i])
+	while (str[i])
 	{
 		temp = ft_tokenlast(temp);
 		end = find_element(&str[i]);

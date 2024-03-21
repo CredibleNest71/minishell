@@ -36,6 +36,11 @@ void	ft_echo(t_token *args)
 	int	flag;
 
 	count = 0;
+	if (!args )
+	{
+		ft_putchar_fd('\n', 1);
+		return ;
+	}
 	flag = check_flag(args->str);
 	if (flag)
 		args = args->next;

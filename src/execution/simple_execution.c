@@ -12,6 +12,7 @@
 
 #include "../parser/parse.h"
 #include "../../minishell.h"
+#include <stdio.h>
 #include <strings.h>
 
 // needs to be a child bc execve will kill the process otherwise
@@ -20,14 +21,29 @@
 //file then ill try to access it. have to make tmpfile.txt accesible to redir()
 //overwrite input->str? (stupid? probably) make new struct member char *heredoc_file?
 
+/* void	check_input_file(t_bigshell *data, char *file)
+{
+	int	permission;
+
+	permission = access(file, F_OK);
+	if (permission == -1)
+		simple_error(data, 1); //wrong file permission whats exit code?
+	permission = access(file, R_OK);
+	if (permission == -1)
+		simple_error(data, 1);
+} */
+
 void	simple_exec(t_bigshell *data)
 {
 	char	**paths;
 	char	*correct_path;
 	
-	/* if (data->commands->input || data->commands->output)
-		redir(data->commands, data);
-	builtin_check_exec(data, data->commands->cmd->str); */ //moved to main, redirection may cause segfault
+	if (data->commands->args)
+	{
+		if (!data->commands->input || !data->commands->output)
+			check_file(data->commands->args->str, 0);
+	}
+	/*builtin_check_exec(data, data->commands->cmd->str); */ //moved to main, redirection may cause segfault
 	convert_env(data); //check this function env struct has changed
 	paths = find_and_split_path(data->mod_env);
 	if (!paths)
@@ -193,7 +209,9 @@ int	main(int argc, char **argv, char **env)
 		//print_cmds(data.commands);
 		if (data.num_cmd == 1)
 		{
-			if ((data.id = fork()) == -1)
+			data.id = fork();
+			printf("data id is %d \n", data.id);
+			if (data.id == -1)
 				fatal_error(&data, 1);
 			if (data.id == 0)
 				simple_exec(&data);

@@ -79,6 +79,8 @@ void	skip_chars(char *str, int *i)
 
 void	skip_white_space(char *str, int *i)
 {
+	if (!str)
+		return ;
 	while (str[*i] && is_char(str[*i], "\n\t\v \r\f"))
 		*i += 1;
 }

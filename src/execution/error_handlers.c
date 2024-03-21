@@ -16,8 +16,9 @@ void	simple_error(t_bigshell *data, int exit_code)
 {
 	data->exit_stat = exit_code;
 	perror("MINISHELL FAILURE:");
+	// ;
 	exit(data->exit_stat);
-}
+} //if im in a child process I exit, otherwisee nor
 
 void	fatal_error(t_bigshell *data, int exit_code)
 {

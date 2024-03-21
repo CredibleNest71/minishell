@@ -141,8 +141,7 @@ static	void mark_join(t_token **list)
 		if (curr->preconnected && prev)
 			prev->connected = 1;
 		if (curr->preconnected < 0 && prev)
-			prev->connected = 0;
-		prev = curr; 
+			prev->connected = 0		prev = curr; 
 		curr = curr->next;
 	} 
 

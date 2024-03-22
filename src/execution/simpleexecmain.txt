@@ -1,73 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   simple_execution.c                                 :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: a <a@student.42.fr>                        +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/31 17:54:30 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/03/21 19:44:56 by a                ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
-#include "../parser/parse.h"
-#include "../../minishell.h"
-#include <stdio.h>
-#include <strings.h>
-
-// needs to be a child bc execve will kill the process otherwise
-//we 1st check if redir is needed. <input & <<heredoc are both stored in cmd->input
-//therefore if im coming from heredoc it'll enter redir. If <<heredoc is the final
-//file then ill try to access it. have to make tmpfile.txt accesible to redir()
-//overwrite input->str? (stupid? probably) make new struct member char *heredoc_file?
-
-/* void	check_input_file(t_bigshell *data, char *file)
-{
-	int	permission;
-
-	permission = access(file, F_OK);
-	if (permission == -1)
-		simple_error(data, 1); //wrong file permission whats exit code?
-	permission = access(file, R_OK);
-	if (permission == -1)
-		simple_error(data, 1);
-} */
-
-void	simple_exec(t_bigshell *data)
-{
-	char	**paths;
-	char	*correct_path;
-	
-	if (data->commands->args)
-	{
-		if (!data->commands->input || !data->commands->output)
-			check_file(data, data->commands->args->str, 0);
-	}
-	/*builtin_check_exec(data, data->commands->cmd->str); */ //moved to main, redirection may cause segfault
-	convert_env(data); //check this function env struct has changed
-	paths = find_and_split_path(data->mod_env);
-	if (!paths)
-		printf("find&split failed\n"); //shit has been allocated
-	correct_path = check_if_correct_path(paths, data, data->commands->cmd->str);
-	if (!correct_path)
-		printf("correct path failed\n"); // do smt probably
-	execve(correct_path, data->commands->args_exec, data->mod_env);
-	printf("hello2\n");
-	free(correct_path);
-	//free paths & args_exec
-	printf("execve failed\n");
-	//protect execve
-}
-
-/* void print_env_list(t_bigshell *data)
-{
-    t_env *current = data->env;
-    while (current != NULL)
-    {
-        printf("%s\n", current->str);
-        current = current->next;
-    }
-} */
 
 int	main(int argc, char **argv, char **env)
 {
@@ -199,48 +129,24 @@ int	main(int argc, char **argv, char **env)
 		if (!data.commands)
 			continue ;
 		print_cmds(data.commands, &data);
-		store_restore_fds(&data, 1);
+		store_restore_fds(1);
 		if (heredoc_finder(&data) == 0)
 			ft_heredoc(&data);
 		if (data.commands->input || data.commands->output)
 			redir(data.commands, &data);
 		if (builtin_allrounder(&data) == 0)
-		{
-			store_restore_fds(&data, 2);
 			continue ;
-		}
 		//print_cmds(data.commands);
 		if (data.num_cmd == 1)
 		{
 			data.id = fork();
-			//printf("data id is %d \n", data.id);
+			printf("data id is %d \n", data.id);
 			if (data.id == -1)
 				fatal_error(&data, 1);
 			if (data.id == 0)
 				simple_exec(&data);
 			wait(NULL);
 		}
-	//int i = 0;
-		/* else if (data.num_cmd > 1)
-		{
-			while (i < (data.num_cmd - 1))
-			{
-				if (pipe(data.pipe_fd) == -1)
-				{
-					printf("pipe failed\n");
-					fatal_error(&data, 1);
-				}
-				int j = i;
-				while (i < data.num_cmd)
-				{}
-				i++;
-				if (i == data.num_cmd)
-				{
-					close(data.pipe_fd[1]);
-					close(data.pipe_fd[0]);
-				}
-			}
-		} */
-		store_restore_fds(&data, 2);
 	}
 }
+*/

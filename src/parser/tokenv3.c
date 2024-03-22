@@ -27,11 +27,13 @@ int	no_quotes(t_token *token, char *str, int *i)
 	int		found;
 
 	found = 0;
-	if (str[*i] == '|')
+	if (is_char(str[*i], "|"))
 		found++;
 	else
 	{
-		while (str[*i + found] && !is_char(str[*i + found], "|\"\'\n\t\v \r\f"))
+		if (is_char(str[*i], "$"))
+			found++;
+		while (str[*i + found] && !is_char(str[*i + found], "$|\"\'\n\t\v \r\f"))
 			found++;
 	}
 	if (!found)

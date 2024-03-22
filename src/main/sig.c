@@ -4,24 +4,29 @@
 #include <signal.h>
 #include "../../minishell.h"
 #include "../../libft/libft.h"
+#include "sig.h"
 
-void	handler(int sig, siginfo_t *info, void *v)
+void	handler(int sig/*, siginfo_t *info, void *v*/)
 {
-    if (sig == SIGINT)
-        g_sig.sigint = 1;
-    else if (sig == SIGQUIT)
-        g_sig.sigquit = 1;
+	write(1, "SIGNAL RECEIVED", 17);
+	if (sig == SIGINT)
+		g_sig.sigint = 1;
+	else if (sig == SIGQUIT)
+		g_sig.sigquit = 1;
 }
 
-void    sig_init(t_bigshell *data, struct sigaction sa, void *handler)
+int	check_sigs()
 {
-    ft_bzero(&g_sig, sizeof(g_sig));
-    if (data)
-        g_sig.data = data;
-    sa.sa_sigaction = &handler;
-    sa.sa_flags = SA_SIGINFO;
-    sigaction(SIGINT, &sa, NULL);
-    sigaction(SIGQUIT, &sa, NULL);
+	return (g_sig.sigint + g_sig.sigquit * 10);
+}
+
+void sig_init(t_bigshell *data, void *handler)
+{
+	ft_bzero(&g_sig, sizeof(g_sig));
+	if (data)
+		g_sig.data = data;
+	signal(SIGINT, handler);
+	signal(SIGQUIT, handler);
 }
 
 /*

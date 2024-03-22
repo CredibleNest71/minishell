@@ -12,6 +12,26 @@
 
 #include "../../minishell.h"
 
+void	pipe_fork(t_bigshell *data)
+{
+	if (pipe(data->pipe_fd) == -1)
+	{
+		printf("pipe failed\n");
+		fatal_error(data, 1);
+	}
+	data->id = fork();
+	if (data->id == -1)
+	{
+		printf("fork failed\n");
+		fatal_error(data, 1);
+	}
+	if (data->id == 0) //child process
+	{
+		//do shit
+	}
+	wait(NULL);
+}
+
 void	complex_exec(t_bigshell *data, t_token *cmd)
 {
 	//simple_exec(data);

@@ -32,10 +32,12 @@ void	print_cmds(t_command *cmd, t_bigshell *data)
 				printf("\nOUT:			%s", curr->str);
 		}
 		for (int i = 0; i < temp_cmd->arg_num + 1; i++)
-			printf("\nchars: %s", temp_cmd->args_exec[i]);
+			printf("\nchars: %s", temp_cmd->args_exec[i++]);
+			//i++;
+		}
 		printf("\n==========================================\n");
 	}
-}
+
 
 static int set_counts(t_command *cmd, t_bigshell *data)
 {

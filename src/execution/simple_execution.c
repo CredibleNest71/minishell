@@ -38,12 +38,6 @@ void	simple_exec(t_bigshell *data)
 	char	**paths;
 	char	*correct_path;
 	
-	if (data->commands->args)
-	{
-		if (!data->commands->input || !data->commands->output)
-			check_file(data, data->commands->args->str, 0);
-	}
-	/*builtin_check_exec(data, data->commands->cmd->str); */ //moved to main, redirection may cause segfault
 	convert_env(data); //check this function env struct has changed
 	paths = find_and_split_path(data->mod_env);
 	if (!paths)
@@ -213,7 +207,6 @@ int	main(int argc, char **argv, char **env)
 		if (data.num_cmd == 1)
 		{
 			data.id = fork();
-			//printf("data id is %d \n", data.id);
 			if (data.id == -1)
 				fatal_error(&data, 1);
 			if (data.id == 0)

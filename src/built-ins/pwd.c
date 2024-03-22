@@ -26,7 +26,7 @@ void	ft_pwd(t_bigshell *data)
 			//maybe protect in case PWD= is only 4char long
 			cwd = ft_strdup(tmp->value);
 			if (!cwd)
-				fatal_error(data, 1);
+				CRITICAL_FAILURE(data, "pwd: strdup failed");
 			break ;
 		}
 		tmp = tmp->next;

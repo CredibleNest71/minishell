@@ -11,120 +11,129 @@
 /* ************************************************************************** */
 
 #include "../../minishell.h"
+#include <stdlib.h>
 
 //PUT CORRECT ERROR HANDLING HERE
-void	store_restore_fds(t_bigshell *data, int mode) //REMOVE printfs
+void	store_restore_fds(t_bigshell *data, int mode)
 {
-	/* int	dup_stdin;
-	int	dup_stdout;
-	
-	dup_stdin = 0;
-	dup_stdout = 0; */
 	if (mode == 1)
 	{
-		if ((data->std_in = dup(0)) == -1)
-			printf("dup_stdin dup fail");
-			//print error, store exit code n new prompt
-		if ((data->std_out = dup(1)) == -1)
-			printf("dup_stdout dup fail");
-			//print error, store exit code n new prompt
+		data->std_in = dup(0);
+		if (data->std_in == -1)
+		{
+			printf("que\n");
+			CRITICAL_FAILURE(data, "dup_stdin dup fail");
+		}
+		data->std_out = dup(1);
+		if (data->std_out == -1)
+		{
+			printf("mierda\n");
+			CRITICAL_FAILURE(data, "dup_stdout dup fail");
+		}
 	}
 	else if (mode == 2)
 	{
 		if ((dup2(data->std_in, 0)) == -1)
-			printf("dup_stdin dup2 fail");
-			//print error, exit code n new prompt
+			CRITICAL_FAILURE(data, "dup_stdin dup2 fail");
 		if ((dup2(data->std_out, 1)) == -1)
-			printf("dup_stdout dup2 fail");
-			//print error, exit code n new prompt
+			CRITICAL_FAILURE(data, "dup_stdout dup2 fail");
 	}
 }
 
-void	check_file(t_bigshell *data, const char *file, int mode)
+/* printf("minishell: %s: No such file or directory\n", file); //check later with mo about file beig void* && probably exit as well
+data->exit_stat = 1; //$? --> 1: command not found */
+int	check_file(t_bigshell *data, const char *file, int mode)
 {
 	int	permission;
 
 	permission = access(file, F_OK);
 	if (permission == -1 && mode == 0)
 	{
-		printf("no such file or directory (0): %s\n", file); //check later with mo about file beig void* && probably exit as well
-		simple_error(data, 1);
+		redir_error(data, 1, "minishell: No such file or directory");
+		return (EXIT_FAILURE);
 	}
 	else if (permission == -1 && mode == 1)
-		return ;
+		return (EXIT_SUCCESS);
 	if (mode == 0)
 	{
 		if (access(file, R_OK) == -1)
-			printf("permission denied (0): %s\n", file); //exit (make function)
+		{
+			redir_error(data, 1, "minishell: Permission denied");
+			return (EXIT_FAILURE);
+		}
 	}
 	else if (mode == 1)
 	{
 		if (access(file, W_OK) == -1)
-			printf("permission denied (1): %s\n", file); //exit (make function)
+		{
+			redir_error(data, 1, "minishell: Permission denied");
+			return (EXIT_FAILURE);
+		}
 	}
+	return (EXIT_SUCCESS);
 }
 
-void	redir(t_command *command, t_bigshell *data) // fix to do: needs to be able to switch stdin&stdout multiple times (ex. cat <input >output <input2 >output3 >output4)
+// fix to do: needs to be able to switch stdin&stdout multiple times (ex. cat <input >output <input2 >output3 >output4)
+int	redir(t_command *command, t_bigshell *data)
 {
-	int		fd_in;
-	int		fd_out;
 	t_token	*in;
 	t_token	*out;
 	
 	in = command->input;
 	out = command->output;
-	if (in) // redirecting input "<"
+	if (in)
 	{
 		if (data->heredoc)
-			check_file(data, "tmpfile.txt", 0);
+		{
+			if (check_file(data, "tmpfile.txt", 0) != 0)
+				return (EXIT_FAILURE);
+		}
 		else
 		{
-			while (in->next)
-			{
-				check_file(data, in->str, 0); //fix exit
-				fd_in = open(in->str, O_RDONLY);
-				in = in->next;
-			}
 			if (!in->next)
 			{
-				check_file(data, in->str, 0); //fix exit
-				fd_in = open(in->str, O_RDONLY);
+				if (check_file(data, in->str, 0) != 0)
+					return (EXIT_FAILURE);
+				data->fd_in = open(in->str, O_RDONLY);
 			}
-			if (fd_in == -1)
+			while (in->next)
 			{
-				data->exit_stat = 1;
-				printf("fd_in open fail");
-				// data->exit_stat = 
+				if (check_file(data, in->str, 0) != 0)
+					return (EXIT_FAILURE);
+				data->fd_in = open(in->str, O_RDONLY);
+				in = in->next;
 			}
-			//printf error & store exit code & new prompt probably (dont exit minishell)
-			if ((dup2(fd_in, 0)) == -1)
+			if (data->fd_in == -1)
 			{
-				data->exit_stat = 1;
-				printf("fd_in dup2 fail\n");
+				redir_error(data, 1, "fd_in: open failed");
+				return (EXIT_FAILURE);
 			}
+			if ((dup2(data->fd_in, 0)) == -1)
+				CRITICAL_FAILURE(data, "fd_in dup2 fail");
 		}
-			//print error, store exit code n new prompt
 	}
-	if (out) // redirecting output ">"
+	if (out)
 	{
-		if (!out->next)
+		/* if (!out->next)
+			data->fd_out = open(out->str, O_CREAT | O_TRUNC | O_WRONLY, 00644); */
+		while (out)
 		{
-			fd_out = open(out->str, O_CREAT | O_TRUNC | O_WRONLY, 00644);	
+			data->fd_out = open(out->str, O_CREAT | O_TRUNC | O_WRONLY, 00644);
+			if (data->fd_out == -1)
+				CRITICAL_FAILURE(data, "redirection: open failed");
+			if (!out->next)
+				break ;
+			if (out->next)
+				out = out->next;
 		}
-		while (out->next)
-		{
-			fd_out = open(out->str, O_CREAT | O_TRUNC | O_WRONLY, 00644);
-			out = out->next;
-		}
-		fd_out = open(out->str, O_CREAT | O_TRUNC | O_WRONLY, 00644);
-		if (fd_out == -1)
-			printf("fd_out open fail\n");
-			//printf error & exit probably
-		check_file(data, out->str, 1);
-		if ((dup2(fd_out, 1)) == -1)
-			printf("fd_out dup2 fail\n");
-			//print error, store exit code n new prompt
+		if (data->fd_out == -1)
+			CRITICAL_FAILURE(data, "redirection: open failed");
+		if (check_file(data, out->str, 1) != 0)
+			return (EXIT_FAILURE);
+		if ((dup2(data->fd_out, 1)) == -1)
+			CRITICAL_FAILURE(data, "fd_out dup2 fail");
 	}
+	return (EXIT_SUCCESS);
 }
 
 //1 cmd can have multiple input&output redirections, 

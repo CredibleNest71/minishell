@@ -46,43 +46,43 @@ void	put_built_in(int index, t_bigshell *data)
 	{
 		data->built_ins[index] = ft_strdup("echo -n");
 		if (!data->built_ins[index])
-			fatal_error(data, 1);
+			CRITICAL_FAILURE(data, "built_in_list: strdup failed for echo");
 	}
 	else if (index == 1)
 	{
 		data->built_ins[index] = ft_strdup("cd");
 		if (!data->built_ins[index])
-			fatal_error(data, 1);
+			CRITICAL_FAILURE(data, "built_in_list: strdup failed for cd");
 	}
 	else if (index == 2)
 	{
 		data->built_ins[index] = ft_strdup("pwd");
 		if (!data->built_ins[index])
-			fatal_error(data, 1);
+			CRITICAL_FAILURE(data, "built_in_list: strdup failed for pwd");
 	}
 	else if (index == 3)
 	{
 		data->built_ins[index] = ft_strdup("export");
 		if (!data->built_ins[index])
-			fatal_error(data, 1);
+			CRITICAL_FAILURE(data, "built_in_list: strdup failed for export");
 	}
 	else if (index == 4)
 	{
 		data->built_ins[index] = ft_strdup("unset");
 		if (!data->built_ins[index])
-			fatal_error(data, 1);
+			CRITICAL_FAILURE(data, "built_in_list: strdup failed for unset");
 	}
 	else if (index == 5)
 	{
 		data->built_ins[index] = ft_strdup("env");
 		if (!data->built_ins[index])
-			fatal_error(data, 1);
+			CRITICAL_FAILURE(data, "built_in_list: strdup failed for env");
 	}
 	else if (index == 6)
 	{
 		data->built_ins[index] = ft_strdup("exit");
 		if (!data->built_ins[index])
-			fatal_error(data, 1);
+			CRITICAL_FAILURE(data, "built_in_list: strdup failed for exit");
 	}
 }
 

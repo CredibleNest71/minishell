@@ -11,17 +11,27 @@
 /* ************************************************************************** */
 
 #include "../../minishell.h"
+#include <stdlib.h>
+
+void	redir_error(t_bigshell *data, int exit_code, char *str)
+{
+	printf("%s\n", str);
+	data->exit_stat = exit_code;
+}
 
 void	simple_error(t_bigshell *data, int exit_code)
 {
 	data->exit_stat = exit_code;
-	perror("MINISHELL FAILURE:");
+	data->simple_error = EXIT_FAILURE;
+	//perror("MINISHELL FAILURE:");
 	// ;
-	exit(data->exit_stat);
+	//exit(data->exit_stat);
 } //if im in a child process I exit, otherwisee nor
 
-void	fatal_error(t_bigshell *data, int exit_code)
+void	CRITICAL_FAILURE(t_bigshell *data, char *str)
 {
-	data->exit_stat = exit_code;
-	exit(data->exit_stat); //exit minishell? probably
+	if (str)
+		printf("%s\n", str);
+	free_struct(data);
+	exit(1);
 }

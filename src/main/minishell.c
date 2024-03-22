@@ -11,9 +11,8 @@
 /* ************************************************************************** */
 
 #include "../../minishell.h"
-#include "../parser/parse.h"
+//#include "../parser/parse.h"
 #include "sig.h"
-#include <stdio.h>
 #include <unistd.h>
 
 t_sig	g_sig;
@@ -24,17 +23,17 @@ t_sig	g_sig;
 
 	sig_init(&data, &handler);
 	if (argc && argv) 
-		printf("\n");
+		printf("");
 	bzero(&data, sizeof(data));
  	data.og_env = env;
 	store_env(&data, env);
 	char *lineread;
+	lineread = NULL;
 	while (1)
 	{
-		lineread = NULL;
 		if (g_sig.sigquit && !lineread)
 			exit(data.exit_stat);
-		lineread = readline("tinyshell: ");
+		lineread = readline("shitshell: ");
 		if (g_sig.sigint)
 		{
 			g_sig.sigint = 0;
@@ -45,7 +44,7 @@ t_sig	g_sig;
 		data.commands = parse(lineread, &data);
 		if (!data.commands)
 			continue ;
-		print_cmds(data.commands, &data);
+		//print_cmds(data.commands, &data);
 		store_restore_fds(&data, 1);
 		if (heredoc_finder(&data) == 0)
 			ft_heredoc(&data);
@@ -58,7 +57,7 @@ t_sig	g_sig;
 			data.id = fork();
 			printf("data id is %d \n", data.id);
 			if (data.id == -1)
-				fatal_error(&data, 1);
+				CRITICAL_FAILURE(&data, "main: fork failed");
 			if (data.id == 0)
 				simple_exec(&data);
 		}
@@ -67,7 +66,7 @@ t_sig	g_sig;
 		// 	while (i < data.num_cmd)
 		// 	{
 		// 		if ((data.id = fork()) == -1)
-		// 			fatal_error(&data, 1);
+		// 			CRITICAL_FAILURE(&data, "main: fork failed 2");
 		// 		if (data.id == 0)
 		// 			complex_exec(data, i);
 		// 		i++;

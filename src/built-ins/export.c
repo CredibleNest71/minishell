@@ -122,10 +122,10 @@ void	make_copy(t_bigshell *data)
 
 	str = ft_strjoin(data->env->var, "=");
 	if (!str)
-		fatal_error(data, 1);
+		CRITICAL_FAILURE(data, "export: strjoin failed 1");
 	str = ft_strjoin(str, data->env->value);
 	if (!str)
-		fatal_error(data, 1);
+		CRITICAL_FAILURE(data, "export: strjoin failed 2");
 	//if (!data->s_env) //check that s-env is empty
 	data->s_env = create_node(data, str);
 	free(str);
@@ -135,10 +135,10 @@ void	make_copy(t_bigshell *data)
 	{
 		str = ft_strjoin(current_env->var, "=");
 		if (!str)
-			fatal_error(data, 1);
+			CRITICAL_FAILURE(data, "export: strjoin failed 3");
 		str = ft_strjoin(str, current_env->value);
 		if (!str)
-			fatal_error(data, 1);
+			CRITICAL_FAILURE(data, "export: strjoin failed 4");
 		current->next = create_node(data, str);
 		free(str);
 		current = current->next;
@@ -157,7 +157,7 @@ int	check_var(t_bigshell *data, char *key)
 
 	var = ft_strdup(key);
 	if (!var)
-		fatal_error(data, 1);
+		CRITICAL_FAILURE(data, "export: strdup failed");
 	end = ft_strchr(var, '=');
 	if (end)
 		*end = 0;
@@ -199,7 +199,7 @@ void	switch_values(t_bigshell *data, t_env *node, char *new_value, int len)
 	free(node->value);
 	node->value = (char *)malloc(sizeof(char) * len + 1);
 	if (!node->value)
-		fatal_error(data, 1);
+		CRITICAL_FAILURE(data, "export: malloc failed");
 	memcpy(node->value, new_value, len);
 }
 

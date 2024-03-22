@@ -66,6 +66,7 @@ void	simple_exec(t_bigshell *data)
 int	main(int argc, char **argv, char **env)
 {
 	t_bigshell	data;
+	//data = (t_bigshell *)malloc(sizeof(t_bigshell));
 // 	t_command	*command = (t_command *) malloc (sizeof(t_command));
 // 	//t_command	*command2 = (t_command *) malloc (sizeof(t_command));
 // 	//t_token 	*input = (t_token *) malloc (sizeof(t_token));
@@ -162,18 +163,18 @@ int	main(int argc, char **argv, char **env)
 // 	//data.commands = data.commands->next;
 
 	if (argc && argv) 
-		printf("\n");
+		printf("");
 // 	/* store_restore_fds(1);
 // 	simple_exec(&data); */
 // /* 	data.id = fork();
 // 	if (data.id == -1)
-// 	 	fatal_error(&data, 1);
+// 	 	CRITICAL_FAILURE(&data);
 // 	else if (data.id == 0)
 // 	{
 // 		simple_exec(&data);
 // 	}
 // 	return (0); */
-	bzero(&data, sizeof(data));
+	bzero(&data, sizeof(t_bigshell));
  	data.og_env = env;
 	store_env(&data, env);
  	//data.built_ins = (char **)malloc(sizeof(char *) * 8); //7 elements plus NULL
@@ -197,7 +198,13 @@ int	main(int argc, char **argv, char **env)
 		if (heredoc_finder(&data) == 0)
 			ft_heredoc(&data);
 		if (data.commands->input || data.commands->output)
-			redir(data.commands, &data);
+		{
+			if (redir(data.commands, &data) != 0)
+			{
+				store_restore_fds(&data, 2);
+				continue ;
+			}
+		}
 		if (builtin_allrounder(&data) == 0)
 		{
 			store_restore_fds(&data, 2);
@@ -208,7 +215,7 @@ int	main(int argc, char **argv, char **env)
 		{
 			data.id = fork();
 			if (data.id == -1)
-				fatal_error(&data, 1);
+				CRITICAL_FAILURE(&data, "1: fork failed");
 			if (data.id == 0)
 				simple_exec(&data);
 			wait(NULL);
@@ -221,7 +228,7 @@ int	main(int argc, char **argv, char **env)
 				if (pipe(data.pipe_fd) == -1)
 				{
 					printf("pipe failed\n");
-					fatal_error(&data, 1);
+					CRITICAL_FAILURE(data);
 				}
 				int j = i;
 				while (i < data.num_cmd)

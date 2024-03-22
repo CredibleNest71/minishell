@@ -15,16 +15,10 @@
 void	pipe_fork(t_bigshell *data)
 {
 	if (pipe(data->pipe_fd) == -1)
-	{
-		printf("pipe failed\n");
-		fatal_error(data, 1);
-	}
+		CRITICAL_FAILURE(data, "complex exec: pipe failed");
 	data->id = fork();
 	if (data->id == -1)
-	{
-		printf("fork failed\n");
-		fatal_error(data, 1);
-	}
+		CRITICAL_FAILURE(data, "complex exec: fork failed");
 	if (data->id == 0) //child process
 	{
 		//do shit

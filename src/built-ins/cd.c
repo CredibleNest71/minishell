@@ -60,7 +60,7 @@ char	*delete_tail(char *full_path)
 	// i = -1;
 	// mod_path = malloc(sizeof(char) * len);
 	// if (!mod_path)
-	// 	fatal_error(data, 1);
+	// 	CRITICAL_FAILURE(data);
 	// while (full_path[++i] && i < len)
 	// 	mod_path[i] = full_path[i];
 	// mod_path[i] = '\0';
@@ -77,7 +77,7 @@ void	overwrite_pwd(t_bigshell *data, char *to_join)
 	tmp = data->env;
 	new_str = ft_strjoin("PWD=", to_join);
 	if (!new_str)
-		fatal_error(data, 1);
+		CRITICAL_FAILURE(data, "cd: strjoin failed");
 	while (tmp)
 	{
 		if (ft_strncmp(tmp->var, "PWD", 3) == 0)
@@ -86,7 +86,7 @@ void	overwrite_pwd(t_bigshell *data, char *to_join)
 			tmp->var = NULL;
 			tmp->var = ft_strdup(new_str);
 			if (!tmp->var)
-				fatal_error(data, 1);
+				CRITICAL_FAILURE(data, "cd: strdup failed in overwrite");
 			break ;
 		}
 		tmp = tmp->next;
@@ -115,7 +115,7 @@ void	connect_path(t_bigshell *data, char *to_join)
 			tmp->var = NULL;
 			tmp->var = ft_strdup(new_str);
 			if (!tmp->var)
-				fatal_error(data, 1);
+				CRITICAL_FAILURE(data, "cd: strdup failed in path connecting");
 			break ;		
 		}
 		tmp = tmp->next;
@@ -145,7 +145,7 @@ void	ft_cd(t_bigshell *data)
 			if (!cwd)
 			{
 				free(cwd);
-				fatal_error(data, 1); //malloc fails
+				CRITICAL_FAILURE(data, "cd: malloc failed in ft_cd"); //malloc fails
 			}
 			getcwd(cwd, buffer_size);
 			if (!cwd && errno == ERANGE)

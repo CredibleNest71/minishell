@@ -78,15 +78,18 @@ typedef struct	s_bigshell
 {
 	int			num_cmd;
 	int			exit_stat;
+	int			simple_error; //this will be set with stdlib macros to define whether I need to exit the minishell
 	int			pipe_fd[2];
 	int			id;
 	int			var_i;	//counts how many variables exist in the environment
 	int			reference_i; //keeps count of data->env
-	int			std_in;
-	int			std_out; 
+	int			std_in; //stored std_in
+	int			std_out; //stored std_out
+	int			fd_in; //redirected in
+	int			fd_out; //redirected out
 	char		*export_var; //tf is this
 	char		**og_env; //do I use u?
-	char		**mod_env; //do I use u?
+	char		**mod_env;
 	char		**built_ins;
 	t_token		*heredoc;	//token with delimiter and str; 
 	t_command	*commands;
@@ -104,8 +107,8 @@ typedef struct s_signal
 }	t_sig;
 
 void	store_restore_fds(t_bigshell *data, int mode);
-void	check_file(t_bigshell *data, const char *file, int mode);
-void	redir(t_command *command, t_bigshell *data);
+int		check_file(t_bigshell *data, const char *file, int mode);
+int		redir(t_command *command, t_bigshell *data);
 
 char	**find_and_split_path(char **env);
 char	*check_if_correct_path(char **paths, t_bigshell *data, char *str);
@@ -118,8 +121,9 @@ int		builtin_check_exec(t_bigshell *data, char *cmd);
 
 int		builtin_allrounder(t_bigshell *data);
 
+void	redir_error(t_bigshell *data, int exit_code, char *str);
 void	simple_error(t_bigshell *data, int exit_code);
-void	fatal_error(t_bigshell *data, int exit_code);
+void	CRITICAL_FAILURE(t_bigshell *data, char *str);
 
 void	simple_exec(t_bigshell *data);
 

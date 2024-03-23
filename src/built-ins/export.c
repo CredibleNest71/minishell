@@ -72,7 +72,7 @@ void	print_env(t_env *head)
 		if (!head->value)
 			printf("\n");
 		if (head->value)
-			printf("=%s\n", head->value);
+			printf("=%c%s%c\n", 34, head->value, 34);
 		head = head->next;
 	}
 }

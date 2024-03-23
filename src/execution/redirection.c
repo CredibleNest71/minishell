@@ -73,6 +73,25 @@ int	check_file(t_bigshell *data, const char *file, int mode)
 	return (EXIT_SUCCESS);
 }
 
+//this was before line 108
+			/* if (!in->next)
+			{
+				if (check_file(data, in->str, 0) != 0)
+					return (EXIT_FAILURE);
+				data->fd_in = open(in->str, O_RDONLY);
+			} */
+//this was right after (this part was modified)
+			/* while (in->next)
+			{
+				if (check_file(data, in->str, 0) != 0)
+					return (EXIT_FAILURE);
+				data->fd_in = open(in->str, O_RDONLY);
+				in = in->next;
+			} */
+//this was line 130 before
+		/* if (!out->next)
+			data->fd_out = open(out->str, O_CREAT | O_TRUNC | O_WRONLY, 00644); */
+			
 // fix to do: needs to be able to switch stdin&stdout multiple times (ex. cat <input >output <input2 >output3 >output4)
 int	redir(t_command *command, t_bigshell *data)
 {
@@ -90,18 +109,15 @@ int	redir(t_command *command, t_bigshell *data)
 		}
 		else
 		{
-			if (!in->next)
+			while (in)
 			{
 				if (check_file(data, in->str, 0) != 0)
 					return (EXIT_FAILURE);
 				data->fd_in = open(in->str, O_RDONLY);
-			}
-			while (in->next)
-			{
-				if (check_file(data, in->str, 0) != 0)
-					return (EXIT_FAILURE);
-				data->fd_in = open(in->str, O_RDONLY);
-				in = in->next;
+				if (!in->next)
+					break ;
+				else
+					in = in->next;
 			}
 			if (data->fd_in == -1)
 			{
@@ -114,8 +130,6 @@ int	redir(t_command *command, t_bigshell *data)
 	}
 	if (out)
 	{
-		/* if (!out->next)
-			data->fd_out = open(out->str, O_CREAT | O_TRUNC | O_WRONLY, 00644); */
 		while (out)
 		{
 			data->fd_out = open(out->str, O_CREAT | O_TRUNC | O_WRONLY, 00644);

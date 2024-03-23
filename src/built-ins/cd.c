@@ -72,20 +72,20 @@ char	*delete_tail(char *full_path)
 void	overwrite_pwd(t_bigshell *data, char *to_join)
 {
 	t_env	*tmp;
-	char	*new_str;
+	//char	*new_str;
 
 	tmp = data->env;
-	new_str = ft_strjoin("PWD=", to_join);
+	/* new_str = ft_strjoin("PWD=", to_join);
 	if (!new_str)
-		CRITICAL_FAILURE(data, "cd: strjoin failed");
+		CRITICAL_FAILURE(data, "cd: strjoin failed"); */
 	while (tmp)
 	{
 		if (ft_strncmp(tmp->var, "PWD", 3) == 0)
 		{
-			free(tmp->var);
-			tmp->var = NULL;
-			tmp->var = ft_strdup(new_str);
-			if (!tmp->var)
+			free(tmp->value);
+			tmp->value = NULL;
+			tmp->value = ft_strdup(to_join);
+			if (!tmp->value)
 				CRITICAL_FAILURE(data, "cd: strdup failed in overwrite");
 			break ;
 		}
@@ -93,11 +93,12 @@ void	overwrite_pwd(t_bigshell *data, char *to_join)
 	}
 }
 
-void	connect_path(t_bigshell *data, char *to_join)
+char	*connect_path(t_bigshell *data, char *to_join)
 {
 	t_env	*tmp;
 	//char	*str;
 	char	*new_str;
+	char	*tmp_value;
 	//int		i;
 
 	//i = -1;
@@ -106,15 +107,44 @@ void	connect_path(t_bigshell *data, char *to_join)
 	/* new_str = malloc(sizeof(char) * ft_strlen(str));
 	while (++i < ft_strlen(str))
 		new_str[i] = str[i]; */
+	tmp_value = NULL;
 	while (tmp)
 	{
 		if (ft_strncmp(tmp->var, "PWD", 3) == 0)
 		{
-			new_str = ft_strjoin(tmp->var, new_str);
-			free(tmp->var);
-			tmp->var = NULL;
-			tmp->var = ft_strdup(new_str);
-			if (!tmp->var)
+			new_str = ft_strjoin(tmp->value, new_str);
+			tmp_value = malloc(sizeof(char) * ft_strlen(tmp->value));
+			if (!tmp_value)
+				CRITICAL_FAILURE(data, "cd: malloc failed");
+			tmp_value = ft_strdup(tmp->value);
+			if (!tmp_value)
+				CRITICAL_FAILURE(data, "cd: strdup failed");
+			free(tmp->value);
+			tmp->value = NULL;
+			tmp->value = ft_strdup(new_str);
+			if (!tmp->value)
+				CRITICAL_FAILURE(data, "cd: strdup failed in path connecting");
+			return (tmp_value);
+			//break ;		
+		}
+		tmp = tmp->next;
+	}
+	return (tmp_value);
+}
+
+void	connect_ogpath(t_bigshell *data, char *og_path)
+{
+	t_env	*tmp;
+
+	tmp = data->env;
+	while (tmp)
+	{
+		if (ft_strncmp(tmp->var, "PWD", 3) == 0)
+		{
+			free(tmp->value);
+			tmp->value = NULL;
+			tmp->value = ft_strdup(og_path);
+			if (!tmp->value)
 				CRITICAL_FAILURE(data, "cd: strdup failed in path connecting");
 			break ;		
 		}
@@ -127,11 +157,13 @@ void	connect_path(t_bigshell *data, char *to_join)
 void	ft_cd(t_bigshell *data)
 {
 	char	*path;
-	char	*cwd; //somehow dynamically allocate this
+	char	*og_path;
+	char	*cwd;
 	char	*mod_cwd;
 	size_t	buffer_size;
 	
 	cwd = NULL;
+	og_path = NULL;
 	if (data->commands->arg_num > 1)
 		simple_error(data, 1); //perror prints "success"? should be too many args
 	if (data->commands->args && ft_strncmp(data->commands->args->str, "..", 2) == 0)
@@ -172,7 +204,6 @@ void	ft_cd(t_bigshell *data)
 	if (!data->commands->args || ft_strncmp(data->commands->args->str, "~", 1) == 0)
 	{
 		path = getenv("HOME");
-		//printf("path: %s\n", path);
 		overwrite_pwd(data, path);
 	}
 	else
@@ -181,19 +212,19 @@ void	ft_cd(t_bigshell *data)
 		if (path[ft_strlen(path) - 1] == '/')
 			path[ft_strlen(path) - 1] = 0;
 		//delete_tail(path);
-		connect_path(data, path);
+		og_path = connect_path(data, path);
+		if (!og_path)
+			printf("connect path failed\n");
+		if (chdir(path) == -1)
+		{
+			printf("minishell: cd: %s: No such file or directory\n", data->commands->args->str);
+			simple_error(data, 1);
+			connect_ogpath(data, og_path);
+		}
+		return ;
 	}
-	// else (data->commands->args[0])
-	//	path = data->commands->args[0]->str;
-	//printf("%s\n", path);
 	if (chdir(path) == -1) //this is probably fuckin unnecessary at this point
 		printf("fucking chdir\n");
-		//simple_error(data, 1);
-		//perror("cd failure:");
-	/*char	*test;
-	test = malloc(sizeof(char) * BUFFER);
-	test = getcwd(test, BUFFER);
-	//printf("%s\n", test);*/
 	return ;
 }
 

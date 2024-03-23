@@ -21,7 +21,7 @@ void	ft_pwd(t_bigshell *data)
 	cwd = NULL;
 	while (tmp)
 	{
-		if (ft_strncmp(tmp->var, "PWD=", 4) == 0)
+		if (ft_strncmp(tmp->var, "PWD", 3) == 0)
 		{
 			//maybe protect in case PWD= is only 4char long
 			cwd = ft_strdup(tmp->value);

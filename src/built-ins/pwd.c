@@ -34,7 +34,7 @@ void	ft_pwd(t_bigshell *data)
 	if (!cwd)
 	{
 		ft_putstr_fd("Current Working Directory Not Found\n", 1);
-		data->exit_stat = 1;
+		update_exit_stat(data, 1);
 		return ;
 	}
 	ft_putstr_fd(cwd, 1);

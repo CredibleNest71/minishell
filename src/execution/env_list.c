@@ -79,7 +79,9 @@ void    store_env(t_bigshell *data, char **env)
         current_node->next = create_node(data, env[i]);
         current_node = current_node->next; 
     }
-    data->var_i = i; //this should be updated every time export adds a variable to the list //do I use this shit? 12.03
+	current_node->next = create_node(data, "?=0"); //added this to store exit stat in env
+	i++;
+	data->var_i = i; //this should be updated every time export adds a variable to the list //do I use this shit? 12.03
 }
 
 //check smt looks weird

@@ -67,6 +67,11 @@ void	print_env(t_env *head)
 {
 	while (head)
 	{
+		if (ft_strncmp(head->var, "?", ft_strlen(head->var)) == 0)
+		{
+			head = head->next;
+			continue ;
+		}
 		printf("declare -x ");
 		printf("%s", head->var);
 		if (!head->value)
@@ -126,7 +131,6 @@ void	make_copy(t_bigshell *data)
 	str = ft_strjoin(str, data->env->value);
 	if (!str)
 		CRITICAL_FAILURE(data, "export: strjoin failed 2");
-	//if (!data->s_env) //check that s-env is empty
 	data->s_env = create_node(data, str);
 	free(str);
 	current = data->s_env;
@@ -244,7 +248,7 @@ void	ft_export(t_bigshell *data)
 	if (!data->commands->args)
 	{
 		print_env(data->s_env);
-		data->exit_stat = 0;
+		update_exit_stat(data, 0);
 		return ;
 	}
 	current = data->s_env;

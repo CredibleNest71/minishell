@@ -77,7 +77,7 @@ typedef struct s_env
 typedef struct	s_bigshell
 {
 	int			num_cmd;
-	int			exit_stat;
+	//int			exit_stat; storing exit stat in env
 	int			simple_error; //this will be set with stdlib macros to define whether I need to exit the minishell
 	int			pipe_fd[2];
 	int			id;
@@ -121,6 +121,7 @@ int		builtin_check_exec(t_bigshell *data, char *cmd);
 
 int		builtin_allrounder(t_bigshell *data);
 
+void	update_exit_stat(t_bigshell *data, int exit_code);
 void	redir_error(t_bigshell *data, int exit_code, char *str);
 void	simple_error(t_bigshell *data, int exit_code);
 void	CRITICAL_FAILURE(t_bigshell *data, char *str);

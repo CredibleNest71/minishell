@@ -17,7 +17,7 @@
 
 t_sig	g_sig;
 
-/* int	main(int argc, char **argv, char **env)
+int	main(int argc, char **argv, char **env)
 {
 	t_bigshell			data;
 
@@ -73,5 +73,5 @@ t_sig	g_sig;
 		// 	}
 		// }
 	}
-} */
+}
 

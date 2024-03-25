@@ -123,6 +123,7 @@ void	token_list_add(t_token **tokenlist, t_token *token)
 	while (temp->next)
 		temp = temp->next;
 	temp->next = token;
+	token->prev = temp;
 	return ;	
 }
 

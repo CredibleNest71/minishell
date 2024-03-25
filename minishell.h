@@ -51,8 +51,9 @@ typedef struct	s_token
 	int				type;
 	char			*dir;
 	int				connected;
-	int				preconnected;
+	int				distanced;
 	struct s_token	*next;
+	struct s_token	*prev;
 }	t_token;
 
 typedef struct s_command

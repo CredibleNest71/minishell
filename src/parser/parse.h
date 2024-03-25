@@ -4,6 +4,7 @@
 # include <stdlib.h>
 # include <stdio.h>
 # include "../../minishell.h"
+# define SPACE3 "\n\t\v \r\f"
 
 //classifier
 void	    classify(t_token *list);

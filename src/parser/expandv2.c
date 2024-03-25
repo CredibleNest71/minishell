@@ -16,25 +16,7 @@ t_token	*make_t(char *str)
 	return (token);
 }
 
-/*
-static void	set_connects(char *str, int *pre, int *post)
-{
-	int	len;
-
-	if (!str)
-		return ;
-	len = ft_strlen(str);
-	if (is_char(str[0], " "))
-		*pre = 0;
-	else
-		*pre = 1;
-	if (is_char(str[len - 1], " "))
-		*post = 0;
-	else
-		*post = 1;
-}
-*/
-t_token **split_to_token(char *expanded)
+t_token **split_to_token(char *expanded, int join)
 {
 	t_token **ret;
 	t_token *new;
@@ -42,6 +24,8 @@ t_token **split_to_token(char *expanded)
 	int		i;
 
 	i = 0;
+	if (!expanded || !ft_strlen(expanded))
+		return (NULL);
 	split = ft_split(expanded, ' ');
 	ret = (t_token **) ft_calloc (sizeof(t_token *), 1);
 	while (split[i])
@@ -50,10 +34,10 @@ t_token **split_to_token(char *expanded)
 		token_list_add(ret, new);
 		i++;
 	}
-	printf("split_to_token::expanded: %s\nis_chare:xpanded[0]: '%c'", expanded, expanded[0]);
+	//printf("split_to_token::expanded: %s\nis_chare:xpanded[0]: '%c'", expanded, expanded[0]);
 	if (is_char(expanded[0], SPACE3))
 		(*ret)->distanced = 1;
-	if (!is_char(expanded[ft_strlen(expanded) - 1], SPACE3))
+	if (join && !is_char(expanded[ft_strlen(expanded) - 1], SPACE3))
 		new->connected = 1;
 	return (ret);
 }
@@ -63,6 +47,8 @@ void	insert_tokenlist(t_token **list, t_token *prev, t_token *curr, t_token **ad
 	t_token	*next;
 	t_token	*last;
 
+	if (!addlist)
+		return ;
 	next = curr->next;
 	if (prev)
 	{
@@ -73,9 +59,30 @@ void	insert_tokenlist(t_token **list, t_token *prev, t_token *curr, t_token **ad
 		*list = *addlist;
 	last = ft_tokenlast(*addlist);
 	last->next = next;
-	next->prev = last;
-	for (t_token *temp = *list; temp; temp = temp->next)
-		printf("insert:: %s\n", temp->str);
+	if (next)
+		next->prev = last;
+	//for (t_token *temp = *list; temp; temp = temp->next)
+	//	printf("insert:: %s\n", temp->str);
+}
+
+void	remove_token(t_token *curr)
+{
+	t_token	*prev;
+	t_token	*next;
+
+	prev = curr->prev;
+	next = curr->next;
+	if (prev && next)
+	{
+		prev->next = next;
+		next->prev = prev;
+	}
+	else if (prev)
+		prev->next = NULL;
+	else if (next)
+		next->prev = NULL;
+	free(curr->str);
+	free(curr);
 }
 
 void	expand_no_quotes(t_token **list, t_token *prev, t_token *curr, t_bigshell *data)
@@ -84,10 +91,12 @@ void	expand_no_quotes(t_token **list, t_token *prev, t_token *curr, t_bigshell *
 	t_token	**addlist;
 	
 	expanded = expand(curr->str, data);
-	addlist = split_to_token(expanded);
+	if (!expanded)
+		remove_token(curr);
+	addlist = split_to_token(expanded, curr->connected);
 	insert_tokenlist(list, prev, curr, addlist);
-	for (t_token *temp = *list; temp; temp = temp->next)
-		printf("expandnoquotes:: %s\n", temp->str);
+	//for (t_token *temp = *list; temp; temp = temp->next)
+	//	printf("expandnoquotes:: %s\n", temp->str);
 }
 
 char	*remove_quotes(char *str)
@@ -122,8 +131,8 @@ void    launch_expansion(t_token **list, t_token *prev, t_token *curr, t_bigshel
 		expand_no_quotes(list, prev, curr, data);
 	else
 		expand_no_quotes(list, prev, curr, data);
-	for (t_token *temp = *list; temp; temp = temp->next)
-		printf("launch:: %s\n", temp->str);
+	//for (t_token *temp = *list; temp; temp = temp->next)
+	//	printf("launch:: %s\n", temp->str);
 	return ;
 }
 
@@ -136,7 +145,7 @@ static	void mark_join(t_token **list)
 	{
 		if (curr->prev)
 		{
-			printf("curr: %s\n prev: %s\n", curr->str, curr->prev->str);
+			//printf("curr: %s\n prev: %s\n", curr->str, curr->prev->str);
 			if (curr->distanced)
 				curr->prev->connected = 0;
 		}
@@ -152,8 +161,8 @@ void	join(t_token **list)
 
 	curr = *list;
 	mark_join(list);
-	for (t_token *temp = *list; temp; temp = temp->next)
-		printf("prejoin:: %s(con%d/dis%d)\n", temp->str, temp->connected, temp->distanced);
+	//for (t_token *temp = *list; temp; temp = temp->next)
+	//	printf("prejoin:: %s(con%d/dis%d)\n", temp->str, temp->connected, temp->distanced);
 	while (curr)
 	{
 		next = curr->next;
@@ -170,8 +179,8 @@ void	join(t_token **list)
 		}
 		curr = curr->next;
 	}
-	for (t_token *temp = *list; temp; temp = temp->next)
-		printf("post:: %s(%d)\n", temp->str, temp->connected);
+	//for (t_token *temp = *list; temp; temp = temp->next)
+	//	printf("post:: %s(%d)\n", temp->str, temp->connected);
 }
 
 

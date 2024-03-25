@@ -76,8 +76,6 @@ void	insert_tokenlist(t_token **list, t_token *prev, t_token *curr, t_token **ad
 		*list = *addlist;
 	last = ft_tokenlast(*addlist);
 	last->next = next;
-	for (t_token *temp = *list; temp; temp = temp->next)
-		printf("insert:: %s\n", temp->str);
 }
 
 void	expand_no_quotes(t_token **list, t_token *prev, t_token *curr, t_bigshell *data)
@@ -88,8 +86,6 @@ void	expand_no_quotes(t_token **list, t_token *prev, t_token *curr, t_bigshell *
 	expanded = expand(curr->str, data);
 	addlist = split_to_token(expanded);
 	insert_tokenlist(list, prev, curr, addlist);
-	for (t_token *temp = *list; temp; temp = temp->next)
-		printf("expandnoquotes:: %s\n", temp->str);
 }
 
 char	*remove_quotes(char *str)
@@ -124,8 +120,6 @@ void    launch_expansion(t_token **list, t_token *prev, t_token *curr, t_bigshel
 		expand_no_quotes(list, prev, curr, data);
 	else
 		expand_no_quotes(list, prev, curr, data);
-	for (t_token *temp = *list; temp; temp = temp->next)
-		printf("launch:: %s\n", temp->str);
 	return ;
 }
 /*
@@ -154,8 +148,6 @@ void	join(t_token **list)
 	char	*jstr;
 
 	curr = *list;
-	for (t_token *temp = *list; temp; temp = temp->next)
-		printf("prejoin:: %s(%d)\n", temp->str, temp->connected);
 	//mark_join(list);
 	while (curr)
 	{
@@ -173,8 +165,6 @@ void	join(t_token **list)
 		}
 		curr = curr->next;
 	}
-	for (t_token *temp = *list; temp; temp = temp->next)
-		printf("post:: %s(%d)\n", temp->str, temp->connected);
 }
 
 

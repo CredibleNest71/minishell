@@ -93,6 +93,8 @@ typedef struct	s_bigshell
 	char		**built_ins;
 	t_token		*heredoc;	//token with delimiter and str; 
 	t_command	*commands;
+	char		*prompt;
+	char		*terminal_prompt;
 	t_env		*env;
 	t_env		*s_env;
 }	t_bigshell;

@@ -154,16 +154,13 @@ int	main(int argc, char **argv, char **env)
 // 	/* int e = 0;
 // 	while (e < 7)
 // 		printf("%s\n", data.built_ins[e++]); */
-
-// 	/* int j;
-// 	if (argc && argv)
-// 		j = 2;
-// 	j = 0; */
+	int j;
+	if (argc && argv)
+		j = 2;
+	j = 0;
+	argv[j] = argv[j];
 	
 // 	//data.commands = data.commands->next;
-
-	if (argc && argv) 
-		printf("");
 // 	/* store_restore_fds(1);
 // 	simple_exec(&data); */
 // /* 	data.id = fork();
@@ -186,14 +183,24 @@ int	main(int argc, char **argv, char **env)
 	data.commands->arg_num = 0;
 	printf("%d\n", data.commands->arg_num);
 	ft_cd(&data); */
+	data.terminal_prompt = "tinyshell:";
+	if (isatty(fileno(stdin)))
+		data.prompt = readline(data.terminal_prompt);
+	else
+	{
+		char *line;
+		line = get_next_line(fileno(stdin));
+		data.prompt = ft_strtrim(line, "\n");
+		free(line);
+	}
 	while (1)
 	{
-		lineread = readline("tinyshell: ");
+		lineread = readline("tinyshell");
 		add_history(lineread);
 		data.commands = parse(lineread, &data);
 		if (!data.commands)
 			continue ;
-		print_cmds(data.commands, &data);
+		//print_cmds(data.commands, &data);
 		store_restore_fds(&data, 1);
 		if (heredoc_finder(&data) == 0)
 			ft_heredoc(&data);

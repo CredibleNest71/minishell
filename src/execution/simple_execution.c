@@ -220,14 +220,14 @@ int	main(int argc, char **argv, char **env)
 				simple_exec(&data);
 			wait(NULL);
 		}
-		else if (data.num_cmd > 1)
+		/* else if (data.num_cmd > 1)
 		{
 			int i = 0;
 			while (i < data.num_cmd)
 			{
 				complex_exec(&data, i);
 			}
-		}
+		} */
 	//int i = 0;
 		/* else if (data.num_cmd > 1)
 		{

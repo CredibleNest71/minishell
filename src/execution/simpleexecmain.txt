@@ -103,7 +103,7 @@ int	main(int argc, char **argv, char **env)
 // 	simple_exec(&data); */
 // /* 	data.id = fork();
 // 	if (data.id == -1)
-// 	 	fatal_error(&data, 1);
+// 	 	CRITICAL_FAILURE(&data);
 // 	else if (data.id == 0)
 // 	{
 // 		simple_exec(&data);
@@ -142,7 +142,7 @@ int	main(int argc, char **argv, char **env)
 			data.id = fork();
 			printf("data id is %d \n", data.id);
 			if (data.id == -1)
-				fatal_error(&data, 1);
+				CRITICAL_FAILURE(&data);
 			if (data.id == 0)
 				simple_exec(&data);
 			wait(NULL);

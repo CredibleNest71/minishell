@@ -11,17 +11,54 @@
 /* ************************************************************************** */
 
 #include "../../minishell.h"
+#include <stdlib.h>
+
+void	update_exit_stat(t_bigshell *data, int exit_code)
+{
+	t_env	*tmp;
+	char	*code;
+
+	tmp = data->env;
+	code = ft_itoa(exit_code);
+	if (!code)
+		CRITICAL_FAILURE(data, "redir error: itoa failed");
+	while (tmp)
+	{
+		if (ft_strncmp(tmp->var, "?", ft_strlen(tmp->var)) == 0)
+		{
+			if (tmp->value)
+			{
+				free(tmp->value);
+				tmp->value = NULL;
+			}
+			tmp->value = ft_strdup(code);
+			if (!tmp->value)
+				CRITICAL_FAILURE(data, "redir error: couldn't reassign exit status to env");
+			break ;
+		}
+		tmp = tmp->next;
+	}
+}
+
+void	redir_error(t_bigshell *data, int exit_code, char *str)
+{
+	printf("%s\n", str);
+	update_exit_stat(data, exit_code);
+}
 
 void	simple_error(t_bigshell *data, int exit_code)
 {
-	data->exit_stat = exit_code;
-	perror("MINISHELL FAILURE:");
-	// ;
-	exit(data->exit_stat);
+	update_exit_stat(data, exit_code);
+	data->simple_error = EXIT_FAILURE;
 } //if im in a child process I exit, otherwisee nor
+	//perror("MINISHELL FAILURE:");
+	// ;
+	//exit(data->exit_stat);
 
-void	fatal_error(t_bigshell *data, int exit_code)
+void	CRITICAL_FAILURE(t_bigshell *data, char *str)
 {
-	data->exit_stat = exit_code;
-	exit(data->exit_stat); //exit minishell? probably
+	if (str)
+		printf("%s\n", str);
+	free_struct(data);
+	exit(1);
 }

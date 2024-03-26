@@ -27,18 +27,13 @@
 		//struct->exitstatus = WEXITSTATUS(//struct->exitstatus);
 } */
 
-void	store_exit_code(t_bigshell *data, int memo) //if smt drastically fails, free and exit minishell. (memory allocation fail, fork fail, dup, etc)
-{
-	data->exit_stat = memo;
-	
-}
 
-void	error_handler(char	*message) //irrelevant, unless critical fail: store exit status and return prompt, otherwise call free fucntion and exit minishell
+/* void	error_handler(char	*message) //irrelevant, unless critical fail: store exit status and return prompt, otherwise call free fucntion and exit minishell
 {
 	printf("Failure: %s", message);
 	//call exit code function(?)
 	//new prompt
-}
+} */
 
 /* void	complex_exec(t_bigshell *data, int index) //do I want to modify the struct?
 {

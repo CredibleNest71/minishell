@@ -44,7 +44,12 @@ void	ft_env(t_bigshell *data)
 	if (data->commands->arg_num == 0)
 	{
 		while (tmp)
-		{	
+		{
+			if (ft_strncmp(tmp->var, "?", ft_strlen(tmp->var)) == 0)
+			{
+				tmp = tmp->next;
+				continue ;
+			}
 			printf("%s", tmp->var);
 			if (!tmp->value)
 				printf("\n");

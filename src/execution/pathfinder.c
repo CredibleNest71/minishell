@@ -52,10 +52,10 @@ char	*check_if_correct_path(char **paths, t_bigshell *data, char *str)
 	{
 		tmp = ft_strjoin(paths[i], "/");
 		if (!tmp)
-			fatal_error(data, 1);
+			CRITICAL_FAILURE(data, "pathfinder: strjoin failed");
 		to_check = ft_strjoin(tmp, str);
 		if (!to_check)
-			fatal_error(data, 1);
+			CRITICAL_FAILURE(data, "pathfinder: strjoin failed");
 		if (access(to_check, X_OK) == 0)
 			return (to_check);
 		free(to_check);

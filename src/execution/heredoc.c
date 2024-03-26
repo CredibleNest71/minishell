@@ -75,7 +75,7 @@ char	*check_for_quotes(t_bigshell *data, char *eof)
 	j = -1;
 	delimiter = malloc(sizeof(char) * (ft_strlen(eof) - 1));
 	if (!delimiter)
-		fatal_error(data, 1);
+		CRITICAL_FAILURE(data, "heredoc: malloc failed");
 	if (eof[i] == '"' || eof[i] == 27)
 	{
 		while (++i < (int)ft_strlen(eof))

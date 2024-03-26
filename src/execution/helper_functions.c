@@ -18,7 +18,7 @@ void	free_single_node(t_bigshell *data, t_env **node)
 	free((*node)->var);
 	free((*node)->value);
 	free(*node);
-	data->exit_stat = 0;
+	update_exit_stat(data, 0);
 }
 
 //frees env & sorted env linked list (used in export & unset)
@@ -99,6 +99,7 @@ void	free_commands(t_bigshell *data)
 void	free_struct(t_bigshell *data)
 {
 	//free everything before exiting minishell;
+	puts("Haha i was called");
 	free_env(data);
 	free_builtin_list(data);
 	if (data->commands)

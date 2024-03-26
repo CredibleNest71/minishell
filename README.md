@@ -1,6 +1,8 @@
 # minishell
 our minishell 
 
+echo hi2 >hola1.txt | cat <hola1.txt
+-> if hola1.txt doesnt exist, pipe is empty, both cmds are executed at the same time so cat will throw an error: "bash: hola.txt: No such file or directory" but hola1.txt will still be created
 
 Things to test (Artem version)
 1) exit pipe exit

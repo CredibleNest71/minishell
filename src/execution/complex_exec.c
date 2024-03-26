@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "../../minishell.h"
+#include <unistd.h>
 
 /* void	pipe_fork(t_bigshell *data)
 {
@@ -36,6 +37,42 @@
 //what happens if there are multiple cmds but no pipes??? check main will it still act as if its being piped???
 // I need to check for first cmd and create pipe
 //then ill check for middle if encountered I overwrite stdout, otherwise I dont
+
+void	complex_exec1(t_bigshell *data)
+{
+	t_command	*current_cmd;
+
+	current_cmd = data->commands;
+	while (current_cmd->next)
+	{
+		if (current_cmd == data->commands)
+		{
+			//im at first command
+			if (pipe(data->pipe_fd) == -1)
+				CRITICAL_FAILURE(data, "complex exec: pipe failed in first command");
+			data->pipe->read = data->pipe_fd[0];
+			data->pipe->write = data->pipe_fd[1];
+			if ((data->id = fork()) == -1)
+				CRITICAL_FAILURE(data, "complex exec: fork failed in first command");
+			if (data->id == 0)
+
+		}
+		else
+		{
+			if (pipe(data->pipe_fd2) == -1)
+				CRITICAL_FAILURE(data, "complex exec: pipe 2 failed in middle command");
+			data->pipe->write = data->pipe_fd2[1];
+			if ((data->id = fork()) == -1)
+				CRITICAL_FAILURE(data, "complex exec: fork failed in middle command");
+			if (data->id == 0)
+			{}
+			data->pipe->read = data->pipe_fd2[0];
+		}
+		current_cmd = current_cmd->next;
+	}
+	im now at last command
+}
+
 void	complex_exec(t_bigshell *data, int cmd_pos)
 {
 	// if data->cmd_num == 2 

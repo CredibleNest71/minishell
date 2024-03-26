@@ -100,6 +100,7 @@ int	expand_no_quotes(t_token **list, t_token *prev, t_token *curr, t_bigshell *d
 		write(2, "AMBIGUOUS REDIRECT\n", 20);
 		return (0);
 	}
+	(*addlist)->type = curr->type;
 	insert_tokenlist(list, prev, curr, addlist);
 	return (1);
 	//for (t_token *temp = *list; temp; temp = temp->next)

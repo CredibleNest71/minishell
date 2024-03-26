@@ -164,7 +164,7 @@ int	main(int argc, char **argv, char **env)
 // 	//data.commands = data.commands->next;
 
 	if (argc && argv) 
-		printf("");
+		argv[argc - 1] = argv[argc - 1];
 // 	/* store_restore_fds(1);
 // 	simple_exec(&data); */
 // /* 	data.id = fork();

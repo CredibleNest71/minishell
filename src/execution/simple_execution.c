@@ -44,12 +44,12 @@ void	simple_exec(t_bigshell *data)
 		printf("find&split failed\n"); //shit has been allocated
 	correct_path = check_if_correct_path(paths, data, data->commands->cmd->str);
 	if (!correct_path)
-		printf("correct path failed\n"); // do smt probably
+		printf("minishell: command %s not found\n", data->commands->cmd->str);
 	execve(correct_path, data->commands->args_exec, data->mod_env);
-	printf("hello2\n");
+	//printf("minishell: command %s not found\n", data->commands->cmd->str);
 	free(correct_path);
 	//free paths & args_exec
-	printf("execve failed\n");
+	//printf("execve failed\n");
 	//protect execve
 }
 

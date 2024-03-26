@@ -37,11 +37,11 @@
 typedef enum type {
 	CMD = 0,
 	ARG,
+	PIPE,
 	IN,
 	OUT,
-	HEREDOC,
 	APP,
-	PIPE,
+	HEREDOC,
 }	 e_type;
 
 typedef struct	s_token

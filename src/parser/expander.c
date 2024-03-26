@@ -44,7 +44,6 @@ char	*find_var_name(char *str)
 	while (str[i + j] && !is_char(str[i + j], "\n\t\v \r\f$\"\'") && str[i + j])
 		j++;
 	ret = ft_strndup(&str[i], j);
-	printf("find_var_name: %s", ret);
 	return (ret);
 }
 

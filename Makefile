@@ -6,7 +6,7 @@ FLAGS = -Wall -Werror -Wextra -g
 
 SRC_DIR = src/
 
-LIB_DIR = miniLIB
+LIB_DIR = libft
 
 MAIN_DIR = main/
 

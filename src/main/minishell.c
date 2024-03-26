@@ -15,15 +15,15 @@
 #include "sig.h"
 #include <unistd.h>
 
-t_sig	g_sig;
+/* t_sig	g_sig;
 
-/* int	main(int argc, char **argv, char **env)
+int	main(int argc, char **argv, char **env)
 {
 	t_bigshell			data;
 
-	sig_init(&data, &handler);
+	//sig_init(&data, &handler);
 	if (argc && argv) 
-		printf("");
+		argv[argc - 1] = argv[argc - 1];
 	bzero(&data, sizeof(data));
  	data.og_env = env;
 	store_env(&data, env);
@@ -31,15 +31,7 @@ t_sig	g_sig;
 	lineread = NULL;
 	while (1)
 	{
-		if (g_sig.sigquit && !lineread)
-			exit(data.exit_stat);
-		lineread = readline("shitshell: ");
-		if (g_sig.sigint)
-		{
-			g_sig.sigint = 0;
-			write(1, "\n", 1);
-			continue ;
-		}
+		lineread = readline("lovelyshell: ");
 		add_history(lineread);
 		data.commands = parse(lineread, &data);
 		if (!data.commands)
@@ -73,5 +65,6 @@ t_sig	g_sig;
 		// 	}
 		// }
 	}
-} */
+}
 
+ */

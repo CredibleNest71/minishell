@@ -8,8 +8,8 @@ char	*ft_string_insert(char *str, char *in, int idx, int varlen)
 	char	*outro;
 	char	*first;
 
-	if (!str || !in)
-		return (str);
+	if (!str)
+		return (NULL);
 	intro = NULL;
 	if (idx)
 		intro = ft_strndup(str, idx);
@@ -30,6 +30,7 @@ char	*find_var_name(char *str)
 {
 	int	i;
 	int	j;
+	char	*ret;
 
 	j = 0;
 	i = 0;
@@ -42,14 +43,15 @@ char	*find_var_name(char *str)
 		return (NULL);
 	while (str[i + j] && !is_char(str[i + j], "\n\t\v \r\f$\"\'") && str[i + j])
 		j++;
-	return (ft_strndup(&str[i], j));
+	ret = ft_strndup(&str[i], j);
+	return (ret);
 }
 
 char	*get_val(char *var, t_bigshell *data)
 {
 	t_env	*curr;
 
-	if (!data)
+	if (!data || !var)
 		return (printf("EYYYY WHERES MY VAL"), NULL);
 	curr = data->env;
 	while (curr)
@@ -63,46 +65,6 @@ char	*get_val(char *var, t_bigshell *data)
 	return (curr->value);
 }
 
-char	*prexpand(char *str, t_bigshell *data)
-{
-	int		i;
-	char	*new;
-	char	c;
-	char	*var;
-	char	*val;
-
-	i = 0;
-	if (!str)
-		return (NULL);
-	new = str;
-	while (str[i])
-	{
-		if (is_char(str[i], "\"\'"))
-		{
-			c = str[i];
-			while (str[i] && str[i] != c)
-				i++;
-			if (!str[i])
-				break ;
-			else if (str[i] == c)
-				i++;
-		}
-		if (str[i] == '$')
-		{
-			var = find_var_name(&str[i]);
-			val = get_val(var, data);
-			if (!val)
-				return (free(var), NULL);
-			new = ft_string_insert(str, val, &str[i] - str, ft_strlen(var));
-			free(var);
-			str = new;
-			i = 0;
-		}
-		i++;
-	}
-	return (new);
-}
-
 //expands $-variable
 char *expand(char *str, t_bigshell *data)
 {
@@ -111,26 +73,19 @@ char *expand(char *str, t_bigshell *data)
 	char	*val;
 	char	*new;
 
-	int i = 0;
 	while (1)
 	{
-		while (str[i] && str[i] != '$')
-		{
-			if (str[i] == '\'' && ft_strchr(str + 1, '\''))
-				while (str[i] && str[i] != '\'')
-					i++;
-			i++;
-		}
-		here = ft_strchr(&str[i], '$');
+		if (!strncmp(str, "$", 2))
+			return (NULL);
+		here = ft_strchr(str, '$');
 		if (here)
 		{
 			var = find_var_name(here);
 			if (!var)
-				return (printf("NOT A LEGIT VARIABLE NAME\n"), str);
+				return (str) ; 
 			val = get_val(var, data);
-			if (!val)
-				return (free(var),str);
-			//printf("val = %s\n", val);
+			if (!val && ft_strlen(var) + 1 == ft_strlen(str))
+				return (NULL);
 			new = ft_string_insert(str, val, here - str, ft_strlen(var));
 			free(var);
 			str = new;

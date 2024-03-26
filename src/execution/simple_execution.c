@@ -62,6 +62,7 @@ void	simple_exec(t_bigshell *data)
         current = current->next;
     }
 } */
+t_sig	g_sig;
 
 int	main(int argc, char **argv, char **env)
 {

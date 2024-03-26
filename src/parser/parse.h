@@ -56,6 +56,8 @@ char	    *prexpand(char *str, t_bigshell *data);
 t_command	*parse(char *input, t_bigshell *data);
 void		print_cmds(t_command *cmd, t_bigshell *data);
 
+//SYNTAX
+int check_syntax(char *str);
 
 
 

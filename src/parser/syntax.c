@@ -1,147 +1,74 @@
-#include "../../minishell.h"
 #include "parse.h"
+#include "../../minishell.h"
+#include "../../libft/libft.h"
 
-int	is_char(char c, char *chars)
+int	skip_quotes(char *str,int *i,char c)
 {
-	int		i;
+	char	*here;
 
-	i = -1;
-	while (chars[++i])
-		if (chars[i] == c)
-			return (1);
-	return (0);
+	here = ft_strchr(&str[*i + 1], c);
+	if (!here)
+		return (0);
+	else
+		*i = here - str + 1;
+	return (1);
 }
 
-void	skip_quotes(char *str, int *idx)
+int	check_arrows(char *str, int *i, char c)
 {
-	if (str[*idx] == '\'')
+	int	amount;
+
+	amount = 0;
+	while (str[*i] == c)
 	{
-		*idx++;
-		while (str[*idx] && str[*idx] != '\'')
-			*idx++;
+		amount++;
+		*i += 1;
 	}
-	if (str[*idx] == '\"')
-	{
-		*idx++;
-		while (str[*idx] && str[*idx] != '\"')
-			*idx++;
-	}
-	return ;
-}
-
-//checks for unclosed quotes
-int check_quotes(char *str)
-{
-	int i;
-	int open;
-
-	i = 0;
-	open = 0;
-	while (str[i])
-	{
-		if (str[i] == '\"')
-		{
-			while (str[i] != '\"' && str[i])
-				i++;
-		}
-		else if (str[i] == '\'')
-		{
-			while (str[i] != '\'' && str[i])
-				i++;
-		}
-		if (!str[i])
-			return (printf("error with quotes\n"),1);
-		i++;
-	}
-	return (0);
-}
-
-int	check_inandout(char *str)
-{
-	int	i;
-
-	i = 0;
-	while (str[i])
-	{
-		skip_quotes(&str[i], &i);
-		if (is_char(str[i], "<>"))
-		{
-			i++;
-			while (is_char(str[i], "\n\t\v \r\f") && str[i])
-				i++;
-		if (!ft_isalnum(str[i]) && !is_char(str[i], "\'\""))
-			return (printf("error at in and out\n"),1);
-		}
-		i++;
-	}
-	return (0);
-}
-
-int	check_heredoc(char *str)
-{
-	int	i;
-	int j;
-
-	i = 0;
-	j = 0;
-	while (is_char(str[i], "\n\t\v \r\f") && str[i])
-		i++;
-	while (!is_char(str[i + j], "\n\t\v \r\f") && str[i])
-		j++;
-	char delimiter[j];
-	j = 0;
-	while (!is_char(str[i], "\n\t\v \r\f") && str[i])
-		delimiter[j++] = str[i++];
-	delimiter[j] = 0;
-	if (ft_strnstr(&str[i], delimiter, 10000))
+	if (amount > 2)
+		return (0);
+	while (is_char(str[*i], SPACE3))
+		*i += 1;
+	if (is_char(str[*i], "<>|"))
 		return (0);
 	return (1);
 }
 
-int	check_docandapp(char *str)
+int	check_specials(char *str, int *i)
 {
-	int	i;
+	char	c;
 
-	i = 0;
-	while (str[i])
+	c = str[*i];
+	if (c == '\'' || c == '\"')
+		return (skip_quotes(str, i, c));
+	else if (c == '|')
 	{
-		skip_quotes(&str[i], &i);
-		if (!strncmp(&str[i], "<<", 2))
-		{
-			if (check_heredoc(&str[i + 2]))
-				return (printf("error at <<\n"),1);
-		}
-		else if (!strncmp(&str[i], ">>", 2))
-		{
-			i += 2;
-			while (is_char(str[i], "\n\t\v \r\f") && str[i])
-				i++;
-			if (!ft_isalnum(str[i]))
-				return (printf("error at >>\n"), 1);
-		}
-		i++;
+		*i += 1;
+		while (is_char(str[*i], SPACE3))
+			*i += 1;
+		if (str[*i] == '|')
+			return (0);
 	}
-	return (0);
+	else if (c == '<' || c == '>')
+		return (check_arrows(str, i, c));
+	return (1);
 }
 
-int check_redirs(char *str)
-{
-	int	check;
-
-	check = check_inandout(str);
-	check += check_docandapp(str);
-}
 
 int	check_syntax(char *str)
 {
-	if (check_quotes(str) || check_redirs(str))
-		return (1);
-	return (0);
-}
+	int		i;
+	int		check;
 
-int main()
-{
-	if (check_syntax("this is a test"))
-		printf("\nERROR\n");
-	return 0;
+	i = 0;
+	check = 1;
+	while (str[i] && check)
+	{
+		if (is_char(str[i], "\'\"|<>"))
+			check = check_specials(str, &i);
+		else
+			i++;
+	}
+	if (!check)
+		(write(2, "SYNTAX ERROR\n", 14));
+	return (check);
 }

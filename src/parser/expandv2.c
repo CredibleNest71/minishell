@@ -34,7 +34,6 @@ t_token **split_to_token(char *expanded, int join)
 		token_list_add(ret, new);
 		i++;
 	}
-	//printf("split_to_token::expanded: %s\nis_chare:xpanded[0]: '%c'", expanded, expanded[0]);
 	if (is_char(expanded[0], SPACE3))
 		(*ret)->distanced = 1;
 	if (join && !is_char(expanded[ft_strlen(expanded) - 1], SPACE3))
@@ -87,7 +86,7 @@ void	remove_token(t_token *curr)
 	free(curr);
 }
 
-void	expand_no_quotes(t_token **list, t_token *prev, t_token *curr, t_bigshell *data)
+int	expand_no_quotes(t_token **list, t_token *prev, t_token *curr, t_bigshell *data)
 {
 	char	*expanded;
 	t_token	**addlist;
@@ -96,7 +95,14 @@ void	expand_no_quotes(t_token **list, t_token *prev, t_token *curr, t_bigshell *
 	if (!expanded)
 		remove_token(curr);
 	addlist = split_to_token(expanded, curr->connected);
+	if (curr->type >= 3 && curr->type <= 6 && ft_token_count(addlist) > 1)
+	{
+		write(2, "AMBIGUOUS REDIRECT\n", 20);
+		return (0);
+	}
+	(*addlist)->type = curr->type;
 	insert_tokenlist(list, prev, curr, addlist);
+	return (1);
 	//for (t_token *temp = *list; temp; temp = temp->next)
 	//	printf("expandnoquotes:: %s\n", temp->str);
 }
@@ -117,25 +123,22 @@ char	*remove_quotes(char *str)
 }
 
 
-void    launch_expansion(t_token **list, t_token *prev, t_token *curr, t_bigshell *data)
+int    launch_expansion(t_token **list, t_token *prev, t_token *curr, t_bigshell *data)
 {
 	if (curr->str[0] == '\'')
 	{
 		curr->str = remove_quotes(curr->str);
-		return ;
 	}
 	else if (curr->str[0] == '\"')
 	{
 		curr->str = remove_quotes(curr->str);
 		curr->str = expand(curr->str, data);
 	}
-	else if (curr->str[0] == '$')
-		expand_no_quotes(list, prev, curr, data);
 	else
-		expand_no_quotes(list, prev, curr, data);
+		return (expand_no_quotes(list, prev, curr, data));
 	//for (t_token *temp = *list; temp; temp = temp->next)
 	//	printf("launch:: %s\n", temp->str);
-	return ;
+	return (1);
 }
 
 static	void mark_join(t_token **list)
@@ -190,6 +193,7 @@ t_token **expander(t_token **list, t_bigshell *data)
 {
 	t_token *curr;
 	t_token *prev;
+	int		check;
 
 	curr = *list;
 	prev = NULL;
@@ -198,12 +202,14 @@ t_token **expander(t_token **list, t_bigshell *data)
 		if (curr->type == (e_type) HEREDOC)
 			;
 		else if (ft_strchr(curr->str, '$'))
-			launch_expansion(list, prev, curr, data);
+			check = launch_expansion(list, prev, curr, data);
 		else
 			curr->str = remove_quotes(curr->str);
 		prev = curr;
 		curr = curr->next;
     }
+	if (!check)
+		return (NULL);
 	join(list);
 	return (list);
 }

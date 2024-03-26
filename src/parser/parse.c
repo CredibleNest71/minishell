@@ -126,8 +126,12 @@ t_command	*parse(char *input, t_bigshell *data)
 
 	if (!input)
 		return (NULL);
+	if (!check_syntax(input))
+		return (NULL);
 	tokens = tokenmaker(input);
 	tokens = expander(tokens, data);
+	if (!tokens)
+		return (NULL);
 	cmds = commands_finalized(tokens);
 	set_counts(*cmds, data);
 	set_all_char_arrays(*cmds);

@@ -70,6 +70,8 @@ void	remove_token(t_token *curr)
 	t_token	*prev;
 	t_token	*next;
 
+	if (!curr)
+		return ;
 	prev = curr->prev;
 	next = curr->next;
 	if (prev && next)

@@ -34,6 +34,8 @@ int	builtin_allrounder(t_bigshell *data)
 {
 	int	result;
 	
+	if (data->commands->input || data->commands->output)
+			redir(data->commands, data);
 	data->built_ins = (char **)malloc(sizeof(char *) * 8);
 	built_in_list(data);
 	result = builtin_check_exec(data, data->commands->cmd->str);

@@ -19,6 +19,11 @@ void	redo_rl()
 	rl_redisplay();
 }
 
+void	set_global()
+{
+	g_sig.sigint = 1;
+}
+
 void	set_signals(int mode)
 {
 	if (!mode)
@@ -26,15 +31,9 @@ void	set_signals(int mode)
 		signal(SIGINT, &redo_rl);
 		signal(SIGQUIT, SIG_IGN);
 	}
+	else if (mode == 1)
+	{
+		signal(SIGINT, &set_global);
+		signal(SIGQUIT, SIG_DFL);
+	}
 }
-
-/*
-int main()
-{
-    struct sigaction sa;
-    sa.sa_sigaction = &handler;
-    sa.sa_flags = SA_SIGINFO;
-    sigaction(SIGINT, &sa, NULL);
-    sigaction(SIGQUIT, &sa, NULL);
-}
-*/

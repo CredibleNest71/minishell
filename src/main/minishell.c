@@ -15,7 +15,7 @@
 #include "sig.h"
 #include <unistd.h>
 
-t_sig	g_sig;
+ t_sig	g_sig;
 
 int	main(int argc, char **argv, char **env)
 {
@@ -31,7 +31,10 @@ int	main(int argc, char **argv, char **env)
 	lineread = NULL;
 	while (1)
 	{
+		set_signals(0);
 		lineread = readline("lovelyshell: ");
+		if (!lineread)
+			return (write(1, "\n", 1), 130);
 		add_history(lineread);
 		data.commands = parse(lineread, &data);
 		if (!data.commands)
@@ -66,4 +69,3 @@ int	main(int argc, char **argv, char **env)
 		// }
 	}
 }
-

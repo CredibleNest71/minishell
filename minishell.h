@@ -37,11 +37,11 @@
 typedef enum type {
 	CMD = 0,
 	ARG,
+	PIPE,
 	IN,
 	OUT,
-	HEREDOC,
 	APP,
-	PIPE,
+	HEREDOC,
 }	 e_type;
 
 typedef struct	s_token
@@ -74,6 +74,11 @@ typedef struct s_env
 	struct s_env	*next;
 }	t_env;
 
+typedef struct s_pipe
+{
+	int		read;
+	int		write;
+}	t_pipe;
 
 typedef struct	s_bigshell
 {
@@ -81,6 +86,8 @@ typedef struct	s_bigshell
 	//int			exit_stat; storing exit stat in env
 	int			simple_error; //this will be set with stdlib macros to define whether I need to exit the minishell
 	int			pipe_fd[2];
+	int			pipe_fd2[2]; //possibly not necesary
+	t_pipe		*pipe;
 	int			id;
 	int			var_i;	//counts how many variables exist in the environment
 	int			reference_i; //keeps count of data->env
@@ -131,8 +138,7 @@ void	CRITICAL_FAILURE(t_bigshell *data, char *str);
 
 void	simple_exec(t_bigshell *data);
 
-void	pipe_fork(t_bigshell *data);
-void	complex_exec(t_bigshell *data, t_token *cmd);
+void	complex_exec(t_bigshell *data, int cmd_pos);
 
 void	ft_echo(t_token *args);
 void	ft_cd(t_bigshell *data);

@@ -6,36 +6,34 @@
 #include "../../libft/libft.h"
 #include "sig.h"
 
-void	handler(int sig/*, siginfo_t *info, void *v*/)
-{
-	write(1, "SIGNAL RECEIVED", 17);
-	if (sig == SIGINT)
-		g_sig.sigint = 1;
-	else if (sig == SIGQUIT)
-		g_sig.sigquit = 1;
-}
-
 int	check_sigs()
 {
 	return (g_sig.sigint + g_sig.sigquit * 10);
 }
 
-void sig_init(t_bigshell *data, void *handler)
+void	redo_rl()
 {
-	ft_bzero(&g_sig, sizeof(g_sig));
-	if (data)
-		g_sig.data = data;
-	signal(SIGINT, handler);
-	signal(SIGQUIT, handler);
+	write(1, "\n", 1);
+	rl_on_new_line();
+	rl_replace_line("", 0);
+	rl_redisplay();
 }
 
-/*
-int main()
+void	set_global()
 {
-    struct sigaction sa;
-    sa.sa_sigaction = &handler;
-    sa.sa_flags = SA_SIGINFO;
-    sigaction(SIGINT, &sa, NULL);
-    sigaction(SIGQUIT, &sa, NULL);
+	g_sig.sigint = 1;
 }
-*/
+
+void	set_signals(int mode)
+{
+	if (!mode)
+	{
+		signal(SIGINT, &redo_rl);
+		signal(SIGQUIT, SIG_IGN);
+	}
+	else if (mode == 1)
+	{
+		signal(SIGINT, &set_global);
+		signal(SIGQUIT, SIG_DFL);
+	}
+}

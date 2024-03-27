@@ -218,8 +218,9 @@ int	var_exists(t_bigshell *data, char *str)
 	separator = ft_strchr(str, '=');
 	while (env)
 	{
-		if (ft_strncmp(env->var, str, (size_t)(separator - str)) == 0)
+		if (ft_strncmp(env->var, str, (size_t)(separator - str) + 1) == 0)
 		{
+			printf("wtf %s\n", env->var);
 			switch_values(data, env, separator + 1, ft_strlen(separator + 1));
 			return (0);
 		}
@@ -227,9 +228,10 @@ int	var_exists(t_bigshell *data, char *str)
 	}
 	while (s_env)
 	{
-		if (ft_strncmp(s_env->var, str, (size_t)(separator - str)) == 0)
+		if (ft_strncmp(s_env->var, str, (size_t)(separator - str) + 1) == 0)
 		{
-			switch_values(data, s_env, separator + 1, ft_strlen(separator +1));
+			printf("wtf %s\n", s_env->var);
+			switch_values(data, s_env, separator + 1, ft_strlen(separator + 1));
 			return (0);
 		}
 		s_env = s_env->next;

@@ -84,3 +84,21 @@ void	skip_white_space(char *str, int *i)
 	while (str[*i] && is_char(str[*i], "\n\t\v \r\f"))
 		*i += 1;
 }
+
+int	ft_token_count(t_token **list)
+{
+	int		i;
+	t_token	*temp;
+	
+	if (!list || !*list)
+		return (0);
+	temp = *list;
+	i = 0;
+	while (temp)
+	{
+		i++;
+		printf("counter: %d:	'%s'\n", i, temp->str);
+		temp = temp->next;
+	}
+	return (i);
+}

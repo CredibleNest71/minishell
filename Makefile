@@ -6,6 +6,8 @@ FLAGS = -Wall -Werror -Wextra -g
 
 SRC_DIR = src/
 
+LIB_DIR = libft
+
 MAIN_DIR = main/
 
 PARSER_DIR = parser/
@@ -54,11 +56,11 @@ OBJS := $(SRCS:%.c=%.o)
 all: $(NAME)
 
 $(NAME): $(OBJS)
-	cd libft && $(MAKE) && $(MAKE) bonus
-	cc $(FLAGS) $(OBJS) -lreadline ./libft/libft.a -o $(NAME)
+	cd $(LIB_DIR) && $(MAKE) && $(MAKE) bonus
+	cc $(FLAGS) $(OBJS) -lreadline ./$(LIB_DIR)/libft.a -o $(NAME)
 
 clean:
-	cd libft && $(MAKE) fclean
+	cd $(LIB_DIR) && $(MAKE) fclean
 	rm -f $(OBJS)
 
 nice: all clean

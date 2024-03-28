@@ -33,9 +33,9 @@ void	store_restore_fds(t_bigshell *data, int mode)
 	}
 	else if (mode == 2)
 	{
-		if ((dup2(data->std_in, 0)) == -1)
+		if ((dup2(data->std_in, 0)) == -1 || close(data->std_in) == -1 || close(data->std_out) == -1)
 			CRITICAL_FAILURE(data, "dup_stdin dup2 fail");
-		if ((dup2(data->std_out, 1)) == -1)
+		if ((dup2(data->std_out, 1)) == -1 || close(data->std_in) == -1 || close(data->std_out) == -1)
 			CRITICAL_FAILURE(data, "dup_stdout dup2 fail");
 	}
 }

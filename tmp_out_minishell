@@ -1,0 +1,1 @@
+lovelyshell: /bin/echo "cat this text\n" > tmp_redir_out

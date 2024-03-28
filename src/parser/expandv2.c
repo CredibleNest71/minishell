@@ -136,7 +136,7 @@ int    launch_expansion(t_token **list, t_token *prev, t_token *curr, t_bigshell
 	}
 	else
 		expand_no_quotes(list, prev, curr, data);
-	return ;
+	return (1);
 }
 
 static	void mark_join(t_token **list)
@@ -163,7 +163,7 @@ void	join(t_token **list)
 	char	*jstr;
 
 	curr = *list;
-	//mark_join(list);
+	mark_join(list);
 	while (curr)
 	{
 		next = curr->next;

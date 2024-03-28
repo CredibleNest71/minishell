@@ -44,6 +44,7 @@ SRCS = ${SRC_DIR}${EXEC_DIR}exec.c\
 			${SRC_DIR}${PARSER_DIR}expandv2.c\
 			${SRC_DIR}${PARSER_DIR}commander.c\
 			${SRC_DIR}${PARSER_DIR}gnl.c\
+			${SRC_DIR}${PARSER_DIR}syntax.c\
 \
 			${SRC_DIR}${MAIN_DIR}minishell.c\
 			${SRC_DIR}${MAIN_DIR}sig.c\

@@ -156,7 +156,7 @@ void	complex_exec(t_bigshell *data)
 	current_cmd = data->commands;
 	while (current_cmd->next)
 	{
-		printf("complex:: current command: %s current arg:%s\n", current_cmd->cmd->str, current_cmd->args->str);
+		//printf("complex:: current command: %s current arg:%s\n", current_cmd->cmd->str, current_cmd->args->str);
 		if (data->commands->input || data->commands->output)
 		{
 			if (redir(data->commands, data) != 0)
@@ -207,10 +207,10 @@ void	complex_exec(t_bigshell *data)
 			CRITICAL_FAILURE(data, "complex exec: fork failed in last command");
 		if (current_cmd->pid == 0)
 		{
-
 			printf("i am happening \n");
 			last_executor(data, current_cmd, data->pipe->read);
 		}
+		printf("i am happened \n");
 		wait_for_children(data);
 		//wait(NULL);
 	}

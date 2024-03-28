@@ -59,6 +59,9 @@ $(NAME): $(OBJS)
 	cd $(LIB_DIR) && $(MAKE) && $(MAKE) bonus
 	cc $(FLAGS) $(OBJS) -lreadline ./$(LIB_DIR)/libft.a -o $(NAME)
 
+valgrind : $(NAME)
+	valgrind --suppressions=valgrind_ignore_leaks.txt --leak-check=full --show-leak-kinds=all --track-fds=yes --trace-children=yes ./minishell
+
 clean:
 	cd $(LIB_DIR) && $(MAKE) fclean
 	rm -f $(OBJS)
@@ -70,4 +73,4 @@ fclean: clean
 
 re: fclean all
 
-.PHONY: all clean fclean re
+.PHONY: all clean fclean re valgrind

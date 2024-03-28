@@ -15,7 +15,7 @@
 #include "sig.h"
 #include <unistd.h>
 
- t_sig	g_sig;
+t_sig	g_sig;
 
 int	main(int argc, char **argv, char **env)
 {
@@ -29,6 +29,7 @@ int	main(int argc, char **argv, char **env)
 	store_env(&data, env);
 	char *lineread;
 	lineread = NULL;
+	pipe_init(&data);
 	while (1)
 	{
 		set_signals(0);
@@ -39,33 +40,47 @@ int	main(int argc, char **argv, char **env)
 		data.commands = parse(lineread, &data);
 		if (!data.commands)
 			continue ;
-		//print_cmds(data.commands, &data);
+		print_cmds(data.commands, &data);
 		store_restore_fds(&data, 1);
 		if (heredoc_finder(&data) == 0)
 			ft_heredoc(&data);
 		if (data.commands->input || data.commands->output)
-			redir(data.commands, &data);
-		if (builtin_allrounder(&data) == 0)
-			continue ;
+		{
+			if (redir(data.commands, &data))
+			{
+				store_restore_fds(&data, 2);
+				continue ;
+			}
+		}
 		if (data.num_cmd == 1)
 		{
+			if (builtin_allrounder(&data) == 0)
+			{
+				store_restore_fds(&data, 2);
+				continue ;
+			}
 			data.id = fork();
-			printf("data id is %d \n", data.id);
 			if (data.id == -1)
 				CRITICAL_FAILURE(&data, "main: fork failed");
 			if (data.id == 0)
 				simple_exec(&data);
+			wait(NULL);
 		}
-		// else if (data.num_cmd > 1)
-		// {
-		// 	while (i < data.num_cmd)
-		// 	{
-		// 		if ((data.id = fork()) == -1)
-		// 			CRITICAL_FAILURE(&data, "main: fork failed 2");
-		// 		if (data.id == 0)
-		// 			complex_exec(data, i);
-		// 		i++;
-		// 	}
-		// }
+		else if (data.num_cmd > 1)
+		{
+				complex_exec(&data);
+		}
+		/* else if (data.num_cmd > 1)
+		{
+			while (i < data.num_cmd)
+			{
+				if ((data.id = fork()) == -1)
+					CRITICAL_FAILURE(&data, "main: fork failed 2");
+				if (data.id == 0)
+					complex_exec(data, i);
+				i++;
+			}
+		} */
+		store_restore_fds(&data, 2);
 	}
 }

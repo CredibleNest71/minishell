@@ -16,7 +16,7 @@ EXEC_DIR = execution/
 
 BUILT_INS = built-ins/
 
-SRCS = ${SRC_DIR}${EXEC_DIR}exec.c\
+SRCS = ${SRC_DIR}${EXEC_DIR}complex_exec.c\
 			${SRC_DIR}${EXEC_DIR}built_in_list.c\
 			${SRC_DIR}${EXEC_DIR}env_list.c\
 			${SRC_DIR}${EXEC_DIR}error_handlers.c\

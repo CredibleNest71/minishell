@@ -11,6 +11,9 @@
 /* ************************************************************************** */
 
 #include "../../minishell.h"
+#include <stdio.h>
+#include <string.h>
+#include <sys/wait.h>
 #include <unistd.h>
 
 /* void	pipe_fork(t_bigshell *data)
@@ -48,6 +51,39 @@ void	pipe_init(t_bigshell *data)
 	data->pipe = pipe;
 }
 
+int	get_exit_stat(t_bigshell *data)
+{
+	t_env	*tmp;
+	int		stat_loc;
+
+	tmp = data->env;
+	stat_loc = 0;
+	while (tmp)
+	{
+		if (strncmp(tmp->var, "?", ft_strlen(tmp->var)) == 0)
+		{
+			stat_loc = atoi(tmp->value);
+			return (stat_loc);
+		}
+		tmp = tmp->next;
+	}
+	return (stat_loc);
+}
+
+void	wait_for_children(t_bigshell *data)
+{
+	t_command	*cmd;
+	int			stat_loc;
+
+	cmd = data->commands;
+	stat_loc = get_exit_stat(data);
+	while (cmd)
+	{
+		waitpid(cmd->pid, &stat_loc, 0);
+		cmd = cmd->next;
+	}
+}
+
 void	first_executor(t_bigshell *data, t_command *cmd, int out_fd)
 {
 	char	**paths;
@@ -55,7 +91,7 @@ void	first_executor(t_bigshell *data, t_command *cmd, int out_fd)
 
 	//printf("first exec:: current command: %s curr arg: %s\n");
 	//out_fd = 0;
-	if (dup2(out_fd, 1) == -1 || close(data->pipe_fd[1]) == -1)
+	if (dup2(out_fd, 1) == -1 || close(data->pipe->read) == -1 || close(data->pipe->write) == -1)
 		CRITICAL_FAILURE(data, "complex exec: first executor: dup2 failed");
 	convert_env(data);
 	paths = find_and_split_path(data->mod_env);
@@ -76,7 +112,7 @@ void	last_executor(t_bigshell *data, t_command *cmd, int in_fd)
 	char	*correct_path;
 
 	//in_fd = 0;
-	if (dup2(in_fd, 0) == -1 || close(data->pipe_fd[0]) == -1)
+	if (dup2(in_fd, 0) == -1 || close(data->pipe->read) == -1 || close(data->pipe->write) == -1)
 		CRITICAL_FAILURE(data, "complex exec: last executor: dup2 failed");
 	convert_env(data);
 	paths = find_and_split_path(data->mod_env);
@@ -120,7 +156,7 @@ void	complex_exec(t_bigshell *data)
 	current_cmd = data->commands;
 	while (current_cmd->next)
 	{
-		printf("complex:: current command: %s current arg:%s\n", current_cmd->cmd->str, current_cmd->args->str);
+		//printf("complex:: current command: %s current arg:%s\n", current_cmd->cmd->str, current_cmd->args->str);
 		if (data->commands->input || data->commands->output)
 		{
 			if (redir(data->commands, data) != 0)
@@ -132,15 +168,15 @@ void	complex_exec(t_bigshell *data)
 		if (current_cmd == data->commands)
 		{
 			//im at first command
-			printf("complex:: checkpoint first command: %s\n", current_cmd->cmd->str);
+			printf("complex: checkpoint first command: %s\n", current_cmd->cmd->str);
 
 			if (pipe(data->pipe_fd) == -1)
 				CRITICAL_FAILURE(data, "complex exec: pipe failed in first command");
 			data->pipe->read = data->pipe_fd[0];
 			data->pipe->write = data->pipe_fd[1];
-			if ((data->id = fork()) == -1)
+			if ((current_cmd->pid = fork()) == -1)
 				CRITICAL_FAILURE(data, "complex exec: fork failed in first command");
-			if (data->id == 0)
+			if (current_cmd->pid == 0)
 				first_executor(data, current_cmd, data->pipe->write);
 		}
 		else
@@ -148,9 +184,9 @@ void	complex_exec(t_bigshell *data)
 			if (pipe(data->pipe_fd2) == -1)
 				CRITICAL_FAILURE(data, "complex exec: pipe 2 failed in middle command");
 			data->pipe->write = data->pipe_fd2[1];
-			if ((data->id = fork()) == -1)
+			if ((current_cmd->pid = fork()) == -1)
 				CRITICAL_FAILURE(data, "complex exec: fork failed in middle command");
-			if (data->id == 0)
+			if (current_cmd->pid == 0)
 				middle_executor(data, current_cmd, data->pipe->write, data->pipe->read);
 			data->pipe->read = data->pipe_fd2[0];
 		}
@@ -167,12 +203,15 @@ void	complex_exec(t_bigshell *data)
 				return ;
 			}
 		}
-		if ((data->id = fork()) == -1)
+		if ((current_cmd->pid = fork()) == -1)
 			CRITICAL_FAILURE(data, "complex exec: fork failed in last command");
-		if (data->id == 0)
+		if (current_cmd->pid == 0)
+		{
+			printf("i am happening \n");
 			last_executor(data, current_cmd, data->pipe->read);
-		wait(NULL);
-		wait(NULL);
+		}
+		printf("i am happened \n");
+		wait_for_children(data);
 		//wait(NULL);
 	}
 }

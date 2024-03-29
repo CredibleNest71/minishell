@@ -167,7 +167,9 @@ void	join(t_token **list)
 	while (curr)
 	{
 		next = curr->next;
-		if (curr->connected && next && next->type == (e_type) ARG)
+		if (curr->type == (e_type) PIPE)
+			;
+		else if (curr->connected && next && next->type == (e_type) ARG)
 		{
 			jstr = ft_strjoin(curr->str, next->str);
 			free(curr->str);

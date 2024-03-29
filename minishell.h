@@ -47,9 +47,9 @@ typedef enum type {
 typedef struct	s_token
 {
 	char 			*str;
-	char			*delimiter;
 	int				type;
 	char			*dir;
+	char			*delimiter;
 	int				connected;
 	int				distanced;
 	struct s_token	*next;
@@ -138,7 +138,8 @@ void	CRITICAL_FAILURE(t_bigshell *data, char *str);
 
 void	simple_exec(t_bigshell *data);
 
-void	complex_exec(t_bigshell *data, int cmd_pos);
+void	complex_exec(t_bigshell *data);
+void	pipe_init(t_bigshell *data);
 
 void	ft_echo(t_token *args);
 void	ft_cd(t_bigshell *data);

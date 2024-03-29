@@ -97,28 +97,6 @@ void	set_all_char_arrays(t_command *final)
 	return ;
 }
 
-/*
-t_command	*parse(char *input, t_bigshell *data)
-{
-	t_token		*parsed;
-	t_command	*final;
-
-	//input = prexpand(input, data);
-	if (!input)
-		return (NULL);
-	parsed = parse_tokens(input);
-	if (!parsed)
-		return (write(2, "ERROR in::parse::parsed\n", 25), NULL);
-	if (data && parsed->type == (e_type) HEREDOC)
-	{
-		data->heredoc = parsed;
-		parsed = parsed->next;
-	}
-	final = transform(parsed, data);
-	if (!final)
-		return (write(2, "ERROR in::parse::final\n", 24), NULL);
-	set_counts(final, data);
-*/
 t_command	*parse(char *input, t_bigshell *data)
 {
 	t_token		**tokens;
@@ -132,6 +110,8 @@ t_command	*parse(char *input, t_bigshell *data)
 	tokens = expander(tokens, data);
 	if (!tokens)
 		return (NULL);
+	if ((*tokens)->type == (e_type) HEREDOC)
+		data->heredoc = *tokens;
 	cmds = commands_finalized(tokens);
 	set_counts(*cmds, data);
 	set_all_char_arrays(*cmds);

@@ -39,7 +39,7 @@ int	main(int argc, char **argv, char **env)
 		data.commands = parse(lineread, &data);
 		if (!data.commands)
 			continue ;
-		//print_cmds(data.commands, &data);
+		print_cmds(data.commands, &data);
 		store_restore_fds(&data, 1);
 		if (heredoc_finder(&data) == 0)
 			ft_heredoc(&data);

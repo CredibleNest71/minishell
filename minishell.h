@@ -47,7 +47,7 @@ typedef enum type {
 typedef struct	s_token
 {
 	char 			*str;
-	char			*delimiter;
+	//char			*delimiter;
 	int				type;
 	char			*dir;
 	int				connected;

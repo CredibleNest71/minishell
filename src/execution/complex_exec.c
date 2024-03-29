@@ -12,6 +12,7 @@
 
 #include "../../minishell.h"
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <sys/wait.h>
 #include <unistd.h>
@@ -82,6 +83,16 @@ void	wait_for_children(t_bigshell *data)
 		waitpid(cmd->pid, &stat_loc, 0);
 		cmd = cmd->next;
 	}
+	if (WIFEXITED(stat_loc))
+	{
+		stat_loc = WEXITSTATUS(stat_loc);
+		update_exit_stat(data, stat_loc);
+	}
+	if (WIFSIGNALED(stat_loc))
+	{
+		stat_loc = WTERMSIG(stat_loc);
+		update_exit_stat(data, stat_loc);
+	}
 }
 
 void	first_executor(t_bigshell *data, t_command *cmd, int out_fd)
@@ -91,7 +102,7 @@ void	first_executor(t_bigshell *data, t_command *cmd, int out_fd)
 
 	//printf("first exec:: current command: %s curr arg: %s\n");
 	//out_fd = 0;
-	if (dup2(out_fd, 1) == -1 || close(data->pipe->read) == -1) // || close(data->pipe->write) == -1
+	if (dup2(out_fd, 1) == -1 || close(data->pipe->read) == -1 || close(data->pipe->write) == -1)
 		CRITICAL_FAILURE(data, "complex exec: first executor: dup2 failed");
 	convert_env(data);
 	paths = find_and_split_path(data->mod_env);
@@ -112,7 +123,7 @@ void	last_executor(t_bigshell *data, t_command *cmd, int in_fd)
 	char	*correct_path;
 
 	//in_fd = 0;
-	if (dup2(in_fd, 0) == -1 || close(data->pipe->write) == -1) // || close(data->pipe->read) == -1
+	if (dup2(in_fd, 0) == -1 || close(data->pipe->write) == -1 || close(data->pipe->read) == -1)
 		CRITICAL_FAILURE(data, "complex exec: last executor: dup2 failed");
 	convert_env(data);
 	paths = find_and_split_path(data->mod_env);
@@ -134,7 +145,7 @@ void	middle_executor(t_bigshell *data, t_command *cmd, int out_fd, int in_fd)
 
 	if (dup2(in_fd, 0) == -1)
 		CRITICAL_FAILURE(data, "complex exec: middle executor: dup2 failed (in_fd)");
-	if (dup2(out_fd, 1) == -1)
+	if (dup2(out_fd, 1) == -1 || close(data->pipe->write) == -1 || close(data->pipe->read) == -1)
 		CRITICAL_FAILURE(data, "complex exec: middle executor: dup2 failed (out_fd)");
 	convert_env(data);
 	paths = find_and_split_path(data->mod_env);
@@ -209,10 +220,9 @@ void	complex_exec(t_bigshell *data)
 			CRITICAL_FAILURE(data, "complex exec: fork failed in last command");
 		if (current_cmd->pid == 0)
 		{
-			printf("i am happening \n");
 			last_executor(data, current_cmd, data->pipe->read);
 		}
-		printf("i am happened \n");
+		printf("i happened \n");
 		if (close(data->pipe->read) == -1)
 			CRITICAL_FAILURE(data, "complex exec: close(0) failed in parent process");
 		wait_for_children(data);

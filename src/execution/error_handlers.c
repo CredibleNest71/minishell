@@ -55,10 +55,10 @@ void	simple_error(t_bigshell *data, int exit_code)
 	// ;
 	//exit(data->exit_stat);
 
-int	errorin_child(t_bigshell *data)
+/* int	errorin_child(t_bigshell *data)
 {
 	
-}
+} */
 
 void	CRITICAL_FAILURE(t_bigshell *data, char *str)
 {

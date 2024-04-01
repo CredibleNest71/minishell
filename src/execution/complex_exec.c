@@ -102,7 +102,7 @@ void	first_executor(t_bigshell *data, t_command *cmd, int out_fd)
 
 	//printf("first exec:: current command: %s curr arg: %s\n");
 	//out_fd = 0;
-	if (dup2(out_fd, 1) == -1 || close(data->pipe->read) == -1 || close(data->pipe->write) == -1)
+	if (dup2(out_fd, 1) == -1 || close(data->pipe->read) == -1) //|| close(data->pipe->write) == -1
 		CRITICAL_FAILURE(data, "complex exec: first executor: dup2 failed");
 	convert_env(data);
 	paths = find_and_split_path(data->mod_env);
@@ -123,7 +123,7 @@ void	last_executor(t_bigshell *data, t_command *cmd, int in_fd)
 	char	*correct_path;
 
 	//in_fd = 0;
-	if (dup2(in_fd, 0) == -1 || close(data->pipe->write) == -1 || close(data->pipe->read) == -1)
+	if (dup2(in_fd, 0) == -1 ) //|| close(data->pipe->write) == -1 || close(data->pipe->read) == -1
 		CRITICAL_FAILURE(data, "complex exec: last executor: dup2 failed");
 	convert_env(data);
 	paths = find_and_split_path(data->mod_env);
@@ -225,9 +225,8 @@ void	complex_exec(t_bigshell *data)
 		printf("i happened \n");
 		if (close(data->pipe->read) == -1)
 			CRITICAL_FAILURE(data, "complex exec: close(0) failed in parent process");
-		wait_for_children(data);
-		//wait(NULL);
 	}
+	wait_for_children(data);
 }
 
 /*void	complex_exec(t_bigshell *data)

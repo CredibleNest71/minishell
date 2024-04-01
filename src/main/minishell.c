@@ -82,7 +82,7 @@ int	main(int argc, char **argv, char **env)
 				i++;
 			}
 		} */
-		printf("am I here?\n");
+		//printf("am I here?\n");
 		store_restore_fds(&data, 2);
 	}
 }

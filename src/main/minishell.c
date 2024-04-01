@@ -13,6 +13,7 @@
 #include "../../minishell.h"
 //#include "../parser/parse.h"
 #include "sig.h"
+#include <stdio.h>
 #include <unistd.h>
 
 t_sig	g_sig;
@@ -32,7 +33,7 @@ int	main(int argc, char **argv, char **env)
 	pipe_init(&data);
 	while (1)
 	{
-		set_signals(0);
+		//set_signals(0);
 		lineread = readline("lovelyshell: ");
 		if (!lineread)
 			return (write(1, "\n", 1), 130);
@@ -59,10 +60,10 @@ int	main(int argc, char **argv, char **env)
 				store_restore_fds(&data, 2);
 				continue ;
 			}
-			data.id = fork();
-			if (data.id == -1)
+			data.commands->pid = fork();
+			if (data.commands->pid == -1)
 				CRITICAL_FAILURE(&data, "main: fork failed");
-			if (data.id == 0)
+			if (data.commands->pid == 0)
 				simple_exec(&data);
 			wait(NULL);
 		}
@@ -81,6 +82,7 @@ int	main(int argc, char **argv, char **env)
 				i++;
 			}
 		} */
+		//printf("am I here?\n");
 		store_restore_fds(&data, 2);
 	}
 }

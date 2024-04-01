@@ -22,7 +22,7 @@ void	print_cmds(t_command *cmd, t_bigshell *data)
 		{
 			printf("\nIN:			%s", curr->str);
 			if (curr->type == (e_type) HEREDOC)
-				printf("\n	Delimiter: 	%s", curr->delimiter);
+				printf("\n	Delimiter: 	%s", curr->str);
 		}
 		for (t_token *curr = temp_cmd->output;curr; curr = curr->next)
 		{

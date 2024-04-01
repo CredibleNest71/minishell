@@ -220,8 +220,8 @@ void	delete_token_list(t_token *list)
 	{
 		//printf("\nfreeing: %s", temp->str);
 		free(temp->str);
-		if (temp->delimiter)
-			free(temp->delimiter);
+		if (temp->str)
+			free(temp->str);
 		next = temp->next;
 		free(temp);
 		temp = next;

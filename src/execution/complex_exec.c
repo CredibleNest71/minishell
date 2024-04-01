@@ -201,11 +201,14 @@ void	complex_exec(t_bigshell *data)
 				CRITICAL_FAILURE(data, "complex exec: fork failed in middle command");
 			if (current_cmd->pid == 0)
 				middle_executor(data, current_cmd, data->pipe->write, data->pipe->read);
+			if (close(data->pipe->write) == -1)
+				CRITICAL_FAILURE(data, "complex exec: close(1) failed in parent process");
 			data->pipe->read = data->pipe_fd2[0];
 		}
 		// wait(NULL);
 		current_cmd = current_cmd->next;
 	}
+	wait_for_children(data);
 	if (!current_cmd->next)
 	{
 		if (data->commands->input || data->commands->output)

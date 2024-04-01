@@ -67,7 +67,6 @@ void	first_executor(t_bigshell *data, t_command *cmd, int out_fd)
 	execve(correct_path, cmd->args_exec, data->mod_env);
 	printf("execve failed\n");
 	free(correct_path);
-
 }
 
 void	last_executor(t_bigshell *data, t_command *cmd, int in_fd)
@@ -120,7 +119,6 @@ void	complex_exec(t_bigshell *data)
 	current_cmd = data->commands;
 	while (current_cmd->next)
 	{
-		printf("complex:: current command: %s current arg:%s\n", current_cmd->cmd->str, current_cmd->args->str);
 		if (data->commands->input || data->commands->output)
 		{
 			if (redir(data->commands, data) != 0)
@@ -131,9 +129,6 @@ void	complex_exec(t_bigshell *data)
 		}
 		if (current_cmd == data->commands)
 		{
-			//im at first command
-			printf("complex:: checkpoint first command: %s\n", current_cmd->cmd->str);
-
 			if (pipe(data->pipe_fd) == -1)
 				CRITICAL_FAILURE(data, "complex exec: pipe failed in first command");
 			data->pipe->read = data->pipe_fd[0];

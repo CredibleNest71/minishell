@@ -13,6 +13,7 @@
 #include "../../minishell.h"
 //#include "../parser/parse.h"
 #include "sig.h"
+#include <stdio.h>
 #include <unistd.h>
 
 t_sig	g_sig;
@@ -81,6 +82,7 @@ int	main(int argc, char **argv, char **env)
 				i++;
 			}
 		} */
+		//printf("am I here?\n");
 		store_restore_fds(&data, 2);
 	}
 }

@@ -37,7 +37,7 @@ void	clean_heredoc(t_token *token)
 	// while (!is_char(new[--j], "\n\t\v \r\f") && j)
 	// 	j--;
 	// new[j] = 0;
-	token->delimiter = new;
+	token->str = new;
 	free(token->str);
 	token->str = NULL;
 	//printf("\n:clean_heredoc:del: %s", token->delimiter);

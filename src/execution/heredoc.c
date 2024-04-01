@@ -50,14 +50,14 @@ char	*delimiter_finder(t_bigshell *data)
 	{
 		if (!data->heredoc)
 			return (NULL);
-		delimiter = data->heredoc->delimiter;
+		delimiter = data->heredoc->str; //->delimiter changed to str
 		return (delimiter);
 	}
 	tmp_input = data->commands->input;
 	while (tmp_input)
 	{
 		if (tmp_input->type == (enum type) HEREDOC)
-			delimiter = tmp_input->delimiter;
+			delimiter = tmp_input->str; //->delimiter changed to str
 		tmp_input = tmp_input->next;
 	}
 	return (delimiter);

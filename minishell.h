@@ -47,6 +47,7 @@ typedef enum type {
 typedef struct	s_token
 {
 	char 			*str;
+	//char			*delimiter;
 	int				type;
 	char			*dir;
 	char			*delimiter;
@@ -60,10 +61,11 @@ typedef struct s_command
 {
 	t_token				*cmd;		//command
 	t_token				*args;		//arguments
-	char				**args_exec;
 	t_token				*input;		//< / heredoc
 	t_token				*output;	//> / append
 	int					arg_num;
+	int					pid;
+	char				**args_exec;
 	struct s_command	*next;
 }	 t_command;
 
@@ -87,8 +89,6 @@ typedef struct	s_bigshell
 	int			simple_error; //this will be set with stdlib macros to define whether I need to exit the minishell
 	int			pipe_fd[2];
 	int			pipe_fd2[2]; //possibly not necesary
-	t_pipe		*pipe;
-	int			id;
 	int			var_i;	//counts how many variables exist in the environment
 	int			reference_i; //keeps count of data->env
 	int			std_in; //stored std_in
@@ -99,6 +99,7 @@ typedef struct	s_bigshell
 	char		**og_env; //do I use u?
 	char		**mod_env;
 	char		**built_ins;
+	t_pipe		*pipe;
 	t_token		*heredoc;	//token with delimiter and str; 
 	t_command	*commands;
 	char		*prompt;

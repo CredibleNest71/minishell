@@ -38,18 +38,20 @@ void	simple_exec(t_bigshell *data)
 	char	**paths;
 	char	*correct_path;
 	
+	paths = NULL;
+	correct_path = NULL;
 	convert_env(data); //check this function env struct has changed
 	paths = find_and_split_path(data->mod_env);
 	if (!paths)
-		printf("find&split failed\n"); //shit has been allocated
+		//printf("find&split failed\n"); //shit has been allocated
 	correct_path = check_if_correct_path(paths, data, data->commands->cmd->str);
 	if (!correct_path)
-		printf("minishell: command %s not found\n", data->commands->cmd->str);
+		//printf("minishell: command %s not found\n", data->commands->cmd->str);
 	execve(correct_path, data->commands->args_exec, data->mod_env);
-	//printf("minishell: command %s not found\n", data->commands->cmd->str);
+	////printf("minishell: command %s not found\n", data->commands->cmd->str);
 	free(correct_path);
 	//free paths & args_exec
-	//printf("execve failed\n");
+	////printf("execve failed\n");
 	//protect execve
 }
 
@@ -58,7 +60,7 @@ void	simple_exec(t_bigshell *data)
     t_env *current = data->env;
     while (current != NULL)
     {
-        printf("%s\n", current->str);
+        //printf("%s\n", current->str);
         current = current->next;
     }
 } */
@@ -80,18 +82,18 @@ void	simple_exec(t_bigshell *data)
 
 // // 	//input->str = "motest";
 // // 	//input->type = (enum type) PATH;
-// // 	//printf("what\n");
+// // 	////printf("what\n");
 // // 	//output->str = "example";
-// // 	//printf("what\n");
+// // 	////printf("what\n");
 // // 	//output->type = (enum type) PATH;
-// // 	//printf("what\n");
+// // 	////printf("what\n");
 // // 	cmd->str = "unset";
 // // 	//cmd2->str = "unset";
-// // 	//printf("what\n");
+// // 	////printf("what\n");
 // // 	cmd->type = (enum type) CMD;
-// // 	//printf("what\n");
+// // 	////printf("what\n");
 // // 	arg->str = "Amy=var";
-// // 	//printf("what\n");
+// // 	////printf("what\n");
 // // 	arg2->str = "Zmyvar=0";
 // // 	//arg3->str = "Zmyvar=0";
 // // 	arg->next = arg2;
@@ -103,18 +105,18 @@ void	simple_exec(t_bigshell *data)
 // // 	//command2->args = arg3;
 // // 	//command->input = input;
 // // 	//command->output = output;n
-// // 	//printf("lol\n");
+// // 	////printf("lol\n");
 // // 	command->cmd = cmd;
 // // 	//command2->cmd = cmd2;
-// // 	//printf("lol\n");
+// // 	////printf("lol\n");
 // // 	//command->args[0] = arg;
 // // 	//command->args[1] = arg2;
 // // 	//command->args = NULL;
-// // 	//printf("lol\n");
+// // 	////printf("lol\n");
 // // 	command->arg_num = 2;
 // // 	//command->next = command2;
 // // 	data.commands = command;
-// // 	//printf("lol\n");
+// // 	////printf("lol\n");
 	
 // // 	data.reference_i = 0;
 // // 	data.s_env = NULL;
@@ -123,13 +125,13 @@ void	simple_exec(t_bigshell *data)
 //      //store_env(&data, env);
 // // 	ft_export(&data);
 // // 	//data.commands->args = arg2;
-// // 	//printf("%s\n", data.commands->args->str);
+// // 	////printf("%s\n", data.commands->args->str);
 // // 	//print_env(data.s_env);
 // // 	//free_env(&data);
 // // 	//ft_unset(&data);
 // // 	//print_env(data.env);
 // // 	//make_copy(&data);
-// // 	//printf("%d\n", data.reference_i);
+// // 	////printf("%d\n", data.reference_i);
 
 // //     // Print the linked list
 // //     //print_env_list(&data);
@@ -137,24 +139,24 @@ void	simple_exec(t_bigshell *data)
 // // 	/* int e = -1;
 // // 	while (data.mod_env[++e])
 // // 	{
-// // 		printf("%s\n", data.mod_env[e]);
+// // 		//printf("%s\n", data.mod_env[e]);
 // // 	} */
 	
 // //  	if (!data.built_ins)
 // // 	{
-// // 		printf("malloc failed\n");
+// // 		//printf("malloc failed\n");
 // // 	}
 // // 	//data.built_ins = built_in_list(&data);
 // // 	//free(data.built_ins);
 // // 	//free_builtin_list(&data);
 // // 	// free_builtin_list(&data);
-// // 	printf("a\n");
+// // 	//printf("a\n");
 // // 	//proabbaly segfault bc there are uninitialized shit will be fixed with merge?
 // // 	free_struct(&data);
 // // 	return 0;
 // // 	/* int e = 0;
 // // 	while (e < 7)
-// // 		printf("%s\n", data.built_ins[e++]); */
+// // 		//printf("%s\n", data.built_ins[e++]); */
 
 // // 	/* int j;
 // // 	if (argc && argv)
@@ -164,7 +166,7 @@ void	simple_exec(t_bigshell *data)
 // // 	//data.commands = data.commands->next;
 
 // 	if (argc && argv) 
-// 		printf("");
+// 		//printf("");
 // // 	/* store_restore_fds(1);
 // // 	simple_exec(&data); */
 // // /* 	data.id = fork();
@@ -185,7 +187,7 @@ void	simple_exec(t_bigshell *data)
 // 	/* lineread = readline("tinyshell: ");
 // 	data.commands = parse(lineread, &data);
 // 	data.commands->arg_num = 0;
-// 	printf("%d\n", data.commands->arg_num);
+// 	//printf("%d\n", data.commands->arg_num);
 // 	ft_cd(&data); */
 // 	while (1)
 // 	{
@@ -236,7 +238,7 @@ void	simple_exec(t_bigshell *data)
 // 			{
 // 				if (pipe(data.pipe_fd) == -1)
 // 				{
-// 					printf("pipe failed\n");
+// 					//printf("pipe failed\n");
 // 					CRITICAL_FAILURE(data);
 // 				}
 // 				int j = i;

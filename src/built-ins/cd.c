@@ -64,7 +64,7 @@ char	*delete_tail(char *full_path)
 	// while (full_path[++i] && i < len)
 	// 	mod_path[i] = full_path[i];
 	// mod_path[i] = '\0';
-	// printf("mod: %s\n", mod_path);
+	// //printf("mod: %s\n", mod_path);
 	// return (mod_path);
 }
 
@@ -195,7 +195,7 @@ void	ft_cd(t_bigshell *data)
 			}
 		}
 		mod_cwd = delete_tail(cwd);
-		//printf("mod_cwd: %s\n", mod_cwd);
+		////printf("mod_cwd: %s\n", mod_cwd);
 		overwrite_pwd(data, mod_cwd);
 		chdir (mod_cwd);
 		free(cwd);
@@ -214,17 +214,17 @@ void	ft_cd(t_bigshell *data)
 		//delete_tail(path);
 		og_path = connect_path(data, path);
 		if (!og_path)
-			printf("connect path failed\n");
+			//printf("connect path failed\n");
 		if (chdir(path) == -1)
 		{
-			printf("minishell: cd: %s: No such file or directory\n", data->commands->args->str);
+			//printf("minishell: cd: %s: No such file or directory\n", data->commands->args->str);
 			simple_error(data, 1);
 			connect_ogpath(data, og_path);
 		}
 		return ;
 	}
 	if (chdir(path) == -1) //this is probably fuckin unnecessary at this point
-		printf("fucking chdir\n");
+		//printf("fucking chdir\n");
 	return ;
 }
 

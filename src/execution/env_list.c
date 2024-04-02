@@ -103,13 +103,13 @@ void    convert_env(t_bigshell *data)
 		str = ft_strjoin(current->var, "=");
 		if (!str)
 		{
-			printf("strjoin failed\n"); //delete later
+			//printf("strjoin failed\n"); //delete later
 			simple_error(data, 1);
 		}
 		str = ft_strjoin(str, current->value);
 		if (!str)
 		{
-			printf("strjoin failed\n"); //delete later
+			//printf("strjoin failed\n"); //delete later
 			simple_error(data, 1);
 		}
         data->mod_env[i] = ft_strdup(str);
@@ -125,7 +125,7 @@ void    convert_env(t_bigshell *data)
 //     t_env *current = data->env;
 //     while (current != NULL)
 //     {
-//         printf("%s\n", current->str);
+//         //printf("%s\n", current->str);
 //         current = current->next;
 //     }
 // }

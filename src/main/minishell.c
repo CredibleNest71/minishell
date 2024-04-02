@@ -33,15 +33,23 @@ int	main(int argc, char **argv, char **env)
 	pipe_init(&data);
 	while (1)
 	{
-		//set_signals(0);
-		lineread = readline("lovelyshell: ");
+		set_signals(0);
+		if (isatty(0))
+			lineread = readline("lovelyshell: ");
+		else
+		{
+			char	*line;
+			line = get_next_line(0);
+			lineread = ft_strtrim(line, "\n");
+			free(line);
+		}
 		if (!lineread)
 			return (write(1, "\n", 1), 130);
 		add_history(lineread);
 		data.commands = parse(lineread, &data);
 		if (!data.commands)
 			continue ;
-		print_cmds(data.commands, &data);
+		//print_cmds(data.commands, &data);
 		store_restore_fds(&data, 1);
 		if (heredoc_finder(&data) == 0)
 			ft_heredoc(&data);
@@ -82,7 +90,7 @@ int	main(int argc, char **argv, char **env)
 				i++;
 			}
 		} */
-		//printf("am I here?\n");
+		////printf("am I here?\n");
 		store_restore_fds(&data, 2);
 	}
 }

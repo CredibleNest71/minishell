@@ -42,7 +42,9 @@ void	update_exit_stat(t_bigshell *data, int exit_code)
 
 void	redir_error(t_bigshell *data, int exit_code, char *str)
 {
-	printf("%s\n", str);
+	//printf("%s\n", str);
+	if (!str)
+		str = "tester stuff";
 	update_exit_stat(data, exit_code);
 }
 
@@ -63,7 +65,7 @@ void	simple_error(t_bigshell *data, int exit_code)
 void	CRITICAL_FAILURE(t_bigshell *data, char *str)
 {
 	if (str)
-		printf("%s\n", str);
+		//printf("%s\n", str);
 	free_struct(data);
 	exit(1);
 }

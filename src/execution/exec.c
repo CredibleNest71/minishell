@@ -30,7 +30,7 @@
 
 /* void	error_handler(char	*message) //irrelevant, unless critical fail: store exit status and return prompt, otherwise call free fucntion and exit minishell
 {
-	printf("Failure: %s", message);
+	//printf("Failure: %s", message);
 	//call exit code function(?)
 	//new prompt
 } */
@@ -53,11 +53,11 @@
 		{
 			pid = fork();
 			if (pid == 0) //child
-				printf("child");
+				//printf("child");
 				//execute cmd;
 				//remember to handle error (send correct exit code)
 			if (pid == -1) //fork failed (check errno?)
-				printf("failed child");
+				//printf("failed child");
 				//handle error (send correct exit code)
 			//probably close fds;
 			//wait_for_offspring(struct);

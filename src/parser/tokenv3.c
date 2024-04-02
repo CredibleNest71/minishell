@@ -14,7 +14,7 @@ int	quotes(t_token *token, char *str, int *i, char quote)
 	if (!content)
 		return (0);
 	token->str = content;
-	printf("::quotes::content: %s\n", content);
+	//printf("::quotes::content: %s\n", content);
 	*i += found - &str[*i] + 1;
 	if (str[*i] && !is_char(str[*i], "\n\t\v \r\f"))
 		token->connected = 1;
@@ -85,7 +85,7 @@ int	fill_token(t_token *token, char *str, int *i)
 		check = quotes(token, str, i, '\'');
 	else
 		check = no_quotes(token, str, i);
-	//printf("tokencontent: %s\n", token->str);
+	////printf("tokencontent: %s\n", token->str);
 	if (check < 0)
 		return (-1);
 	if (!check)
@@ -165,12 +165,12 @@ int	main(int ac, char **av)
 	if (tokens)
 		curr = *tokens;
 	else
-		return (printf("ERROR"));
+		return (//printf("ERROR"));
 	while (curr &&curr->str)
 	{
-		printf("%s\n", curr->str);
-		printf("type %d\n", curr->type);
-		printf("connected: %d\n\n", curr->connected);
+		//printf("%s\n", curr->str);
+		//printf("type %d\n", curr->type);
+		//printf("connected: %d\n\n", curr->connected);
 		curr = curr->next;
 	}
 }

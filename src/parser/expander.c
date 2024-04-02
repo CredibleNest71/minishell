@@ -52,7 +52,7 @@ char	*get_val(char *var, t_bigshell *data)
 	t_env	*curr;
 
 	if (!data || !var)
-		return (printf("EYYYY WHERES MY VAL"), NULL);
+		return (NULL); //printf("EYYYY WHERES MY VAL"), NULL);
 	curr = data->env;
 	while (curr)
 	{
@@ -101,6 +101,6 @@ char *expand(char *str, t_bigshell *data)
 // 	char	*test;
 // 	//test =  expand("this is  $RUBY_HOME $RUBY_HOME $RUBY_HOME testtesttesttest\n");
 // 	test = expand(readline("pls give input"));
-// 	printf("%s\n", test);
+// 	//printf("%s\n", test);
 // 	free(test);
 // }

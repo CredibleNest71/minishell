@@ -22,7 +22,7 @@ int	check_heredoc_fin(char *str)
 	if (!str[i])
 		return (write(2, "ERROR CHECKING HEREDOC: missing delimiter\n", 24), -1);
 	del = ft_strndup(&str[i], j);
-	printf("::check_heredoc::delimiter:%s\n", del);
+	//printf("::check_heredoc::delimiter:%s\n", del);
 	if (!del)
 		return (write(2, "ERROR CHECKING HEREDOC\n", 24), -1);
 	if (ft_strnstr(str + i + j, del, 10000))
@@ -69,12 +69,12 @@ int main(void)
 	int			finished;
 	t_bigshell	data;
 
-	printf("\nEnter commands:");
+	//printf("\nEnter commands:");
 	input = readline(">");
-	printf("::parse::");
+	//printf("::parse::");
 	cmds = parse(input, NULL); //
-	printf("::parsed::\n");
-	printf("::transformed::\n");
+	//printf("::parsed::\n");
+	//printf("::transformed::\n");
 	print_cmds(cmds);
 	delete_command_list(cmds);
 	free(input);

@@ -28,7 +28,7 @@ int	no_quotes(t_token *token, char *str, int *i)
 
 	found = 0;
 	if (is_char(str[*i], "|"))
-		found++;
+		found = 1;
 	else
 	{
 		if (is_char(str[*i], "$"))

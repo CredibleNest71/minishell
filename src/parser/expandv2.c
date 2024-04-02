@@ -193,6 +193,7 @@ t_token **expander(t_token **list, t_bigshell *data)
 
 	curr = *list;
 	prev = NULL;
+	check = 1;
 	while(curr)
 	{
 		if (curr->type == (e_type) HEREDOC)

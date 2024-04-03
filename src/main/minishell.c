@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mresch <mresch@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 11:33:48 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/03/11 17:49:48 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/04/03 16:44:45 by mresch           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,10 +33,10 @@ int	main(int argc, char **argv, char **env)
 	pipe_init(&data);
 	while (1)
 	{
-		//set_signals(0);
+		set_signals(0);
 		lineread = readline("lovelyshell: ");
 		if (!lineread)
-			return (write(1, "\n", 1), 130);
+			return (write(1, "exit\n", 6), 130);
 		add_history(lineread);
 		data.commands = parse(lineread, &data);
 		if (!data.commands)

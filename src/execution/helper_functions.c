@@ -99,7 +99,7 @@ void	free_commands(t_bigshell *data)
 void	free_struct(t_bigshell *data)
 {
 	//free everything before exiting minishell;
-	puts("Haha i was called");
+	//puts("Haha i was called");
 	free_env(data);
 	free_builtin_list(data);
 	if (data->commands)

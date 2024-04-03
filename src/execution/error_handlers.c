@@ -13,7 +13,7 @@
 #include "../../minishell.h"
 #include <stdlib.h>
 
-void	update_exit_stat(t_bigshell *data, int exit_code)
+void	update_exit_stat(t_bigshell *data, int exit_code) //gotta free code
 {
 	t_env	*tmp;
 	char	*code;

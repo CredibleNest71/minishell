@@ -114,8 +114,9 @@ void	first_executor(t_bigshell *data, t_command *cmd, int out_fd)
 	if (!correct_path)
 		printf("minishell: command %s not found\n", cmd->cmd->str);
 	execve(correct_path, cmd->args_exec, data->mod_env);
-	printf("execve failed\n");
+	//printf("execve failed\n");
 	free(correct_path);
+	exit(126);
 
 }
 
@@ -137,8 +138,9 @@ void	last_executor(t_bigshell *data, t_command *cmd, int in_fd)
 	if (!correct_path)
 		printf("minishell: command %s not found\n", cmd->cmd->str);
 	execve(correct_path, cmd->args_exec, data->mod_env);
-	printf("execve failed\n");
+	//printf("execve failed\n");
 	free(correct_path);
+	exit (126);
 
 }
 
@@ -161,8 +163,9 @@ void	middle_executor(t_bigshell *data, t_command *cmd, int out_fd, int in_fd)
 	if (!correct_path)
 		printf("minishell: command %s not found\n", cmd->cmd->str);
 	execve(correct_path, cmd->args_exec, data->mod_env);
-	printf("execve failed\n");
+	//printf("execve failed\n");
 	free(correct_path);
+	exit(126);
 
 }
 

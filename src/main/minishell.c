@@ -15,6 +15,21 @@
 #include "sig.h"
 #include <stdio.h>
 #include <unistd.h>
+#include <string.h>
+
+int	find(t_bigshell *data)
+{
+	t_env	*tmp;
+
+	tmp = data->env;
+	while (tmp)
+	{
+		if (strcmp(tmp->var, "?") == 0)
+			return (ft_atoi(tmp->value));
+		tmp = tmp->next;
+	}
+	return (0);
+}
 
 t_sig	g_sig;
 
@@ -34,17 +49,17 @@ int	main(int argc, char **argv, char **env)
 	while (1)
 	{
 		set_signals(0);
-		if (isatty(0))
-			lineread = readline("smellyshell: ");
-		else
+		// if (isatty(fileno(stdin)))
+		// 	lineread = readline("smellyshell: ");
+		// else
 		{
 			char	*line;
-			line = get_next_line(0);
+			line = get_next_line(fileno(stdin));
 			lineread = ft_strtrim(line, "\n");
 			free(line);
 		}
 		if (!lineread)
-			return (write(1, "\n", 1), 130);
+			return (write(1, "\n", 1), find(&data));
 		add_history(lineread);
 		data.commands = parse(lineread, &data);
 		if (!data.commands)

@@ -92,8 +92,8 @@ int	expand_no_quotes(t_token **list, t_token *prev, t_token *curr, t_bigshell *d
 	t_token	**addlist;
 	
 	expanded = expand(curr->str, data);
-	if (!expanded)
-		remove_token(curr);
+	if (!expanded || !ft_strlen(expanded))
+		return (remove_token(curr), 1);
 	addlist = split_to_token(expanded, curr->connected);
 	if (curr->type >= 3 && curr->type <= 6 && ft_token_count(addlist) > 1)
 	{
@@ -122,9 +122,38 @@ char	*remove_quotes(char *str)
 	return (ret);
 }
 
+int	tilde(t_token *curr, t_bigshell *data)
+{
+	char	*home;
+	char	*joined;
+
+	if (curr->str[0] != '~')
+		return (0);
+	home = ft_strdup(get_val("HOME", data));
+	if (!home)
+		return(write(2, "error getting value\n", 21));
+	if (!ft_strncmp(curr->str, "~", 2))
+	{
+		free(curr->str);
+		curr->str = home;
+	}
+	else if (!ft_strncmp(curr->str, "~/", 2))
+	{
+		joined = ft_strjoin(home, curr->str);
+		free(curr->str);
+		free(home);
+		curr->str = joined;
+	}
+	return (0);
+}
+
 
 int    launch_expansion(t_token **list, t_token *prev, t_token *curr, t_bigshell *data)
 {
+	if (strchr(curr->str, '~'))
+		tilde(curr, data);
+	if (!strchr(curr->str, '$'))
+		return (1);
 	if (curr->str[0] == '\'')
 	{
 		curr->str = remove_quotes(curr->str);
@@ -195,20 +224,22 @@ t_token **expander(t_token **list, t_bigshell *data)
 {
 	t_token *curr;
 	t_token *prev;
+	t_token *next;
 	int		check;
 
 	curr = *list;
 	prev = NULL;
 	while(curr)
 	{
+		next = curr->next;
 		if (curr->type == (e_type) HEREDOC)
 			;
-		else if (ft_strchr(curr->str, '$'))
+		else if (ft_strchr(curr->str, '$') || ft_strchr(curr->str, '~') )
 			check = launch_expansion(list, prev, curr, data);
 		else
 			curr->str = remove_quotes(curr->str);
 		prev = curr;
-		curr = curr->next;
+		curr = next;
     }
 	if (!check)
 		return (NULL);

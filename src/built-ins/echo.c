@@ -17,6 +17,8 @@ static int check_flag(char *str)
 	int	i;
 
 	i = 0;
+	if (!str)
+		return (0);
 	if (str[i++] != '-')
 		return (0);
 	while (str[i])

@@ -36,7 +36,7 @@ int	main(int argc, char **argv, char **env)
 		//set_signals(0);
 		lineread = readline("lovelyshell: ");
 		if (!lineread)
-			return (write(1, "\n", 1), 130);
+			return (write(1, "exit\n", 1), 130);
 		add_history(lineread);
 		data.commands = parse(lineread, &data);
 		if (!data.commands)

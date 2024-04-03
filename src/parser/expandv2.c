@@ -229,6 +229,7 @@ t_token **expander(t_token **list, t_bigshell *data)
 
 	curr = *list;
 	prev = NULL;
+	check = 1;
 	while(curr)
 	{
 		next = curr->next;

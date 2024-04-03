@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mresch <mresch@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 09:57:03 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/03/14 12:11:13 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/04/02 16:59:06 by mresch           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,6 @@ void	ft_echo(t_token *args)
 	{
 		if (count++)
 			ft_putchar_fd(' ', 1);
-		//thats how bash does it (echo -nl -nnn prints all|| echo -nnnn -nnn prints nothing)
 		if (!flag || !check_flag(args->str))
 			ft_putstr_fd(args->str, 1);
 		args = args->next;

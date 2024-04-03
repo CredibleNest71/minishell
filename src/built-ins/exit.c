@@ -16,5 +16,6 @@ void	ft_exit(t_bigshell *data)
 {
 	//free everything
 	free_struct(data);
+	printf("exit\n");
 	exit(0);
 }

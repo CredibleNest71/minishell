@@ -100,7 +100,7 @@ void	first_executor(t_bigshell *data, t_command *cmd, int out_fd)
 	char	**paths;
 	char	*correct_path;
 
-	//printf("first exec:: current command: %s curr arg: %s\n");
+	////printf("first exec:: current command: %s curr arg: %s\n");
 	//out_fd = 0;
 	paths = NULL;
 	correct_path = NULL;
@@ -173,7 +173,7 @@ void	complex_exec(t_bigshell *data)
 	current_cmd = data->commands;
 	while (current_cmd->next)
 	{
-		printf("complex:: current command: %s current arg:%s\n", current_cmd->cmd->str, current_cmd->args->str);
+		////printf("complex:: current command: %s current arg:%s\n", current_cmd->cmd->str, current_cmd->args->str);
 		if (data->commands->input || data->commands->output)
 		{
 			if (redir(data->commands, data) != 0)
@@ -185,7 +185,7 @@ void	complex_exec(t_bigshell *data)
 		if (current_cmd == data->commands)
 		{
 			//im at first command
-			printf("complex: checkpoint first command: %s\n", current_cmd->cmd->str);
+			////printf("complex: checkpoint first command: %s\n", current_cmd->cmd->str);
 
 			if (pipe(data->pipe_fd) == -1)
 				CRITICAL_FAILURE(data, "complex exec: pipe failed in first command");
@@ -231,7 +231,7 @@ void	complex_exec(t_bigshell *data)
 		{
 			last_executor(data, current_cmd, data->pipe->read);
 		}
-		printf("i happened \n");
+		////printf("i happened \n");
 		if (close(data->pipe->read) == -1)
 			CRITICAL_FAILURE(data, "complex exec: close(0) failed in parent process");
 	}

@@ -218,7 +218,7 @@ void	delete_token_list(t_token *list)
 	temp = list;
 	while (temp)
 	{
-		////printf("\nfreeing: %s", temp->str);
+		printf("\nfreeing: %s", temp->str);
 		free(temp->str);
 		if (temp->str)
 			free(temp->str);
@@ -299,7 +299,7 @@ t_token	*parse_tokens(char *str)
 // 		if (t->str)
 // 		{
 // 			//clean_token(t);
-// 			//printf("\n%d: %s	%s", i++, names[t->type], t->str);
+// 			printf("\n%d: %s	%s", i++, names[t->type], t->str);
 // 		}
 // 		if (t->next == NULL)
 // 			break ;
@@ -307,23 +307,23 @@ t_token	*parse_tokens(char *str)
 // 	}
 // 	t_command *cmd = transform(p);
 // 	if (!cmd)
-// 		//printf("command creation failed \n");
+// 		printf("command creation failed \n");
 // 	t_command *temp_cmd = cmd;
 // 	for (;temp_cmd; temp_cmd = temp_cmd->next)
 // 	{
-// 		//printf("\n==========================================");
-// 		//printf("\nCOMMAND:		%s", temp_cmd->cmd->str);
+// 		printf("\n==========================================");
+// 		printf("\nCOMMAND:		%s", temp_cmd->cmd->str);
 // 		for (t_token *curr = temp_cmd->args;curr; curr = curr->next)
-// 			//printf("\n	ARG:		%s", curr->str);
+// 			printf("\n	ARG:		%s", curr->str);
 // 		for (t_token *curr = temp_cmd->input;curr; curr = curr->next)
-// 			//printf("\nIN:			%s", curr->str);
+// 			printf("\nIN:			%s", curr->str);
 // 		for (t_token *curr = temp_cmd->output;curr; curr = curr->next)
-// 			//printf("\nOUT:			%s", curr->str);
+// 			printf("\nOUT:			%s", curr->str);
 // 		for (t_token *curr = temp_cmd->append;curr; curr = curr->next)
-// 			//printf("\nAPP:			%s", curr->str);
+// 			printf("\nAPP:			%s", curr->str);
 // 		for (t_token *curr = temp_cmd->heredoc;curr; curr = curr->next)
-// 			//printf("\nHere:			%s", curr->str);
-// 		//printf("\n==========================================");
+// 			printf("\nHere:			%s", curr->str);
+// 		printf("\n==========================================");
 // 	}
 // 	//free(test);
 // 	delete_command_list(cmd);

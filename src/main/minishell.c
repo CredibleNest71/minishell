@@ -35,7 +35,7 @@ int	main(int argc, char **argv, char **env)
 	{
 		set_signals(0);
 		if (isatty(0))
-			lineread = readline("lovelyshell: ");
+			lineread = readline("smellyshell: ");
 		else
 		{
 			char	*line;
@@ -90,7 +90,7 @@ int	main(int argc, char **argv, char **env)
 				i++;
 			}
 		} */
-		////printf("am I here?\n");
+		printf("am I here?\n");
 		store_restore_fds(&data, 2);
 	}
 }

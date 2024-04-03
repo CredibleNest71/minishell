@@ -21,13 +21,13 @@ void	store_restore_fds(t_bigshell *data, int mode)
 		data->std_in = dup(0);
 		if (data->std_in == -1)
 		{
-			//printf("que\n");
+			printf("que\n");
 			CRITICAL_FAILURE(data, "dup_stdin dup fail");
 		}
 		data->std_out = dup(1);
 		if (data->std_out == -1)
 		{
-			//printf("mierda\n");
+			printf("mierda\n");
 			CRITICAL_FAILURE(data, "dup_stdout dup fail");
 		}
 	}
@@ -40,7 +40,7 @@ void	store_restore_fds(t_bigshell *data, int mode)
 	}
 }
 
-/* //printf("minishell: %s: No such file or directory\n", file); //check later with mo about file beig void* && probably exit as well
+/* printf("minishell: %s: No such file or directory\n", file); //check later with mo about file beig void* && probably exit as well
 data->exit_stat = 1; //$? --> 1: command not found */
 int	check_file(t_bigshell *data, const char *file, int mode)
 {

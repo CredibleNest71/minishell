@@ -97,7 +97,7 @@ int	ft_token_count(t_token **list)
 	while (temp)
 	{
 		i++;
-		//printf("counter: %d:	'%s'\n", i, temp->str);
+		printf("counter: %d:	'%s'\n", i, temp->str);
 		temp = temp->next;
 	}
 	return (i);

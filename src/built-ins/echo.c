@@ -48,7 +48,6 @@ void	ft_echo(t_token *args)
 	{
 		if (count++)
 			ft_putchar_fd(' ', 1);
-		//thats how bash does it (echo -nl -nnn prints all|| echo -nnnn -nnn prints nothing)
 		if (!flag || !check_flag(args->str))
 			ft_putstr_fd(args->str, 1);
 		args = args->next;

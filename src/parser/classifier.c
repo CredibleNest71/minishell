@@ -6,9 +6,9 @@ t_token	*expand_token(t_token *token, t_bigshell *data)
 {
 	char	*temp;
 	temp = token->str;
-	//printf("not expanded: %s\n", token->str);
+	printf("not expanded: %s\n", token->str);
 	token->str = expand(temp, data);
-	//printf("expanded: %s\n", token->str);
+	printf("expanded: %s\n", token->str);
 	return (token);
 }
 
@@ -21,7 +21,7 @@ void	clean_heredoc(t_token *token)
 
 	i = 0;
 	j = 0;
-	////printf("\n:clean_heredoc: \"%s\"", token->str);
+	printf("\n:clean_heredoc: \"%s\"", token->str);
 	while (is_char(token->str[i], "\n\t\v \r\f<"))
 		i++;
 	// while (!is_char(token->str[i], "\n\t\v \r\f"))
@@ -40,7 +40,7 @@ void	clean_heredoc(t_token *token)
 	token->str = new;
 	free(token->str);
 	token->str = NULL;
-	////printf("\n:clean_heredoc:del: %s", token->delimiter);
+	//printf("\n:clean_heredoc:del: %s", token->delimiter);
 }
 
 void	clean_token(t_token *token, t_bigshell *data)
@@ -54,7 +54,7 @@ void	clean_token(t_token *token, t_bigshell *data)
 	j = 0;
 	if (!token)
 		return ;
-	//printf("::clean_token::%s\n", token->str);
+	printf("::clean_token::%s\n", token->str);
 	token = expand_token(token, data);
 	if (token->type == (e_type) PIPE)
 		return ;
@@ -246,7 +246,7 @@ void	expand_token_list(t_token *list, t_bigshell *data)
 			expand(temp->str, data);
 			new = parse_tokens(temp->str);
 			for (t_token *tp = new; tp; tp = tp->next)
-				//printf("new token: %s\n", tp->str);
+				printf("new token: %s\n", tp->str);
 			unify(temp, new);
 		}
 		temp = temp->next;

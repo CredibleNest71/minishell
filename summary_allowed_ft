@@ -10,7 +10,7 @@ rl_redisplay: Forces a redisplay of the current input line.
 
 add_history: Adds a line to the readline history.
 
-//printf: Prints formatted output to the standard output.
+printf: Prints formatted output to the standard output.
 
 malloc: Allocates a block of memory on the heap.
 

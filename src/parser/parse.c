@@ -1,7 +1,7 @@
 #include "../../minishell.h"
 #include "parse.h"
 
-/* void	print_cmds(t_command *cmd, t_bigshell *data)
+void	print_cmds(t_command *cmd, t_bigshell *data)
 {
 	if (!cmd)
 	{
@@ -9,33 +9,33 @@
 		return ;
 	}
 	t_command *temp_cmd = cmd;
-	//printf("\n==========================================\n");
-	//printf("NUMBER OF COMMANDS: %d\n", data->num_cmd);
+	printf("\n==========================================\n");
+	printf("NUMBER OF COMMANDS: %d\n", data->num_cmd);
 	for (;temp_cmd; temp_cmd = temp_cmd->next)
 	{
-		//printf("\n==========================================");
+		printf("\n==========================================");
 		if (temp_cmd->cmd)
-			//printf("\nCOMMAND(%d):		%s",temp_cmd->arg_num, temp_cmd->cmd->str);
+			printf("\nCOMMAND(%d):		%s",temp_cmd->arg_num, temp_cmd->cmd->str);
 		for (t_token *curr = temp_cmd->args;curr; curr = curr->next)
-			//printf("\n	ARG:		%s", curr->str);
+			printf("\n	ARG:		%s", curr->str);
 		for (t_token *curr = temp_cmd->input;curr; curr = curr->next)
 		{
-			//printf("\nIN:			%s", curr->str);
+			printf("\nIN:			%s", curr->str);
 			if (curr->type == (e_type) HEREDOC)
-				//printf("\n	Delimiter: 	%s", curr->str);
+				printf("\n	Delimiter: 	%s", curr->str);
 		}
 		for (t_token *curr = temp_cmd->output;curr; curr = curr->next)
 		{
 			if (curr->type == (e_type) APP)
-				//printf("\nAPP:			%s", curr->str);
+				printf("\nAPP:			%s", curr->str);
 			else
-				//printf("\nOUT:			%s", curr->str);
+				printf("\nOUT:			%s", curr->str);
 		}
 		for (int i = 0; i < temp_cmd->arg_num + 1; i++)
-			//printf("\nchars: %s", temp_cmd->args_exec[i]);
-		//printf("\n==========================================\n");
+			printf("\nchars: %s", temp_cmd->args_exec[i]);
+		printf("\n==========================================\n");
 	}
-} */
+}
 
 static int set_counts(t_command *cmd, t_bigshell *data)
 {

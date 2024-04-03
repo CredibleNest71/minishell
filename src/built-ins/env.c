@@ -50,11 +50,11 @@ void	ft_env(t_bigshell *data)
 				tmp = tmp->next;
 				continue ;
 			}
-			//printf("%s", tmp->var);
+			printf("%s", tmp->var);
 			if (!tmp->value)
-				//printf("\n");
+				printf("\n");
 			if (tmp->value)
-				//printf("=%s\n", tmp->value);
+				printf("=%s\n", tmp->value);
 			tmp = tmp->next;
 		}
 		return ;

@@ -72,12 +72,12 @@ void	print_env(t_env *head)
 			head = head->next;
 			continue ;
 		}
-		//printf("declare -x ");
-		//printf("%s", head->var);
+		printf("declare -x ");
+		printf("%s", head->var);
 		if (!head->value)
-			//printf("\n");
+			printf("\n");
 		if (head->value)
-			//printf("=%c%s%c\n", 34, head->value, 34);
+			printf("=%c%s%c\n", 34, head->value, 34);
 		head = head->next;
 	}
 }
@@ -103,10 +103,10 @@ void	print_env(t_env *head)
 	i = 0;
 	//if (!data->s_env) //check that s-env is empty
 	convert_env(data);
-	//printf("\n\n\n\nmod_env:\n");
+	printf("\n\n\n\nmod_env:\n");
 	while (data->mod_env[i])
-		//printf("%s\n", data->mod_env[i++]);
-	//printf("\n\n\n\n");
+		printf("%s\n", data->mod_env[i++]);
+	printf("\n\n\n\n");
 	i = 0;
 	data->s_env = create_node(data, data->mod_env[0]);
 	current = data->s_env;
@@ -169,7 +169,7 @@ int	check_var(t_bigshell *data, char *key)
 	if (!(var[0] == '_' || (var[0] >= 'A' && var[0] <= 'Z') || (var[0] >= 'a' && var[0] <= 'z')))
 	{
 		free(var);
-		//printf("tinyshell: export: `%s': not a valid identifier\n", key); //key? tiene que ser full str
+		printf("tinyshell: export: `%s': not a valid identifier\n", key); //key? tiene que ser full str
 		return (1);
 	}
 	while (var[++i])
@@ -220,7 +220,7 @@ int	var_exists(t_bigshell *data, char *str)
 	{
 		if (ft_strncmp(env->var, str, (size_t)(separator - str) + 1) == 0)
 		{
-			//printf("wtf %s\n", env->var);
+			printf("wtf %s\n", env->var);
 			switch_values(data, env, separator + 1, ft_strlen(separator + 1));
 			return (0);
 		}
@@ -230,7 +230,7 @@ int	var_exists(t_bigshell *data, char *str)
 	{
 		if (ft_strncmp(s_env->var, str, (size_t)(separator - str) + 1) == 0)
 		{
-			//printf("wtf %s\n", s_env->var);
+			printf("wtf %s\n", s_env->var);
 			switch_values(data, s_env, separator + 1, ft_strlen(separator + 1));
 			return (0);
 		}

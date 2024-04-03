@@ -61,7 +61,7 @@ void	insert_tokenlist(t_token **list, t_token *prev, t_token *curr, t_token **ad
 	if (next)
 		next->prev = last;
 	//for (t_token *temp = *list; temp; temp = temp->next)
-	//	//printf("insert:: %s\n", temp->str);
+	//	printf("insert:: %s\n", temp->str);
 }
 
 void	remove_token(t_token *curr)
@@ -104,7 +104,7 @@ int	expand_no_quotes(t_token **list, t_token *prev, t_token *curr, t_bigshell *d
 	insert_tokenlist(list, prev, curr, addlist);
 	return (1);
 	//for (t_token *temp = *list; temp; temp = temp->next)
-	//	//printf("expandnoquotes:: %s\n", temp->str);
+	//	printf("expandnoquotes:: %s\n", temp->str);
 }
 
 char	*remove_quotes(char *str)
@@ -137,7 +137,7 @@ int    launch_expansion(t_token **list, t_token *prev, t_token *curr, t_bigshell
 	else
 		return (expand_no_quotes(list, prev, curr, data));
 	//for (t_token *temp = *list; temp; temp = temp->next)
-	//	//printf("launch:: %s\n", temp->str);
+	//	printf("launch:: %s\n", temp->str);
 	return (1);
 }
 
@@ -150,7 +150,7 @@ static	void mark_join(t_token **list)
 	{
 		if (curr->prev)
 		{
-			////printf("curr: %s\n prev: %s\n", curr->str, curr->prev->str);
+			//printf("curr: %s\n prev: %s\n", curr->str, curr->prev->str);
 			if (curr->distanced)
 				curr->prev->connected = 0;
 		}
@@ -167,7 +167,7 @@ void	join(t_token **list)
 	curr = *list;
 	mark_join(list);
 	//for (t_token *temp = *list; temp; temp = temp->next)
-	//	//printf("prejoin:: %s(con%d/dis%d)\n", temp->str, temp->connected, temp->distanced);
+	//	printf("prejoin:: %s(con%d/dis%d)\n", temp->str, temp->connected, temp->distanced);
 	while (curr)
 	{
 		next = curr->next;
@@ -187,7 +187,7 @@ void	join(t_token **list)
 		curr = curr->next;
 	}
 	//for (t_token *temp = *list; temp; temp = temp->next)
-	//	//printf("post:: %s(%d)\n", temp->str, temp->connected);
+	//	printf("post:: %s(%d)\n", temp->str, temp->connected);
 }
 
 

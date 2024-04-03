@@ -53,6 +53,22 @@ int	check_specials(char *str, int *i)
 	return (1);
 }
 
+int	check_end_on_pipe(char *s)
+{
+	int	len;
+
+	len = ft_strlen(s) - 1;
+	while (len + 1)
+	{
+		if (s[len] == '|')
+			return (1);
+		if (is_char(s[len], SPACE3))
+			len--;
+		else
+			return (0);
+	}
+	return (0);
+}
 
 int	check_syntax(char *str)
 {
@@ -61,6 +77,8 @@ int	check_syntax(char *str)
 
 	i = 0;
 	check = 1;
+	if (check_end_on_pipe(str))
+		check = 0;
 	while (str[i] && check)
 	{
 		if (is_char(str[i], "\'\"|<>"))

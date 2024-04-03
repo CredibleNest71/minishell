@@ -50,6 +50,7 @@ typedef struct	s_token
 	//char			*delimiter;
 	int				type;
 	char			*dir;
+	char			*delimiter;
 	int				connected;
 	int				distanced;
 	struct s_token	*next;

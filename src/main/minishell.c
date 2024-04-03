@@ -49,9 +49,9 @@ int	main(int argc, char **argv, char **env)
 	while (1)
 	{
 		set_signals(0);
-		// if (isatty(fileno(stdin)))
-		// 	lineread = readline("smellyshell: ");
-		// else
+		if (isatty(fileno(stdin)))
+			lineread = readline("smellyshell: ");
+		else
 		{
 			char	*line;
 			line = get_next_line(fileno(stdin));

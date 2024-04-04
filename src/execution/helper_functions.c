@@ -18,7 +18,7 @@ void	free_single_node(t_bigshell *data, t_env **node)
 	free((*node)->var);
 	free((*node)->value);
 	free(*node);
-	update_exit_stat(data, 0);
+	update_exit_stat(data, 0); //why is this here?
 }
 
 //frees env & sorted env linked list (used in export & unset)

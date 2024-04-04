@@ -94,18 +94,7 @@ int	main(int argc, char **argv, char **env)
 		{
 				complex_exec(&data);
 		}
-		/* else if (data.num_cmd > 1)
-		{
-			while (i < data.num_cmd)
-			{
-				if ((data.id = fork()) == -1)
-					CRITICAL_FAILURE(&data, "main: fork failed 2");
-				if (data.id == 0)
-					complex_exec(data, i);
-				i++;
-			}
-		} */
-		////printf("am I here?\n");
+		////printf("am I here?\n"); //debugging printf
 		store_restore_fds(&data, 2);
 	}
 }

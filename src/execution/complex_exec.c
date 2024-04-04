@@ -17,27 +17,6 @@
 #include <sys/wait.h>
 #include <unistd.h>
 
-/* void	pipe_fork(t_bigshell *data)
-{
-	if (pipe(data->pipe_fd) == -1)
-		CRITICAL_FAILURE(data, "complex exec: pipe failed");
-	data->id = fork();
-	if (data->id == -1)
-		CRITICAL_FAILURE(data, "complex exec: fork failed");
-	if (data->id == 0) //child process
-	{
-		//do shit
-	}
-	wait(NULL);
-} */
-
-/* void	pipe_maker(t_bigshell *data) vad idea no int **
-{
-
-} */
-
-//void	execute_2_cmds()
-
 //what happens if there are multiple cmds but no pipes??? check main will it still act as if its being piped???
 // I need to check for first cmd and create pipe
 //then ill check for middle if encountered I overwrite stdout, otherwise I dont
@@ -112,7 +91,7 @@ void	first_executor(t_bigshell *data, t_command *cmd, int out_fd)
 		printf("find&split failed\n"); //handle correctly
 	correct_path = check_if_correct_path(paths, data, cmd->cmd->str);
 	if (!correct_path)
-		printf("minishell: command %s not found\n", cmd->cmd->str);
+		printf("minishell: command %s not found\n", cmd->cmd->str); //exit code is 127 I think
 	execve(correct_path, cmd->args_exec, data->mod_env);
 	//printf("execve failed\n");
 	free(correct_path);
@@ -176,7 +155,7 @@ void	complex_exec(t_bigshell *data)
 	current_cmd = data->commands;
 	while (current_cmd->next)
 	{
-		////printf("complex:: current command: %s current arg:%s\n", current_cmd->cmd->str, current_cmd->args->str);
+		////printf("complex:: current command: %s current arg:%s\n", current_cmd->cmd->str, current_cmd->args->str); //debugging printf
 		if (data->commands->input || data->commands->output)
 		{
 			if (redir(data->commands, data) != 0)
@@ -188,7 +167,7 @@ void	complex_exec(t_bigshell *data)
 		if (current_cmd == data->commands)
 		{
 			//im at first command
-			////printf("complex: checkpoint first command: %s\n", current_cmd->cmd->str);
+			////printf("complex: checkpoint first command: %s\n", current_cmd->cmd->str); //debugging printf
 
 			if (pipe(data->pipe_fd) == -1)
 				CRITICAL_FAILURE(data, "complex exec: pipe failed in first command");
@@ -234,44 +213,9 @@ void	complex_exec(t_bigshell *data)
 		{
 			last_executor(data, current_cmd, data->pipe->read);
 		}
-		////printf("i happened \n");
+		////printf("i happened \n"); //debugging printf
 		if (close(data->pipe->read) == -1)
 			CRITICAL_FAILURE(data, "complex exec: close(0) failed in parent process");
 	}
 	wait_for_children(data);
 }
-
-/*void	complex_exec(t_bigshell *data)
-{
-	// if data->cmd_num == 2 
-	// else
-	//cmds are store in linked list maybe iterate throught them here as long as a cmd->next exists
-	if (cmd_pos == 0) //first cmd //maybe check here if data->cmd == head
-	{
-		//open pipe & write into it
-		if (pipe(data->pipe_fd) == -1)
-			CRITICAL_FAILURE(data, "pipe failed");
-		if ((data->id = fork()) == -1)
-			CRITICAL_FAILURE(data, "complex exec: fork failed in 1st cmd");
-		if (data->id == 0)
-			//execute cmd
-		close(data->pipe_fd[1]);
-	}
-	if (cmd_pos > 0 && cmd_pos < data->num_cmd) //middle cmd //maybe if data->cmd->next exists
-	{
-		//read from previos pipe and open new one
-		if ((data->id = fork()) == -1)
-			CRITICAL_FAILURE(data, "complex exec: fork failed in middle cmd");
-		if (data->id == 0)
-			//execute cmd
-		close(data->pipe_fd[0]);
-		if (pipe(data->pipe_fd) == -1)
-			CRITICAL_FAILURE(data, "pipe failed");
-	}
-	else //maybe if (!cmd->next && cmd != head)
-	{
-		//read from pipe
-	}
-}*/
-//only 1 pipe for i == 0 or i == num_cmd
-//middle cmd needs 2

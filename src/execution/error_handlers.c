@@ -13,7 +13,7 @@
 #include "../../minishell.h"
 #include <stdlib.h>
 
-void	update_exit_stat(t_bigshell *data, int exit_code) //gotta free code
+void	update_exit_stat(t_bigshell *data, int exit_code) //gotta free code (LEAK)
 {
 	t_env	*tmp;
 	char	*code;
@@ -43,8 +43,6 @@ void	update_exit_stat(t_bigshell *data, int exit_code) //gotta free code
 void	redir_error(t_bigshell *data, int exit_code, char *str)
 {
 	printf("%s\n", str);
-	if (!str)
-		str = "tester stuff";
 	update_exit_stat(data, exit_code);
 }
 
@@ -67,5 +65,5 @@ void	CRITICAL_FAILURE(t_bigshell *data, char *str)
 	if (str)
 		printf("%s\n", str);
 	free_struct(data);
-	exit(1);
+	exit(1); //which exit code should I exit the minishell with?
 }

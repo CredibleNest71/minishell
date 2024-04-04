@@ -84,8 +84,8 @@ char	*check_for_quotes(t_bigshell *data, char *eof)
 		//	printf("%zu\n %zu\n", j, i);
 		}
 		delimiter[j] = '\0'; //am I overwriting shit?
-		printf("%zu\n", j);
-		printf("%s\n", delimiter);
+		printf("%zu\n", j); //what do u do
+		printf("%s\n", delimiter); //what do u do
 		return (delimiter);
 	}
 	delimiter = eof;

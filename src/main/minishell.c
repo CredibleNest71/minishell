@@ -41,7 +41,6 @@ int	main(int argc, char **argv, char **env)
 	if (argc && argv) 
 		argv[argc - 1] = argv[argc - 1];
 	bzero(&data, sizeof(data));
- 	data.og_env = env;
 	store_env(&data, env);
 	char *lineread;
 	lineread = NULL;
@@ -59,7 +58,10 @@ int	main(int argc, char **argv, char **env)
 			free(line);
 		}
 		if (!lineread)
+		{
+			free_struct(&data);
 			return (write(1, "\n", 1), find(&data));
+		}
 		add_history(lineread);
 		data.commands = parse(lineread, &data);
 		if (!data.commands)

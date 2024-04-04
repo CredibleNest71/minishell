@@ -108,7 +108,7 @@ t_command	*parse(char *input, t_bigshell *data)
 		return (NULL);
 	tokens = tokenmaker(input);
 	tokens = expander(tokens, data);
-	if (!tokens)
+	if (!tokens | !(*tokens))
 		return (NULL);
 	if ((*tokens)->type == (e_type) HEREDOC)
 		data->heredoc = *tokens;

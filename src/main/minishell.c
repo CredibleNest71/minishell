@@ -6,7 +6,7 @@
 /*   By: mresch <mresch@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 11:33:48 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/04/02 16:50:17 by mresch           ###   ########.fr       */
+/*   Updated: 2024/04/04 13:56:25 by mresch           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ int	main(int argc, char **argv, char **env)
 			lineread = ft_strtrim(lineread, "\n");
 		}
 		if (!lineread)
-			return (write(1, "\n", 1), 130);
+			return (write(1, "exit\n", 6), 130);
 		add_history(lineread);
 		data.commands = parse(lineread, &data);
 		if (!data.commands)

@@ -52,6 +52,7 @@ t_token **expander(t_token **list, t_bigshell *data);
 //expander
 char 		*expand(char *str, t_bigshell *data);
 char	    *prexpand(char *str, t_bigshell *data);
+char	    *get_val(char *var, t_bigshell *data);
 
 
 //parse

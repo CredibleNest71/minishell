@@ -85,7 +85,7 @@ int	fill_token(t_token *token, char *str, int *i)
 		check = quotes(token, str, i, '\'');
 	else
 		check = no_quotes(token, str, i);
-	printf("token content: %s\n", token->str);
+	//printf("token content: %s\n", token->str);
 	if (check < 0)
 		return (-1);
 	if (!check)

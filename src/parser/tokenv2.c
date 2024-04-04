@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenv2.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mresch <mresch@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 12:47:26 by mresch            #+#    #+#             */
-/*   Updated: 2024/03/07 12:20:40 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/04/04 16:03:00 by mresch           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -216,6 +216,8 @@ void	delete_token_list(t_token *list)
 	t_token *next;
 
 	temp = list;
+	if (!list)
+		return ;
 	while (temp)
 	{
 		//printf("\nfreeing: %s", temp->str);
@@ -228,6 +230,26 @@ void	delete_token_list(t_token *list)
 	}
 }
 
+void	delete_char_array(char **arr)
+{
+	int	i;
+	int	count;
+
+	i = 0;
+	if (!arr)
+		return ;
+	while (arr[i])
+		i++;
+	count = i;
+	i = 0;
+	while (i < count)
+	{
+		free(arr[i]);
+		i++;
+	}
+	free(arr);
+}
+
 void	delete_command_list(t_command *cmd)
 {
 	t_command	*prev;
@@ -238,6 +260,7 @@ void	delete_command_list(t_command *cmd)
 		delete_token_list(cmd->output);
 		delete_token_list(cmd->cmd);
 		delete_token_list(cmd->args);
+		delete_char_array(cmd->args_exec);
 		prev = cmd;
 		cmd = cmd->next;
 		free(prev);

@@ -115,19 +115,19 @@ void	ft_unset(t_bigshell *data)
 			if ((ft_strncmp(data->commands->args->str, current->str, len) == 0) ||
 			(ft_strncmp(data->commands->args->str, current_env->str, len) == 0))
 			{
-				//printf("current str: %s\n", current->str);
+				printf("current str: %s\n", current->str);
 				if (ft_strncmp(data->commands->args->str, current->str, len) == 0)
 				{
 					unset_var(data, current, prev); 
 					prev = current->next;
 					free(current);
 					current = prev;
-					//printf("current is: %s\n", current->str);
+					printf("current is: %s\n", current->str);
 				}
-				//printf("current env str: %s\n", current_env->next->str);
+				printf("current env str: %s\n", current_env->next->str);
 				if (ft_strncmp(data->commands->args->str, current_env->str, len) == 0)
 				{
-					//printf("b\n");
+					printf("b\n");
 					unset_var(data, current_env, prev_env);
 					prev_env = current_env;
 					current_env  = current_env->next;

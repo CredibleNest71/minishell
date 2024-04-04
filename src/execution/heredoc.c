@@ -68,7 +68,7 @@ char	*delimiter_finder(t_bigshell *data)
 char	*check_for_quotes(t_bigshell *data, char *eof)
 {
 	int		i;
-	int		j;
+	size_t		j;
 	char	*delimiter;
 	
 	i = 0;
@@ -84,8 +84,8 @@ char	*check_for_quotes(t_bigshell *data, char *eof)
 		//	printf("%zu\n %zu\n", j, i);
 		}
 		delimiter[j] = '\0'; //am I overwriting shit?
-		//printf("%zu\n", j);
-		//printf("%s\n", delimiter);
+		printf("%zu\n", j); //what do u do
+		printf("%s\n", delimiter); //what do u do
 		return (delimiter);
 	}
 	delimiter = eof;
@@ -119,14 +119,14 @@ void	ft_heredoc(t_bigshell *data)
 	while (1)
 	{
 		lineread = readline("> ");
-		//printf("%s\n", eof_mod);
+		printf("%s\n", eof_mod);
 		if (!(ft_strncmp(eof_mod, lineread, ft_strlen(eof_mod))) || lineread == NULL)
 		 	break ;
 		if (eof[i] == '"' || eof[i] == 27)
 			lineread = expand(lineread, data);
 		write(heredoc_fd, lineread, ft_strlen(lineread));
 		write(heredoc_fd, "\n", 1); //possibly problematic
-		//printf("%s\n", lineread);
+		printf("%s\n", lineread);
 	}
 	//pass tmpfile.txt to execution
 	//after execution check for tmpfile and delete it

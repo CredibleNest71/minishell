@@ -218,7 +218,7 @@ void	delete_token_list(t_token *list)
 	temp = list;
 	while (temp)
 	{
-		//printf("\nfreeing: %s", temp->str);
+		printf("\nfreeing: %s", temp->str);
 		free(temp->str);
 		if (temp->str)
 			free(temp->str);

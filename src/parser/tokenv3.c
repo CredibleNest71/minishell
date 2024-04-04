@@ -14,7 +14,7 @@ int	quotes(t_token *token, char *str, int *i, char quote)
 	if (!content)
 		return (0);
 	token->str = content;
-	printf("::quotes::content: %s\n", content);
+	//printf("::quotes::content: %s\n", content);
 	*i += found - &str[*i] + 1;
 	if (str[*i] && !is_char(str[*i], "\n\t\v \r\f"))
 		token->connected = 1;

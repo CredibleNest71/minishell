@@ -21,13 +21,13 @@ void	store_restore_fds(t_bigshell *data, int mode)
 		data->std_in = dup(0);
 		if (data->std_in == -1)
 		{
-			printf("que\n");
+			//printf("que\n"); //debugging printf
 			CRITICAL_FAILURE(data, "dup_stdin dup fail");
 		}
 		data->std_out = dup(1);
 		if (data->std_out == -1)
 		{
-			printf("mierda\n");
+			//printf("mierda\n"); //debugging printf
 			CRITICAL_FAILURE(data, "dup_stdout dup fail");
 		}
 	}

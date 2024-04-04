@@ -38,6 +38,8 @@ void	simple_exec(t_bigshell *data)
 	char	**paths;
 	char	*correct_path;
 	
+	paths = NULL;
+	correct_path = NULL;
 	convert_env(data); //check this function env struct has changed
 	paths = find_and_split_path(data->mod_env);
 	if (!paths)
@@ -46,8 +48,8 @@ void	simple_exec(t_bigshell *data)
 	if (!correct_path)
 		printf("minishell: command %s not found\n", data->commands->cmd->str);
 	execve(correct_path, data->commands->args_exec, data->mod_env);
-	//printf("minishell: command %s not found\n", data->commands->cmd->str);
 	free(correct_path);
+	exit (126);
 	//free paths & args_exec
 	//printf("execve failed\n");
 	//protect execve
@@ -80,18 +82,18 @@ void	simple_exec(t_bigshell *data)
 
 // // 	//input->str = "motest";
 // // 	//input->type = (enum type) PATH;
-// // 	//printf("what\n");
+// // 	printf("what\n");
 // // 	//output->str = "example";
-// // 	//printf("what\n");
+// // 	printf("what\n");
 // // 	//output->type = (enum type) PATH;
-// // 	//printf("what\n");
+// // 	printf("what\n");
 // // 	cmd->str = "unset";
 // // 	//cmd2->str = "unset";
-// // 	//printf("what\n");
+// // 	printf("what\n");
 // // 	cmd->type = (enum type) CMD;
-// // 	//printf("what\n");
+// // 	printf("what\n");
 // // 	arg->str = "Amy=var";
-// // 	//printf("what\n");
+// // 	printf("what\n");
 // // 	arg2->str = "Zmyvar=0";
 // // 	//arg3->str = "Zmyvar=0";
 // // 	arg->next = arg2;
@@ -103,18 +105,18 @@ void	simple_exec(t_bigshell *data)
 // // 	//command2->args = arg3;
 // // 	//command->input = input;
 // // 	//command->output = output;n
-// // 	//printf("lol\n");
+// // 	printf("lol\n");
 // // 	command->cmd = cmd;
 // // 	//command2->cmd = cmd2;
-// // 	//printf("lol\n");
+// // 	printf("lol\n");
 // // 	//command->args[0] = arg;
 // // 	//command->args[1] = arg2;
 // // 	//command->args = NULL;
-// // 	//printf("lol\n");
+// // 	printf("lol\n");
 // // 	command->arg_num = 2;
 // // 	//command->next = command2;
 // // 	data.commands = command;
-// // 	//printf("lol\n");
+// // 	printf("lol\n");
 	
 // // 	data.reference_i = 0;
 // // 	data.s_env = NULL;
@@ -123,13 +125,13 @@ void	simple_exec(t_bigshell *data)
 //      //store_env(&data, env);
 // // 	ft_export(&data);
 // // 	//data.commands->args = arg2;
-// // 	//printf("%s\n", data.commands->args->str);
+// // 	printf("%s\n", data.commands->args->str);
 // // 	//print_env(data.s_env);
 // // 	//free_env(&data);
 // // 	//ft_unset(&data);
 // // 	//print_env(data.env);
 // // 	//make_copy(&data);
-// // 	//printf("%d\n", data.reference_i);
+// // 	printf("%d\n", data.reference_i);
 
 // //     // Print the linked list
 // //     //print_env_list(&data);

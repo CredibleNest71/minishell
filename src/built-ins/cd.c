@@ -195,7 +195,7 @@ void	ft_cd(t_bigshell *data)
 			}
 		}
 		mod_cwd = delete_tail(cwd);
-		//printf("mod_cwd: %s\n", mod_cwd);
+		//printf("mod_cwd: %s\n", mod_cwd); //debugging printf?
 		overwrite_pwd(data, mod_cwd);
 		chdir (mod_cwd);
 		free(cwd);

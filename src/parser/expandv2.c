@@ -90,10 +90,13 @@ int	expand_no_quotes(t_token **list, t_token *prev, t_token *curr, t_bigshell *d
 {
 	char	*expanded;
 	t_token	**addlist;
-	
+
 	expanded = expand(curr->str, data);
 	if (!expanded || !ft_strlen(expanded))
-		return (remove_token(curr), 1);
+	{
+		remove_token(curr);
+		return (4);
+	}
 	addlist = split_to_token(expanded, curr->connected);
 	if (curr->type >= 3 && curr->type <= 6 && ft_token_count(addlist) > 1)
 	{
@@ -150,6 +153,9 @@ int	tilde(t_token *curr, t_bigshell *data)
 
 int    launch_expansion(t_token **list, t_token *prev, t_token *curr, t_bigshell *data)
 {
+	int	ret;
+
+	ret = 1;
 	if (strchr(curr->str, '~'))
 		tilde(curr, data);
 	if (!strchr(curr->str, '$'))
@@ -164,10 +170,10 @@ int    launch_expansion(t_token **list, t_token *prev, t_token *curr, t_bigshell
 		curr->str = expand(curr->str, data);
 	}
 	else
-		return (expand_no_quotes(list, prev, curr, data));
+		ret = expand_no_quotes(list, prev, curr, data);
 	//for (t_token *temp = *list; temp; temp = temp->next)
 	//	printf("launch:: %s\n", temp->str);
-	return (1);
+	return (ret);
 }
 
 static	void mark_join(t_token **list)
@@ -239,7 +245,8 @@ t_token **expander(t_token **list, t_bigshell *data)
 			check = launch_expansion(list, prev, curr, data);
 		else
 			curr->str = remove_quotes(curr->str);
-		prev = curr;
+		if (check != 4)
+			prev = curr;
 		curr = next;
     }
 	if (!check)

@@ -70,7 +70,7 @@ int	check_end_on_pipe(char *s)
 	return (0);
 }
 
-int	check_syntax(char *str)
+int	check_syntax(t_bigshell *data, char *str)
 {
 	int		i;
 	int		check;
@@ -87,6 +87,9 @@ int	check_syntax(char *str)
 			i++;
 	}
 	if (!check)
-		(write(2, "SYNTAX ERROR\n", 14));
+	{
+		write(2, "SYNTAX ERROR\n", 14);
+		update_exit_stat(data, 2);
+	}
 	return (check);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mresch <mresch@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 11:33:48 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/03/11 17:49:48 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/04/03 16:44:45 by mresch           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,21 @@
 #include "sig.h"
 #include <stdio.h>
 #include <unistd.h>
+#include <string.h>
+
+int	find(t_bigshell *data)
+{
+	t_env	*tmp;
+
+	tmp = data->env;
+	while (tmp)
+	{
+		if (strcmp(tmp->var, "?") == 0)
+			return (ft_atoi(tmp->value));
+		tmp = tmp->next;
+	}
+	return (0);
+}
 
 t_sig	g_sig;
 
@@ -33,14 +48,23 @@ int	main(int argc, char **argv, char **env)
 	pipe_init(&data);
 	while (1)
 	{
-		//set_signals(0);
-		lineread = readline("lovelyshell: ");
+		set_signals(0);
+		if (isatty(fileno(stdin)))
+			lineread = readline("smellyshell: ");
+		else
+		{
+			char	*line;
+			line = get_next_line(fileno(stdin));
+			lineread = ft_strtrim(line, "\n");
+			free(line);
+		}
 		if (!lineread)
 			return (write(1, "exit\n", 1), 130);
 		add_history(lineread);
 		data.commands = parse(lineread, &data);
 		if (!data.commands)
 			continue ;
+		//print_cmds(data.commands, &data);
 		store_restore_fds(&data, 1);
 		if (heredoc_finder(&data) == 0)
 			ft_heredoc(&data);
@@ -70,18 +94,7 @@ int	main(int argc, char **argv, char **env)
 		{
 				complex_exec(&data);
 		}
-		/* else if (data.num_cmd > 1)
-		{
-			while (i < data.num_cmd)
-			{
-				if ((data.id = fork()) == -1)
-					CRITICAL_FAILURE(&data, "main: fork failed 2");
-				if (data.id == 0)
-					complex_exec(data, i);
-				i++;
-			}
-		} */
-		//printf("am I here?\n");
+		////printf("am I here?\n"); //debugging printf
 		store_restore_fds(&data, 2);
 	}
 }

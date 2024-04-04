@@ -39,8 +39,6 @@ char	*find_var_name(char *str)
 	if (!str[i])
 		return (NULL);
 	i++;
-	if (!ft_isalnum(str[i]) && !is_char(str[i], "_"))
-		return (NULL);
 	while (str[i + j] && !is_char(str[i + j], "\n\t\v \r\f$\"\'") && str[i + j])
 		j++;
 	ret = ft_strndup(&str[i], j);
@@ -52,7 +50,7 @@ char	*get_val(char *var, t_bigshell *data)
 	t_env	*curr;
 
 	if (!data || !var)
-		return (printf("EYYYY WHERES MY VAL"), NULL);
+		return (NULL); //printf("EYYYY WHERES MY VAL"), NULL);
 	curr = data->env;
 	while (curr)
 	{

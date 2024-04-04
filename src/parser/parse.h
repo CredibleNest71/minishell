@@ -38,7 +38,6 @@ void	    delete_command_list(t_command *cmd);
 int			findarg(char *str);
 void	    replace_or_append(t_token **list, t_token *token);
 
-
 //tokenv3
 void	token_list_add(t_token **tokenlist, t_token *token);
 t_token	**tokenmaker(char *str);
@@ -60,8 +59,6 @@ t_command	*parse(char *input, t_bigshell *data);
 void		print_cmds(t_command *cmd, t_bigshell *data);
 
 //SYNTAX
-int check_syntax(char *str);
-
-
+int	check_syntax(t_bigshell *data, char *str);
 
 #endif

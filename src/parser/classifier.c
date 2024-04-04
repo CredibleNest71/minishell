@@ -21,7 +21,7 @@ void	clean_heredoc(t_token *token)
 
 	i = 0;
 	j = 0;
-	//printf("\n:clean_heredoc: \"%s\"", token->str);
+	printf("\n:clean_heredoc: \"%s\"", token->str);
 	while (is_char(token->str[i], "\n\t\v \r\f<"))
 		i++;
 	// while (!is_char(token->str[i], "\n\t\v \r\f"))

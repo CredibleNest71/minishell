@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   error_handlers.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mresch <mresch@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 11:41:58 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/02/09 10:19:24 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/04/04 15:50:08 by mresch           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 #include <stdlib.h>
 
-void	update_exit_stat(t_bigshell *data, int exit_code)
+void	update_exit_stat(t_bigshell *data, int exit_code) //gotta free code (LEAK)
 {
 	t_env	*tmp;
 	char	*code;
@@ -24,7 +24,7 @@ void	update_exit_stat(t_bigshell *data, int exit_code)
 		CRITICAL_FAILURE(data, "redir error: itoa failed");
 	while (tmp)
 	{
-		if (ft_strncmp(tmp->var, "?", ft_strlen(tmp->var)) == 0)
+		if (!ft_strncmp(tmp->var, "?", ft_strlen(tmp->var)))
 		{
 			if (tmp->value)
 			{
@@ -65,5 +65,5 @@ void	CRITICAL_FAILURE(t_bigshell *data, char *str)
 	if (str)
 		printf("%s\n", str);
 	free_struct(data);
-	exit(1);
+	exit(1); //which exit code should I exit the minishell with?
 }

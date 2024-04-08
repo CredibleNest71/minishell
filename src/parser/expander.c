@@ -74,7 +74,7 @@ char *expand(char *str, t_bigshell *data)
 	while (1)
 	{
 		if (!strncmp(str, "$", 2))
-			return (NULL);
+			return (str);
 		here = ft_strchr(str, '$');
 		if (here)
 		{

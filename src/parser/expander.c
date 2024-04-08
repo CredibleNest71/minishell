@@ -50,7 +50,7 @@ char	*get_val(char *var, t_bigshell *data)
 	t_env	*curr;
 
 	if (!data || !var)
-		return (printf("EYYYY WHERES MY VAL"), NULL);
+		return (NULL); //printf("EYYYY WHERES MY VAL"), NULL);
 	curr = data->env;
 	while (curr)
 	{

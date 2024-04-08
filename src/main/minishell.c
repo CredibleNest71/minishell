@@ -6,7 +6,7 @@
 /*   By: mresch <mresch@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 11:33:48 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/04/08 10:53:31 by mresch           ###   ########.fr       */
+/*   Updated: 2024/04/08 13:38:29 by mresch           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,6 @@ int	main(int argc, char **argv, char **env)
 {
 	t_bigshell			data;
 
-	//sig_init(&data, &handler);
 	if (argc && argv) 
 		argv[argc - 1] = argv[argc - 1];
 	bzero(&data, sizeof(data));
@@ -48,6 +47,8 @@ int	main(int argc, char **argv, char **env)
 	pipe_init(&data);
 	while (1)
 	{
+		if (data.commands)
+			delete_command_list(data.commands);
 		set_signals(0);
 		if (isatty(fileno(stdin)))
 			lineread = readline("smellyshell: ");
@@ -59,12 +60,12 @@ int	main(int argc, char **argv, char **env)
 			free(line);
 		}
 		if (!lineread)
-			return (write(1, "\n", 1), find(&data));
+			return (write(1, "exit\n", 1), find(&data));
 		add_history(lineread);
 		data.commands = parse(lineread, &data);
+		set_signals(1);
 		if (!data.commands)
 			continue ;
-		//print_cmds(data.commands, &data);
 		store_restore_fds(&data, 1);
 		if (heredoc_finder(&data) == 0)
 			ft_heredoc(&data);

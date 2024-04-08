@@ -6,7 +6,7 @@
 /*   By: mresch <mresch@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 12:47:26 by mresch            #+#    #+#             */
-/*   Updated: 2024/04/08 11:28:27 by mresch           ###   ########.fr       */
+/*   Updated: 2024/04/08 13:53:57 by mresch           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -216,10 +216,6 @@ void	delete_token(t_token *token)
 		return ;
 	if (token->str)
 		free(token->str);
-	// if (token->prev)
-	// 	free(token->prev);
-	// if (token->next)
-	// 	free(token->next);
 	free(token);
 	return ;
 }

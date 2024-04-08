@@ -32,7 +32,6 @@ void	assign(t_command *cmd, t_token *token)
 		token_list_add(&cmd->input, token_dup(token));
 	if (token->type == (e_type) OUT)
 		token_list_add(&cmd->output, token_dup(token));
-	delete_token(token);
 }
 
 void	add_to_command_list(t_command **list, t_command *cmd)
@@ -62,8 +61,8 @@ t_command	**create_commandlist(t_token **list)
 	pipe = 1;
 	temp = *list;
 	final = (t_command **) ft_calloc (sizeof(t_command *), 1);
-	cmd = (t_command *) ft_calloc (sizeof(t_command), 1);
-	if (!final || !cmd)
+	//cmd = (t_command *) ft_calloc (sizeof(t_command), 1);
+	if (!final)
 		return (NULL);
 	while (temp)
 	{
@@ -73,9 +72,9 @@ t_command	**create_commandlist(t_token **list)
 			add_to_command_list(final, cmd);
 			pipe = 0;
 		}
-		assign(cmd, temp);
 		if (temp->type == (e_type) PIPE)
 			pipe = 1;
+		assign(cmd, temp);
 		temp = temp->next;
 	}
 	return (final);

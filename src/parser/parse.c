@@ -101,6 +101,7 @@ t_command	*parse(char *input, t_bigshell *data)
 {
 	t_token		**tokens;
 	t_command	**cmds;
+	t_command	*ret;
 
 	if (!input)
 		return (NULL);
@@ -115,5 +116,9 @@ t_command	*parse(char *input, t_bigshell *data)
 	cmds = commands_finalized(tokens);
 	set_counts(*cmds, data);
 	set_all_char_arrays(*cmds);
-	return (*cmds);
+	delete_token_list(*tokens);
+	free(tokens);
+	ret = *cmds;
+	free(cmds);
+	return (ret);
 }

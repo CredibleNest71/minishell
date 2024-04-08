@@ -8,6 +8,11 @@
 #include <sys/ioctl.h>
 #include <asm/termbits.h>
 
+void	reset_sig()
+{
+	g_sig.sigint = 0;
+}
+
 static void	redo_rl()
 {
 	write(1, "\n", 1);
@@ -33,6 +38,8 @@ static void    newline_to_readline(int sig)
 
 void	set_signals(int mode)
 {
+	g_sig.sigint = 0;
+
 	if (!mode)
 	{
 		signal(SIGINT, &redo_rl);

@@ -3,14 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mresch <mresch@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 17:34:54 by ischmutz          #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2024/04/08 12:11:41 by ischmutz         ###   ########.fr       */
-=======
-/*   Updated: 2024/04/08 13:59:56 by mresch           ###   ########.fr       */
->>>>>>> main
+/*   Updated: 2024/04/08 14:32:52 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,6 +118,9 @@ typedef struct s_signal
 	t_bigshell *data;
 }	t_sig;
 
+volatile extern t_sig    g_sig;
+
+void	restore_fork(t_bigshell *data);
 void	store_restore_fds(t_bigshell *data, int mode);
 int		check_file(t_bigshell *data, const char *file, int mode);
 int		redir(t_command *command, t_bigshell *data);

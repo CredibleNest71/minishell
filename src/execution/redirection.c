@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 17:59:11 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/04/08 14:02:45 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/04/08 14:24:46 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,12 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-void	store_4_fork(t_bigshell *data)
+void	restore_fork(t_bigshell *data)
 {
-	if(dup2(, int fd2))
+	if(dup2(data->pipe->read, 0) == -1)
+		CRITICAL_FAILURE(data, "restoring pipe fds: dup2 read fail");
+	if (dup2(data->pipe->write, 1) == -1)
+		CRITICAL_FAILURE(data, "restoring pipe fds: dup2 write fail");
 }
 
 //PUT CORRECT ERROR HANDLING HERE
@@ -44,8 +47,6 @@ void	store_restore_fds(t_bigshell *data, int mode)
 		if ((dup2(data->std_out, 1)) == -1) // || close(data->std_in) == -1 || close(data->std_out) == -1
 			CRITICAL_FAILURE(data, "dup_stdout dup2 fail");
 	}
-	else if (mode == 3)
-		restore_4_fork(data);
 }
 
 /* printf("minishell: %s: No such file or directory\n", file); //check later with mo about file beig void* && probably exit as well

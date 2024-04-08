@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 10:43:53 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/03/06 10:45:10 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/04/08 13:36:01 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,8 +83,11 @@ void	first_executor(t_bigshell *data, t_command *cmd, int out_fd)
 	//out_fd = 0;
 	paths = NULL;
 	correct_path = NULL;
-	if (dup2(out_fd, 1) == -1 || close(data->pipe->read) == -1) //|| close(data->pipe->write) == -1
-		CRITICAL_FAILURE(data, "complex exec: first executor: dup2 failed");
+	if (!data->redir)
+	{
+		if (dup2(out_fd, 1) == -1 || close(data->pipe->read) == -1) //|| close(data->pipe->write) == -1
+			CRITICAL_FAILURE(data, "complex exec: first executor: dup2 failed");
+	}
 	convert_env(data);
 	paths = find_and_split_path(data->mod_env);
 	if (!paths)
@@ -155,6 +158,8 @@ void	complex_exec(t_bigshell *data)
 	current_cmd = data->commands;
 	while (current_cmd->next)
 	{
+		if (data->redir)
+			store_restore_fds(data, 2);
 		////printf("complex:: current command: %s current arg:%s\n", current_cmd->cmd->str, current_cmd->args->str); //debugging printf
 		if (data->commands->input || data->commands->output)
 		{
@@ -163,6 +168,7 @@ void	complex_exec(t_bigshell *data)
 				store_restore_fds(data, 2);
 				continue ;
 			}
+			data->redir = 2;
 		}
 		if (current_cmd == data->commands)
 		{
@@ -182,6 +188,8 @@ void	complex_exec(t_bigshell *data)
 		}
 		else
 		{
+			if (data->redir)
+				store_restore_fds(data, 2);
 			if (pipe(data->pipe_fd2) == -1)
 				CRITICAL_FAILURE(data, "complex exec: pipe 2 failed in middle command");
 			data->pipe->write = data->pipe_fd2[1];

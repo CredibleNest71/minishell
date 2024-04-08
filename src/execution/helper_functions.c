@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 17:04:24 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/03/13 11:02:00 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/04/08 12:17:27 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,8 +113,6 @@ void	free_struct(t_bigshell *data)
 {
 	//free everything before exiting minishell;
 	//puts("Haha i was called");
-	free_env(data);
-	free_builtin_list(data);
 	if (data->commands)
 	{
 		delete_command_list(data->commands);
@@ -125,6 +123,8 @@ void	free_struct(t_bigshell *data)
 		}
 		free(data->commands); */
 	}
+	free_env(data);
+	free_builtin_list(data);
 	if (data->mod_env)
 		s_array_free(data->mod_env);
 	if (data->heredoc)

@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 17:34:54 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/03/14 14:45:54 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/04/08 12:11:41 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,7 @@ typedef struct	s_bigshell
 	int			std_out; //stored std_out
 	int			fd_in; //redirected in
 	int			fd_out; //redirected out
+	int			redir;
 //	char		*export_var; //tf is this
 //	char		**og_env; //do I use u?
 	char		**mod_env;

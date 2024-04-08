@@ -5,11 +5,8 @@
 #include "../../minishell.h"
 #include "../../libft/libft.h"
 #include "sig.h"
-
-int	check_sigs()
-{
-	return (g_sig.sigint + g_sig.sigquit * 10);
-}
+#include <sys/ioctl.h>
+#include <asm/termbits.h>
 
 static void	redo_rl()
 {
@@ -23,16 +20,16 @@ static void	set_global()
 {
 	g_sig.sigint = 1;
 }
-// static void    signal_processing3(int sig)
-// {
-//     if (sig == SIGINT)
-//     {
-//         ioctl(0, TIOCSTI, "\n");
-//         g_sigint = SIGINT;
-//         rl_replace_line("", 0);
-//         rl_on_new_line();
-//     }
-// }
+static void    newline_to_readline(int sig)
+{
+    if (sig == SIGINT)
+    {
+        ioctl(0, TIOCSTI, "\n");
+        g_sig.sigint = SIGINT;
+        rl_replace_line("", 0);
+        rl_on_new_line();
+    }
+}
 
 void	set_signals(int mode)
 {
@@ -48,7 +45,7 @@ void	set_signals(int mode)
 	}	
 	else if (mode == 1)
 	{
-		signal(SIGINT, &set_global);
+		signal(SIGINT, &newline_to_readline);
 		signal(SIGQUIT, SIG_IGN);
 	}
 }

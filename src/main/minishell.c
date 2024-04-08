@@ -6,7 +6,7 @@
 /*   By: mresch <mresch@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 11:33:48 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/04/08 13:38:29 by mresch           ###   ########.fr       */
+/*   Updated: 2024/04/08 14:00:45 by mresch           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,6 @@ int	main(int argc, char **argv, char **env)
 	if (argc && argv) 
 		argv[argc - 1] = argv[argc - 1];
 	bzero(&data, sizeof(data));
- 	data.og_env = env;
 	store_env(&data, env);
 	char *lineread;
 	lineread = NULL;
@@ -62,6 +61,7 @@ int	main(int argc, char **argv, char **env)
 		if (!lineread)
 			return (write(1, "exit\n", 1), find(&data));
 		add_history(lineread);
+		//printf("I work here\n");
 		data.commands = parse(lineread, &data);
 		set_signals(1);
 		if (!data.commands)

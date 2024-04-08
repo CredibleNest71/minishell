@@ -11,6 +11,8 @@
 /* ************************************************************************** */
 
 #include "../../minishell.h"
+#include "../parser/parse.h"
+#include <stdlib.h>
 
 //frees the node_to_delete in unset
 void	free_single_node(t_bigshell *data, t_env **node)
@@ -70,6 +72,17 @@ void	free_tokens(t_token *data)
 		free(data->dir);
 }
 
+//frees string arrays (like exec_args)
+void	s_array_free(char **s_array)
+{
+	int	i;
+
+	i = 0;
+	while (s_array[i])
+		free(s_array[i++]);
+	free(s_array);
+}
+
 void	free_commands(t_bigshell *data)
 {
 	if (data->commands->input)
@@ -92,8 +105,8 @@ void	free_commands(t_bigshell *data)
 		free_tokens(data->commands->args);
 		free(data->commands->args);
 	}
-	/* if (data->commands->nexus) //tf is nexus??
-	{} */
+	if (data->commands->args_exec)
+		s_array_free(data->commands->args_exec);
 }
 
 void	free_struct(t_bigshell *data)
@@ -104,11 +117,21 @@ void	free_struct(t_bigshell *data)
 	free_builtin_list(data);
 	if (data->commands)
 	{
-		while (data->commands)
+		delete_command_list(data->commands);
+		/* while (data->commands)
 		{
 			free_commands(data);
 			data->commands = data->commands->next;
 		}
-		free(data->commands);
+		free(data->commands); */
 	}
+	if (data->mod_env)
+		s_array_free(data->mod_env);
+	if (data->heredoc)
+	{
+		free_tokens(data->heredoc);
+		free(data->heredoc);
+	}
+	if (data->pipe)
+		free(data->pipe);
 }

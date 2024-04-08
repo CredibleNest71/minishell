@@ -25,7 +25,7 @@ void	pipe_init(t_bigshell *data)
 {
 	t_pipe	*pipe;
 
-	pipe = malloc (sizeof(t_pipe));
+	pipe = malloc(sizeof(t_pipe));
 	if (!pipe)
 		CRITICAL_FAILURE(data, "pipe_init: malloc fail");
 	data->pipe = pipe;

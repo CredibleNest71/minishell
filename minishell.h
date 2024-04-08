@@ -6,7 +6,7 @@
 /*   By: mresch <mresch@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 17:34:54 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/04/08 13:53:29 by mresch           ###   ########.fr       */
+/*   Updated: 2024/04/08 13:59:56 by mresch           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,14 +48,15 @@ typedef struct	s_token
 {
 	char 			*str;
 	int				type;
-	char			*dir;
-	char			*delimiter;
+	char			*dir; //FREED
+	//char			*delimiter;
 	int				connected;
 	int				distanced;
 	struct s_token	*next;
 	struct s_token	*prev;
 }	t_token;
 
+//cmd, args, input, output, args_exec: freed
 typedef struct s_command
 {
 	t_token				*cmd;		//command
@@ -68,6 +69,7 @@ typedef struct s_command
 	struct s_command	*next;
 }	 t_command;
 
+//env & s_env: freed
 typedef struct s_env
 {
 	char			*var; //previously str
@@ -81,6 +83,7 @@ typedef struct s_pipe
 	int		write;
 }	t_pipe;
 
+//mod_env, built_ins, pipe, heredoc, commands, env, s_env: freed
 typedef struct	s_bigshell
 {
 	int			num_cmd;
@@ -94,15 +97,15 @@ typedef struct	s_bigshell
 	int			std_out; //stored std_out
 	int			fd_in; //redirected in
 	int			fd_out; //redirected out
-	char		*export_var; //tf is this
-	char		**og_env; //do I use u?
+//	char		*export_var; //tf is this
+//	char		**og_env; //do I use u?
 	char		**mod_env;
-	char		**built_ins;
+	char		**built_ins; //FREED
 	t_pipe		*pipe;
-	t_token		*heredoc;	//token with delimiter and str; 
-	t_command	*commands;
-	t_env		*env;
-	t_env		*s_env;
+	t_token		*heredoc;	//token with delimiter and str;
+	t_command	*commands; //
+	t_env		*env; //FREED
+	t_env		*s_env; //FREED
 }	t_bigshell;
 
 

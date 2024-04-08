@@ -59,10 +59,11 @@ int	main(int argc, char **argv, char **env)
 		}
 		if (!lineread)
 		{
-			free_struct(&data);
+			//free_struct(&data);
 			return (write(1, "\n", 1), find(&data));
 		}
 		add_history(lineread);
+		//printf("I work here\n");
 		data.commands = parse(lineread, &data);
 		if (!data.commands)
 			continue ;

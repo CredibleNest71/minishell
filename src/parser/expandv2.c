@@ -125,7 +125,7 @@ char	*remove_quotes(char *str)
 	return (ret);
 }
 
-int	tilde(t_token *curr, t_bigshell *data)
+int	tilde(t_token *curr, t_bigshell *data) //check if ~ always gets expanded to home dir, if so change cd~
 {
 	char	*home;
 	char	*joined;

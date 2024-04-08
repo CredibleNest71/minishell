@@ -5,13 +5,15 @@
 #include "../../minishell.h"
 #include "../../libft/libft.h"
 #include "sig.h"
+#include <sys/ioctl.h>
+#include <asm/termbits.h>
 
-int	check_sigs()
+void	reset_sig()
 {
-	return (g_sig.sigint + g_sig.sigquit * 10);
+	g_sig.sigint = 0;
 }
 
-void	redo_rl()
+static void	redo_rl()
 {
 	write(1, "\n", 1);
 	rl_on_new_line();
@@ -19,13 +21,25 @@ void	redo_rl()
 	rl_redisplay();
 }
 
-void	set_global()
+static void	set_global()
 {
 	g_sig.sigint = 1;
+}
+static void    newline_to_readline(int sig)
+{
+    if (sig == SIGINT)
+    {
+        ioctl(0, TIOCSTI, "\n");
+        g_sig.sigint = SIGINT;
+        rl_replace_line("", 0);
+        rl_on_new_line();
+    }
 }
 
 void	set_signals(int mode)
 {
+	g_sig.sigint = 0;
+
 	if (!mode)
 	{
 		signal(SIGINT, &redo_rl);
@@ -35,5 +49,10 @@ void	set_signals(int mode)
 	{
 		signal(SIGINT, &set_global);
 		signal(SIGQUIT, SIG_DFL);
+	}	
+	else if (mode == 1)
+	{
+		signal(SIGINT, &newline_to_readline);
+		signal(SIGQUIT, SIG_IGN);
 	}
 }

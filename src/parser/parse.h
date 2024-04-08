@@ -33,6 +33,7 @@ t_command	**commandlistmaker(char *str);
 
 //tokenv2
 t_token	    *parse_tokens(char *str);
+void	    delete_token(t_token *token);
 void	    delete_token_list(t_token *list);
 void	    delete_command_list(t_command *cmd);
 int			findarg(char *str);

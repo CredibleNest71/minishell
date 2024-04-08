@@ -61,8 +61,8 @@ t_command	**create_commandlist(t_token **list)
 	pipe = 1;
 	temp = *list;
 	final = (t_command **) ft_calloc (sizeof(t_command *), 1);
-	cmd = (t_command *) ft_calloc (sizeof(t_command), 1);
-	if (!final || !cmd)
+	//cmd = (t_command *) ft_calloc (sizeof(t_command), 1);
+	if (!final)
 		return (NULL);
 	while (temp)
 	{
@@ -72,9 +72,9 @@ t_command	**create_commandlist(t_token **list)
 			add_to_command_list(final, cmd);
 			pipe = 0;
 		}
-		assign(cmd, temp);
 		if (temp->type == (e_type) PIPE)
 			pipe = 1;
+		assign(cmd, temp);
 		temp = temp->next;
 	}
 	return (final);

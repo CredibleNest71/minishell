@@ -3,10 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mresch <mresch@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 17:34:54 by ischmutz          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2024/04/08 12:11:41 by ischmutz         ###   ########.fr       */
+=======
+/*   Updated: 2024/04/08 13:59:56 by mresch           ###   ########.fr       */
+>>>>>>> main
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +50,7 @@ typedef enum type {
 
 typedef struct	s_token
 {
-	char 			*str; //FREED
-	//char			*delimiter;
+	char 			*str;
 	int				type;
 	char			*dir; //FREED
 	//char			*delimiter;

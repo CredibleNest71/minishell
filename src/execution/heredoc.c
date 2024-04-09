@@ -6,12 +6,13 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 14:55:27 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/04/09 15:21:37 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/04/09 16:28:56 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h" 
 #include "../parser/parse.h"
+#include "../main/sig.h"
 //#include <iterator>
 #include <stdio.h>
 #include <unistd.h>
@@ -124,6 +125,7 @@ void	ft_heredoc(t_bigshell *data)
 
 	i = 0;
 	lineread = NULL;
+	set_signals(2);
 	if (!data->commands->cmd)
 		eof = data->heredoc->str;
 	else
@@ -137,9 +139,11 @@ void	ft_heredoc(t_bigshell *data)
 		simple_error(data, 1);
 	while (1)
 	{
+		if (g_sig.sigint)
+			break ;
 		lineread = readline("> ");
 		//printf("%s\n", eof_mod);
-		if (!(ft_strncmp(eof, lineread, ft_strlen(eof) + 1)) || lineread == NULL)
+		if (!lineread || !(ft_strncmp(eof, lineread, ft_strlen(eof) + 1)))
 		 	break ;
 		if (eof[i] == '"' || eof[i] == 27)
 			lineread = expand(lineread, data);
@@ -149,7 +153,13 @@ void	ft_heredoc(t_bigshell *data)
 	}
 	//pass tmpfile.txt to execution
 	//after execution check for tmpfile and delete it
-	if (!data->commands)
-		return ; //heredoc no hace nada sin un cmd pero el tmpfile tiene que ser deleted
+	if (!lineread)
+	{
+		printf("minishell: warning: heredoc (wanted '%s')\n", eof);
+		close(heredoc_fd);
+		unlink("tmpfile.txt");
+	}
+	/* if (!data->commands) //struct is always present so this is never true
+		return ; */ //heredoc no hace nada sin un cmd pero el tmpfile tiene que ser deleted
 	//simple_exec(data);
 }

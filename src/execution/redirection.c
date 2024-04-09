@@ -6,12 +6,21 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 17:59:11 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/03/07 17:42:13 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/04/08 14:24:46 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 #include <stdlib.h>
+#include <unistd.h>
+
+void	restore_fork(t_bigshell *data)
+{
+	if(dup2(data->pipe->read, 0) == -1)
+		CRITICAL_FAILURE(data, "restoring pipe fds: dup2 read fail");
+	if (dup2(data->pipe->write, 1) == -1)
+		CRITICAL_FAILURE(data, "restoring pipe fds: dup2 write fail");
+}
 
 //PUT CORRECT ERROR HANDLING HERE
 void	store_restore_fds(t_bigshell *data, int mode)

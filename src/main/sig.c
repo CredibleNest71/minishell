@@ -8,7 +8,7 @@
 #include <sys/ioctl.h>
 #include <asm/termbits.h>
 
-t_sig g_sig;
+t_sig	g_sig;
 
 void	reset_sig()
 {

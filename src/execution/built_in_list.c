@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 12:10:32 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/03/12 15:42:33 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/04/09 10:42:38 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,7 +130,7 @@ int	builtin_check_exec(t_bigshell *data, char *cmd)
 	len = ft_strlen(cmd);
 	while (data->built_ins[i] != NULL)
 	{
-		if (ft_strncmp(cmd, data->built_ins[i], len) == 0)
+		if (ft_strncmp(cmd, data->built_ins[i], len + 1) == 0)
 		{
 			builtin_exec(data, i);
 			return(0);

@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 12:10:32 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/04/09 10:42:38 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/04/09 14:13:06 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,8 @@ int	builtin_allrounder(t_bigshell *data)
 	
 	if (data->commands->input || data->commands->output)
 		redir(data->commands, data);
+	/* if (heredoc_finder(data) == 0)
+		ft_heredoc(data); */
 	data->built_ins = (char **)malloc(sizeof(char *) * 8);
 	built_in_list(data);
 	result = builtin_check_exec(data, data->commands->cmd->str);

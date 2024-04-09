@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mresch <mresch@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 11:33:48 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/04/09 10:57:04 by mresch           ###   ########.fr       */
+/*   Updated: 2024/04/09 14:16:02 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ int	main(int argc, char **argv, char **env)
 		add_history(lineread);
 		//printf("I work here\n");
 		data.commands = parse(lineread, &data);
-		//print_cmds(data.commands, &data);
+		print_cmds(data.commands, &data);
 		set_signals(1);
 		if (!data.commands)
 			continue ;

@@ -1,4 +1,5 @@
 #include "../../minishell.h"
+#include <stdio.h>
 #include "parse.h"
 
 void	print_cmds(t_command *cmd, t_bigshell *data)
@@ -31,6 +32,8 @@ void	print_cmds(t_command *cmd, t_bigshell *data)
 			else
 				printf("\nOUT:			%s", curr->str);
 		}
+		if (data->heredoc)
+			printf("\n HEREDOC:		%s", data->heredoc->str);
 		for (int i = 0; i < temp_cmd->arg_num + 1; i++)
 			printf("\nchars: %s", temp_cmd->args_exec[i]);
 		printf("\n==========================================\n");
@@ -48,6 +51,8 @@ static int set_counts(t_command *cmd, t_bigshell *data)
 	temp = cmd;
 	while (temp)
 	{
+		if (temp->cmd)
+			j++;
 		i = 0;
 		arg = temp->args;
 		while (arg)
@@ -57,7 +62,6 @@ static int set_counts(t_command *cmd, t_bigshell *data)
 		}
 		temp->arg_num = i;
 		temp = temp->next;
-		j++;
 	}
 	if (data)
 		data->num_cmd = j;
@@ -73,7 +77,8 @@ void	set_char_array(t_command *final)
 	if (!final->args_exec)
 		return ;
 	i = 0;
-	final->args_exec[i++] = ft_strdup(final->cmd->str);
+	if (final && final->cmd)
+		final->args_exec[i++] = ft_strdup(final->cmd->str);
 	temparg = final->args;
 	while (temparg)
 	{
@@ -112,7 +117,7 @@ t_command	*parse(char *input, t_bigshell *data)
 	if (!tokens | !(*tokens))
 		return (NULL);
 	if ((*tokens)->type == (e_type) HEREDOC)
-		data->heredoc = *tokens;
+		data->heredoc = token_dup(*tokens);
 	cmds = commands_finalized(tokens);
 	set_counts(*cmds, data);
 	set_all_char_arrays(*cmds);

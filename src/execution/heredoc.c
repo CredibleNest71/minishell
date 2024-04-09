@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 14:55:27 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/04/09 16:28:56 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/04/09 16:38:48 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,7 +159,14 @@ void	ft_heredoc(t_bigshell *data)
 		close(heredoc_fd);
 		unlink("tmpfile.txt");
 	}
+	if (!data->commands->cmd)
+	{
+		close(heredoc_fd);
+		unlink("tmpfile.txt");
+		return ;
+	}
 	/* if (!data->commands) //struct is always present so this is never true
 		return ; */ //heredoc no hace nada sin un cmd pero el tmpfile tiene que ser deleted
-	//simple_exec(data);
+	else
+		data->heredoc_fd = heredoc_fd;
 }

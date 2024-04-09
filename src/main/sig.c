@@ -8,6 +8,8 @@
 #include <sys/ioctl.h>
 #include <asm/termbits.h>
 
+t_sig g_sig;
+
 void	reset_sig()
 {
 	g_sig.sigint = 0;

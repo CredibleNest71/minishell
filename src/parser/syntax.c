@@ -28,7 +28,7 @@ int	check_arrows(char *str, int *i, char c)
 		return (0);
 	while (is_char(str[*i], SPACE3))
 		*i += 1;
-	if (is_char(str[*i], "<>|"))
+	if (!str[*i] || is_char(str[*i], "<>|"))
 		return (0);
 	return (1);
 }

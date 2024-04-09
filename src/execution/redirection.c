@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 17:59:11 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/04/09 11:34:15 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/04/09 15:25:58 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,6 +133,8 @@ int	redir(t_command *command, t_bigshell *data)
 		{
 			while (in)
 			{
+				if (in->type == (enum type)HEREDOC)
+					return(EXIT_SUCCESS);
 				if (check_file(data, in->str, 0) != 0)
 					return (EXIT_FAILURE);
 				data->fd_in = open(in->str, O_RDONLY);

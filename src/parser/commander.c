@@ -32,6 +32,10 @@ void	assign(t_command *cmd, t_token *token)
 		token_list_add(&cmd->input, token_dup(token));
 	if (token->type == (e_type) OUT)
 		token_list_add(&cmd->output, token_dup(token));
+	if (token->type == (e_type) APP)
+		token_list_add(&cmd->output, token_dup(token));
+	if (token->type == (e_type) HEREDOC)
+		token_list_add(&cmd->input, token_dup(token));
 }
 
 void	add_to_command_list(t_command **list, t_command *cmd)

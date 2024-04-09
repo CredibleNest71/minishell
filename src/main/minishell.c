@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 11:33:48 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/04/08 14:04:13 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/04/09 10:43:38 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int	find(t_bigshell *data)
 	return (0);
 }
 
-t_sig	g_sig;
+//t_sig	g_sig;
 
 int	main(int argc, char **argv, char **env)
 {
@@ -59,10 +59,11 @@ int	main(int argc, char **argv, char **env)
 			free(line);
 		}
 		if (!lineread)
-			return (write(1, "exit\n", 1), find(&data));
+			return (write(1, "exit\n", 5), find(&data));
 		add_history(lineread);
 		//printf("I work here\n");
 		data.commands = parse(lineread, &data);
+		print_cmds(data.commands, &data);
 		set_signals(1);
 		if (!data.commands)
 			continue ;

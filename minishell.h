@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 17:34:54 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/04/08 14:32:52 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/04/09 10:37:04 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,7 +118,7 @@ typedef struct s_signal
 	t_bigshell *data;
 }	t_sig;
 
-volatile extern t_sig    g_sig;
+extern t_sig    g_sig;
 
 void	restore_fork(t_bigshell *data);
 void	store_restore_fds(t_bigshell *data, int mode);

@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 14:55:27 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/04/10 14:41:47 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/04/10 14:56:16 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ int	heredoc_finder(t_bigshell *data)
 
 //checks for expansion suppression
 //hex code of ' == 27
-/* char	*check_for_quotes(t_bigshell *data, char *eof)
+char	*check_for_quotes(t_bigshell *data, char *eof)
 {
 	int		i;
 	size_t		j;
@@ -85,13 +85,13 @@ int	heredoc_finder(t_bigshell *data)
 		//	printf("%zu\n %zu\n", j, i);
 		}
 		delimiter[j] = '\0'; //am I overwriting shit?
-		printf("%zu\n", j); //what do u do
-		printf("%s\n", delimiter); //what do u do
+		//printf("%zu\n", j); //what do u do
+		//printf("%s\n", delimiter); //what do u do
 		return (delimiter);
 	}
 	delimiter = eof;
 	return (delimiter);
-} */
+}
 
 //${SRC_DIR}${EXEC_DIR}heredoc.c
 //00644 = S_IRUSR | S_IWUSR
@@ -119,6 +119,7 @@ void	ft_heredoc(t_bigshell *data)
 {
 	char		*lineread;
 	char		*eof;
+	char		*mod_eof;
 	//char		*eof_mod;
 	int			heredoc_fd;
 	int			i;
@@ -135,6 +136,7 @@ void	ft_heredoc(t_bigshell *data)
 	{
 		lineread = NULL;
 		eof = input->str;
+		mod_eof = check_for_quotes(data, eof);
 		heredoc_fd = open("tmpfile.txt", O_CREAT | O_TRUNC | O_RDWR, 00644);
 		if (heredoc_fd == -1)
 			simple_error(data, 1);
@@ -144,7 +146,7 @@ void	ft_heredoc(t_bigshell *data)
 				break ;
 			lineread = readline("> ");
 			//printf("%s\n", eof_mod);
-			if (!lineread || !(ft_strncmp(eof, lineread, ft_strlen(eof) + 1)))
+			if (!lineread || !(ft_strncmp(mod_eof, lineread, ft_strlen(mod_eof) + 1)))
 				break ;
 			if (eof[i] != '"' || eof[i] == 27) //ask willem about heredoc expansion
 				lineread = expand(lineread, data);

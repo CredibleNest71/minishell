@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 17:59:11 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/04/10 10:40:28 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/04/10 15:04:32 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,7 +124,7 @@ int	redir(t_command *command, t_bigshell *data)
 	out = command->output;
 	if (in)
 	{
-		if (data->heredoc) //is this even necessary? if data->heredoc exists then theres no cmd to redirect it to
+		if (!data->commands->cmd) //is this even necessary? if data->heredoc exists then theres no cmd to redirect it to
 			return (EXIT_FAILURE);
 		else
 		{

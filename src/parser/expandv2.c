@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   expandv2.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mresch <mresch@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/04/10 14:48:48 by mresch            #+#    #+#             */
+/*   Updated: 2024/04/10 14:53:48 by mresch           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "parse.h"
 #include "../../minishell.h"
 #include "../../libft/libft.h"
@@ -16,10 +28,10 @@ t_token	*make_t(char *str)
 	return (token);
 }
 
-t_token **split_to_token(char *expanded, int join)
+t_token	**split_to_token(char *expanded, int join)
 {
-	t_token **ret;
-	t_token *new;
+	t_token	**ret;
+	t_token	*new;
 	char	**split;
 	int		i;
 
@@ -41,7 +53,8 @@ t_token **split_to_token(char *expanded, int join)
 	return (ret);
 }
 
-void	insert_tokenlist(t_token **list, t_token *prev, t_token *curr, t_token **addlist)
+void	insert_tokenlist(t_token **list, t_token *prev, \
+		t_token *curr, t_token **addlist)
 {
 	t_token	*next;
 	t_token	*last;
@@ -60,8 +73,6 @@ void	insert_tokenlist(t_token **list, t_token *prev, t_token *curr, t_token **ad
 	last->next = next;
 	if (next)
 		next->prev = last;
-	//for (t_token *temp = *list; temp; temp = temp->next)
-	//	printf("insert:: %s\n", temp->str);
 }
 
 void	remove_token(t_token *curr)
@@ -86,7 +97,8 @@ void	remove_token(t_token *curr)
 	free(curr);
 }
 
-int	expand_no_quotes(t_token **list, t_token *prev, t_token *curr, t_bigshell *data)
+int	expand_no_quotes(t_token **list, t_token *prev, \
+	t_token *curr, t_bigshell *data)
 {
 	char	*expanded;
 	t_token	**addlist;
@@ -106,8 +118,6 @@ int	expand_no_quotes(t_token **list, t_token *prev, t_token *curr, t_bigshell *d
 	(*addlist)->type = curr->type;
 	insert_tokenlist(list, prev, curr, addlist);
 	return (1);
-	//for (t_token *temp = *list; temp; temp = temp->next)
-	//	printf("expandnoquotes:: %s\n", temp->str);
 }
 
 char	*remove_quotes(char *str)
@@ -125,7 +135,7 @@ char	*remove_quotes(char *str)
 	return (ret);
 }
 
-int	tilde(t_token *curr, t_bigshell *data) //check if ~ always gets expanded to home dir, if so change cd~
+int	tilde(t_token *curr, t_bigshell *data)
 {
 	char	*home;
 	char	*joined;
@@ -134,7 +144,7 @@ int	tilde(t_token *curr, t_bigshell *data) //check if ~ always gets expanded to 
 		return (0);
 	home = ft_strdup(get_val("HOME", data));
 	if (!home)
-		return(write(2, "error getting value\n", 21));
+		return (write(2, "error getting value\n", 21));
 	if (!ft_strncmp(curr->str, "~", 2))
 	{
 		free(curr->str);
@@ -150,8 +160,8 @@ int	tilde(t_token *curr, t_bigshell *data) //check if ~ always gets expanded to 
 	return (0);
 }
 
-
-int    launch_expansion(t_token **list, t_token *prev, t_token *curr, t_bigshell *data)
+int	launch_expansion(t_token **list, t_token *prev, \
+	t_token *curr, t_bigshell *data)
 {
 	int	ret;
 
@@ -171,21 +181,18 @@ int    launch_expansion(t_token **list, t_token *prev, t_token *curr, t_bigshell
 	}
 	else
 		ret = expand_no_quotes(list, prev, curr, data);
-	//for (t_token *temp = *list; temp; temp = temp->next)
-	//	printf("launch:: %s\n", temp->str);
 	return (ret);
 }
 
-static	void mark_join(t_token **list)
+static	void	mark_join(t_token **list)
 {
-	t_token	*curr; 
+	t_token	*curr;
 
 	curr = *list;
 	while (curr)
 	{
 		if (curr->prev)
 		{
-			//printf("curr: %s\n prev: %s\n", curr->str, curr->prev->str);
 			if (curr->distanced)
 				curr->prev->connected = 0;
 		}
@@ -201,8 +208,6 @@ void	join(t_token **list)
 
 	curr = *list;
 	mark_join(list);
-	//for (t_token *temp = *list; temp; temp = temp->next)
-	//	printf("prejoin:: %s(con%d/dis%d)\n", temp->str, temp->connected, temp->distanced);
 	while (curr)
 	{
 		next = curr->next;
@@ -221,37 +226,33 @@ void	join(t_token **list)
 		}
 		curr = curr->next;
 	}
-	//for (t_token *temp = *list; temp; temp = temp->next)
-	//	printf("post:: %s(%d)\n", temp->str, temp->connected);
 }
 
-
-t_token **expander(t_token **list, t_bigshell *data)
+t_token	**expander(t_token **list, t_bigshell *data)
 {
-	t_token *curr;
-	t_token *prev;
-	t_token *next;
+	t_token	*curr;
+	t_token	*prev;
+	t_token	*next;
 	int		check;
 
 	curr = *list;
 	prev = NULL;
 	check = 1;
-	while(curr)
+	while (curr)
 	{
 		next = curr->next;
 		if (curr->type == (e_type) HEREDOC)
 			;
-		else if (ft_strchr(curr->str, '$') || ft_strchr(curr->str, '~') )
+		else if (ft_strchr(curr->str, '$') || ft_strchr(curr->str, '~'))
 			check = launch_expansion(list, prev, curr, data);
 		else
 			curr->str = remove_quotes(curr->str);
 		if (check != 4)
 			prev = curr;
 		curr = next;
-    }
+	}
 	if (!check)
 		return (NULL);
 	join(list);
 	return (list);
 }
- 

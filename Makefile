@@ -35,7 +35,6 @@ SRCS = ${SRC_DIR}${EXEC_DIR}complex_exec.c\
 			${SRC_DIR}${BUILT_INS}unset.c\
 \
 			${SRC_DIR}${PARSER_DIR}parse.c\
-			${SRC_DIR}${PARSER_DIR}classifier.c\
 			${SRC_DIR}${PARSER_DIR}expander.c\
 			${SRC_DIR}${PARSER_DIR}extras.c\
 			${SRC_DIR}${PARSER_DIR}tokenv2.c\

@@ -148,10 +148,10 @@ t_command	*parse(char *input, t_bigshell *data)
 	if (!check_syntax(data, input))
 		return (NULL);
 	tokens = tokenmaker(input);
+	heredocs_to_bigshell(tokens, data);
 	tokens = expander(tokens, data);
 	if (!tokens | !(*tokens))
 		return (NULL);
-	heredocs_to_bigshell(tokens, data);
 	cmds = commands_finalized(tokens);
 	set_counts(*cmds, data);
 	set_all_char_arrays(*cmds);

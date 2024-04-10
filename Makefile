@@ -25,6 +25,7 @@ SRCS = ${SRC_DIR}${EXEC_DIR}complex_exec.c\
 			${SRC_DIR}${EXEC_DIR}pathfinder.c\
 			${SRC_DIR}${EXEC_DIR}redirection.c\
 			${SRC_DIR}${EXEC_DIR}simple_execution.c\
+			${SRC_DIR}${EXEC_DIR}complex_redir.c\
 \
 			${SRC_DIR}${BUILT_INS}cd.c\
 			${SRC_DIR}${BUILT_INS}echo.c\

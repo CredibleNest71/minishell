@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 10:43:53 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/04/10 11:34:44 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/04/10 16:36:55 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -239,6 +239,7 @@ void	complex_exec(t_bigshell *data)
 	{
 		if (g_sig.sigint) //check for signal before executing any command. if yes, spit prompt again
 			CRITICAL_FAILURE(data, "complex exec: SIGINT received");
+		restore_output(data);
 		if (heredoc_finder(data) == 0)
 				ft_heredoc(data);
 		if ((current_cmd->pid = fork()) == -1)
@@ -246,8 +247,8 @@ void	complex_exec(t_bigshell *data)
 		if (current_cmd->pid == 0)
 			last_executor(data, current_cmd, data->pipe->read);
 		////printf("i happened \n"); //debugging printf
-		if (data->redir == 3)
-			restore_fork(data, 3);
+		/* if (data->redir == 3)
+			restore_fork(data, 3); */
 		if (close(data->pipe->read) == -1)
 			CRITICAL_FAILURE(data, "complex exec: close(0) failed in parent process");
 	}

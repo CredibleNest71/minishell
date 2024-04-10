@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 10:43:53 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/04/09 11:37:56 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/04/10 11:34:44 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ void	first_executor(t_bigshell *data, t_command *cmd, int out_fd)
 	//out_fd = 0;
 	paths = NULL;
 	correct_path = NULL;
-	if (data->commands->input || data->commands->output)
+	/* if (data->commands->output)
 	{
 		if (redir(data->commands, data) != 0)
 		{
@@ -91,12 +91,12 @@ void	first_executor(t_bigshell *data, t_command *cmd, int out_fd)
 				CRITICAL_FAILURE(data, "complex exec: redir failed in first command");
 		}
 		data->redir = 1;
-	}
-	else
-	{
+	} */
+	//else
+	//{
 		if (dup2(out_fd, 1) == -1 || close(data->pipe->read) == -1) //|| close(data->pipe->write) == -1
 			CRITICAL_FAILURE(data, "complex exec: first executor: dup2 failed");
-	}
+	//}
 	convert_env(data);
 	paths = find_and_split_path(data->mod_env);
 	if (!paths)
@@ -119,7 +119,7 @@ void	last_executor(t_bigshell *data, t_command *cmd, int in_fd)
 	//in_fd = 0;
 	paths = NULL;
 	correct_path = NULL;
-	if (data->commands->input || data->commands->output)
+	/* if (data->commands->input || data->commands->output)
 	{
 		if (redir(data->commands, data) != 0)
 		{
@@ -127,12 +127,12 @@ void	last_executor(t_bigshell *data, t_command *cmd, int in_fd)
 				CRITICAL_FAILURE(data, "complex exec: redir failed in first command");
 		}
 		data->redir = 3;
-	}
-	else 
-	{
+	} */
+	//else 
+	//{
 		if (dup2(in_fd, 0) == -1 ) //|| close(data->pipe->write) == -1 || close(data->pipe->read) == -1
 			CRITICAL_FAILURE(data, "complex exec: last executor: dup2 failed");
-	}
+	//}
 	convert_env(data);
 	paths = find_and_split_path(data->mod_env);
 	if (!paths)
@@ -154,7 +154,7 @@ void	middle_executor(t_bigshell *data, t_command *cmd, int out_fd, int in_fd)
 
 	paths = NULL;
 	correct_path = NULL;
-	if (data->commands->input || data->commands->output)
+	/* if (data->commands->input || data->commands->output)
 	{
 		if (redir(data->commands, data) != 0)
 		{
@@ -162,14 +162,14 @@ void	middle_executor(t_bigshell *data, t_command *cmd, int out_fd, int in_fd)
 				CRITICAL_FAILURE(data, "complex exec: redir failed in first command");
 		}
 		data->redir = 2;
-	}
-	else
-	{
+	} */
+	//else
+	//{
 		if (dup2(in_fd, 0) == -1)
 			CRITICAL_FAILURE(data, "complex exec: middle executor: dup2 failed (in_fd)");
 		if (dup2(out_fd, 1) == -1 || close(data->pipe->write) == -1 || close(data->pipe->read) == -1)
 			CRITICAL_FAILURE(data, "complex exec: middle executor: dup2 failed (out_fd)");
-	}
+	//}
 	convert_env(data);
 	paths = find_and_split_path(data->mod_env);
 	if (!paths)
@@ -216,7 +216,8 @@ void	complex_exec(t_bigshell *data)
 		}
 		else
 		{
-			
+			if (heredoc_finder(data) == 0)
+				ft_heredoc(data);
 			if (pipe(data->pipe_fd2) == -1)
 				CRITICAL_FAILURE(data, "complex exec: pipe 2 failed in middle command");
 			data->pipe->write = data->pipe_fd2[1];
@@ -238,6 +239,8 @@ void	complex_exec(t_bigshell *data)
 	{
 		if (g_sig.sigint) //check for signal before executing any command. if yes, spit prompt again
 			CRITICAL_FAILURE(data, "complex exec: SIGINT received");
+		if (heredoc_finder(data) == 0)
+				ft_heredoc(data);
 		if ((current_cmd->pid = fork()) == -1)
 			CRITICAL_FAILURE(data, "complex exec: fork failed in last command");
 		if (current_cmd->pid == 0)

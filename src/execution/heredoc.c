@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 14:55:27 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/04/10 11:12:19 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/04/10 14:06:59 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int	heredoc_finder(t_bigshell *data)
 }
 
 //checks for delimiter
-char	*delimiter_finder(t_bigshell *data)
+/* char	*delimiter_finder(t_bigshell *data)
 {
 	t_token *tmp_input;
 	char	*delimiter;
@@ -62,11 +62,11 @@ char	*delimiter_finder(t_bigshell *data)
 		tmp_input = tmp_input->next;
 	}
 	return (delimiter);
-}
+} */
 
 //checks for expansion suppression
 //hex code of ' == 27
-char	*check_for_quotes(t_bigshell *data, char *eof)
+/* char	*check_for_quotes(t_bigshell *data, char *eof)
 {
 	int		i;
 	size_t		j;
@@ -91,7 +91,7 @@ char	*check_for_quotes(t_bigshell *data, char *eof)
 	}
 	delimiter = eof;
 	return (delimiter);
-}
+} */
 
 //${SRC_DIR}${EXEC_DIR}heredoc.c
 //00644 = S_IRUSR | S_IWUSR
@@ -122,34 +122,37 @@ void	ft_heredoc(t_bigshell *data)
 	//char		*eof_mod;
 	int			heredoc_fd;
 	int			i;
+	t_token		*heredoc;
 
 	i = 0;
-	lineread = NULL;
+	heredoc = data->heredoc;
 	set_signals(2);
-	if (!data->commands->cmd)
-		eof = data->heredoc->str;
-	else
-	 	eof = find_eof(data->commands->input);
 	//eof = delimiter_finder(data);
-	if (!eof)
-		simple_error(data, 1);
+	//if (!eof)
+	//	simple_error(data, 1);
 	//eof_mod = check_for_quotes(data, eof);
-	heredoc_fd = open("tmpfile.txt", O_CREAT | O_TRUNC | O_RDWR, 00644);
-	if (heredoc_fd == -1)
-		simple_error(data, 1);
-	while (1)
+	while (heredoc)
 	{
-		if (g_sig.sigint)
-			break ;
-		lineread = readline("> ");
-		//printf("%s\n", eof_mod);
-		if (!lineread || !(ft_strncmp(eof, lineread, ft_strlen(eof) + 1)))
-		 	break ;
-		if (eof[i] == '\"' || eof[i] == 27)
-			lineread = expand(lineread, data);
-		write(heredoc_fd, lineread, ft_strlen(lineread));
-		write(heredoc_fd, "\n", 1); //possibly problematic
-		//printf("%s\n", lineread);
+		lineread = NULL;
+		eof = data->heredoc->str;
+		heredoc_fd = open("tmpfile.txt", O_CREAT | O_TRUNC | O_RDWR, 00644);
+		if (heredoc_fd == -1)
+			simple_error(data, 1);
+		while (1)
+		{
+			if (g_sig.sigint)
+				break ;
+			lineread = readline("> ");
+			//printf("%s\n", eof_mod);
+			if (!lineread || !(ft_strncmp(eof, lineread, ft_strlen(eof) + 1)))
+				break ;
+			if (eof[i] != '"' || eof[i] == 27) //ask willem about heredoc expansion
+				lineread = expand(lineread, data);
+			write(heredoc_fd, lineread, ft_strlen(lineread));
+			write(heredoc_fd, "\n", 1); //possibly problematic
+			//printf("%s\n", lineread);
+		}
+		heredoc = heredoc->next;
 	}
 	//pass tmpfile.txt to execution
 	//after execution check for tmpfile and delete it

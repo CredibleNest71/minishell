@@ -6,12 +6,13 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 14:55:27 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/03/12 15:13:24 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/04/09 16:38:48 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h" 
 #include "../parser/parse.h"
+#include "../main/sig.h"
 //#include <iterator>
 #include <stdio.h>
 #include <unistd.h>
@@ -21,7 +22,7 @@ int	heredoc_finder(t_bigshell *data)
 {
 	t_token	*tmp;
 
-	if (!data->commands)
+	if (!data->commands->cmd)
 	{
 		if (data->heredoc)
 			return(0);
@@ -99,38 +100,73 @@ char	*check_for_quotes(t_bigshell *data, char *eof)
 /* if (lineread == EOF || lineread == NULL) //if delimiter is found then exit loop
 	break ; */
 //if heredoc fails nothing gets executed
+
+char	*find_eof(t_token *input)
+{
+	t_token	*tmp;
+
+	tmp = input;
+	while (tmp)
+	{
+		if (tmp->type == (enum type)HEREDOC)
+			return(tmp->str);
+		tmp = tmp->next;
+	}
+	return (NULL);
+}
+
 void	ft_heredoc(t_bigshell *data)
 {
 	char		*lineread;
 	char		*eof;
-	char		*eof_mod;
+	//char		*eof_mod;
 	int			heredoc_fd;
 	int			i;
 
 	i = 0;
 	lineread = NULL;
-	eof = delimiter_finder(data);
+	set_signals(2);
+	if (!data->commands->cmd)
+		eof = data->heredoc->str;
+	else
+	 	eof = find_eof(data->commands->input);
+	//eof = delimiter_finder(data);
 	if (!eof)
 		simple_error(data, 1);
-	eof_mod = check_for_quotes(data, eof);
+	//eof_mod = check_for_quotes(data, eof);
 	heredoc_fd = open("tmpfile.txt", O_CREAT | O_TRUNC | O_RDWR, 00644);
 	if (heredoc_fd == -1)
 		simple_error(data, 1);
 	while (1)
 	{
+		if (g_sig.sigint)
+			break ;
 		lineread = readline("> ");
-		printf("%s\n", eof_mod);
-		if (!(ft_strncmp(eof_mod, lineread, ft_strlen(eof_mod))) || lineread == NULL)
+		//printf("%s\n", eof_mod);
+		if (!lineread || !(ft_strncmp(eof, lineread, ft_strlen(eof) + 1)))
 		 	break ;
 		if (eof[i] == '"' || eof[i] == 27)
 			lineread = expand(lineread, data);
 		write(heredoc_fd, lineread, ft_strlen(lineread));
 		write(heredoc_fd, "\n", 1); //possibly problematic
-		printf("%s\n", lineread);
+		//printf("%s\n", lineread);
 	}
 	//pass tmpfile.txt to execution
 	//after execution check for tmpfile and delete it
-	if (!data->commands)
-		return ; //heredoc no hace nada sin un cmd pero el tmpfile tiene que ser deleted
-	simple_exec(data);
+	if (!lineread)
+	{
+		printf("minishell: warning: heredoc (wanted '%s')\n", eof);
+		close(heredoc_fd);
+		unlink("tmpfile.txt");
+	}
+	if (!data->commands->cmd)
+	{
+		close(heredoc_fd);
+		unlink("tmpfile.txt");
+		return ;
+	}
+	/* if (!data->commands) //struct is always present so this is never true
+		return ; */ //heredoc no hace nada sin un cmd pero el tmpfile tiene que ser deleted
+	else
+		data->heredoc_fd = heredoc_fd;
 }

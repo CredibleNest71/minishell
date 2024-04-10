@@ -40,9 +40,9 @@ void	print_cmds(t_command *cmd, t_bigshell *data)
 			if (curr->type == (e_type) IN)
 				printf("==	IN:			%s\n", curr->str);
 			else if (curr->type == (e_type) HEREDOC)
-				printf("==	HEREDOC: 		%s\n", curr->str);
+				printf("==	HEREDOC: 	%s\n", curr->str);
 		}
-		for (t_token *curr = temp_cmd->output;curr; curr = curr->next)
+		for (t_token *curr = temp_cmd->output; curr; curr = curr->next)
 		{
 			if (curr->type == (e_type) APP)
 				printf("==	APP:			%s\n", curr->str);
@@ -132,7 +132,6 @@ void	heredocs_to_bigshell(t_token **tokens, t_bigshell *data)
 				data->heredoc = new;
 			else
 				ft_tokenlast(data->heredoc)->next = new;
-			printf("herdocs::added:	%s\n", new->str);
 		}
 		temp = temp->next;
 	}

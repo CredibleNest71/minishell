@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 14:55:27 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/04/10 14:13:50 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/04/10 14:41:47 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,19 +122,19 @@ void	ft_heredoc(t_bigshell *data)
 	//char		*eof_mod;
 	int			heredoc_fd;
 	int			i;
-	t_token		*heredoc;
+	t_token		*input;
 
 	i = 0;
-	heredoc = data->heredoc;
+	input = data->heredoc;
 	set_signals(2);
 	//eof = delimiter_finder(data);
 	//if (!eof)
 	//	simple_error(data, 1);
 	//eof_mod = check_for_quotes(data, eof);
-	while (heredoc)
+	while (input)
 	{
 		lineread = NULL;
-		eof = data->heredoc->str;
+		eof = input->str;
 		heredoc_fd = open("tmpfile.txt", O_CREAT | O_TRUNC | O_RDWR, 00644);
 		if (heredoc_fd == -1)
 			simple_error(data, 1);
@@ -152,16 +152,16 @@ void	ft_heredoc(t_bigshell *data)
 			write(heredoc_fd, "\n", 1); //possibly problematic
 			//printf("%s\n", lineread);
 		}
-		heredoc = heredoc->next;
+		if (!lineread)
+		{
+			printf("minishell: warning: heredoc (wanted '%s')\n", eof);
+			close(heredoc_fd);
+			unlink("tmpfile.txt");
+		}
+		input = input->next;
 	}
 	//pass tmpfile.txt to execution
 	//after execution check for tmpfile and delete it
-	if (!lineread)
-	{
-		printf("minishell: warning: heredoc (wanted '%s')\n", eof);
-		close(heredoc_fd);
-		unlink("tmpfile.txt");
-	}
 	if (!data->commands->cmd)
 	{
 		close(heredoc_fd);

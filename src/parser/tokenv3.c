@@ -6,7 +6,7 @@
 /*   By: mresch <mresch@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 14:46:26 by mresch            #+#    #+#             */
-/*   Updated: 2024/04/10 14:47:57 by mresch           ###   ########.fr       */
+/*   Updated: 2024/04/10 16:37:26 by mresch           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -161,27 +161,3 @@ t_token	**tokenmaker(char *str)
 	}
 	return (tokenlist);
 }
-
-/*
-int	main(int ac, char **av)
-{
-	t_token	**tokens;
-	t_token	*curr;
-	t_bigshell	data;
-
-	tokens = tokenmaker(av[1]);
-	tokens = expander(tokens, NULL);
-	
-	if (tokens)
-		curr = *tokens;
-	else
-		return (printf("ERROR"));
-	while (curr &&curr->str)
-	{
-		printf("%s\n", curr->str);
-		printf("type %d\n", curr->type);
-		printf("connected: %d\n\n", curr->connected);
-		curr = curr->next;
-	}
-}
-*/

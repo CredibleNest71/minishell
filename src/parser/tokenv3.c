@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   tokenv3.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mresch <mresch@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/04/10 14:46:26 by mresch            #+#    #+#             */
+/*   Updated: 2024/04/10 14:47:57 by mresch           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "parse.h"
 #include "../../minishell.h"
 #include "../../libft/libft.h"
@@ -14,7 +26,6 @@ int	quotes(t_token *token, char *str, int *i, char quote)
 	if (!content)
 		return (0);
 	token->str = content;
-	//printf("::quotes::content: %s\n", content);
 	*i += found - &str[*i] + 1;
 	if (str[*i] && !is_char(str[*i], "\n\t\v \r\f"))
 		token->connected = 1;
@@ -33,7 +44,8 @@ int	no_quotes(t_token *token, char *str, int *i)
 	{
 		if (is_char(str[*i], "$"))
 			found++;
-		while (str[*i + found] && !is_char(str[*i + found], "$|\"\'\n\t\v \r\f"))
+		while (str[*i + found] && \
+		!is_char(str[*i + found], "$|\"\'\n\t\v \r\f"))
 			found++;
 	}
 	if (!found)
@@ -85,14 +97,12 @@ int	fill_token(t_token *token, char *str, int *i)
 		check = quotes(token, str, i, '\'');
 	else
 		check = no_quotes(token, str, i);
-	//printf("token content: %s\n", token->str);
 	if (check < 0)
 		return (-1);
 	if (!check)
 		return (0);
 	return (1);
 }
-
 
 t_token	*create_token(char *str, int *i)
 {
@@ -125,7 +135,7 @@ void	token_list_add(t_token **tokenlist, t_token *token)
 		temp = temp->next;
 	temp->next = token;
 	token->prev = temp;
-	return ;	
+	return ;
 }
 
 t_token	**tokenmaker(char *str)

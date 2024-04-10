@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 14:55:27 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/04/09 16:38:48 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/04/10 11:12:19 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,7 +145,7 @@ void	ft_heredoc(t_bigshell *data)
 		//printf("%s\n", eof_mod);
 		if (!lineread || !(ft_strncmp(eof, lineread, ft_strlen(eof) + 1)))
 		 	break ;
-		if (eof[i] == '"' || eof[i] == 27)
+		if (eof[i] == '\"' || eof[i] == 27)
 			lineread = expand(lineread, data);
 		write(heredoc_fd, lineread, ft_strlen(lineread));
 		write(heredoc_fd, "\n", 1); //possibly problematic

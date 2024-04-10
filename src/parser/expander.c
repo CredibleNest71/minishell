@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   expander.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mresch <mresch@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/04/10 14:55:07 by mresch            #+#    #+#             */
+/*   Updated: 2024/04/10 14:58:32 by mresch           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../minishell.h"
 #include "parse.h"
 
@@ -28,8 +40,8 @@ char	*ft_string_insert(char *str, char *in, int idx, int varlen)
 
 char	*find_var_name(char *str)
 {
-	int	i;
-	int	j;
+	int		i;
+	int		j;
 	char	*ret;
 
 	j = 0;
@@ -50,7 +62,7 @@ char	*get_val(char *var, t_bigshell *data)
 	t_env	*curr;
 
 	if (!data || !var)
-		return (NULL); //printf("EYYYY WHERES MY VAL"), NULL);
+		return (NULL);
 	curr = data->env;
 	while (curr)
 	{
@@ -64,14 +76,14 @@ char	*get_val(char *var, t_bigshell *data)
 }
 
 //expands $-variable
-char *expand(char *str, t_bigshell *data)
+char	*expand(char *str, t_bigshell *data)
 {
 	char	*here;
-    char	*var;
+	char	*var;
 	char	*val;
 	char	*new;
 
-	while (1)
+	while (ft_strchr(str, '$'))
 	{
 		if (!strncmp(str, "$", 2))
 			return (str);
@@ -80,7 +92,7 @@ char *expand(char *str, t_bigshell *data)
 		{
 			var = find_var_name(here);
 			if (!var)
-				return (str) ; 
+				return (str);
 			val = get_val(var, data);
 			if (!val && ft_strlen(var) + 1 == ft_strlen(str))
 				return (NULL);
@@ -88,17 +100,6 @@ char *expand(char *str, t_bigshell *data)
 			free(var);
 			str = new;
 		}
-		else
-			break ;
 	}
 	return (str);
 }
-
-// int main ()
-// {
-// 	char	*test;
-// 	//test =  expand("this is  $RUBY_HOME $RUBY_HOME $RUBY_HOME testtesttesttest\n");
-// 	test = expand(readline("pls give input"));
-// 	printf("%s\n", test);
-// 	free(test);
-// }

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   commander.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mresch <mresch@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/04/10 14:44:18 by mresch            #+#    #+#             */
+/*   Updated: 2024/04/10 14:45:49 by mresch           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "parse.h"
 #include "../../minishell.h"
 #include "../../libft/libft.h"
@@ -47,7 +59,7 @@ void	add_to_command_list(t_command **list, t_command *cmd)
 	if (!*list)
 	{
 		*list = cmd;
-		return ; 
+		return ;
 	}
 	temp = *list;
 	while (temp->next)
@@ -65,7 +77,6 @@ t_command	**create_commandlist(t_token **list)
 	pipe = 1;
 	temp = *list;
 	final = (t_command **) ft_calloc (sizeof(t_command *), 1);
-	//cmd = (t_command *) ft_calloc (sizeof(t_command), 1);
 	if (!final)
 		return (NULL);
 	while (temp)
@@ -84,7 +95,7 @@ t_command	**create_commandlist(t_token **list)
 	return (final);
 }
 
-t_command   **commands_finalized(t_token **list)
+t_command	**commands_finalized(t_token **list)
 {
 	t_command	**final;
 

@@ -6,7 +6,7 @@
 /*   By: mresch <mresch@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 11:33:48 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/04/10 12:24:41 by mresch           ###   ########.fr       */
+/*   Updated: 2024/04/10 15:03:58 by mresch           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,11 @@ int	main(int argc, char **argv, char **env)
 	{
 		if (data.commands)
 			delete_command_list(data.commands);
+		if (data.heredoc)
+		{
+			delete_token_list(data.heredoc);
+			data.heredoc = NULL;
+		}
 		set_signals(0);
 		if (isatty(fileno(stdin)))
 			lineread = readline("smellyshell: ");
@@ -63,7 +68,7 @@ int	main(int argc, char **argv, char **env)
 		add_history(lineread);
 		//printf("I work here\n");
 		data.commands = parse(lineread, &data);
-		print_cmds(data.commands, &data);
+		//print_cmds(data.commands, &data);
 		set_signals(1);
 		if (!data.commands)
 			continue ;

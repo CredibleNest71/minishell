@@ -1,8 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   syntax.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mresch <mresch@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/04/10 14:54:17 by mresch            #+#    #+#             */
+/*   Updated: 2024/04/10 14:54:45 by mresch           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "parse.h"
 #include "../../minishell.h"
 #include "../../libft/libft.h"
 
-int	skip_quotes(char *str,int *i,char c)
+int	skip_quotes(char *str, int *i, char c)
 {
 	char	*here;
 

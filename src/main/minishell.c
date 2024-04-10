@@ -6,7 +6,7 @@
 /*   By: mresch <mresch@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 11:33:48 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/04/09 14:41:03 by mresch           ###   ########.fr       */
+/*   Updated: 2024/04/10 12:24:41 by mresch           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,8 @@ int	main(int argc, char **argv, char **env)
 	pipe_init(&data);
 	while (1)
 	{
-		// if (data.commands)
-		// 	delete_command_list(data.commands);
+		if (data.commands)
+			delete_command_list(data.commands);
 		set_signals(0);
 		if (isatty(fileno(stdin)))
 			lineread = readline("smellyshell: ");

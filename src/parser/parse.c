@@ -11,34 +11,46 @@ void	print_cmds(t_command *cmd, t_bigshell *data)
 	}
 	t_command *temp_cmd = cmd;
 	printf("\n==========================================\n");
-	printf("NUMBER OF COMMANDS: %d\n", data->num_cmd);
+	printf("==========================================\n");
+	printf("==	NUMBER OF COMMANDS: %d\n", data->num_cmd);
+	printf("==========================================\n");
+	if (data->heredoc)
+	{
+		for (t_token *temp = (data->heredoc); temp; temp = temp->next)
+			printf("==	HEREDOCS:		%s\n", temp->str);
+	}
+	else
+		printf("=	NO HEREDOCS\n");
+	printf("==========================================\n");
 	for (;temp_cmd; temp_cmd = temp_cmd->next)
 	{
-		printf("\n==========================================");
+		printf("==========================================\n");
 		if (temp_cmd->cmd)
-			printf("\nCOMMAND(%d):		%s",temp_cmd->arg_num, temp_cmd->cmd->str);
+			printf("== COMMAND(%d):		%s\n",temp_cmd->arg_num, temp_cmd->cmd->str);
+		printf("== ");
+		for (int i = 0; i < temp_cmd->arg_num + 1; i++)
+		{
+			printf("[%s]", temp_cmd->args_exec[i]);
+		}
+		printf("\n");
 		for (t_token *curr = temp_cmd->args;curr; curr = curr->next)
-			printf("\n	ARG:		%s", curr->str);
+			printf("==	ARG:		%s\n", curr->str);
 		for (t_token *curr = temp_cmd->input;curr; curr = curr->next)
 		{
 			if (curr->type == (e_type) IN)
-				printf("\nIN:			%s", curr->str);
+				printf("==	IN:			%s\n", curr->str);
 			else if (curr->type == (e_type) HEREDOC)
-				printf("\nHEREDOC: 		%s", curr->str);
+				printf("==	HEREDOC: 		%s\n", curr->str);
 		}
 		for (t_token *curr = temp_cmd->output;curr; curr = curr->next)
 		{
 			if (curr->type == (e_type) APP)
-				printf("\nAPP:			%s", curr->str);
+				printf("==	APP:			%s\n", curr->str);
 			else
-				printf("\nOUT:			%s", curr->str);
+				printf("==	OUT:			%s\n", curr->str);
 		}
-		if (data->heredoc)
-			printf("\nONLY HEREDOC:		%s", data->heredoc->str);
-		for (int i = 0; i < temp_cmd->arg_num + 1; i++)
-			printf("\nchars: %s", temp_cmd->args_exec[i]);
-		printf("\n==========================================\n");
 	}
+	printf("==========================================\n\n");
 }
 
 static int set_counts(t_command *cmd, t_bigshell *data)
@@ -103,6 +115,29 @@ void	set_all_char_arrays(t_command *final)
 	return ;
 }
 
+void	heredocs_to_bigshell(t_token **tokens, t_bigshell *data)
+{
+	t_token	*temp;
+	t_token	*new;
+
+	if (!tokens || !data || !(*tokens))
+		return ;
+	temp = *tokens;
+	while (temp)
+	{
+		if (temp->type == (e_type) HEREDOC)
+		{
+			new = token_dup(temp);
+			if (!data->heredoc)
+				data->heredoc = new;
+			else
+				ft_tokenlast(data->heredoc)->next = new;
+			printf("herdocs::added:	%s\n", new->str);
+		}
+		temp = temp->next;
+	}
+}
+
 t_command	*parse(char *input, t_bigshell *data)
 {
 	t_token		**tokens;
@@ -117,8 +152,7 @@ t_command	*parse(char *input, t_bigshell *data)
 	tokens = expander(tokens, data);
 	if (!tokens | !(*tokens))
 		return (NULL);
-	if ((*tokens)->type == (e_type) HEREDOC)
-		data->heredoc = token_dup(*tokens);
+	heredocs_to_bigshell(tokens, data);
 	cmds = commands_finalized(tokens);
 	set_counts(*cmds, data);
 	set_all_char_arrays(*cmds);

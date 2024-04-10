@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   helper_functions.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mresch <mresch@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 17:04:24 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/04/08 12:17:27 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/04/10 12:22:40 by mresch           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,12 +116,6 @@ void	free_struct(t_bigshell *data)
 	if (data->commands)
 	{
 		delete_command_list(data->commands);
-		/* while (data->commands)
-		{
-			free_commands(data);
-			data->commands = data->commands->next;
-		}
-		free(data->commands); */
 	}
 	free_env(data);
 	free_builtin_list(data);

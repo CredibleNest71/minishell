@@ -6,7 +6,7 @@
 /*   By: mresch <mresch@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 11:33:48 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/04/10 15:03:58 by mresch           ###   ########.fr       */
+/*   Updated: 2024/04/10 16:01:19 by mresch           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ int	main(int argc, char **argv, char **env)
 			free(line);
 		}
 		if (!lineread)
-			return (write(1, "exit\n", 5), find(&data));
+			return (/*write(1, "exit\n", 5), */find(&data));
 		add_history(lineread);
 		//printf("I work here\n");
 		data.commands = parse(lineread, &data);

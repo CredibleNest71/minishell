@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 14:55:27 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/04/10 14:56:16 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/04/11 15:10:56 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ char	*check_for_quotes(t_bigshell *data, char *eof)
 	delimiter = malloc(sizeof(char) * (ft_strlen(eof) - 1));
 	if (!delimiter)
 		CRITICAL_FAILURE(data, "heredoc: malloc failed");
-	if (eof[i] == '"' || eof[i] == 27)
+	if (eof[i] == '"' || eof[i] == '\'')
 	{
 		while (++i < (int)ft_strlen(eof))
 		{
@@ -137,6 +137,7 @@ void	ft_heredoc(t_bigshell *data)
 		lineread = NULL;
 		eof = input->str;
 		mod_eof = check_for_quotes(data, eof);
+		printf("%s\n", mod_eof);
 		heredoc_fd = open("tmpfile.txt", O_CREAT | O_TRUNC | O_RDWR, 00644);
 		if (heredoc_fd == -1)
 			simple_error(data, 1);

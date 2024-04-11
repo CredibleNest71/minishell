@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 10:43:53 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/04/11 12:21:02 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/04/11 14:54:27 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -216,8 +216,8 @@ void	complex_exec(t_bigshell *data)
 		}
 		else
 		{
-			if (heredoc_finder(data) == 0)
-				ft_heredoc(data);
+			/* if (heredoc_finder(data) == 0)
+				ft_heredoc(data); */
 			if (pipe(data->pipe_fd2) == -1)
 				CRITICAL_FAILURE(data, "complex exec: pipe 2 failed in middle command");
 			data->pipe->write = data->pipe_fd2[1];
@@ -240,8 +240,8 @@ void	complex_exec(t_bigshell *data)
 		if (g_sig.sigint) //check for signal before executing any command. if yes, spit prompt again
 			CRITICAL_FAILURE(data, "complex exec: SIGINT received");
 		restore_output(data);
-		if (heredoc_finder(data) == 0)
-				ft_heredoc(data);
+		/* if (heredoc_finder(data) == 0)
+				ft_heredoc(data); */
 		if ((current_cmd->pid = fork()) == -1)
 			CRITICAL_FAILURE(data, "complex exec: fork failed in last command");
 		if (current_cmd->pid == 0)

@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   error_handlers.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mresch <mresch@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 11:41:58 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/04/04 15:50:08 by mresch           ###   ########.fr       */
+/*   Updated: 2024/04/11 12:11:35 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
+//#include <iterator>
 #include <stdlib.h>
 
 void	update_exit_stat(t_bigshell *data, int exit_code) //gotta free code (LEAK)
@@ -59,6 +60,13 @@ void	simple_error(t_bigshell *data, int exit_code)
 {
 	
 } */
+
+void	exit_child(t_bigshell *data, int exit_stat)
+{
+	free_struct(data);
+	update_exit_stat(data, exit_stat);
+	exit (exit_stat);
+}
 
 void	CRITICAL_FAILURE(t_bigshell *data, char *str)
 {

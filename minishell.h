@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 17:34:54 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/04/10 16:35:22 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/04/11 12:03:22 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,6 +139,7 @@ int		builtin_allrounder(t_bigshell *data);
 void	update_exit_stat(t_bigshell *data, int exit_code);
 void	redir_error(t_bigshell *data, int exit_code, char *str);
 void	simple_error(t_bigshell *data, int exit_code);
+void	exit_child(t_bigshell *data, int exit_stat);
 void	CRITICAL_FAILURE(t_bigshell *data, char *str);
 
 void	simple_exec(t_bigshell *data);

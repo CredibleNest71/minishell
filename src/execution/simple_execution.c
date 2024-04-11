@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   simple_execution.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mresch <mresch@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 17:54:30 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/04/09 10:44:30 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/04/11 11:58:53 by mresch           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,10 @@ void	simple_exec(t_bigshell *data)
 		printf("find&split failed\n"); //shit has been allocated
 	correct_path = check_if_correct_path(paths, data, data->commands->cmd->str);
 	if (!correct_path)
+	{
+		update_exit_stat(data, 127);
 		printf("minishell: command '%s' not found\n", data->commands->cmd->str);
+	}
 	execve(correct_path, data->commands->args_exec, data->mod_env);
 	free(correct_path);
 	exit (126);

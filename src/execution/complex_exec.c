@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 10:43:53 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/04/11 14:54:27 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/04/12 11:43:56 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,11 +92,11 @@ void	first_executor(t_bigshell *data, t_command *cmd, int out_fd)
 		}
 		data->redir = 1;
 	} */
-	//else
-	//{
+	if (!data->commands->output)
+	{
 		if (dup2(out_fd, 1) == -1 || close(data->pipe->read) == -1) //|| close(data->pipe->write) == -1
 			CRITICAL_FAILURE(data, "complex exec: first executor: dup2 failed");
-	//}
+	}
 	convert_env(data);
 	paths = find_and_split_path(data->mod_env);
 	if (!paths)
@@ -184,6 +184,7 @@ void	middle_executor(t_bigshell *data, t_command *cmd, int out_fd, int in_fd)
 
 }
 
+//add built-ins use built in all rounder if == 0 exit, fds will be restored in main
 void	complex_exec(t_bigshell *data)
 {
 	t_command	*current_cmd;
@@ -200,7 +201,6 @@ void	complex_exec(t_bigshell *data)
 		{
 			//im at first command
 			////printf("complex: checkpoint first command: %s\n", current_cmd->cmd->str); //debugging printf
-
 			if (pipe(data->pipe_fd) == -1)
 				CRITICAL_FAILURE(data, "complex exec: pipe failed in first command");
 			data->pipe->read = data->pipe_fd[0];

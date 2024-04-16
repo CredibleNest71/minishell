@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 17:54:30 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/04/11 12:11:04 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/04/16 13:43:15 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,8 @@ void	simple_exec(t_bigshell *data)
 		exit_child(data, 127);
 	}
 	execve(correct_path, data->commands->args_exec, data->mod_env);
-	free(correct_path);
-	free(paths);
+	/* free(correct_path);
+	free(paths); */
 	exit_child(data, 126);
 	//free paths & args_exec
 }

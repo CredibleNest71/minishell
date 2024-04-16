@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 17:59:11 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/04/12 14:59:14 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/04/16 17:07:13 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -160,7 +160,10 @@ int	redir(t_command *command, t_bigshell *data)
 	{
 		while (out)
 		{
-			data->fd_out = open(out->str, O_CREAT | O_TRUNC | O_WRONLY, 00644);
+			if (out->type == (enum type)APP)
+				data->fd_out = open(out->str, O_CREAT | O_APPEND | O_WRONLY, 00644);
+			else
+				data->fd_out = open(out->str, O_CREAT | O_TRUNC | O_WRONLY, 00644);
 			if (data->fd_out == -1)
 				CRITICAL_FAILURE(data, "redirection: open failed");
 			if (!out->next)

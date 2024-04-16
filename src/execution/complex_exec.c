@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 10:43:53 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/04/12 15:42:00 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/04/16 15:16:33 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -212,6 +212,7 @@ void	complex_exec(t_bigshell *data)
 		{
 			if (data->commands->input || data->commands->output)
 			{
+				store_restore_fds(data, 1);
 				if (redir(current_cmd, data))
 				{
 					printf("redir failed in middle child\n");

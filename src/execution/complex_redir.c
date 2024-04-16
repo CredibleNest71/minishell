@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 11:36:15 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/04/10 11:59:12 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/04/10 18:20:18 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,13 @@
     }
 } */
 
-void    complex_redir(t_bigshell *data)
+void    restore_output(t_bigshell *data)
+{
+    if (dup2(data->std_out, 1) == -1)
+        CRITICAL_FAILURE(data, "restoring stdout: dup2 fail");
+}
+
+/* void    complex_redir(t_bigshell *data)
 {
     if
-}
+} */

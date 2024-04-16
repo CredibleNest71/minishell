@@ -6,7 +6,7 @@
 /*   By: mresch <mresch@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 12:10:32 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/04/11 11:35:35 by mresch           ###   ########.fr       */
+/*   Updated: 2024/04/16 14:08:20 by mresch           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,8 @@ int	builtin_allrounder(t_bigshell *data)
 		ft_heredoc(data); */
 	data->built_ins = (char **)malloc(sizeof(char *) * 8);
 	built_in_list(data);
+	if (!data->commands->cmd->str)
+		return (EXIT_FAILURE);
 	result = builtin_check_exec(data, data->commands->cmd->str);
 	return (result);
 }

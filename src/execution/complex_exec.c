@@ -6,7 +6,7 @@
 /*   By: mresch <mresch@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 10:43:53 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/04/16 14:05:09 by mresch           ###   ########.fr       */
+/*   Updated: 2024/04/16 14:08:46 by mresch           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,24 +79,18 @@ void	first_executor(t_bigshell *data, t_command *cmd, int out_fd)
 	char	**paths;
 	char	*correct_path;
 
-	////printf("first exec:: current command: %s curr arg: %s\n");
-	//out_fd = 0;
 	paths = NULL;
 	correct_path = NULL;
-	/* if (data->commands->output)
+	if (!data->commands->output)
 	{
-		if (redir(data->commands, data) != 0)
-		{
-			store_restore_fds(data, 2);
-				CRITICAL_FAILURE(data, "complex exec: redir failed in first command");
-		}
-		data->redir = 1;
-	} */
-	//else
-	//{
 		if (dup2(out_fd, 1) == -1 || close(data->pipe->read) == -1) //|| close(data->pipe->write) == -1
 			CRITICAL_FAILURE(data, "complex exec: first executor: dup2 failed");
-	//}
+	}
+	else
+	{
+		if (close(data->fd_in) == -1)
+			exit_child(data, 1);
+	}
 	convert_env(data);
 	paths = find_and_split_path(data->mod_env);
 	if (!paths)
@@ -119,20 +113,18 @@ void	last_executor(t_bigshell *data, t_command *cmd, int in_fd)
 	//in_fd = 0;
 	paths = NULL;
 	correct_path = NULL;
-	/* if (data->commands->input || data->commands->output)
+	if (!data->commands->input)
 	{
-		if (redir(data->commands, data) != 0)
-		{
-			store_restore_fds(data, 2);
-				CRITICAL_FAILURE(data, "complex exec: redir failed in first command");
-		}
-		data->redir = 3;
-	} */
-	//else 
-	//{
 		if (dup2(in_fd, 0) == -1 ) //|| close(data->pipe->write) == -1 || close(data->pipe->read) == -1
 			CRITICAL_FAILURE(data, "complex exec: last executor: dup2 failed");
-	//}
+	}
+	//redirect output as well
+	/* else
+	{
+		printf("closing in last\n");
+		 if (close(data->fd_out) == -1)
+			exit_child(data, 1);
+	} */
 	convert_env(data);
 	paths = find_and_split_path(data->mod_env);
 	if (!paths)
@@ -143,6 +135,7 @@ void	last_executor(t_bigshell *data, t_command *cmd, int in_fd)
 	execve(correct_path, cmd->args_exec, data->mod_env);
 	//printf("execve failed\n");
 	free(correct_path);
+	free(paths);
 	exit (126);
 
 }
@@ -154,22 +147,22 @@ void	middle_executor(t_bigshell *data, t_command *cmd, int out_fd, int in_fd)
 
 	paths = NULL;
 	correct_path = NULL;
-	/* if (data->commands->input || data->commands->output)
+	if (!data->commands->input)
 	{
-		if (redir(data->commands, data) != 0)
-		{
-			store_restore_fds(data, 2);
-				CRITICAL_FAILURE(data, "complex exec: redir failed in first command");
-		}
-		data->redir = 2;
-	} */
-	//else
-	//{
 		if (dup2(in_fd, 0) == -1)
 			CRITICAL_FAILURE(data, "complex exec: middle executor: dup2 failed (in_fd)");
+	}
+	if (!data->commands->output)
+	{
 		if (dup2(out_fd, 1) == -1 || close(data->pipe->write) == -1 || close(data->pipe->read) == -1)
 			CRITICAL_FAILURE(data, "complex exec: middle executor: dup2 failed (out_fd)");
-	//}
+	}
+	/* if (data->commands->input || data->commands->output)
+	{
+		printf("about to close in middle\n");
+		if (close(data->fd_in) == -1 || close(data->fd_out) == -1)
+			exit_child(data, 1);
+	} */
 	convert_env(data);
 	paths = find_and_split_path(data->mod_env);
 	if (!paths)
@@ -180,10 +173,12 @@ void	middle_executor(t_bigshell *data, t_command *cmd, int out_fd, int in_fd)
 	execve(correct_path, cmd->args_exec, data->mod_env);
 	//printf("execve failed\n");
 	free(correct_path);
+	free(paths);
 	exit(126);
 
 }
 
+//add built-ins use built in all rounder if == 0 exit, fds will be restored in main
 void	complex_exec(t_bigshell *data)
 {
 	t_command	*current_cmd;
@@ -200,7 +195,6 @@ void	complex_exec(t_bigshell *data)
 		{
 			//im at first command
 			////printf("complex: checkpoint first command: %s\n", current_cmd->cmd->str); //debugging printf
-
 			if (pipe(data->pipe_fd) == -1)
 				CRITICAL_FAILURE(data, "complex exec: pipe failed in first command");
 			data->pipe->read = data->pipe_fd[0];
@@ -209,15 +203,21 @@ void	complex_exec(t_bigshell *data)
 				CRITICAL_FAILURE(data, "complex exec: fork failed in first command");
 			if (current_cmd->pid == 0)
 				first_executor(data, current_cmd, data->pipe->write);
-			if (data->redir == 1)
-				restore_fork(data, 1);
+			/* if (data->redir == 1)
+				restore_fork(data, 1); */
 			if (close(data->pipe->write) == -1)
 				CRITICAL_FAILURE(data, "complex exec: close(1) failed in parent process");
 		}
 		else
 		{
-			if (heredoc_finder(data) == 0)
-				ft_heredoc(data);
+			if (data->commands->input || data->commands->output)
+			{
+				if (redir(current_cmd, data))
+				{
+					printf("redir failed in middle child\n");
+					exit_child(data, 1);
+				}
+			}
 			if (pipe(data->pipe_fd2) == -1)
 				CRITICAL_FAILURE(data, "complex exec: pipe 2 failed in middle command");
 			data->pipe->write = data->pipe_fd2[1];
@@ -225,8 +225,6 @@ void	complex_exec(t_bigshell *data)
 				CRITICAL_FAILURE(data, "complex exec: fork failed in middle command");
 			if (current_cmd->pid == 0)
 				middle_executor(data, current_cmd, data->pipe->write, data->pipe->read);
-			if (data->redir == 2)
-				restore_fork(data, 2);
 			if (close(data->pipe->write) == -1 || close(data->pipe->read) == -1)
 				CRITICAL_FAILURE(data, "complex exec: close(1) failed in parent process");
 			data->pipe->read = data->pipe_fd2[0];
@@ -239,15 +237,22 @@ void	complex_exec(t_bigshell *data)
 	{
 		if (g_sig) //check for signal before executing any command. if yes, spit prompt again
 			CRITICAL_FAILURE(data, "complex exec: SIGINT received");
-		if (heredoc_finder(data) == 0)
-				ft_heredoc(data);
+		restore_output(data);
+		if (data->commands->input || data->commands->output)
+		{
+			if (redir(current_cmd, data))
+			{
+				printf("redir failed in last child\n");
+				exit_child(data, 1);
+			}
+		}
 		if ((current_cmd->pid = fork()) == -1)
 			CRITICAL_FAILURE(data, "complex exec: fork failed in last command");
 		if (current_cmd->pid == 0)
 			last_executor(data, current_cmd, data->pipe->read);
 		////printf("i happened \n"); //debugging printf
-		if (data->redir == 3)
-			restore_fork(data, 3);
+		/* if (data->redir == 3)
+			restore_fork(data, 3); */
 		if (close(data->pipe->read) == -1)
 			CRITICAL_FAILURE(data, "complex exec: close(0) failed in parent process");
 	}

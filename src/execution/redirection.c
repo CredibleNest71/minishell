@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 17:59:11 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/04/10 15:04:32 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/04/12 14:59:14 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,7 +152,7 @@ int	redir(t_command *command, t_bigshell *data)
 				redir_error(data, 1, "fd_in: open failed");
 				return (EXIT_FAILURE);
 			}
-			if ((dup2(data->fd_in, 0)) == -1)
+			if (dup2(data->fd_in, 0) == -1)
 				CRITICAL_FAILURE(data, "fd_in dup2 fail");
 		}
 	}

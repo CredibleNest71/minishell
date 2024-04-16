@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 10:32:36 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/03/12 18:03:35 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/04/16 13:30:18 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -211,6 +211,17 @@ void	ft_cd(t_bigshell *data)
 		path = data->commands->args->str;
 		if (path[ft_strlen(path) - 1] == '/')
 			path[ft_strlen(path) - 1] = 0;
+		if (path[0] == '/')
+		{
+			if (chdir(path) == -1)
+			{
+				printf("minishell: cd: %s: No such file or directory\n", data->commands->args->str);
+				simple_error(data, 1);
+				return ;
+			}
+			overwrite_pwd(data, path);
+			return ;
+		}
 		//delete_tail(path);
 		og_path = connect_path(data, path);
 		if (!og_path)

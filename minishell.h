@@ -6,7 +6,7 @@
 /*   By: mresch <mresch@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 17:34:54 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/04/16 14:04:40 by mresch           ###   ########.fr       */
+/*   Updated: 2024/04/16 14:10:04 by mresch           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,9 +139,12 @@ int		builtin_allrounder(t_bigshell *data);
 void	update_exit_stat(t_bigshell *data, int exit_code);
 void	redir_error(t_bigshell *data, int exit_code, char *str);
 void	simple_error(t_bigshell *data, int exit_code);
+void	exit_child(t_bigshell *data, int exit_stat);
 void	CRITICAL_FAILURE(t_bigshell *data, char *str);
 
 void	simple_exec(t_bigshell *data);
+
+void    restore_output(t_bigshell *data);
 
 void	complex_exec(t_bigshell *data);
 void	pipe_init(t_bigshell *data);

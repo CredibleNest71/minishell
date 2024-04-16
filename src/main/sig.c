@@ -52,7 +52,7 @@ void	set_signals(int mode)
 		signal(SIGINT, &set_global);
 		signal(SIGQUIT, SIG_DFL);
 	}	
-	else if (mode == 1)
+	else if (mode == 2)
 	{
 		signal(SIGINT, &newline_to_readline);
 		signal(SIGQUIT, SIG_IGN);

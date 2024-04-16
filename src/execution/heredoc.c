@@ -6,7 +6,7 @@
 /*   By: mresch <mresch@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 14:55:27 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/04/16 14:08:54 by mresch           ###   ########.fr       */
+/*   Updated: 2024/04/16 15:46:03 by mresch           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,7 +143,7 @@ void	ft_heredoc(t_bigshell *data)
 			simple_error(data, 1);
 		while (1)
 		{
-			if (g_sig)
+			if (g_sig = SIGINT)
 				break ;
 			lineread = readline("> ");
 			//printf("%s\n", eof_mod);

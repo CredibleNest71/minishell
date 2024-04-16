@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 10:32:36 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/04/16 13:23:17 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/04/16 13:30:18 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -217,6 +217,7 @@ void	ft_cd(t_bigshell *data)
 			{
 				printf("minishell: cd: %s: No such file or directory\n", data->commands->args->str);
 				simple_error(data, 1);
+				return ;
 			}
 			overwrite_pwd(data, path);
 			return ;

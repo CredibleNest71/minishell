@@ -6,7 +6,7 @@
 /*   By: mresch <mresch@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 17:34:54 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/04/10 13:02:54 by mresch           ###   ########.fr       */
+/*   Updated: 2024/04/16 14:04:40 by mresch           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,7 +118,7 @@ typedef struct s_signal
 	t_bigshell *data;
 }	t_sig;
 
-extern t_sig    g_sig;
+extern int    g_sig;
 
 void	restore_fork(t_bigshell *data, int mode);
 void	store_restore_fds(t_bigshell *data, int mode);
@@ -168,6 +168,7 @@ void	ft_env(t_bigshell *data);
 //void	add_env_variable(t_bigshell *data);
 
 void	ft_exit(t_bigshell *data);
+int		get_exitcode(t_bigshell *data);
 
 t_env   *create_node(t_bigshell *data, char *str);
 void    store_env(t_bigshell *data, char **env);

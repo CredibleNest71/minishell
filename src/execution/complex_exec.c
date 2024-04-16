@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   complex_exec.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mresch <mresch@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 10:43:53 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/04/10 11:34:44 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/04/16 14:05:09 by mresch           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -191,7 +191,7 @@ void	complex_exec(t_bigshell *data)
 	current_cmd = data->commands;
 	while (current_cmd->next)
 	{
-		if (g_sig.sigint) //check for signal before executing any command. if yes, spit prompt again
+		if (g_sig) //check for signal before executing any command. if yes, spit prompt again
 			CRITICAL_FAILURE(data, "complex exec: SIGINT received");
 		/* if (data->redir)
 			restore_fork(data); */
@@ -237,7 +237,7 @@ void	complex_exec(t_bigshell *data)
 	wait_for_children(data);
 	if (!current_cmd->next)
 	{
-		if (g_sig.sigint) //check for signal before executing any command. if yes, spit prompt again
+		if (g_sig) //check for signal before executing any command. if yes, spit prompt again
 			CRITICAL_FAILURE(data, "complex exec: SIGINT received");
 		if (heredoc_finder(data) == 0)
 				ft_heredoc(data);

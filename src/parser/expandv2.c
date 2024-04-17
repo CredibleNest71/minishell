@@ -6,7 +6,7 @@
 /*   By: mresch <mresch@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 14:48:48 by mresch            #+#    #+#             */
-/*   Updated: 2024/04/10 14:53:48 by mresch           ###   ########.fr       */
+/*   Updated: 2024/04/17 13:22:04 by mresch           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -215,6 +215,11 @@ void	join(t_token **list)
 			;
 		else if (curr->connected && next && next->type == (e_type) ARG)
 		{
+			if (!ft_strncmp(curr->str, "$", 2))
+			{
+				free(curr->str);
+				curr->str = ft_strdup("");
+			}
 			jstr = ft_strjoin(curr->str, next->str);
 			free(curr->str);
 			free(next->str);

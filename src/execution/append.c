@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 11:59:54 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/04/16 17:00:25 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/04/17 15:46:22 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,9 @@
         CRITICAL_FAILURE(data, "close append fail");
 } */
 
-void    append(t_bigshell *data, t_command *command)
+/* void    append(t_bigshell *data, t_command *command)
 {
     
 }
 
-if (command->output->type == (enum type)APP)
+if (command->output->type == (enum type)APP) */

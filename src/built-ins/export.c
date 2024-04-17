@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 12:34:44 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/03/15 17:22:08 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/04/17 16:44:56 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -212,13 +212,18 @@ int	var_exists(t_bigshell *data, char *str)
 	t_env	*env;
 	t_env	*s_env;
 	char	*separator;
+	char	*key;
+	int		var_len;
 
 	env = data->env;
 	s_env = data->s_env;
 	separator = ft_strchr(str, '=');
+	var_len = separator - str;
+	key = NULL;
+	ft_memcpy(key, str, var_len);
 	while (env)
 	{
-		if (ft_strncmp(env->var, str, (size_t)(separator - str) + 1) == 0)
+		if (ft_strncmp(env->var, key, ft_strlen(env->var)) == 0)
 		{
 			//printf("wtf %s\n", env->var); //debugging printf?
 			switch_values(data, env, separator + 1, ft_strlen(separator + 1));

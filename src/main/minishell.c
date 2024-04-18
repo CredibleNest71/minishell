@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 11:33:48 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/04/18 14:02:31 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/04/18 14:07:18 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ int	main(int argc, char **argv, char **env)
 		add_history(lineread);
 		//printf("I work here\n");
 		data.commands = parse(lineread, &data);
-		print_cmds(data.commands, &data);
+		//print_cmds(data.commands, &data);
 		set_signals(1);
 		if (!data.commands)
 			continue ;
@@ -73,6 +73,7 @@ int	main(int argc, char **argv, char **env)
 		{
 			if (builtin_allrounder(&data) == 0)
 			{
+				update_exit_stat(&data, 0);
 				store_restore_fds(&data, 2);
 				continue ;
 			}

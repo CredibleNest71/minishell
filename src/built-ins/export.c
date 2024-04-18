@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 12:34:44 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/04/18 15:58:34 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/04/18 17:32:36 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -204,7 +204,7 @@ void	switch_values(t_bigshell *data, t_env *node, char *new_value, int len)
 	node->value = (char *)malloc(sizeof(char) * len + 1);
 	if (!node->value)
 		CRITICAL_FAILURE(data, "export: malloc failed");
-	memcpy(node->value, new_value, len);
+	ft_memcpy(node->value, new_value, len);
 }
 
 int	var_exists(t_bigshell *data, char *str)
@@ -232,7 +232,10 @@ int	var_exists(t_bigshell *data, char *str)
 		if (ft_strncmp(env->var, key, ft_strlen(env->var)) == 0)
 		{
 			//printf("wtf %s\n", env->var); //debugging printf?
-			switch_values(data, env, separator + 1, ft_strlen(separator + 1));
+			if (!separator)
+				switch_values(data, env, NULL, 1);
+			else
+				switch_values(data, env, separator + 1, ft_strlen(separator + 1));
 			i++;
 			break ;
 		}
@@ -243,7 +246,10 @@ int	var_exists(t_bigshell *data, char *str)
 		if (ft_strncmp(s_env->var, key, ft_strlen(s_env->var)) == 0)
 		{
 			//printf("wtf %s\n", s_env->var); //debugging printf?
-			switch_values(data, s_env, separator + 1, ft_strlen(separator + 1));
+			if (!separator)
+				switch_values(data, s_env, NULL, 1);
+			else
+				switch_values(data, s_env, separator + 1, ft_strlen(separator + 1));
 			i++;
 			break ;
 		}

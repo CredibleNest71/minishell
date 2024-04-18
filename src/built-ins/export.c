@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 12:34:44 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/04/18 18:16:40 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/04/18 18:37:26 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ void	print_env(t_env *head)
 		printf("declare -x ");
 		printf("%s", head->var);
 		if (!head->value)
-			printf("\n");
+			printf("=\"\"\n");
 		if (head->value)
 			printf("=%c%s%c\n", 34, head->value, 34);
 		head = head->next;

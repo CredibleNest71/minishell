@@ -6,7 +6,7 @@
 /*   By: mresch <mresch@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 14:55:07 by mresch            #+#    #+#             */
-/*   Updated: 2024/04/10 14:58:32 by mresch           ###   ########.fr       */
+/*   Updated: 2024/04/17 14:05:04 by mresch           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ char	*find_var_name(char *str)
 	if (!str[i])
 		return (NULL);
 	i++;
-	while (str[i + j] && !is_char(str[i + j], "\n\t\v \r\f$\"\'") && str[i + j])
+	while (str[i + j] && (ft_isalnum(str[i + j]) || str[i + j] == '_') && str[i + j])
 		j++;
 	ret = ft_strndup(&str[i], j);
 	return (ret);
@@ -60,19 +60,21 @@ char	*find_var_name(char *str)
 char	*get_val(char *var, t_bigshell *data)
 {
 	t_env	*curr;
+	t_env	*ans;
 
+	ans = NULL;
 	if (!data || !var)
 		return (NULL);
 	curr = data->env;
 	while (curr)
 	{
 		if (!ft_strncmp(curr->var, var, ft_strlen(var) + 1))
-			break ;
+			ans=curr;
 		curr = curr->next;
 	}
-	if (!curr)
+	if (!ans)
 		return (NULL);
-	return (curr->value);
+	return (ans->value);
 }
 
 //expands $-variable

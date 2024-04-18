@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 10:43:53 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/04/17 18:05:04 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/04/18 11:05:11 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -193,8 +193,8 @@ void	complex_exec(t_bigshell *data)
 	current_cmd = data->commands;
 	while (current_cmd->next)
 	{
-		if (g_sig.sigint) //check for signal before executing any command. if yes, spit prompt again
-			exit_child(data, 130);
+		if (g_sig == SIGINT) //check for signal before executing any command. if yes, spit prompt again
+			CRITICAL_FAILURE(data, "complex exec: SIGINT received");
 		/* if (data->redir)
 			restore_fork(data); */
 		////printf("complex:: current command: %s current arg:%s\n", current_cmd->cmd->str, current_cmd->args->str); //debugging printf
@@ -245,7 +245,7 @@ void	complex_exec(t_bigshell *data)
 	wait_for_children(data);
 	if (!current_cmd->next)
 	{
-		if (g_sig.sigint) //check for signal before executing any command. if yes, spit prompt again
+		if (g_sig == SIGINT) //check for signal before executing any command. if yes, spit prompt again
 			CRITICAL_FAILURE(data, "complex exec: SIGINT received");
 		restore_output(data);
 		if (current_cmd->input || current_cmd->output)

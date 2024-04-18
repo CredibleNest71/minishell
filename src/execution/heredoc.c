@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mresch <mresch@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 14:55:27 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/04/11 15:10:56 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/04/17 12:45:02 by mresch           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,7 +143,7 @@ void	ft_heredoc(t_bigshell *data)
 			simple_error(data, 1);
 		while (1)
 		{
-			if (g_sig.sigint)
+			if (g_sig == SIGINT)
 				break ;
 			lineread = readline("> ");
 			//printf("%s\n", eof_mod);

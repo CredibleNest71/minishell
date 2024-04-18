@@ -6,7 +6,7 @@
 /*   By: mresch <mresch@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 14:54:17 by mresch            #+#    #+#             */
-/*   Updated: 2024/04/10 14:54:45 by mresch           ###   ########.fr       */
+/*   Updated: 2024/04/16 12:35:49 by mresch           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,17 +68,23 @@ int	check_specials(char *str, int *i)
 int	check_end_on_pipe(char *s)
 {
 	int	len;
+	int	i;
 
+	i = 0;
 	len = ft_strlen(s) - 1;
 	while (len + 1)
 	{
-		if (s[len] == '|')
+		if (is_char(s[len], "<>|"))
 			return (1);
 		if (is_char(s[len], SPACE3))
 			len--;
 		else
-			return (0);
+			break ;
 	}
+	while (s[i] && is_char(s[i], SPACE3))
+		i++;
+	if (is_char(s[i], "<>|"))
+		return (1);
 	return (0);
 }
 

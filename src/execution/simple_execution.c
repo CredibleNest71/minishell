@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 17:54:30 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/04/16 13:43:15 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/04/18 11:05:25 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,8 @@ void	simple_exec(t_bigshell *data)
 	
 	paths = NULL;
 	correct_path = NULL;
-	if (g_sig.sigint) //check for signal before executing any command. if yes, spit prompt again
-			exit_child(data, 130); //SIGINT received
+	if (g_sig == SIGINT) //check for signal before executing any command. if yes, spit prompt again
+			CRITICAL_FAILURE(data, "complex exec: SIGINT received");
 	convert_env(data); //check this function env struct has changed
 	paths = find_and_split_path(data->mod_env);
 	if (!paths)

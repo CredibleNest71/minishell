@@ -8,11 +8,11 @@
 #include <sys/ioctl.h>
 #include <asm/termbits.h>
 
-t_sig	g_sig;
+int	g_sig;
 
 void	reset_sig()
 {
-	g_sig.sigint = 0;
+	g_sig = 0;
 }
 
 static void	redo_rl()
@@ -25,14 +25,14 @@ static void	redo_rl()
 
 static void	set_global()
 {
-	g_sig.sigint = 1;
+	g_sig = SIGINT;
 }
 static void    newline_to_readline(int sig)
 {
     if (sig == SIGINT)
     {
         ioctl(0, TIOCSTI, "\n");
-        g_sig.sigint = SIGINT;
+        g_sig = SIGINT;
         rl_replace_line("", 0);
         rl_on_new_line();
     }
@@ -40,7 +40,7 @@ static void    newline_to_readline(int sig)
 
 void	set_signals(int mode)
 {
-	g_sig.sigint = 0;
+	g_sig = 0;
 
 	if (!mode)
 	{
@@ -52,7 +52,7 @@ void	set_signals(int mode)
 		signal(SIGINT, &set_global);
 		signal(SIGQUIT, SIG_DFL);
 	}	
-	else if (mode == 1)
+	else if (mode == 2)
 	{
 		signal(SIGINT, &newline_to_readline);
 		signal(SIGQUIT, SIG_IGN);

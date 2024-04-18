@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 11:33:48 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/04/17 17:15:18 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/04/18 11:05:34 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 #include <unistd.h>
 #include <string.h>
 
-int	find(t_bigshell *data)
+int	get_exitcode(t_bigshell *data)
 {
 	t_env	*tmp;
 
@@ -31,7 +31,7 @@ int	find(t_bigshell *data)
 	return (0);
 }
 
-extern t_sig	g_sig;
+extern int	g_sig;
 
 int	main(int argc, char **argv, char **env)
 {
@@ -64,7 +64,7 @@ int	main(int argc, char **argv, char **env)
 			free(line);
 		}
 		if (!lineread)
-			return (/*write(1, "exit\n", 5), */find(&data));
+			return (/*write(1, "exit\n", 5), */get_exitcode(&data));
 		add_history(lineread);
 		//printf("I work here\n");
 		data.commands = parse(lineread, &data);

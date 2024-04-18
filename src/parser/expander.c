@@ -51,7 +51,7 @@ char	*find_var_name(char *str)
 	if (!str[i])
 		return (NULL);
 	i++;
-	while (str[i + j] && (ft_isalnum(str[i + j]) || str[i + j] == '_') && str[i + j])
+	while (str[i + j] && (ft_isalnum(str[i + j]) || is_char(str[i + j], "_?")) && str[i + j])
 		j++;
 	ret = ft_strndup(&str[i], j);
 	return (ret);

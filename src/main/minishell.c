@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 11:33:48 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/04/18 12:33:56 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/04/18 14:02:31 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ int	main(int argc, char **argv, char **env)
 		add_history(lineread);
 		//printf("I work here\n");
 		data.commands = parse(lineread, &data);
-		//print_cmds(data.commands, &data);
+		print_cmds(data.commands, &data);
 		set_signals(1);
 		if (!data.commands)
 			continue ;
@@ -81,7 +81,7 @@ int	main(int argc, char **argv, char **env)
 				CRITICAL_FAILURE(&data, "main: fork failed");
 			if (data.commands->pid == 0)
 				simple_exec(&data);
-			wait(NULL); //use specific children waiting ft here for correct exit code
+			wait_for_children(&data); //use specific children waiting ft here for correct exit code
 		}
 		else if (data.num_cmd > 1)
 		{

@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 17:34:54 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/04/18 12:54:59 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/04/18 14:02:10 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,8 +145,9 @@ void	simple_exec(t_bigshell *data);
 
 void    restore_output(t_bigshell *data);
 
-void	complex_exec(t_bigshell *data);
 void	pipe_init(t_bigshell *data);
+void	wait_for_children(t_bigshell *data);
+void	complex_exec(t_bigshell *data);
 
 void	ft_echo(t_token *args);
 void	ft_cd(t_bigshell *data);

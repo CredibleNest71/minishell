@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 10:43:53 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/04/18 11:05:11 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/04/18 12:46:18 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	pipe_init(t_bigshell *data)
 	data->pipe = pipe;
 }
 
-int	get_exit_stat(t_bigshell *data)
+/* int	get_exit_stat(t_bigshell *data)
 {
 	t_env	*tmp;
 	int		stat_loc;
@@ -48,7 +48,7 @@ int	get_exit_stat(t_bigshell *data)
 		tmp = tmp->next;
 	}
 	return (stat_loc);
-}
+} */
 
 void	wait_for_children(t_bigshell *data)
 {
@@ -56,7 +56,7 @@ void	wait_for_children(t_bigshell *data)
 	int			stat_loc;
 
 	cmd = data->commands;
-	stat_loc = get_exit_stat(data);
+	stat_loc = get_exitcode(data);
 	while (cmd)
 	{
 		waitpid(cmd->pid, &stat_loc, 0);

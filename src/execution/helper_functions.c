@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   helper_functions.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mresch <mresch@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 17:04:24 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/04/10 12:22:40 by mresch           ###   ########.fr       */
+/*   Updated: 2024/04/18 12:43:40 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,6 +113,8 @@ void	free_struct(t_bigshell *data)
 {
 	//free everything before exiting minishell;
 	//puts("Haha i was called");
+	close(data->std_in);
+	close(data->std_out);
 	if (data->commands)
 	{
 		delete_command_list(data->commands);

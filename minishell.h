@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mresch <mresch@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 17:34:54 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/04/16 14:10:04 by mresch           ###   ########.fr       */
+/*   Updated: 2024/04/18 12:54:59 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,12 +131,11 @@ char	*check_if_correct_path(char **paths, t_bigshell *data, char *str);
 char	*put_str(char *s);
 void	put_built_in(int index, t_bigshell *data);
 void	built_in_list(t_bigshell *data);
-void	builtin_exec(t_bigshell *data, int builtin_index);
-int		builtin_check_exec(t_bigshell *data, char *cmd);
+void	builtin_exec(t_bigshell *data, int builtin_index, t_command *cmd);
+int		builtin_check_exec(t_bigshell *data, char *cmd, t_command *command);
 
 int		builtin_allrounder(t_bigshell *data);
 
-void	update_exit_stat(t_bigshell *data, int exit_code);
 void	redir_error(t_bigshell *data, int exit_code, char *str);
 void	simple_error(t_bigshell *data, int exit_code);
 void	exit_child(t_bigshell *data, int exit_stat);
@@ -170,8 +169,9 @@ void	find_node_to_delete(t_bigshell *data, t_env **current, t_env **prev, t_toke
 void	ft_env(t_bigshell *data);
 //void	add_env_variable(t_bigshell *data);
 
-void	ft_exit(t_bigshell *data);
 int		get_exitcode(t_bigshell *data);
+void	update_exit_stat(t_bigshell *data, int exit_code);
+void	ft_exit(t_bigshell *data, t_command *cmd);
 
 t_env   *create_node(t_bigshell *data, char *str);
 void    store_env(t_bigshell *data, char **env);

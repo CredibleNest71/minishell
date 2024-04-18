@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 11:33:48 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/04/18 11:05:34 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/04/18 12:33:56 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,20 +16,6 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <string.h>
-
-int	get_exitcode(t_bigshell *data)
-{
-	t_env	*tmp;
-
-	tmp = data->env;
-	while (tmp)
-	{
-		if (strcmp(tmp->var, "?") == 0)
-			return (ft_atoi(tmp->value));
-		tmp = tmp->next;
-	}
-	return (0);
-}
 
 extern int	g_sig;
 
@@ -68,7 +54,7 @@ int	main(int argc, char **argv, char **env)
 		add_history(lineread);
 		//printf("I work here\n");
 		data.commands = parse(lineread, &data);
-		print_cmds(data.commands, &data);
+		//print_cmds(data.commands, &data);
 		set_signals(1);
 		if (!data.commands)
 			continue ;

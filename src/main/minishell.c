@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 11:33:48 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/04/18 14:07:18 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/04/19 11:50:37 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	main(int argc, char **argv, char **env)
 {
 	t_bigshell			data;
 
-	if (argc && argv) 
+	if (argc && argv)
 		argv[argc - 1] = argv[argc - 1];
 	bzero(&data, sizeof(data));
 	store_env(&data, env);

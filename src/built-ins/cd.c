@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 10:32:36 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/04/16 13:30:18 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/04/19 11:36:48 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -204,6 +204,11 @@ void	ft_cd(t_bigshell *data)
 	if (!data->commands->args || ft_strncmp(data->commands->args->str, "~", 1) == 0)
 	{
 		path = getenv("HOME");
+		if (!path)
+		{
+			ft_putstr_fd("minishell: cd: HOME not set\n", 2);
+			return ;
+		}
 		overwrite_pwd(data, path);
 	}
 	else
@@ -238,15 +243,3 @@ void	ft_cd(t_bigshell *data)
 		printf("fucking chdir\n");
 	return ;
 }
-
-/* void	ft_cd(t_bigshell *data, int index)
-{
-	char	*path;
-	if (data->commands[index]->cmd->type == (e_type) PATH)
-		path = data->commands[index]->cmd->str;
-	else
-		path = getenv("HOME");
-	if (chdir(path) == -1)
-		perror("cd failure:");
-	exit (0);
-} */

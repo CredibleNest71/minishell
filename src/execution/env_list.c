@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 09:46:40 by a                 #+#    #+#             */
-/*   Updated: 2024/04/18 15:04:40 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/04/19 11:50:19 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,16 +72,24 @@ void    store_env(t_bigshell *data, char **env)
     t_env   *current_node;
 
     i = 0;
-    data->env = create_node(data, env[i]);
-    current_node = data->env;
-    while (env[++i])
-    {
-        current_node->next = create_node(data, env[i]);
-        current_node = current_node->next; 
-    }
-	current_node->next = create_node(data, "?=0"); //added this to store exit stat in env
-	i++;
-	data->var_i = i; //this should be updated every time export adds a variable to the list //do I use this shit? 12.03
+	if (!env || !env[0])
+	{
+		data->env = create_node(data, "?=0");
+		data->var_i = 1;
+	}
+	else
+	{
+		data->env = create_node(data, env[i]);
+		current_node = data->env;
+		while (env[++i])
+		{
+			current_node->next = create_node(data, env[i]);
+			current_node = current_node->next; 
+		}
+		current_node->next = create_node(data, "?=0"); //added this to store exit stat in env
+		i++;
+		data->var_i = i; //this should be updated every time export adds a variable to the list //do I use this shit? 12.03
+	}
 }
 
 //check smt looks weird

@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 10:32:36 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/04/19 11:36:48 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/04/19 13:03:03 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -201,7 +201,7 @@ void	ft_cd(t_bigshell *data)
 		free(cwd);
 		return ;
 	}
-	if (!data->commands->args || ft_strncmp(data->commands->args->str, "~", 1) == 0)
+	if (!data->commands->args || ft_strncmp(data->commands->args->str, "~", ft_strlen(data->commands->args->str)) == 0)
 	{
 		path = getenv("HOME");
 		if (!path)

@@ -6,12 +6,13 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 17:34:54 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/04/18 14:02:10 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/04/19 17:07:45 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
+//#include <cstddef>
 # include <unistd.h>
 # include <stdlib.h>
 # include <stdio.h>
@@ -98,6 +99,12 @@ typedef struct	s_bigshell
 	int			fd_out; //redirected out
 	int			heredoc_fd; //redirected err
 	int			redir;
+	
+	//stuff to make cd norminette compliant
+	size_t		buffer_size;
+	char		*cwd;
+	char		*mod_cwd;
+	
 //	char		*export_var; //tf is this
 //	char		**og_env; //do I use u?
 	char		**mod_env;
@@ -137,6 +144,7 @@ int		builtin_check_exec(t_bigshell *data, char *cmd, t_command *command);
 int		builtin_allrounder(t_bigshell *data);
 
 void	redir_error(t_bigshell *data, int exit_code, char *str);
+void	simple_error_message(t_bigshell *data, char *str, int exit_code);
 void	simple_error(t_bigshell *data, int exit_code);
 void	exit_child(t_bigshell *data, int exit_stat);
 void	CRITICAL_FAILURE(t_bigshell *data, char *str);
@@ -150,7 +158,11 @@ void	wait_for_children(t_bigshell *data);
 void	complex_exec(t_bigshell *data);
 
 void	ft_echo(t_token *args);
+
+char	*delete_tail(char *full_path);
+void	overwrite_pwd(t_bigshell *data, char *new_path);
 void	ft_cd(t_bigshell *data);
+
 void	ft_pwd(t_bigshell *data);
 
 void	ft_export(t_bigshell *data);

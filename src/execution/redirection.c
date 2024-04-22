@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 17:59:11 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/04/12 14:59:14 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/04/17 17:57:33 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,8 @@ void	store_restore_fds(t_bigshell *data, int mode)
 			CRITICAL_FAILURE(data, "dup_stdin dup2 fail");
 		if ((dup2(data->std_out, 1)) == -1) // || close(data->std_in) == -1 || close(data->std_out) == -1
 			CRITICAL_FAILURE(data, "dup_stdout dup2 fail");
+		close(data->std_in);
+		close(data->std_out);
 	}
 }
 
@@ -145,7 +147,10 @@ int	redir(t_command *command, t_bigshell *data)
 				if (!in->next)
 					break ;
 				else
+				{
+					close(data->fd_in); //protect
 					in = in->next;
+				}
 			}
 			if (data->fd_in == -1)
 			{
@@ -160,13 +165,20 @@ int	redir(t_command *command, t_bigshell *data)
 	{
 		while (out)
 		{
-			data->fd_out = open(out->str, O_CREAT | O_TRUNC | O_WRONLY, 00644);
+			dprintf(2, "am I here\n");
+			if (out->type == (enum type)APP)
+				data->fd_out = open(out->str, O_CREAT | O_APPEND | O_WRONLY, 00644);
+			else
+				data->fd_out = open(out->str, O_CREAT | O_TRUNC | O_WRONLY, 00644);
 			if (data->fd_out == -1)
 				CRITICAL_FAILURE(data, "redirection: open failed");
 			if (!out->next)
 				break ;
 			if (out->next)
+			{
+				close(data->fd_out);
 				out = out->next;
+			}
 		}
 		if (data->fd_out == -1)
 			CRITICAL_FAILURE(data, "redirection: open failed");

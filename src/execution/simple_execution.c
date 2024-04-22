@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 17:54:30 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/04/18 11:05:25 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/04/22 14:53:58 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ void	simple_exec(t_bigshell *data)
 		printf("minishell: command '%s' not found\n", data->commands->cmd->str);
 		exit_child(data, 127);
 	}
+	//printf("path executed:%s\n", correct_path);
 	execve(correct_path, data->commands->args_exec, data->mod_env);
 	/* free(correct_path);
 	free(paths); */

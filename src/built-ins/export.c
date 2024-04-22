@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 12:34:44 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/04/17 16:44:56 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/04/18 18:37:26 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ void	print_env(t_env *head)
 		printf("declare -x ");
 		printf("%s", head->var);
 		if (!head->value)
-			printf("\n");
+			printf("=\"\"\n");
 		if (head->value)
 			printf("=%c%s%c\n", 34, head->value, 34);
 		head = head->next;
@@ -201,10 +201,14 @@ int	check_var(t_bigshell *data, char *key)
 void	switch_values(t_bigshell *data, t_env *node, char *new_value, int len)
 {
 	free(node->value);
-	node->value = (char *)malloc(sizeof(char) * len + 1);
-	if (!node->value)
-		CRITICAL_FAILURE(data, "export: malloc failed");
-	memcpy(node->value, new_value, len);
+	node->value = NULL;
+	if (new_value)
+	{
+		node->value = (char *)malloc(sizeof(char) * len + 1);
+		if (!node->value)
+			CRITICAL_FAILURE(data, "export: malloc failed");
+	}
+	ft_memcpy(node->value, new_value, len);
 }
 
 int	var_exists(t_bigshell *data, char *str)
@@ -214,33 +218,47 @@ int	var_exists(t_bigshell *data, char *str)
 	char	*separator;
 	char	*key;
 	int		var_len;
+	int		i;
 
+	i = 0;
 	env = data->env;
 	s_env = data->s_env;
 	separator = ft_strchr(str, '=');
-	var_len = separator - str;
-	key = NULL;
+	if (!separator)
+		var_len = ft_strlen(str);
+	else
+		var_len = separator - str;
+	key = malloc(sizeof(char *) * var_len + 1);
 	ft_memcpy(key, str, var_len);
+	key[var_len] = '\0';
 	while (env)
 	{
 		if (ft_strncmp(env->var, key, ft_strlen(env->var)) == 0)
 		{
-			//printf("wtf %s\n", env->var); //debugging printf?
-			switch_values(data, env, separator + 1, ft_strlen(separator + 1));
-			return (0);
+			if (!separator || *(separator + 1) == '\0')
+				switch_values(data, env, NULL, 1);
+			else
+				switch_values(data, env, separator + 1, ft_strlen(separator + 1));
+			i++;
+			break ;
 		}
 		env = env->next;
 	}
 	while (s_env)
 	{
-		if (ft_strncmp(s_env->var, str, (size_t)(separator - str) + 1) == 0)
+		if (ft_strncmp(s_env->var, key, ft_strlen(s_env->var)) == 0)
 		{
-			//printf("wtf %s\n", s_env->var); //debugging printf?
-			switch_values(data, s_env, separator + 1, ft_strlen(separator + 1));
-			return (0);
+			if (!separator || *(separator + 1) == '\0')
+				switch_values(data, s_env, NULL, 1);
+			else
+				switch_values(data, s_env, separator + 1, ft_strlen(separator + 1));
+			i++;
+			break ;
 		}
 		s_env = s_env->next;
 	}
+	if (i == 2)
+		return (0);
 	return (1);
 }
 
@@ -270,7 +288,7 @@ void	ft_export(t_bigshell *data)
 	{
 		if (check_var(data, arg->str) == 1)
 			return ;
-		if (var_exists(data, arg->str) == 0)
+		if (!var_exists(data, arg->str))
 		{
 			arg = arg->next;
 			continue ;

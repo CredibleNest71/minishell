@@ -3,15 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mresch <mresch@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 17:34:54 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/04/16 14:10:04 by mresch           ###   ########.fr       */
+/*   Updated: 2024/04/19 17:07:45 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
+//#include <cstddef>
 # include <unistd.h>
 # include <stdlib.h>
 # include <stdio.h>
@@ -98,6 +99,12 @@ typedef struct	s_bigshell
 	int			fd_out; //redirected out
 	int			heredoc_fd; //redirected err
 	int			redir;
+	
+	//stuff to make cd norminette compliant
+	size_t		buffer_size;
+	char		*cwd;
+	char		*mod_cwd;
+	
 //	char		*export_var; //tf is this
 //	char		**og_env; //do I use u?
 	char		**mod_env;
@@ -131,13 +138,13 @@ char	*check_if_correct_path(char **paths, t_bigshell *data, char *str);
 char	*put_str(char *s);
 void	put_built_in(int index, t_bigshell *data);
 void	built_in_list(t_bigshell *data);
-void	builtin_exec(t_bigshell *data, int builtin_index);
-int		builtin_check_exec(t_bigshell *data, char *cmd);
+void	builtin_exec(t_bigshell *data, int builtin_index, t_command *cmd);
+int		builtin_check_exec(t_bigshell *data, char *cmd, t_command *command);
 
 int		builtin_allrounder(t_bigshell *data);
 
-void	update_exit_stat(t_bigshell *data, int exit_code);
 void	redir_error(t_bigshell *data, int exit_code, char *str);
+void	simple_error_message(t_bigshell *data, char *str, int exit_code);
 void	simple_error(t_bigshell *data, int exit_code);
 void	exit_child(t_bigshell *data, int exit_stat);
 void	CRITICAL_FAILURE(t_bigshell *data, char *str);
@@ -146,11 +153,16 @@ void	simple_exec(t_bigshell *data);
 
 void    restore_output(t_bigshell *data);
 
-void	complex_exec(t_bigshell *data);
 void	pipe_init(t_bigshell *data);
+void	wait_for_children(t_bigshell *data);
+void	complex_exec(t_bigshell *data);
 
 void	ft_echo(t_token *args);
+
+char	*delete_tail(char *full_path);
+void	overwrite_pwd(t_bigshell *data, char *new_path);
 void	ft_cd(t_bigshell *data);
+
 void	ft_pwd(t_bigshell *data);
 
 void	ft_export(t_bigshell *data);
@@ -170,8 +182,9 @@ void	find_node_to_delete(t_bigshell *data, t_env **current, t_env **prev, t_toke
 void	ft_env(t_bigshell *data);
 //void	add_env_variable(t_bigshell *data);
 
-void	ft_exit(t_bigshell *data);
 int		get_exitcode(t_bigshell *data);
+void	update_exit_stat(t_bigshell *data, int exit_code);
+void	ft_exit(t_bigshell *data, t_command *cmd);
 
 t_env   *create_node(t_bigshell *data, char *str);
 void    store_env(t_bigshell *data, char **env);

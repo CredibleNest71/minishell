@@ -6,7 +6,7 @@
 /*   By: mresch <mresch@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 14:55:07 by mresch            #+#    #+#             */
-/*   Updated: 2024/04/22 16:41:41 by mresch           ###   ########.fr       */
+/*   Updated: 2024/04/22 16:59:36 by mresch           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ char	*expand(char *str, t_bigshell *data)
 				return (str);
 			val = get_val(var, data);
 			if (!val && ft_strlen(var) + 1 == ft_strlen(str))
-				return (NULL);
+				return (free(var), NULL);
 			new = ft_string_insert(str, val, here - str, ft_strlen(var));
 			free(var);
 			str = new;

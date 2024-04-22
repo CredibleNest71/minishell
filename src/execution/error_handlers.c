@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 11:41:58 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/04/11 12:11:35 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/04/19 17:08:00 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,37 +14,17 @@
 //#include <iterator>
 #include <stdlib.h>
 
-void	update_exit_stat(t_bigshell *data, int exit_code) //gotta free code (LEAK)
-{
-	t_env	*tmp;
-	char	*code;
-
-	tmp = data->env;
-	code = ft_itoa(exit_code);
-	if (!code)
-		CRITICAL_FAILURE(data, "redir error: itoa failed");
-	while (tmp)
-	{
-		if (!ft_strncmp(tmp->var, "?", ft_strlen(tmp->var)))
-		{
-			if (tmp->value)
-			{
-				free(tmp->value);
-				tmp->value = NULL;
-			}
-			tmp->value = ft_strdup(code);
-			if (!tmp->value)
-				CRITICAL_FAILURE(data, "redir error: couldn't reassign exit status to env");
-			break ;
-		}
-		tmp = tmp->next;
-	}
-}
-
 void	redir_error(t_bigshell *data, int exit_code, char *str)
 {
 	printf("%s\n", str);
 	update_exit_stat(data, exit_code);
+}
+
+void	simple_error_message(t_bigshell *data, char *str, int exit_code)
+{
+	printf("%s\n", str);
+	update_exit_stat(data, exit_code);
+	data->simple_error = EXIT_FAILURE;
 }
 
 void	simple_error(t_bigshell *data, int exit_code)

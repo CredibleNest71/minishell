@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   built_in_list.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mresch <mresch@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 12:10:32 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/04/16 14:08:20 by mresch           ###   ########.fr       */
+/*   Updated: 2024/04/18 12:55:22 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ int	builtin_allrounder(t_bigshell *data)
 	built_in_list(data);
 	if (!data->commands->cmd->str)
 		return (EXIT_FAILURE);
-	result = builtin_check_exec(data, data->commands->cmd->str);
+	result = builtin_check_exec(data, data->commands->cmd->str, data->commands);
 	return (result);
 }
 
@@ -102,14 +102,14 @@ void	built_in_list(t_bigshell *data)
 	data->built_ins[i] = NULL;
 }
 
-void	builtin_exec(t_bigshell *data, int builtin_index)
+void	builtin_exec(t_bigshell *data, int builtin_index, t_command *cmd)
 {
 	if (builtin_index == 0)
 	{
-		if (!data->commands->args)
-			ft_echo(data->commands->args);
+		if (!cmd->args)
+			ft_echo(cmd->args);
 		else 
-			ft_echo(data->commands->args);
+			ft_echo(cmd->args);
 	}
 	else if (builtin_index == 1)
 		ft_cd(data);
@@ -122,10 +122,10 @@ void	builtin_exec(t_bigshell *data, int builtin_index)
 	else if (builtin_index == 5)
 		ft_env(data);
 	else if (builtin_index == 6)
-		ft_exit(data);
+		ft_exit(data, cmd);
 }
 
-int	builtin_check_exec(t_bigshell *data, char *cmd)
+int	builtin_check_exec(t_bigshell *data, char *cmd, t_command *command)
 {
 	int		len;
 	int		i;
@@ -136,12 +136,12 @@ int	builtin_check_exec(t_bigshell *data, char *cmd)
 	{
 		if (ft_strncmp(cmd, "echo", len + 1) == 0)
 		{
-			builtin_exec(data, 0);
+			builtin_exec(data, 0, command);
 			return (0);
 		}
 		else if (ft_strncmp(cmd, data->built_ins[i], len + 1) == 0)
 		{
-			builtin_exec(data, i);
+			builtin_exec(data, i, command);
 			return(0);
 		}
 		i++;

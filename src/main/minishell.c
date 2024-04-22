@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mresch <mresch@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 11:33:48 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/04/22 16:40:56 by mresch           ###   ########.fr       */
+/*   Updated: 2024/04/22 17:01:01 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,27 +17,13 @@
 #include <unistd.h>
 #include <string.h>
 
-int	get_exitcode(t_bigshell *data)
-{
-	t_env	*tmp;
-
-	tmp = data->env;
-	while (tmp)
-	{
-		if (strcmp(tmp->var, "?") == 0)
-			return (ft_atoi(tmp->value));
-		tmp = tmp->next;
-	}
-	return (0);
-}
-
 extern int	g_sig;
 
 int	main(int argc, char **argv, char **env)
 {
 	t_bigshell			data;
 
-	if (argc && argv) 
+	if (argc && argv)
 		argv[argc - 1] = argv[argc - 1];
 	bzero(&data, sizeof(data));
 	store_env(&data, env);
@@ -87,6 +73,7 @@ int	main(int argc, char **argv, char **env)
 		{
 			if (builtin_allrounder(&data) == 0)
 			{
+				update_exit_stat(&data, 0);
 				store_restore_fds(&data, 2);
 				continue ;
 			}
@@ -95,7 +82,7 @@ int	main(int argc, char **argv, char **env)
 				CRITICAL_FAILURE(&data, "main: fork failed");
 			if (data.commands->pid == 0)
 				simple_exec(&data);
-			wait(NULL); //use specific children waiting ft here for correct exit code
+			wait_for_children(&data); //use specific children waiting ft here for correct exit code
 		}
 		else if (data.num_cmd > 1)
 		{

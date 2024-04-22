@@ -6,7 +6,7 @@
 /*   By: mresch <mresch@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 14:55:07 by mresch            #+#    #+#             */
-/*   Updated: 2024/04/17 14:05:04 by mresch           ###   ########.fr       */
+/*   Updated: 2024/04/17 15:47:20 by mresch           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ char	*get_val(char *var, t_bigshell *data)
 	while (curr)
 	{
 		if (!ft_strncmp(curr->var, var, ft_strlen(var) + 1))
-			ans=curr;
+			ans = curr;
 		curr = curr->next;
 	}
 	if (!ans)

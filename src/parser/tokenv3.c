@@ -6,7 +6,7 @@
 /*   By: mresch <mresch@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 14:46:26 by mresch            #+#    #+#             */
-/*   Updated: 2024/04/10 16:37:26 by mresch           ###   ########.fr       */
+/*   Updated: 2024/04/22 17:36:08 by mresch           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ int	no_quotes(t_token *token, char *str, int *i)
 		if (is_char(str[*i], "$"))
 			found++;
 		while (str[*i + found] && \
-		!is_char(str[*i + found], "$|\"\'\n\t\v \r\f"))
+		!is_char(str[*i + found], "<>$|\"\'\n\t\v \r\f"))
 			found++;
 	}
 	if (!found)

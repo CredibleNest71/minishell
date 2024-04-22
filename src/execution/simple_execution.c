@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 17:54:30 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/04/18 11:05:25 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/04/22 13:57:06 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,16 +31,19 @@ void	simple_exec(t_bigshell *data)
 	if (g_sig == SIGINT) //check for signal before executing any command. if yes, spit prompt again
 			CRITICAL_FAILURE(data, "complex exec: SIGINT received");
 	convert_env(data); //check this function env struct has changed
+	printf("a\n");
 	paths = find_and_split_path(data->mod_env);
 	if (!paths)
 		exit_child(data, 1); //find &split failed
 		//printf("find&split failed\n"); //shit has been allocated
+	printf("b\n");
 	correct_path = check_if_correct_path(paths, data, data->commands->cmd->str);
 	if (!correct_path)
 	{
 		printf("minishell: command '%s' not found\n", data->commands->cmd->str);
 		exit_child(data, 127);
 	}
+	printf("path executed:%s\n", correct_path);
 	execve(correct_path, data->commands->args_exec, data->mod_env);
 	/* free(correct_path);
 	free(paths); */

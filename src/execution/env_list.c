@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 09:46:40 by a                 #+#    #+#             */
-/*   Updated: 2024/04/19 11:50:19 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/04/22 14:31:32 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,21 @@ void    store_env(t_bigshell *data, char **env)
 	}
 }
 
+int	strlen_env(t_bigshell *data)
+{
+	int		i;
+	t_env	*tmp;
+
+	i = 0;
+	tmp = data->env;
+	while (tmp)
+	{
+		tmp = tmp->next;
+		i++;
+	}
+	return (i);
+}
+
 //check smt looks weird
 //ft makes data->env into a char ** for execve
 void    convert_env(t_bigshell *data)
@@ -100,13 +115,13 @@ void    convert_env(t_bigshell *data)
 	char	*str;
 	t_env	*current;
     
-    data->mod_env = (char **)malloc(sizeof(char *) * data->var_i);
+    data->mod_env = (char **)malloc(sizeof(char *) * (strlen_env(data) + 1));
     if (!data->mod_env)
         CRITICAL_FAILURE(data, "env_list: malloc failed 6");
-    data->mod_env[data->var_i - 1] = NULL;
+    data->mod_env[strlen_env(data)] = NULL;
     i = 0;
 	current = data->env;
-    while (current->next)
+    while (current) // before while (current->next)
     {
 		str = ft_strjoin(current->var, "=");
 		if (!str)

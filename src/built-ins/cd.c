@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 10:32:36 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/04/22 12:22:26 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/04/22 13:38:17 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -249,7 +249,7 @@ void    home_dir(t_bigshell *data)
 {
     char    *home;
 
-    home = getenv("HOME");ft_s
+    home = getenv("HOME");
     if (!home)
     {
         ft_putstr_fd("minishell: cd: HOME not set\n", 2);
@@ -273,6 +273,7 @@ char    *free_NULL(char *str)
 
 char    *get_cwd(t_bigshell *data)
 {
+	data->cwd = NULL;
     data->buffer_size = BUFFER;
     while (1)
     {
@@ -285,6 +286,7 @@ char    *get_cwd(t_bigshell *data)
             CRITICAL_FAILURE(data, "cd: malloc failed in cd.c:go_back");
         }
         getcwd(data->cwd, data->buffer_size);
+		printf("afte getcwd = %s\n", data->cwd);
         if (!data->cwd && errno == ERANGE)
         {
             data->cwd = free_NULL(data->cwd);
@@ -335,7 +337,9 @@ void    ft_cd(t_bigshell *data)
             update_exit_stat(data, 1);
             return ;
         }
+		//data->cwd = NULL;
         cwd = get_cwd(data);
+		printf("cwd = %s\n", cwd);
         if (!cwd)
         {
             simple_error_message(data, "minishell: cd.c: cwd failed\n", 1);

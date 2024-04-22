@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 10:43:53 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/04/22 15:54:07 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/04/22 17:41:28 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,6 +103,7 @@ void	first_executor(t_bigshell *data, t_command *cmd, int out_fd)
 	execve(correct_path, cmd->args_exec, data->mod_env);
 	//printf("execve failed\n");
 	free(correct_path);
+	free_struct(data);
 	exit(126);
 
 }
@@ -140,6 +141,7 @@ void	last_executor(t_bigshell *data, t_command *cmd, int in_fd)
 	//printf("execve failed\n");
 	free(correct_path);
 	free(paths);
+	free_struct(data);
 	exit (126);
 
 }
@@ -181,6 +183,7 @@ void	middle_executor(t_bigshell *data, t_command *cmd, int out_fd, int in_fd)
 	//printf("execve failed\n");
 	free(correct_path);
 	free(paths);
+	free_struct(data);
 	exit(126);
 
 }
@@ -207,10 +210,13 @@ void	complex_exec(t_bigshell *data)
 			data->pipe->read = data->pipe_fd[0];
 			data->pipe->write = data->pipe_fd[1];
 			dprintf(2, "pipe from first: %d, %d\n", data->pipe_fd[0], data->pipe_fd[1]);
-			if ((current_cmd->pid = fork()) == -1)
-				CRITICAL_FAILURE(data, "complex exec: fork failed in first command");
-			if (current_cmd->pid == 0)
-				first_executor(data, current_cmd, data->pipe->write);
+			if (current_cmd->cmd)
+			{
+				if ((current_cmd->pid = fork()) == -1)
+					CRITICAL_FAILURE(data, "complex exec: fork failed in first command");
+				if (current_cmd->pid == 0)
+					first_executor(data, current_cmd, data->pipe->write);
+			}
 			/* if (data->redir == 1)
 				restore_fork(data, 1); */
 			if (close(data->pipe->write) == -1)
@@ -220,7 +226,7 @@ void	complex_exec(t_bigshell *data)
 		{
 			if (current_cmd->input || current_cmd->output)
 			{
-				dprintf(2, "alo\n");
+				//dprintf(2, "alo\n");
 				//store_restore_fds(data, 1);
 				if (redir(current_cmd, data))
 				{
@@ -231,10 +237,13 @@ void	complex_exec(t_bigshell *data)
 			if (pipe(data->pipe_fd2) == -1)
 				CRITICAL_FAILURE(data, "complex exec: pipe 2 failed in middle command");
 			data->pipe->write = data->pipe_fd2[1];
-			if ((current_cmd->pid = fork()) == -1)
-				CRITICAL_FAILURE(data, "complex exec: fork failed in middle command");
-			if (current_cmd->pid == 0)
-				middle_executor(data, current_cmd, data->pipe->write, data->pipe->read);
+			if (current_cmd->cmd)
+			{
+				if ((current_cmd->pid = fork()) == -1)
+					CRITICAL_FAILURE(data, "complex exec: fork failed in middle command");
+				if (current_cmd->pid == 0)
+					middle_executor(data, current_cmd, data->pipe->write, data->pipe->read);
+			}
 			if (close(data->pipe->write) == -1 || close(data->pipe->read) == -1)
 				CRITICAL_FAILURE(data, "complex exec: close(1) failed in parent process");
 			data->pipe->read = data->pipe_fd2[0];
@@ -256,10 +265,13 @@ void	complex_exec(t_bigshell *data)
 				exit_child(data, 1);
 			}
 		}
-		if ((current_cmd->pid = fork()) == -1)
-			CRITICAL_FAILURE(data, "complex exec: fork failed in last command");
-		if (current_cmd->pid == 0)
-			last_executor(data, current_cmd, data->pipe->read);
+		if (current_cmd->cmd)
+		{
+			if ((current_cmd->pid = fork()) == -1)
+				CRITICAL_FAILURE(data, "complex exec: fork failed in last command");
+			if (current_cmd->pid == 0)
+				last_executor(data, current_cmd, data->pipe->read);
+		}
 		////printf("i happened \n"); //debugging printf
 		/* if (data->redir == 3)
 			restore_fork(data, 3); */

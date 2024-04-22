@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 10:32:36 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/04/19 17:32:06 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/04/22 12:22:26 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -249,12 +249,18 @@ void    home_dir(t_bigshell *data)
 {
     char    *home;
 
-    home = getenv("HOME");
+    home = getenv("HOME");ft_s
     if (!home)
     {
         ft_putstr_fd("minishell: cd: HOME not set\n", 2);
         return ;
     }
+	if (chdir(home) == -1)
+	{
+		printf("minishell: cd: %s: No such file or directory\n", home);
+        update_exit_stat(data, 1);
+        return ;
+	}
     overwrite_pwd(data, home);
 }
 
@@ -298,6 +304,7 @@ void    ft_cd(t_bigshell *data)
 {
     t_token *arg;
     char    *cwd;
+	char	*path;
 
     cwd = NULL;
     arg = data->commands->args;
@@ -307,12 +314,12 @@ void    ft_cd(t_bigshell *data)
         update_exit_stat(data, 1);
         return ;
     }
-    if (!arg || ft_strncmp(arg->str, "~", ft_strlen(arg->str)) == 0)
+    if (!arg)
 	{
        home_dir(data);
 	   return ;
 	}
-    if (arg->str[0] == '/')
+    if (arg->str[0] == '/') //here add check for tilde flag if it is present delete first / & continue
     {
         printf("minishell: cd: %s: No such file or directory\n", arg->str);
         update_exit_stat(data, 1);
@@ -321,7 +328,8 @@ void    ft_cd(t_bigshell *data)
     else
     {
         //change_dir(data, arg->str);
-        if (chdir(arg->str) == -1)
+		path = arg->str;
+        if (chdir(path) != 0) //why broken?
         {
             printf("minishell: cd: %s: No such file or directory\n", arg->str);
             update_exit_stat(data, 1);

@@ -6,7 +6,7 @@
 /*   By: mresch <mresch@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 14:48:48 by mresch            #+#    #+#             */
-/*   Updated: 2024/04/17 13:22:04 by mresch           ###   ########.fr       */
+/*   Updated: 2024/04/22 16:48:14 by mresch           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,7 @@ void	remove_token(t_token *curr)
 	else if (next)
 		next->prev = NULL;
 	free(curr->str);
+	curr->str = NULL;
 	free(curr);
 }
 
@@ -106,6 +107,8 @@ int	expand_no_quotes(t_token **list, t_token *prev, \
 	expanded = expand(curr->str, data);
 	if (!expanded || !ft_strlen(expanded))
 	{
+		if (*list == curr)
+			*list = curr->next;
 		remove_token(curr);
 		return (4);
 	}
@@ -206,6 +209,8 @@ void	join(t_token **list)
 	t_token	*next;
 	char	*jstr;
 
+	if (!list || !*list)
+		return ;
 	curr = *list;
 	mark_join(list);
 	while (curr)
@@ -218,7 +223,7 @@ void	join(t_token **list)
 			if (!ft_strncmp(curr->str, "$", 2))
 			{
 				free(curr->str);
-				curr->str = ft_strdup("");
+				curr->str = NULL;
 			}
 			jstr = ft_strjoin(curr->str, next->str);
 			free(curr->str);
@@ -256,7 +261,9 @@ t_token	**expander(t_token **list, t_bigshell *data)
 			prev = curr;
 		curr = next;
 	}
-	if (!check)
+	if (!check || !list || !*list)
+		return (NULL);
+	if (*list && !(*list)->str)
 		return (NULL);
 	join(list);
 	return (list);

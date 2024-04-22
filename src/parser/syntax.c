@@ -6,7 +6,7 @@
 /*   By: mresch <mresch@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 14:54:17 by mresch            #+#    #+#             */
-/*   Updated: 2024/04/16 12:35:49 by mresch           ###   ########.fr       */
+/*   Updated: 2024/04/22 16:52:38 by mresch           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ int	check_end_on_pipe(char *s)
 	}
 	while (s[i] && is_char(s[i], SPACE3))
 		i++;
-	if (is_char(s[i], "<>|"))
+	if (is_char(s[i], "|"))
 		return (1);
 	return (0);
 }

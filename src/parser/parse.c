@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mresch <mresch@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 15:00:46 by mresch            #+#    #+#             */
-/*   Updated: 2024/04/10 16:24:33 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/04/22 16:40:29 by mresch           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,7 +162,9 @@ t_command	*parse(char *input, t_bigshell *data)
 	tokens = tokenmaker(input);
 	heredocs_to_bigshell(tokens, data);
 	tokens = expander(tokens, data);
-	if (!tokens | !(*tokens))
+	if (!tokens)
+		return (NULL);
+	if (!*tokens)
 		return (NULL);
 	cmds = commands_finalized(tokens);
 	set_counts(*cmds, data);

@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 10:43:53 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/04/18 12:46:18 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/04/22 15:54:07 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,17 +60,17 @@ void	wait_for_children(t_bigshell *data)
 	while (cmd)
 	{
 		waitpid(cmd->pid, &stat_loc, 0);
+		if (WIFEXITED(stat_loc))
+		{
+			stat_loc = WEXITSTATUS(stat_loc);
+			update_exit_stat(data, stat_loc);
+		}
+		if (WIFSIGNALED(stat_loc))
+		{
+			stat_loc = WTERMSIG(stat_loc);
+			update_exit_stat(data, stat_loc);
+		}
 		cmd = cmd->next;
-	}
-	if (WIFEXITED(stat_loc))
-	{
-		stat_loc = WEXITSTATUS(stat_loc);
-		update_exit_stat(data, stat_loc);
-	}
-	if (WIFSIGNALED(stat_loc))
-	{
-		stat_loc = WTERMSIG(stat_loc);
-		update_exit_stat(data, stat_loc);
 	}
 }
 
@@ -242,7 +242,7 @@ void	complex_exec(t_bigshell *data)
 		// wait(NULL);
 		current_cmd = current_cmd->next;
 	}
-	wait_for_children(data);
+	//wait_for_children(data);
 	if (!current_cmd->next)
 	{
 		if (g_sig == SIGINT) //check for signal before executing any command. if yes, spit prompt again

@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 14:33:19 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/04/22 13:58:22 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/04/22 14:50:37 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@ char	**find_and_split_path(char **env)
 	i = -1;
 	while (env[++i] != 0)
 	{
-		printf("env[%d]:%s\n", i, env[i]);
 		if (ft_strncmp(env[i], "PATH=", 5) == 0)
 		{
 			path = ft_strdup(env[i]);

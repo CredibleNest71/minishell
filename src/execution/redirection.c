@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 17:59:11 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/04/17 17:57:33 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/04/22 16:57:31 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,7 +126,7 @@ int	redir(t_command *command, t_bigshell *data)
 	out = command->output;
 	if (in)
 	{
-		if (!data->commands->cmd) //is this even necessary? if data->heredoc exists then theres no cmd to redirect it to
+		if (!data->commands->cmd)
 			return (EXIT_FAILURE);
 		else
 		{
@@ -158,20 +158,27 @@ int	redir(t_command *command, t_bigshell *data)
 				return (EXIT_FAILURE);
 			}
 			if (dup2(data->fd_in, 0) == -1)
-				CRITICAL_FAILURE(data, "fd_in dup2 fail");
+			{
+				redir_error(data, 1, "fd_in: dup2 failed");
+				return (EXIT_FAILURE);
+			}
 		}
 	}
 	if (out)
 	{
 		while (out)
 		{
-			dprintf(2, "am I here\n");
 			if (out->type == (enum type)APP)
 				data->fd_out = open(out->str, O_CREAT | O_APPEND | O_WRONLY, 00644);
 			else
 				data->fd_out = open(out->str, O_CREAT | O_TRUNC | O_WRONLY, 00644);
+			if (check_file(data, out->str, 1) != 0)
+				return (EXIT_FAILURE);
 			if (data->fd_out == -1)
-				CRITICAL_FAILURE(data, "redirection: open failed");
+			{
+				redir_error(data, 1, "fd_out: open failed");
+				return (EXIT_FAILURE);
+			}
 			if (!out->next)
 				break ;
 			if (out->next)
@@ -181,11 +188,15 @@ int	redir(t_command *command, t_bigshell *data)
 			}
 		}
 		if (data->fd_out == -1)
-			CRITICAL_FAILURE(data, "redirection: open failed");
-		if (check_file(data, out->str, 1) != 0)
+		{
+			redir_error(data, 1, "fd_out: dup2 failed1");
 			return (EXIT_FAILURE);
+		}
 		if ((dup2(data->fd_out, 1)) == -1)
-			CRITICAL_FAILURE(data, "fd_out dup2 fail");
+		{
+			redir_error(data, 1, "fd_out: dup2 failed2");
+			return (EXIT_FAILURE);
+		}
 	}
 	return (EXIT_SUCCESS);
 }

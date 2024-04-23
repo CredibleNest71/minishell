@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   tokenv2.c                                          :+:      :+:    :+:   */
+/*   tokenextras.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mresch <mresch@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 12:47:26 by mresch            #+#    #+#             */
-/*   Updated: 2024/04/10 15:08:44 by mresch           ###   ########.fr       */
+/*   Updated: 2024/04/23 13:23:01 by mresch           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,4 +75,23 @@ void	delete_command_list(t_command *cmd)
 		cmd = cmd->next;
 		free(prev);
 	}
+}
+
+void	token_list_add(t_token **tokenlist, t_token *token)
+{
+	t_token	*temp;
+
+	if (!tokenlist || !token)
+		return ;
+	if (!(*tokenlist))
+	{
+		*tokenlist = token;
+		return ;
+	}
+	temp = *tokenlist;
+	while (temp->next)
+		temp = temp->next;
+	temp->next = token;
+	token->prev = temp;
+	return ;
 }

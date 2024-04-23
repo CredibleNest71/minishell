@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   expander.c                                         :+:      :+:    :+:   */
+/*   expansion.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mresch <mresch@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 14:55:07 by mresch            #+#    #+#             */
-/*   Updated: 2024/04/22 17:30:15 by mresch           ###   ########.fr       */
+/*   Updated: 2024/04/23 13:50:19 by mresch           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,8 @@ char	*find_var_name(char *str)
 	if (!str[i])
 		return (NULL);
 	i++;
-	while (str[i + j] && (ft_isalnum(str[i + j]) || is_char(str[i + j], "_?")) && str[i + j])
+	while (str[i + j] && (ft_isalnum(str[i + j]) || \
+			is_char(str[i + j], "_?")) && str[i + j])
 		j++;
 	ret = ft_strndup(&str[i], j);
 	return (ret);

@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 10:43:53 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/04/22 17:41:28 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/04/23 17:09:36 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,7 +120,9 @@ void	last_executor(t_bigshell *data, t_command *cmd, int in_fd)
 	{
 		if (dup2(in_fd, 0) == -1) //|| close(data->pipe->write) == -1 || close(data->pipe->read) == -1)
 			CRITICAL_FAILURE(data, "complex exec: last executor: dup2 failed");
+		
 	}
+	close(in_fd);
 	close(data->std_in);
 	close(data->std_out);
 	//redirect output as well
@@ -155,21 +157,23 @@ void	middle_executor(t_bigshell *data, t_command *cmd, int out_fd, int in_fd)
 	correct_path = NULL;
 	if (!cmd->input)
 	{
-		if (dup2(in_fd, 0) == -1) // || close(data->pipe->write) == -1)
+		if (dup2(in_fd, 0) == -1) // || close(data->pipe->write) == -1) cmd->prev->in_fd --> artem
 			CRITICAL_FAILURE(data, "complex exec: middle executor: dup2 failed (in_fd)");
+		close(in_fd);
 	}
 	if (!cmd->output)
 	{
-		dprintf(2, "simon a\n");
+		//dprintf(2, "simon a\n");
 		if (dup2(out_fd, 1) == -1 || close(data->pipe->read) == -1 || close(data->pipe->write) == -1)
 			CRITICAL_FAILURE(data, "complex exec: middle executor: dup2 failed (out_fd)");
+		//close(out_fd);
 	}
 	/* if (data->commands->input || data->commands->output)
 	{
 		printf("about to close in middle\n");
 		if (close(data->fd_in) == -1 || close(data->fd_out) == -1)
 			exit_child(data, 1);
-	} */
+	// } */
 	close(data->std_in);
 	close(data->std_out);
 	convert_env(data);
@@ -178,6 +182,7 @@ void	middle_executor(t_bigshell *data, t_command *cmd, int out_fd, int in_fd)
 		printf("find&split failed\n"); //handle correctly
 	correct_path = check_if_correct_path(paths, data, cmd->cmd->str);
 	if (!correct_path)
+	// TODO: command not found needs to be printed to stderr (in all cases not only here)
 		printf("minishell: command %s not found\n", cmd->cmd->str);
 	execve(correct_path, cmd->args_exec, data->mod_env);
 	//printf("execve failed\n");
@@ -236,6 +241,7 @@ void	complex_exec(t_bigshell *data)
 			}
 			if (pipe(data->pipe_fd2) == -1)
 				CRITICAL_FAILURE(data, "complex exec: pipe 2 failed in middle command");
+			dprintf(2, "pipe from middle: %d, %d\n", data->pipe_fd2[0], data->pipe_fd2[1]);
 			data->pipe->write = data->pipe_fd2[1];
 			if (current_cmd->cmd)
 			{
@@ -275,6 +281,7 @@ void	complex_exec(t_bigshell *data)
 		////printf("i happened \n"); //debugging printf
 		/* if (data->redir == 3)
 			restore_fork(data, 3); */
+		dprintf(2, "pipe from last: %d\n", data->pipe->read);
 		if (close(data->pipe->read) == -1)
 			CRITICAL_FAILURE(data, "complex exec: close(0) failed in parent process");
 	}

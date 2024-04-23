@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 14:33:19 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/04/22 14:50:37 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/04/23 12:33:25 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ char	**find_and_split_path(char **env)
 	{
 		if (ft_strncmp(env[i], "PATH=", 5) == 0)
 		{
-			path = ft_strdup(env[i]);
+			path = ft_strdup(env[i] + 5);
 			if (!path)
 				return (NULL);
 			paths = ft_split(path, ':');
@@ -46,6 +46,7 @@ char	*check_if_correct_path(char **paths, t_bigshell *data, char *str)
 	i = 0;
 	//check if paths &cmd exist?
 	//do I have to take care of absolute n relative paths 4 commands?
+	// what if cmd path is sth like foo/bar/executable
 	if (str[0] == '/' || str[0] == '.')
 		return ((char *)str);
 	while (paths[i] != NULL)

@@ -6,7 +6,7 @@
 /*   By: mresch <mresch@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 14:48:48 by mresch            #+#    #+#             */
-/*   Updated: 2024/04/23 13:32:36 by mresch           ###   ########.fr       */
+/*   Updated: 2024/04/23 16:01:31 by mresch           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ int	expand_no_quotes(t_token **list, t_token *prev, \
 	{
 		if (*list == curr)
 			*list = curr->next;
+		curr->str = expanded;
 		remove_token(curr);
 		return (4);
 	}

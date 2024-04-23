@@ -37,7 +37,7 @@ SRCS = ${SRC_DIR}${EXEC_DIR}complex_exec.c\
 \
 			${SRC_DIR}${PARSER_DIR}parse.c\
 			${SRC_DIR}${PARSER_DIR}commander.c\
-			${SRC_DIR}${PARSER_DIR}expansion.c\
+			${SRC_DIR}${PARSER_DIR}expansion_alt.c\
 			${SRC_DIR}${PARSER_DIR}expansion_routine1.c\
 			${SRC_DIR}${PARSER_DIR}expansion_routine2.c\
 			${SRC_DIR}${PARSER_DIR}expansion_routine3.c\

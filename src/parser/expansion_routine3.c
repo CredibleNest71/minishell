@@ -6,7 +6,7 @@
 /*   By: mresch <mresch@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 13:29:19 by mresch            #+#    #+#             */
-/*   Updated: 2024/04/24 14:35:11 by mresch           ###   ########.fr       */
+/*   Updated: 2024/04/24 15:49:05 by mresch           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ t_token	**split_to_token(char *expanded, int join)
 		token_list_add(ret, new);
 		i++;
 	}
+	free(split);
 	if (is_char(expanded[0], SPACE3))
 		(*ret)->distanced = 1;
 	if (join && !is_char(expanded[ft_strlen(expanded) - 1], SPACE3))

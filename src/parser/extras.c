@@ -6,7 +6,7 @@
 /*   By: mresch <mresch@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 14:59:33 by mresch            #+#    #+#             */
-/*   Updated: 2024/04/23 13:24:49 by mresch           ###   ########.fr       */
+/*   Updated: 2024/04/24 14:06:27 by mresch           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,8 @@ t_token	*token_dup(t_token *token)
 		return (NULL);
 	dup->str = ft_strdup(token->str);
 	dup->type = token->type;
+	dup->next = NULL;
+	dup->prev = NULL;
 	return (dup);
 }
 

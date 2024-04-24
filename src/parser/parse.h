@@ -6,7 +6,7 @@
 /*   By: mresch <mresch@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 13:54:17 by mresch            #+#    #+#             */
-/*   Updated: 2024/04/23 13:54:25 by mresch           ###   ########.fr       */
+/*   Updated: 2024/04/24 14:36:30 by mresch           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,10 +61,10 @@ char		*expand(char *str, t_bigshell *data);
 char		*get_val(char *var, t_bigshell *data);
 
 //expansion_routine_1
-int			expand_no_quotes(t_token **list, t_token *prev, \
+int			expand_no_quotes(t_token **list, \
 			t_token *curr, t_bigshell *data);
 char		*remove_quotes(char *str);
-int			launch_expansion(t_token **list, t_token *prev, \
+int			launch_expansion(t_token **list, \
 			t_token *curr, t_bigshell *data);
 t_token		**expander(t_token **list, t_bigshell *data);
 
@@ -76,7 +76,7 @@ int			tilde(t_token *curr, t_bigshell *data);
 //expansion_routine_3
 t_token		*make_t(char *str);
 t_token		**split_to_token(char *expanded, int join);
-void		insert_tokenlist(t_token **list, t_token *prev, \
+void		insert_tokenlist(t_token **list,\
 			t_token *curr, t_token **addlist);
 void		remove_token(t_token *curr);
 

@@ -6,7 +6,7 @@
 /*   By: mresch <mresch@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 14:48:48 by mresch            #+#    #+#             */
-/*   Updated: 2024/04/23 16:01:31 by mresch           ###   ########.fr       */
+/*   Updated: 2024/04/24 14:36:49 by mresch           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include "../../minishell.h"
 #include "../../libft/libft.h"
 
-int	expand_no_quotes(t_token **list, t_token *prev, \
+int	expand_no_quotes(t_token **list, \
 	t_token *curr, t_bigshell *data)
 {
 	char	*expanded;
@@ -36,7 +36,7 @@ int	expand_no_quotes(t_token **list, t_token *prev, \
 		return (0);
 	}
 	(*addlist)->type = curr->type;
-	insert_tokenlist(list, prev, curr, addlist);
+	insert_tokenlist(list, curr, addlist);
 	return (1);
 }
 
@@ -55,7 +55,7 @@ char	*remove_quotes(char *str)
 	return (ret);
 }
 
-int	launch_expansion(t_token **list, t_token *prev, \
+int	launch_expansion(t_token **list, \
 	t_token *curr, t_bigshell *data)
 {
 	int	ret;
@@ -75,7 +75,7 @@ int	launch_expansion(t_token **list, t_token *prev, \
 		curr->str = expand(curr->str, data);
 	}
 	else
-		ret = expand_no_quotes(list, prev, curr, data);
+		ret = expand_no_quotes(list, curr, data);
 	return (ret);
 }
 
@@ -95,7 +95,7 @@ t_token	**expander(t_token **list, t_bigshell *data)
 		if (curr->type == (e_type) HEREDOC)
 			;
 		else if (ft_strchr(curr->str, '$') || ft_strchr(curr->str, '~'))
-			check = launch_expansion(list, prev, curr, data);
+			check = launch_expansion(list, curr, data);
 		else
 			curr->str = remove_quotes(curr->str);
 		if (check != 4)

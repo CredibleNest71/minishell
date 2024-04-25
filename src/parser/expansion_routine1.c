@@ -82,12 +82,10 @@ int	launch_expansion(t_token **list, \
 t_token	**expander(t_token **list, t_bigshell *data)
 {
 	t_token	*curr;
-	t_token	*prev;
 	t_token	*next;
 	int		check;
 
 	curr = *list;
-	prev = NULL;
 	check = 1;
 	while (curr)
 	{
@@ -98,8 +96,6 @@ t_token	**expander(t_token **list, t_bigshell *data)
 			check = launch_expansion(list, curr, data);
 		else
 			curr->str = remove_quotes(curr->str);
-		if (check != 4)
-			prev = curr;
 		curr = next;
 	}
 	if (!check || !list || !*list)

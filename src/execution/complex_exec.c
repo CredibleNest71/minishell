@@ -81,9 +81,10 @@ void	first_executor(t_bigshell *data, t_command *cmd, int out_fd)
 
 	paths = NULL;
 	correct_path = NULL;
+
 	if (!cmd->output)
 	{
-		if (dup2(out_fd, 1) == -1 || close(data->pipe->read) == -1) //|| close(data->pipe->write) == -1)
+		if (dup2(out_fd, 1) == -1 || close(data->pipe->read) == -1 || close(data->pipe->write) == -1)
 			CRITICAL_FAILURE(data, "complex exec: first executor: dup2 failed");
 	}
 	else
@@ -114,6 +115,7 @@ void	last_executor(t_bigshell *data, t_command *cmd, int in_fd)
 	char	*correct_path;
 
 	//in_fd = 0;
+
 	paths = NULL;
 	correct_path = NULL;
 	if (!cmd->input)
@@ -157,14 +159,14 @@ void	middle_executor(t_bigshell *data, t_command *cmd, int out_fd, int in_fd)
 	correct_path = NULL;
 	if (!cmd->input)
 	{
-		if (dup2(in_fd, 0) == -1) // || close(data->pipe->write) == -1) cmd->prev->in_fd --> artem
+		if (dup2(in_fd, 0) == -1 || close(data->pipe->read) == -1) // || close(data->pipe->write) == -1) cmd->prev->in_fd --> artem
 			CRITICAL_FAILURE(data, "complex exec: middle executor: dup2 failed (in_fd)");
-		close(in_fd);
+		//close(in_fd);
 	}
 	if (!cmd->output)
 	{
 		//dprintf(2, "simon a\n");
-		if (dup2(out_fd, 1) == -1 || close(data->pipe->read) == -1 || close(data->pipe->write) == -1)
+		if (dup2(out_fd, 1) == -1 || close(data->pipe->write) == -1) //close(data->pipe->read) == -1 ||
 			CRITICAL_FAILURE(data, "complex exec: middle executor: dup2 failed (out_fd)");
 		//close(out_fd);
 	}

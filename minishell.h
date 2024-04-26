@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 17:34:54 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/04/23 17:03:57 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/04/26 15:54:11 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,8 @@ typedef struct s_command
 	t_token				*output;	//> / append
 	int					arg_num;
 	int					pid;
-	t_pipe				*pipe;
+	//t_pipe				*pipe;
+	char				*tmpfile;
 	char				**args_exec;
 	struct s_command	*next;
 }	 t_command;
@@ -100,7 +101,7 @@ typedef struct	s_bigshell
 	int			fd_in; //redirected in
 	int			fd_out; //redirected out
 	int			heredoc_fd; //redirected err
-	int			redir;
+	//int			redir;
 	
 	//stuff to make cd norminette compliant
 	size_t		buffer_size;

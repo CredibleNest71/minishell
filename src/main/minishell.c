@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 11:33:48 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/04/22 17:29:30 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/04/26 15:20:13 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,9 @@ int	main(int argc, char **argv, char **env)
 		if (!data.commands)
 			continue ;
 		store_restore_fds(&data, 1);
-		if (heredoc_finder(&data) == 0)
+		// if (heredoc_finder(&data) == 0)
+		// 	ft_heredoc(&data);
+		if (data.heredoc)
 			ft_heredoc(&data);
 		if (data.commands->input || data.commands->output)
 		{
@@ -82,13 +84,17 @@ int	main(int argc, char **argv, char **env)
 				CRITICAL_FAILURE(&data, "main: fork failed");
 			if (data.commands->pid == 0)
 				simple_exec(&data);
-			wait_for_children(&data); //use specific children waiting ft here for correct exit code
+			wait(NULL);
+			//wait_for_children(&data); //use specific children waiting ft here for correct exit code
 		}
 		else if (data.num_cmd > 1)
 		{
 				complex_exec(&data);
 		}
-		////printf("am I here?\n"); //debugging printf
+		//printf("am I here?\n"); //debugging printf
 		store_restore_fds(&data, 2);
+		free(lineread);
+		unlink("tmpfile.txt");
 	}
+	free_struct(&data);
 }

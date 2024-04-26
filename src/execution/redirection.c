@@ -6,34 +6,13 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 17:59:11 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/04/22 16:57:31 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/04/26 16:00:13 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 #include <stdlib.h>
 #include <unistd.h>
-
-void	restore_fork(t_bigshell *data, int mode)
-{
-	if (mode == 1)
-	{
-		if (dup2(data->pipe->write, 1) == -1)
-			CRITICAL_FAILURE(data, "restoring pipe fds: dup2 write fail");
-	}
-	else if (mode == 2)
-	{
-		if(dup2(data->pipe->read, 0) == -1)
-			CRITICAL_FAILURE(data, "restoring pipe fds: dup2 read fail");
-		if (dup2(data->pipe->write, 1) == -1)
-			CRITICAL_FAILURE(data, "restoring pipe fds: dup2 write fail");
-	}
-	else if (mode == 3)
-	{
-		if(dup2(data->pipe->read, 0) == -1)
-			CRITICAL_FAILURE(data, "restoring pipe fds: dup2 read fail");
-	}
-}
 
 //PUT CORRECT ERROR HANDLING HERE
 void	store_restore_fds(t_bigshell *data, int mode)
@@ -43,24 +22,22 @@ void	store_restore_fds(t_bigshell *data, int mode)
 		data->std_in = dup(0);
 		if (data->std_in == -1)
 		{
-			//printf("que\n"); //debugging printf
 			CRITICAL_FAILURE(data, "dup_stdin dup fail");
 		}
 		data->std_out = dup(1);
 		if (data->std_out == -1)
 		{
-			//printf("mierda\n"); //debugging printf
 			CRITICAL_FAILURE(data, "dup_stdout dup fail");
 		}
 	}
 	else if (mode == 2)
 	{
-		if ((dup2(data->std_in, 0)) == -1) //|| close(data->std_in) == -1 || close(data->std_out) == -1
+		if ((dup2(data->std_in, 0)) == -1)
 			CRITICAL_FAILURE(data, "dup_stdin dup2 fail");
-		if ((dup2(data->std_out, 1)) == -1) // || close(data->std_in) == -1 || close(data->std_out) == -1
+		if ((dup2(data->std_out, 1)) == -1)
 			CRITICAL_FAILURE(data, "dup_stdout dup2 fail");
-		close(data->std_in);
-		close(data->std_out);
+		if (close(data->std_in) == - 1 || close(data->std_out) == -1)
+			CRITICAL_FAILURE(data, "close std_in/std_out fail");
 	}
 }
 
@@ -96,26 +73,7 @@ int	check_file(t_bigshell *data, const char *file, int mode)
 	}
 	return (EXIT_SUCCESS);
 }
-
-//this was before line 108
-			/* if (!in->next)
-			{
-				if (check_file(data, in->str, 0) != 0)
-					return (EXIT_FAILURE);
-				data->fd_in = open(in->str, O_RDONLY);
-			} */
-//this was right after (this part was modified)
-			/* while (in->next)
-			{
-				if (check_file(data, in->str, 0) != 0)
-					return (EXIT_FAILURE);
-				data->fd_in = open(in->str, O_RDONLY);
-				in = in->next;
-			} */
-//this was line 130 before
-		/* if (!out->next)
-			data->fd_out = open(out->str, O_CREAT | O_TRUNC | O_WRONLY, 00644); */
-			
+		
 // fix to do: needs to be able to switch stdin&stdout multiple times (ex. cat <input >output <input2 >output3 >output4)
 int	redir(t_command *command, t_bigshell *data)
 {
@@ -134,9 +92,9 @@ int	redir(t_command *command, t_bigshell *data)
 			{
 				if (!in->next && in->type == (enum type)HEREDOC)
 				{
-					if (check_file(data, "tmpfile.txt", 0) != 0)
+					if (check_file(data, command->tmpfile, 0) != 0)
 						return (EXIT_FAILURE);
-					data->fd_in = open("tmpfile.txt", O_RDONLY);
+					data->fd_in = open(command->tmpfile, O_RDONLY);
 				}
 				else if (in->type != (enum type)HEREDOC)
 				{
@@ -148,20 +106,15 @@ int	redir(t_command *command, t_bigshell *data)
 					break ;
 				else
 				{
-					close(data->fd_in); //protect
+					if (close(data->fd_in) == -1)
+						return (redir_error(data, 1, "redir.c:110 close failed"), EXIT_FAILURE);
 					in = in->next;
 				}
 			}
 			if (data->fd_in == -1)
-			{
-				redir_error(data, 1, "fd_in: open failed");
-				return (EXIT_FAILURE);
-			}
+				return(redir_error(data, 1, "redir.c: fd_in: open failed"), EXIT_FAILURE);
 			if (dup2(data->fd_in, 0) == -1)
-			{
-				redir_error(data, 1, "fd_in: dup2 failed");
-				return (EXIT_FAILURE);
-			}
+				return(redir_error(data, 1, "redir.c: fd_in: dup2 failed"), EXIT_FAILURE);
 		}
 	}
 	if (out)
@@ -175,28 +128,23 @@ int	redir(t_command *command, t_bigshell *data)
 			if (check_file(data, out->str, 1) != 0)
 				return (EXIT_FAILURE);
 			if (data->fd_out == -1)
-			{
-				redir_error(data, 1, "fd_out: open failed");
-				return (EXIT_FAILURE);
-			}
+				return(redir_error(data, 1, "redir.c: fd_out: open failed"), EXIT_FAILURE);
 			if (!out->next)
 				break ;
 			if (out->next)
 			{
-				close(data->fd_out);
+				if (close(data->fd_out) == -1)
+					return (redir_error(data, 1, "redir.c:137 close failed"), EXIT_FAILURE);
 				out = out->next;
 			}
 		}
-		if (data->fd_out == -1)
-		{
-			redir_error(data, 1, "fd_out: dup2 failed1");
-			return (EXIT_FAILURE);
-		}
+		// if (data->fd_out == -1) //tf is this for?
+		// {
+		// 	redir_error(data, 1, "fd_out: dup2 failed1");
+		// 	return (EXIT_FAILURE);
+		// }
 		if ((dup2(data->fd_out, 1)) == -1)
-		{
-			redir_error(data, 1, "fd_out: dup2 failed2");
-			return (EXIT_FAILURE);
-		}
+			return(redir_error(data, 1, "fd_out: dup2 failed2"), EXIT_FAILURE);
 	}
 	return (EXIT_SUCCESS);
 }

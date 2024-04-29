@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 17:04:24 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/04/26 17:54:04 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/04/29 14:48:35 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,12 +123,23 @@ void	free_commands(t_bigshell *data)
 		s_array_free(data->commands->args_exec);
 }
 
+void	close_unused_fds(t_bigshell *data)
+{
+	if (data->std_in)
+		close(data->std_in);
+	if (data->std_out)
+		close(data->std_out);
+	if (data->fd_in)
+		close(data->fd_in);
+	if (data->fd_out)
+		close(data->fd_out);
+}
+
 void	free_struct(t_bigshell *data)
 {
 	//free everything before exiting minishell;
 	//puts("Haha i was called");
-	close(data->std_in);
-	close(data->std_out);
+	close_unused_fds(data);
 	if (data->commands)
 	{
 		delete_command_list(data->commands);
@@ -140,7 +151,7 @@ void	free_struct(t_bigshell *data)
 	if (data->heredoc)
 	{
 		free_tokens(data->heredoc);
-		free(data->heredoc);
+		//free(data->heredoc);
 	}
 	if (data->pipe)
 		free(data->pipe);

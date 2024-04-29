@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 17:34:54 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/04/26 15:54:11 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/04/26 17:54:24 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -197,6 +197,8 @@ void	free_single_node(t_bigshell *data, t_env **node);
 void	free_env(t_bigshell *data);
 void	free_builtin_list(t_bigshell *data);
 void	free_tokens(t_token *data);
+void	s_array_free(char **s_array);
+void	double_free_array(char **array1, char **array2);
 void	free_commands(t_bigshell *data);
 void	free_struct(t_bigshell *data);
 

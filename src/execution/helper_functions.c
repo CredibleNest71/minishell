@@ -6,13 +6,21 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 17:04:24 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/04/18 12:43:40 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/04/26 17:54:04 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 #include "../parser/parse.h"
 #include <stdlib.h>
+
+/* void	free_exec(t_bigshell *data)
+{
+	if (data->exec_args)
+	{
+		s_array_free(data->exec_args);
+	}
+} */
 
 //frees the node_to_delete in unset
 void	free_single_node(t_bigshell *data, t_env **node)
@@ -81,6 +89,12 @@ void	s_array_free(char **s_array)
 	while (s_array[i])
 		free(s_array[i++]);
 	free(s_array);
+}
+
+void	double_free_array(char **array1, char **array2)
+{
+	s_array_free(array1);
+	s_array_free(array2);
 }
 
 void	free_commands(t_bigshell *data)

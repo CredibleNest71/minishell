@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 17:04:24 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/04/29 15:25:38 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/04/29 19:03:39 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,6 +137,7 @@ void	free_commands(t_bigshell *data)
 
 void	close_unused_fds(t_bigshell *data)
 {
+	dprintf(2, "closing unused fds\n");
 	if (data->std_in)
 		close(data->std_in);
 	if (data->std_out)
@@ -147,12 +148,26 @@ void	close_unused_fds(t_bigshell *data)
 		close(data->fd_out);
 }
 
+void	free_tmpfile(t_bigshell *data)
+{
+	t_command	*cmd;
+
+	cmd = data->commands;
+	while (cmd)
+	{
+		if (cmd->tmpfile)
+			free(cmd->tmpfile);
+		cmd = cmd->next;
+	}
+}
+
 void	free_struct(t_bigshell *data)
 {
 	//free everything before exiting minishell;
 	//puts("Haha i was called");
 	close_unused_fds(data);
 	free_paths(data);
+	free_tmpfile(data);
 	if (data->commands)
 	{
 		delete_command_list(data->commands);

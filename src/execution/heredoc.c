@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 14:55:27 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/04/26 16:13:27 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/04/29 19:26:38 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,24 @@
 //#include <iterator>
 #include <stdio.h>
 #include <unistd.h>
+
+int	tmpfile_cleanup(t_bigshell *data)
+{
+	t_command	*cmd;
+	
+	cmd = data->commands;
+	while (cmd)
+	{
+		if (cmd->tmpfile)
+		{
+			//close(cmd->heredoc_fd);
+			if (unlink(cmd->tmpfile) == -1)
+				simple_error(data, 1);
+		}
+		cmd = cmd->next;
+	}
+	return (0);
+}
 
 //heredoc_finder is in minishell.c (here 4 testing purposes)
 int	heredoc_finder(t_bigshell *data)
@@ -89,7 +107,7 @@ char	*check_for_quotes(t_bigshell *data, char *eof)
 		//printf("%s\n", delimiter); //what do u do
 		return (delimiter);
 	}
-	delimiter = eof;
+	delimiter = ft_strdup(eof);
 	return (delimiter);
 }
 
@@ -136,6 +154,7 @@ void	ft_heredoc(t_bigshell *data)
 			mod_eof = check_for_quotes(data, eof);
 			cmd->tmpfile = ft_strjoin("tmpfile", cmd->input->str);
 			heredoc_fd = open(cmd->tmpfile, O_CREAT | O_TRUNC | O_RDWR, 00644);
+			//cmd->heredoc_fd = heredoc_fd;
 			if (heredoc_fd == -1)
 				simple_error(data, 1);
 			while (1)
@@ -149,7 +168,7 @@ void	ft_heredoc(t_bigshell *data)
 					lineread = expand(lineread, data);
 				write(heredoc_fd, lineread, ft_strlen(lineread));
 				write(heredoc_fd, "\n", 1);
-				//free(lineread);
+				free(lineread);
 			}
 			if (!lineread)
 			{
@@ -163,6 +182,8 @@ void	ft_heredoc(t_bigshell *data)
 					simple_error(data, 1);
 				unlink(cmd->tmpfile);
 			}
+			free(mod_eof);
+			close(heredoc_fd);
 		}
 		cmd = cmd->next;
 	}

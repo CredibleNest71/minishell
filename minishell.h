@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 17:34:54 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/04/29 15:31:47 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/04/29 19:01:04 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,7 @@ typedef struct s_command
 	int					arg_num;
 	int					pid;
 	//t_pipe				*pipe;
+	int					heredoc_fd;
 	char				*tmpfile;
 	char				**args_exec;
 	struct s_command	*next;
@@ -209,11 +210,14 @@ void	free_tokens(t_token *data);
 void	s_array_free(char **s_array);
 void	double_free_array(char **array1, char **array2);
 void	free_commands(t_bigshell *data);
+void	close_unused_fds(t_bigshell *data);
+void	free_tmpfile(t_bigshell *data);
 void	free_struct(t_bigshell *data);
 
 void	ft_heredoc(t_bigshell *data);
 char	*delimiter_finder(t_bigshell *data);
 char	*check_for_quotes(t_bigshell *data, char *eof);
 int		heredoc_finder(t_bigshell *data);
+int		tmpfile_cleanup(t_bigshell *data);
 
 #endif

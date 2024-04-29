@@ -28,8 +28,8 @@ void	print_cmds(t_command *cmd, t_bigshell *data)
 		if (temp_cmd->cmd)
 			printf("== COMMAND(%d):%s\n",temp_cmd->arg_num, temp_cmd->cmd->str);
 		printf("== ");
-		if (temp_cmd->prev)
-			printf("== previous command: %s\n", temp_cmd->prev->cmd->str);
+		// if (temp_cmd->prev)
+		// 	printf("== previous command: %s\n", temp_cmd->prev->cmd->str);
 		for (int i = 0; i < temp_cmd->arg_num + 1; i++)
 		{
 			printf("[%s]", temp_cmd->args_exec[i]);

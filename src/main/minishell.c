@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 11:33:48 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/04/29 15:11:00 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/04/29 19:00:15 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,14 +121,15 @@ int	main(int argc, char **argv, char **env)
 			wait(NULL);
 			//wait_for_children(&data); //use specific children waiting ft here for correct exit code
 		}
-		else if (data.num_cmd > 1)
+		if (data.num_cmd > 1)
 		{
 				complex_exec(&data);
 		}
 		//printf("am I here?\n"); //debugging printf
 		store_restore_fds(&data, 2);
 		free(lineread);
-		unlink("tmpfile.txt");
+		close_unused_fds(&data);
+		tmpfile_cleanup(&data);
 	}
 	free_struct(&data);
 }

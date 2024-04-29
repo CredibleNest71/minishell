@@ -6,7 +6,7 @@
 /*   By: mresch <mresch@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 14:44:18 by mresch            #+#    #+#             */
-/*   Updated: 2024/04/10 14:45:49 by mresch           ###   ########.fr       */
+/*   Updated: 2024/04/23 17:07:00 by mresch           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ void	add_to_command_list(t_command **list, t_command *cmd)
 	while (temp->next)
 		temp = temp->next;
 	temp->next = cmd;
+	cmd->prev = temp;
 }
 
 t_command	**create_commandlist(t_token **list)

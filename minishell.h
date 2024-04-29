@@ -3,10 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mresch <mresch@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 17:34:54 by ischmutz          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2024/04/26 17:54:24 by ischmutz         ###   ########.fr       */
+=======
+/*   Updated: 2024/04/23 17:13:00 by mresch           ###   ########.fr       */
+>>>>>>> main
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +79,7 @@ typedef struct s_command
 	char				*tmpfile;
 	char				**args_exec;
 	struct s_command	*next;
+	struct s_command	*prev;
 }	 t_command;
 
 //env & s_env: freed

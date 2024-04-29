@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mresch <mresch@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 09:57:03 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/03/14 12:11:13 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/04/24 15:24:22 by mresch           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,10 @@ static int check_flag(char *str)
 {
 	int	i;
 
-	i = 0;
+	i = 1;
 	if (!str)
 		return (0);
-	if (str[i++] != '-')
+	if (ft_strncmp(str, "-n", 2))
 		return (0);
 	while (str[i])
 	{

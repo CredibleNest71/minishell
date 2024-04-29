@@ -36,17 +36,23 @@ SRCS = ${SRC_DIR}${EXEC_DIR}complex_exec.c\
 			${SRC_DIR}${BUILT_INS}unset.c\
 \
 			${SRC_DIR}${PARSER_DIR}parse.c\
-			${SRC_DIR}${PARSER_DIR}expander.c\
-			${SRC_DIR}${PARSER_DIR}extras.c\
-			${SRC_DIR}${PARSER_DIR}tokenv2.c\
-\
-			${SRC_DIR}${PARSER_DIR}tokenv3.c\
-			${SRC_DIR}${PARSER_DIR}expandv2.c\
 			${SRC_DIR}${PARSER_DIR}commander.c\
+			${SRC_DIR}${PARSER_DIR}expansion_alt.c\
+			${SRC_DIR}${PARSER_DIR}expansion_routine1.c\
+			${SRC_DIR}${PARSER_DIR}expansion_routine2.c\
+			${SRC_DIR}${PARSER_DIR}expansion_routine3.c\
+			${SRC_DIR}${PARSER_DIR}extras.c\
+			${SRC_DIR}${PARSER_DIR}extras2.c\
+			${SRC_DIR}${PARSER_DIR}tokenv1.c\
+			${SRC_DIR}${PARSER_DIR}tokenextras.c\
+			${SRC_DIR}${PARSER_DIR}tokenextras2.c\
 			${SRC_DIR}${PARSER_DIR}syntax.c\
+\
 \
 			${SRC_DIR}${MAIN_DIR}minishell.c\
 			${SRC_DIR}${MAIN_DIR}sig.c\
+\
+			${SRC_DIR}${PARSER_DIR}NOT_IN_FINAL.c\
 
 OBJS := $(SRCS:%.c=%.o)
 

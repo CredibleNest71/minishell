@@ -6,7 +6,7 @@
 /*   By: mresch <mresch@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 14:48:48 by mresch            #+#    #+#             */
-/*   Updated: 2024/04/24 16:01:48 by mresch           ###   ########.fr       */
+/*   Updated: 2024/04/29 13:36:05 by mresch           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,11 +32,6 @@ int	expand_no_quotes(t_token **list, \
 	if (!ft_strchr(expanded, ' '))
 		return (1);
 	addlist = split_to_token(expanded, curr->connected);
-	if (curr->type >= 3 && curr->type <= 6 && ft_token_count(addlist) > 1)
-	{
-		write(2, "AMBIGUOUS REDIRECT\n", 20);
-		return (0);
-	}
 	(*addlist)->type = curr->type;
 	insert_tokenlist(list, curr, addlist);
 	free(curr->str);

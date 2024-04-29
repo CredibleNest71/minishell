@@ -6,7 +6,7 @@
 /*   By: mresch <mresch@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 13:27:10 by mresch            #+#    #+#             */
-/*   Updated: 2024/04/23 13:33:17 by mresch           ###   ########.fr       */
+/*   Updated: 2024/04/29 13:43:52 by mresch           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,37 +30,46 @@ void	mark_join(t_token **list)
 	}
 }
 
+static int	do_join(t_token *curr, char *jstr)
+{
+	t_token	*next;
+
+	next = curr->next;
+	if (curr->type == (e_type) PIPE)
+		;
+	else if (curr->connected && next && next->type == (e_type) ARG)
+	{
+		if (!ft_strncmp(curr->str, "$", 2))
+		{
+			free(curr->str);
+			curr->str = NULL;
+		}
+		jstr = ft_strjoin(curr->str, next->str);
+		free(curr->str);
+		free(next->str);
+		curr->str = jstr;
+		curr->connected = next->connected;
+		curr->next = next->next;
+		free(next);
+		return (1);
+	}
+	return (0);
+}
+
 void	join(t_token **list)
 {
 	t_token	*curr;
-	t_token	*next;
 	char	*jstr;
 
 	if (!list || !*list)
 		return ;
 	curr = *list;
 	mark_join(list);
+	jstr = NULL;
 	while (curr)
 	{
-		next = curr->next;
-		if (curr->type == (e_type) PIPE)
-			;
-		else if (curr->connected && next && next->type == (e_type) ARG)
-		{
-			if (!ft_strncmp(curr->str, "$", 2))
-			{
-				free(curr->str);
-				curr->str = NULL;
-			}
-			jstr = ft_strjoin(curr->str, next->str);
-			free(curr->str);
-			free(next->str);
-			curr->str = jstr;
-			curr->connected = next->connected;
-			curr->next = next->next;
-			free(next);
-			continue ;
-		}
+		if (do_join(curr, jstr))
+			continue;
 		curr = curr->next;
 	}
 }

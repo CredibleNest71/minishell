@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenextras.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mresch <mresch@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 12:47:26 by mresch            #+#    #+#             */
-/*   Updated: 2024/04/23 13:23:01 by mresch           ###   ########.fr       */
+/*   Updated: 2024/04/29 14:37:32 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,21 +60,29 @@ void	delete_char_array(char **arr)
 	free(arr);
 }
 
-void	delete_command_list(t_command *cmd)
+void	delete_command_list(t_command *command)
 {
 	t_command	*prev;
+	t_command	*cmd;
 
+	cmd = command;
 	while (cmd)
 	{
-		delete_token_list(cmd->input);
-		delete_token_list(cmd->output);
-		delete_token_list(cmd->cmd);
-		delete_token_list(cmd->args);
-		delete_char_array(cmd->args_exec);
+		if (cmd->input)
+			delete_token_list(cmd->input);
+		if (cmd->output)
+			delete_token_list(cmd->output);
+		if (cmd->cmd)
+			delete_token_list(cmd->cmd);
+		if (cmd->args)
+			delete_token_list(cmd->args);
+		if (cmd->args_exec)
+			delete_char_array(cmd->args_exec);
 		prev = cmd;
 		cmd = cmd->next;
 		free(prev);
 	}
+	command = NULL;
 }
 
 void	token_list_add(t_token **tokenlist, t_token *token)

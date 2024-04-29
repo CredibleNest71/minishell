@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 11:33:48 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/04/29 14:10:49 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/04/29 14:51:57 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,22 +14,38 @@
 //#include "../parser/parse.h"
 #include "sig.h"
 #include <stdio.h>
+#include <strings.h>
 #include <unistd.h>
 #include <string.h>
 
 extern int	g_sig;
 
-static int	reset_data(t_bigshell *data)
+// static int	reset_data(t_bigshell *data)
+// {
+// 	data->commands = NULL;
+// 	data->mod_cwd = NULL;
+// 	data->mod_env = NULL;
+// 	data->built_ins = NULL;
+// 	data->pipe = NULL;
+// 	data->s_env = NULL;
+// 	data->pipe = NULL;
+// 	data->heredoc = NULL;
+// 	bzero(data, sizeof(t_bigshell));
+// 	return (0);
+// }
+
+static int remove_cmd_list_from_data(t_bigshell *data)
 {
-	bzero(&data, sizeof(data));
-	data->commands = NULL;
-	data->mod_cwd = NULL;
-	data->mod_env = NULL;
-	data->built_ins = NULL;
-	data->pipe = NULL;
-	data->s_env = NULL;
-	data->pipe = NULL;
-	data->heredoc = NULL;
+	if (data->commands)
+	{
+		delete_command_list(data->commands);
+		data->commands = NULL;
+	}
+	if (data->heredoc)
+	{
+		delete_token_list(data->heredoc);
+		data->heredoc = NULL;
+	}
 	return (0);
 }
 
@@ -39,20 +55,14 @@ int	main(int argc, char **argv, char **env)
 
 	if (argc && argv)
 		argv[argc - 1] = argv[argc - 1];
-	reset_data(&data);
+	bzero(&data, sizeof(data));
 	store_env(&data, env);
 	char *lineread;
 	lineread = NULL;
 	pipe_init(&data);
 	while (1)
 	{
-		if (data.commands)
-			delete_command_list(data.commands);
-		if (data.heredoc)
-		{
-			delete_token_list(data.heredoc);
-			data.heredoc = NULL;
-		}
+		remove_cmd_list_from_data(&data);
 		set_signals(0);
 		if (isatty(fileno(stdin)))
 			lineread = readline("smellyshell: ");
@@ -64,9 +74,8 @@ int	main(int argc, char **argv, char **env)
 		//	free(line);
 		//}
 		if (!lineread)
-			return (/*write(1, "exit\n", 5), */get_exitcode(&data));
+			return (/*write(1, "exit\n", 5), */get_exitcode(&data), free_struct(&data), 0);
 		add_history(lineread);
-		//printf("I work here\n");
 		data.commands = parse(lineread, &data);
 		print_cmds(data.commands, &data);
 		set_signals(1);

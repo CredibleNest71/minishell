@@ -6,7 +6,7 @@
 /*   By: mresch <mresch@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 11:33:48 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/04/24 15:00:46 by mresch           ###   ########.fr       */
+/*   Updated: 2024/04/29 13:55:32 by mresch           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,13 +19,27 @@
 
 extern int	g_sig;
 
+static int	reset_data(t_bigshell *data)
+{
+	bzero(&data, sizeof(data));
+	data->commands = NULL;
+	data->mod_cwd = NULL;
+	data->mod_env = NULL;
+	data->built_ins = NULL;
+	data->pipe = NULL;
+	data->s_env = NULL;
+	data->pipe = NULL;
+	data->heredoc = NULL;
+	return (0);
+}
+
 int	main(int argc, char **argv, char **env)
 {
 	t_bigshell			data;
 
 	if (argc && argv)
 		argv[argc - 1] = argv[argc - 1];
-	bzero(&data, sizeof(data));
+	reset_data(&data);
 	store_env(&data, env);
 	char *lineread;
 	lineread = NULL;

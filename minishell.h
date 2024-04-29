@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 17:34:54 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/04/29 14:13:21 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/04/29 15:31:47 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,12 @@ typedef struct s_env
 	struct s_env	*next;
 }	t_env;
 
+typedef struct exec
+{
+	char	*path;
+	//char	*tmp;
+	char	**paths;
+}	t_exec;
 
 //mod_env, built_ins, pipe, heredoc, commands, env, s_env: freed
 typedef struct	s_bigshell
@@ -103,6 +109,8 @@ typedef struct	s_bigshell
 	int			fd_out; //redirected out
 	int			heredoc_fd; //redirected err
 	//int			redir;
+	
+	t_exec		*exec;
 	
 	//stuff to make cd norminette compliant
 	size_t		buffer_size;

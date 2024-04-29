@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 11:33:48 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/04/29 14:41:33 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/04/29 15:11:00 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,16 @@ static int remove_cmd_list_from_data(t_bigshell *data)
 	return (0);
 }
 
+void	exec_init(t_bigshell *data)
+{
+	t_exec	*exec;
+
+	exec = malloc(sizeof(t_exec));
+	if (!exec)
+		CRITICAL_FAILURE(data, "exec_init: malloc fail");
+	data->exec = exec;
+}
+
 int	main(int argc, char **argv, char **env)
 {
 	t_bigshell			data;
@@ -60,6 +70,7 @@ int	main(int argc, char **argv, char **env)
 	char *lineread;
 	lineread = NULL;
 	pipe_init(&data);
+	exec_init(&data);
 	while (1)
 	{
 		remove_cmd_list_from_data(&data);

@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 17:04:24 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/04/29 14:48:35 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/04/29 15:25:38 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,18 @@ void	double_free_array(char **array1, char **array2)
 	s_array_free(array2);
 }
 
+void	free_paths(t_bigshell *data)
+{
+	if (data->exec->paths)
+		s_array_free(data->exec->paths);
+	if (data->exec->path)
+		free(data->exec->path);
+	// if (data->exec->tmp)
+	// 	free(data->exec->tmp);
+	if (data->exec)
+		free(data->exec);
+}
+
 void	free_commands(t_bigshell *data)
 {
 	if (data->commands->input)
@@ -140,6 +152,7 @@ void	free_struct(t_bigshell *data)
 	//free everything before exiting minishell;
 	//puts("Haha i was called");
 	close_unused_fds(data);
+	free_paths(data);
 	if (data->commands)
 	{
 		delete_command_list(data->commands);

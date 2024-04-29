@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 14:33:19 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/04/26 17:55:28 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/04/29 15:27:22 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ char	*check_if_correct_path(char **paths, t_bigshell *data, char *str)
 			return(double_free_array(paths, data->mod_env), CRITICAL_FAILURE(data, "pathfinder.c: tmp: strjoin failed"), NULL);
 		to_check = ft_strjoin(tmp, str);
 		if (!to_check)
-			return(double_free_array(paths, data->mod_env), CRITICAL_FAILURE(data, "pathfinder.c: to_check: strjoin failed"), NULL);
+			return(double_free_array(paths, data->mod_env), free(tmp), CRITICAL_FAILURE(data, "pathfinder.c: to_check: strjoin failed"), NULL);
 		if (access(to_check, X_OK) == 0)
 			return (to_check);
 		free(to_check);

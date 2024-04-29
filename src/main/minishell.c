@@ -42,13 +42,13 @@ int	main(int argc, char **argv, char **env)
 		set_signals(0);
 		if (isatty(fileno(stdin)))
 			lineread = readline("smellyshell: ");
-		else
-		{
-			char	*line;
-			line = get_next_line(fileno(stdin));
-			lineread = ft_strtrim(line, "\n");
-			free(line);
-		}
+		//else
+		//{
+		//	char	*line;
+		//	line = get_next_line(fileno(stdin));
+		//	lineread = ft_strtrim(line, "\n");
+		//	free(line);
+		//}
 		if (!lineread)
 			return (/*write(1, "exit\n", 5), */get_exitcode(&data));
 		add_history(lineread);

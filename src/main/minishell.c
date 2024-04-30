@@ -6,7 +6,7 @@
 /*   By: mresch <mresch@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 11:33:48 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/04/30 12:39:23 by mresch           ###   ########.fr       */
+/*   Updated: 2024/04/30 14:01:28 by mresch           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,18 @@ static int remove_cmd_list_from_data(t_bigshell *data)
 	return (0);
 }
 
+void	exec_init(t_bigshell *data)
+{
+	t_exec	*exec;
+
+	exec = malloc(sizeof(t_exec));
+	if (!exec)
+		CRITICAL_FAILURE(data, "exec_init: malloc fail");
+	exec->path = NULL;
+	exec->paths = NULL;
+	data->exec = exec;
+}
+
 int	main(int argc, char **argv, char **env)
 {
 	t_bigshell			data;
@@ -56,10 +68,11 @@ int	main(int argc, char **argv, char **env)
 	if (argc && argv)
 		argv[argc - 1] = argv[argc - 1];
 	bzero(&data, sizeof(data));
+	pipe_init(&data);
+	exec_init(&data);
 	store_env(&data, env);
 	char *lineread;
 	lineread = NULL;
-	pipe_init(&data);
 	while (1)
 	{
 		remove_cmd_list_from_data(&data);
@@ -91,6 +104,7 @@ int	main(int argc, char **argv, char **env)
 			if (redir(data.commands, &data))
 			{
 				store_restore_fds(&data, 2);
+				tmpfile_cleanup(&data);
 				continue ;
 			}
 		}
@@ -100,6 +114,7 @@ int	main(int argc, char **argv, char **env)
 			{
 				update_exit_stat(&data, 0);
 				store_restore_fds(&data, 2);
+				tmpfile_cleanup(&data);
 				continue ;
 			}
 			data.commands->pid = fork();
@@ -110,14 +125,15 @@ int	main(int argc, char **argv, char **env)
 			wait(NULL);
 			//wait_for_children(&data); //use specific children waiting ft here for correct exit code
 		}
-		else if (data.num_cmd > 1)
+		if (data.num_cmd > 1)
 		{
 				complex_exec(&data);
 		}
 		//printf("am I here?\n"); //debugging printf
 		store_restore_fds(&data, 2);
 		free(lineread);
-		unlink("tmpfile.txt");
+		close_unused_fds(&data);
+		tmpfile_cleanup(&data);
 	}
 	free_struct(&data);
 }

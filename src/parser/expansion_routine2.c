@@ -6,7 +6,7 @@
 /*   By: mresch <mresch@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 13:27:10 by mresch            #+#    #+#             */
-/*   Updated: 2024/04/29 13:43:52 by mresch           ###   ########.fr       */
+/*   Updated: 2024/04/30 12:06:40 by mresch           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ void	join(t_token **list)
 	while (curr)
 	{
 		if (do_join(curr, jstr))
-			continue;
+			continue ;
 		curr = curr->next;
 	}
 }

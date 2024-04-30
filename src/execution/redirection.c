@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 17:59:11 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/04/26 16:00:13 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/04/29 17:32:27 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,20 +77,22 @@ int	check_file(t_bigshell *data, const char *file, int mode)
 // fix to do: needs to be able to switch stdin&stdout multiple times (ex. cat <input >output <input2 >output3 >output4)
 int	redir(t_command *command, t_bigshell *data)
 {
-	t_token	*in;
-	t_token	*out;
+	t_token		*in;
+	t_token		*out;
+	t_command	*cmd;
 	
 	in = command->input;
 	out = command->output;
+	cmd = data->commands;
 	if (in)
 	{
-		if (!data->commands->cmd)
+		if (!data->commands->cmd && !data->commands->next)
 			return (EXIT_FAILURE);
 		else
 		{
 			while (in)
 			{
-				if (!in->next && in->type == (enum type)HEREDOC)
+				if (!in->next && in->type == (enum type)HEREDOC && cmd->cmd)
 				{
 					if (check_file(data, command->tmpfile, 0) != 0)
 						return (EXIT_FAILURE);
@@ -109,6 +111,7 @@ int	redir(t_command *command, t_bigshell *data)
 					if (close(data->fd_in) == -1)
 						return (redir_error(data, 1, "redir.c:110 close failed"), EXIT_FAILURE);
 					in = in->next;
+					cmd = cmd->next;
 				}
 			}
 			if (data->fd_in == -1)

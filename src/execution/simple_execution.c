@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 17:54:30 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/04/26 15:02:24 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/04/29 18:27:19 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,31 +23,28 @@
 
 void	simple_exec(t_bigshell *data)
 {
-	char	**paths;
-	char	*correct_path;
+	// char	**paths;
+	// char	*correct_path;
 	
-	paths = NULL;
-	correct_path = NULL;
+	data->exec->paths = NULL;
+	data->exec->path = NULL;
 	if (g_sig == SIGINT) //check for signal before executing any command. if yes, spit prompt again
 			CRITICAL_FAILURE(data, "complex exec: SIGINT received");
 	//dprintf(2, "segfault\n");
 	convert_env(data); //check this function env struct has changed
-	paths = find_and_split_path(data->mod_env);
-	if (!paths)
+	data->exec->paths = find_and_split_path(data->mod_env);
+	if (!data->exec->paths)
 		exit_child(data, 1); //find &split failed
 		//printf("find&split failed\n"); //shit has been allocated
-	correct_path = check_if_correct_path(paths, data, data->commands->cmd->str);
-	if (!correct_path)
+	data->exec->path = check_if_correct_path(data->exec->paths, data, data->commands->cmd->str);
+	if (!data->exec->path)
 	{
 		printf("minishell: command '%s' not found\n", data->commands->cmd->str);
 		exit_child(data, 127);
 	}
-	//printf("path executed:%s\n", correct_path);
-	execve(correct_path, data->commands->args_exec, data->mod_env);
-	/* free(correct_path);
-	free(paths); */
+	//printf("path executed:%s\n", data->exec->path);
+	execve(data->exec->path, data->commands->args_exec, data->mod_env);
 	exit_child(data, 126);
-	//free paths & args_exec
 }
 
 /* void print_env_list(t_bigshell *data)

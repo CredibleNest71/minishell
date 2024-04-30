@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 10:32:36 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/04/22 13:38:17 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/04/30 13:42:07 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -321,12 +321,12 @@ void    ft_cd(t_bigshell *data)
        home_dir(data);
 	   return ;
 	}
-    if (arg->str[0] == '/') //here add check for tilde flag if it is present delete first / & continue
-    {
-        printf("minishell: cd: %s: No such file or directory\n", arg->str);
-        update_exit_stat(data, 1);
-        return ;
-    }
+    // if (arg->str[0] == '/') //here add check for tilde flag if it is present delete first / & continue
+    // {
+    //     printf("minishell: cd: %s: No such file or directory\n", arg->str);
+    //     update_exit_stat(data, 1);
+    //     return ;
+    // }
     else
     {
         //change_dir(data, arg->str);

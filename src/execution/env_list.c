@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 09:46:40 by a                 #+#    #+#             */
-/*   Updated: 2024/04/22 14:31:32 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/04/30 14:15:59 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,6 +113,7 @@ void    convert_env(t_bigshell *data)
 {
     int		i;
 	char	*str;
+	char	*tmp;
 	t_env	*current;
     
     data->mod_env = (char **)malloc(sizeof(char *) * (strlen_env(data) + 1));
@@ -123,13 +124,14 @@ void    convert_env(t_bigshell *data)
 	current = data->env;
     while (current) // before while (current->next)
     {
-		str = ft_strjoin(current->var, "=");
-		if (!str)
+		tmp = ft_strjoin(current->var, "=");
+		if (!tmp)
 		{
 			printf("strjoin failed\n"); //delete later
 			simple_error(data, 1);
 		}
-		str = ft_strjoin(str, current->value);
+		str = ft_strjoin(tmp, current->value);
+		free(tmp);
 		if (!str)
 		{
 			printf("strjoin failed\n"); //delete later
@@ -138,6 +140,7 @@ void    convert_env(t_bigshell *data)
         data->mod_env[i] = ft_strdup(str);
         if (!data->mod_env[i])
             CRITICAL_FAILURE(data, "env_list: strdup failed 2");
+		free(str);
 		current = current->next;
 		i++;
     }

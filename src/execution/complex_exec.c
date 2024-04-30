@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 10:43:53 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/04/29 15:10:12 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/04/30 14:28:46 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,11 +76,11 @@ void	wait_for_children(t_bigshell *data)
 
 void	first_executor(t_bigshell *data, t_command *cmd, int out_fd)
 {
-	char	**paths;
-	char	*correct_path;
+	// char	**paths;
+	// char	*correct_path;
 
-	paths = NULL;
-	correct_path = NULL;
+	data->exec->paths = NULL;
+	data->exec->path = NULL;
 
 	if (!cmd->output)
 	{
@@ -95,29 +95,31 @@ void	first_executor(t_bigshell *data, t_command *cmd, int out_fd)
 	close(data->std_in);
 	close(data->std_out);
 	convert_env(data);
-	paths = find_and_split_path(data->mod_env);
-	if (!paths)
-		printf("find&split failed\n"); //handle correctly
-	correct_path = check_if_correct_path(paths, data, cmd->cmd->str);
-	if (!correct_path)
-		printf("minishell: command %s not found\n", cmd->cmd->str); //exit code is 127 I think
-	execve(correct_path, cmd->args_exec, data->mod_env);
+	data->exec->paths = find_and_split_path(data->mod_env);
+	if (!data->exec->paths)
+		exit_child(data, 1);//printf("find&split failed\n"); //handle correctly
+	data->exec->path = check_if_correct_path(data->exec->paths, data, cmd->cmd->str);
+	if (!data->exec->path)
+	{
+		printf("minishell: command '%s' not found\n", cmd->cmd->str);
+		exit_child(data, 127);
+	}
+	execve(data->exec->path, cmd->args_exec, data->mod_env);
 	//printf("execve failed\n");
-	free(correct_path);
-	free_struct(data);
-	exit(126);
-
+	// free(data->exec->path);
+	// free_struct(data);
+	exit_child(data, 126);
 }
 
 void	last_executor(t_bigshell *data, t_command *cmd, int in_fd)
 {
-	char	**paths;
-	char	*correct_path;
+	// char	**paths;
+	// char	*correct_path;
 
 	//in_fd = 0;
 
-	paths = NULL;
-	correct_path = NULL;
+	data->exec->paths = NULL;
+	data->exec->path = NULL;
 	if (!cmd->input)
 	{
 		if (dup2(in_fd, 0) == -1) //|| close(data->pipe->write) == -1 || close(data->pipe->read) == -1)
@@ -135,28 +137,31 @@ void	last_executor(t_bigshell *data, t_command *cmd, int in_fd)
 			exit_child(data, 1);
 	} */
 	convert_env(data);
-	paths = find_and_split_path(data->mod_env);
-	if (!paths)
-		printf("find&split failed\n"); //handle correctly
-	correct_path = check_if_correct_path(paths, data, cmd->cmd->str);
-	if (!correct_path)
+	data->exec->paths = find_and_split_path(data->mod_env);
+	if (!data->exec->paths)
+		exit_child(data, 1); //printf("find&split failed\n"); //handle correctly
+	data->exec->path = check_if_correct_path(data->exec->paths, data, cmd->cmd->str);
+	if (!data->exec->path)
+	{
 		printf("minishell: command %s not found\n", cmd->cmd->str);
-	execve(correct_path, cmd->args_exec, data->mod_env);
+		exit_child(data, 127);
+	}
+	execve(data->exec->path, cmd->args_exec, data->mod_env);
 	//printf("execve failed\n");
-	free(correct_path);
-	free(paths);
-	free_struct(data);
-	exit (126);
+	// free(data->exec->path);
+	// free(data->exec->paths);
+	// free_struct(data);
+	exit_child(data, 126);
 
 }
 
 void	middle_executor(t_bigshell *data, t_command *cmd, int out_fd, int in_fd)
 {
-	char	**paths;
-	char	*correct_path;
+	// char	**paths;
+	// char	*correct_path;
 
-	paths = NULL;
-	correct_path = NULL;
+	data->exec->paths = NULL;
+	data->exec->path = NULL;
 	if (!cmd->input)
 	{
 		if (dup2(in_fd, 0) == -1 || close(data->pipe->read) == -1) // || close(data->pipe->write) == -1) cmd->prev->in_fd --> artem
@@ -179,19 +184,22 @@ void	middle_executor(t_bigshell *data, t_command *cmd, int out_fd, int in_fd)
 	close(data->std_in);
 	close(data->std_out);
 	convert_env(data);
-	paths = find_and_split_path(data->mod_env);
-	if (!paths)
-		printf("find&split failed\n"); //handle correctly
-	correct_path = check_if_correct_path(paths, data, cmd->cmd->str);
-	if (!correct_path)
+	data->exec->paths = find_and_split_path(data->mod_env);
+	if (!data->exec->paths)
+		exit_child(data, 1); //printf("find&split failed\n"); //handle correctly
+	data->exec->path = check_if_correct_path(data->exec->paths, data, cmd->cmd->str);
+	if (!data->exec->path)
+	{
 	// TODO: command not found needs to be printed to stderr (in all cases not only here)
 		printf("minishell: command %s not found\n", cmd->cmd->str);
-	execve(correct_path, cmd->args_exec, data->mod_env);
+		exit_child(data, 127);	
+	}
+	execve(data->exec->path, cmd->args_exec, data->mod_env);
 	//printf("execve failed\n");
-	free(correct_path);
-	free(paths);
-	free_struct(data);
-	exit(126);
+	// free(data->exec->path);
+	// free(data->exec->paths);
+	// free_struct(data);
+	exit_child(data, 126);
 
 }
 

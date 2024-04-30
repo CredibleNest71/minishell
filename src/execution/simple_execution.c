@@ -3,15 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   simple_execution.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mresch <mresch@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 17:54:30 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/04/29 18:27:19 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/04/30 16:47:36 by mresch           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../parser/parse.h"
 #include "../../minishell.h"
+#include "../main/sig.h"
 #include <stdio.h>
 #include <strings.h>
 
@@ -26,6 +27,7 @@ void	simple_exec(t_bigshell *data)
 	// char	**paths;
 	// char	*correct_path;
 	
+	set_signals(3);
 	data->exec->paths = NULL;
 	data->exec->path = NULL;
 	if (g_sig == SIGINT) //check for signal before executing any command. if yes, spit prompt again

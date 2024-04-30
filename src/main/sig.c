@@ -57,4 +57,9 @@ void	set_signals(int mode)
 		signal(SIGINT, &newline_to_readline);
 		signal(SIGQUIT, SIG_IGN);
 	}
+	else if (mode == 3)
+	{
+		signal(SIGINT, SIG_DFL);
+		signal(SIGQUIT, SIG_DFL);
+	}
 }

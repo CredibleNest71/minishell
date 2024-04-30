@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 14:33:19 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/04/29 15:27:22 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/04/30 13:34:55 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ char	*check_if_correct_path(char **paths, t_bigshell *data, char *str)
 	//do I have to take care of absolute n relative paths 4 commands?
 	// what if cmd path is sth like foo/bar/executable
 	if (str[0] == '/' || str[0] == '.')
-		return (double_free_array(paths, data->mod_env), (char *)str);
+		return (s_array_free(paths), (char *)str);
 	while (paths[i] != NULL)
 	{
 		tmp = ft_strjoin(paths[i], "/");

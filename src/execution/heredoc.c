@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 14:55:27 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/04/29 19:26:38 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/04/30 13:28:01 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ int	tmpfile_cleanup(t_bigshell *data)
 		}
 		cmd = cmd->next;
 	}
+	free_tmpfile(data);
 	return (0);
 }
 
@@ -87,27 +88,27 @@ int	heredoc_finder(t_bigshell *data)
 char	*check_for_quotes(t_bigshell *data, char *eof)
 {
 	int		i;
-	size_t		j;
+	size_t	j;
 	char	*delimiter;
 	
 	i = 0;
 	j = -1;
 	delimiter = malloc(sizeof(char) * (ft_strlen(eof) - 1));
 	if (!delimiter)
-		CRITICAL_FAILURE(data, "heredoc: malloc failed");
+		CRITICAL_FAILURE(data, "heredoc.c:97 malloc failed");
 	if (eof[i] == '"' || eof[i] == '\'')
 	{
 		while (++i < (int)ft_strlen(eof))
 		{
 			delimiter[++j] = eof[i];
-		//	printf("%zu\n %zu\n", j, i);
 		}
-		delimiter[j] = '\0'; //am I overwriting shit?
-		//printf("%zu\n", j); //what do u do
-		//printf("%s\n", delimiter); //what do u do
+		delimiter[j] = '\0';
 		return (delimiter);
 	}
+	free(delimiter);
 	delimiter = ft_strdup(eof);
+	if (!delimiter)
+		return (free(delimiter), NULL);
 	return (delimiter);
 }
 
@@ -153,6 +154,8 @@ void	ft_heredoc(t_bigshell *data)
 			eof = cmd->input->str;
 			mod_eof = check_for_quotes(data, eof);
 			cmd->tmpfile = ft_strjoin("tmpfile", cmd->input->str);
+			if (!cmd->tmpfile)
+				simple_error(data, 1); //check if correct error handling
 			heredoc_fd = open(cmd->tmpfile, O_CREAT | O_TRUNC | O_RDWR, 00644);
 			//cmd->heredoc_fd = heredoc_fd;
 			if (heredoc_fd == -1)

@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 11:33:48 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/04/29 19:00:15 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/04/30 13:27:48 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,8 @@ void	exec_init(t_bigshell *data)
 	exec = malloc(sizeof(t_exec));
 	if (!exec)
 		CRITICAL_FAILURE(data, "exec_init: malloc fail");
+	exec->path = NULL;
+	exec->paths = NULL;
 	data->exec = exec;
 }
 
@@ -66,11 +68,11 @@ int	main(int argc, char **argv, char **env)
 	if (argc && argv)
 		argv[argc - 1] = argv[argc - 1];
 	bzero(&data, sizeof(data));
+	pipe_init(&data);
+	exec_init(&data);
 	store_env(&data, env);
 	char *lineread;
 	lineread = NULL;
-	pipe_init(&data);
-	exec_init(&data);
 	while (1)
 	{
 		remove_cmd_list_from_data(&data);
@@ -102,6 +104,7 @@ int	main(int argc, char **argv, char **env)
 			if (redir(data.commands, &data))
 			{
 				store_restore_fds(&data, 2);
+				tmpfile_cleanup(&data);
 				continue ;
 			}
 		}
@@ -111,6 +114,7 @@ int	main(int argc, char **argv, char **env)
 			{
 				update_exit_stat(&data, 0);
 				store_restore_fds(&data, 2);
+				tmpfile_cleanup(&data);
 				continue ;
 			}
 			data.commands->pid = fork();

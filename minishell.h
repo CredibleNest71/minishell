@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 17:34:54 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/04/29 19:01:04 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/04/30 11:44:04 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,6 @@ typedef struct s_env
 typedef struct exec
 {
 	char	*path;
-	//char	*tmp;
 	char	**paths;
 }	t_exec;
 

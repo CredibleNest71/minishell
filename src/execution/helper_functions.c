@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 17:04:24 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/04/29 19:03:39 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/04/30 13:25:37 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -160,7 +160,7 @@ void	free_tmpfile(t_bigshell *data)
 		cmd = cmd->next;
 	}
 }
-
+ 
 void	free_struct(t_bigshell *data)
 {
 	//free everything before exiting minishell;

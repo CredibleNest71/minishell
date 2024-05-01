@@ -71,6 +71,6 @@ void	ft_exit(t_bigshell *data, t_command *cmd)
 		update_exit_stat(data, ft_atoi(cmd->args->str));
 	exitcode = get_exitcode(data);
 	free_struct(data);
-	ft_putstr_fd("exit\n", 2);
+	//ft_putstr_fd("exit\n", 2);
 	exit(exitcode);
 }

@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 14:55:27 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/04/30 13:49:15 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/05/01 14:19:07 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,51 +142,53 @@ void	ft_heredoc(t_bigshell *data)
 	int			heredoc_fd;
 	int			i;
 	t_command	*cmd;
+	t_token		*input;
 	
 	i = 0;
 	cmd = data->commands;
 	set_signals(2);
 	while (cmd)
 	{
-		if (cmd->input && cmd->input->type == (enum type)HEREDOC)
+		input = cmd->input;
+		while (input)
 		{
-			lineread = NULL;
-			eof = cmd->input->str;
-			mod_eof = check_for_quotes(data, eof);
-			cmd->tmpfile = ft_strjoin("tmpfile", cmd->input->str);
-			if (!cmd->tmpfile)
-				simple_error(data, 1); //check if correct error handling
-			heredoc_fd = open(cmd->tmpfile, O_CREAT | O_TRUNC | O_RDWR, 00644);
-			//cmd->heredoc_fd = heredoc_fd;
-			if (heredoc_fd == -1)
-				simple_error(data, 1);
-			while (1)
+			if (input->type == (enum type)HEREDOC)
 			{
-				if (g_sig == SIGINT)
-					break ;
-				lineread = readline("> ");
-				if (!lineread || !(ft_strncmp(mod_eof, lineread, ft_strlen(mod_eof) + 1)))
-					break ;
-				if (eof[i] != '"' || eof[i] == 27)
-					lineread = expand(lineread, data);
-				write(heredoc_fd, lineread, ft_strlen(lineread));
-				write(heredoc_fd, "\n", 1);
-				free(lineread);
-			}
-			if (!lineread)
-			{
-				printf("minishell: warning: heredoc (wanted '%s')\n", eof);
-				close(heredoc_fd);
-				unlink(cmd->tmpfile);
-			}
-			if (!cmd->cmd)
-			{
-				if(close(heredoc_fd) == -1)
+				lineread = NULL;
+				eof = input->str;
+				mod_eof = check_for_quotes(data, eof);
+				cmd->tmpfile = ft_strjoin("tmpfile", input->str);
+				if (!cmd->tmpfile)
+					simple_error(data, 1); //check if correct error handling
+				heredoc_fd = open(cmd->tmpfile, O_CREAT | O_TRUNC | O_RDWR, 00644);
+				if (heredoc_fd == -1)
 					simple_error(data, 1);
-				unlink(cmd->tmpfile);
+				while (1)
+				{
+					if (g_sig == SIGINT)
+						break ;
+					lineread = readline("> ");
+					if (!lineread || !(ft_strncmp(mod_eof, lineread, ft_strlen(mod_eof) + 1)))
+						break ;
+					if (eof[i] != '"' || eof[i] == 27)
+						lineread = expand(lineread, data);
+					write(heredoc_fd, lineread, ft_strlen(lineread));
+					write(heredoc_fd, "\n", 1);
+					free(lineread);
+				}
+				if (!lineread)
+					printf("minishell: warning: heredoc (wanted '%s')\n", eof);
+				// if (!cmd->cmd)
+				// {
+				// 	if(close(heredoc_fd) == -1)
+				// 		simple_error(data, 1);
+				// 	unlink(cmd->tmpfile);
+				// }
+				free(mod_eof);
+				close(heredoc_fd);
+				eof = NULL;
 			}
-			free(mod_eof);
-			close(heredoc_fd);
+			input = input->next;
 		}
 		cmd = cmd->next;
 	}

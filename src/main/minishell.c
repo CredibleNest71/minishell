@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mresch <mresch@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 11:33:48 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/04/30 14:01:28 by mresch           ###   ########.fr       */
+/*   Updated: 2024/05/01 14:36:26 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,13 +79,13 @@ int	main(int argc, char **argv, char **env)
 		set_signals(0);
 		if (isatty(fileno(stdin)))
 			lineread = readline("smellyshell: ");
-		//else
-		//{
-		//	char	*line;
-		//	line = get_next_line(fileno(stdin));
-		//	lineread = ft_strtrim(line, "\n");
-		//	free(line);
-		//}
+		else
+		{
+			char	*line;
+			line = get_next_line(fileno(stdin));
+			lineread = ft_strtrim(line, "\n");
+			free(line);
+		}
 		if (!lineread)
 			return (/*write(1, "exit\n", 5), */get_exitcode(&data), free_struct(&data), 0);
 		add_history(lineread);
@@ -108,7 +108,7 @@ int	main(int argc, char **argv, char **env)
 				continue ;
 			}
 		}
-		if (data.num_cmd == 1)
+		if (!data.commands->next)
 		{
 			if (builtin_allrounder(&data) == 0)
 			{
@@ -122,12 +122,12 @@ int	main(int argc, char **argv, char **env)
 				CRITICAL_FAILURE(&data, "main: fork failed");
 			if (data.commands->pid == 0)
 				simple_exec(&data);
-			wait(NULL);
-			//wait_for_children(&data); //use specific children waiting ft here for correct exit code
+			//wait(NULL);
+			wait_for_children(&data); //use specific children waiting ft here for correct exit code
 		}
-		if (data.num_cmd > 1)
+		else if (data.commands->next)
 		{
-				complex_exec(&data);
+			complex_exec(&data);
 		}
 		//printf("am I here?\n"); //debugging printf
 		store_restore_fds(&data, 2);

@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 09:46:40 by a                 #+#    #+#             */
-/*   Updated: 2024/04/30 14:15:59 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/05/01 14:35:37 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,14 +127,14 @@ void    convert_env(t_bigshell *data)
 		tmp = ft_strjoin(current->var, "=");
 		if (!tmp)
 		{
-			printf("strjoin failed\n"); //delete later
+			//printf("strjoin failed\n"); //delete later
 			simple_error(data, 1);
 		}
 		str = ft_strjoin(tmp, current->value);
 		free(tmp);
 		if (!str)
 		{
-			printf("strjoin failed\n"); //delete later
+			//printf("strjoin failed\n"); //delete later
 			simple_error(data, 1);
 		}
         data->mod_env[i] = ft_strdup(str);

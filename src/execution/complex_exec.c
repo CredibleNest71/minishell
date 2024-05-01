@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 10:43:53 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/04/30 14:28:46 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/05/01 14:35:25 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -224,7 +224,7 @@ void	complex_exec(t_bigshell *data)
 				CRITICAL_FAILURE(data, "complex exec: pipe failed in first command");
 			data->pipe->read = data->pipe_fd[0];
 			data->pipe->write = data->pipe_fd[1];
-			dprintf(2, "pipe from first: %d, %d\n", data->pipe_fd[0], data->pipe_fd[1]);
+			//dprintf(2, "pipe from first: %d, %d\n", data->pipe_fd[0], data->pipe_fd[1]);
 			if (current_cmd->cmd)
 			{
 				if ((current_cmd->pid = fork()) == -1)
@@ -245,13 +245,13 @@ void	complex_exec(t_bigshell *data)
 				//store_restore_fds(data, 1);
 				if (redir(current_cmd, data))
 				{
-					printf("redir failed in middle child\n");
+					//printf("redir failed in middle child\n");
 					exit_child(data, 1);
 				}
 			}
 			if (pipe(data->pipe_fd2) == -1)
 				CRITICAL_FAILURE(data, "complex exec: pipe 2 failed in middle command");
-			dprintf(2, "pipe from middle: %d, %d\n", data->pipe_fd2[0], data->pipe_fd2[1]);
+			//dprintf(2, "pipe from middle: %d, %d\n", data->pipe_fd2[0], data->pipe_fd2[1]);
 			data->pipe->write = data->pipe_fd2[1];
 			if (current_cmd->cmd)
 			{
@@ -277,7 +277,7 @@ void	complex_exec(t_bigshell *data)
 		{
 			if (redir(current_cmd, data))
 			{
-				printf("redir failed in last child\n");
+				//printf("redir failed in last child\n");
 				exit_child(data, 1);
 			}
 		}
@@ -291,7 +291,7 @@ void	complex_exec(t_bigshell *data)
 		////printf("i happened \n"); //debugging printf
 		/* if (data->redir == 3)
 			restore_fork(data, 3); */
-		dprintf(2, "pipe from last: %d\n", data->pipe->read);
+		//dprintf(2, "pipe from last: %d\n", data->pipe->read);
 		if (close(data->pipe->read) == -1)
 			CRITICAL_FAILURE(data, "complex exec: close(0) failed in parent process");
 	}

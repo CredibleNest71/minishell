@@ -6,7 +6,7 @@
 /*   By: mresch <mresch@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 14:55:07 by mresch            #+#    #+#             */
-/*   Updated: 2024/04/23 15:51:57 by mresch           ###   ########.fr       */
+/*   Updated: 2024/04/30 12:06:07 by mresch           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,8 @@ char	*ft_string_insert(char *str, char *in, char *here)
 	idx = ft_strlen(ret);
 	ft_strlcpy(&ret[idx], in, ft_strlen(in) + 100);
 	idx = ft_strlen(ret);
-	ft_strlcpy(&ret[idx], here + ft_strlen(var) + 1, ft_strlen(here + ft_strlen(var)));
+	ft_strlcpy(&ret[idx], here + ft_strlen(var) + 1, \
+		ft_strlen(here + ft_strlen(var)));
 	free(var);
 	if (!ft_strlen(ret))
 	{
@@ -106,8 +107,8 @@ char	*get_val(char *var, t_bigshell *data)
 
 char	*var2val(char *here, t_bigshell *data)
 {
-    char	*var;
-    char	*val;
+	char	*var;
+	char	*val;
 
 	var = find_var_name(here);
 	if (!var)

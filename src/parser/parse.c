@@ -6,7 +6,7 @@
 /*   By: mresch <mresch@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 15:00:46 by mresch            #+#    #+#             */
-/*   Updated: 2024/04/23 13:39:07 by mresch           ###   ########.fr       */
+/*   Updated: 2024/04/30 14:00:24 by mresch           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,7 +114,7 @@ t_command	*parse(char *input, t_bigshell *data)
 	if (!tokens)
 		return (NULL);
 	if (!*tokens)
-		return (NULL);
+		return (free(tokens), NULL);
 	cmds = commands_finalized(tokens);
 	set_counts(*cmds, data);
 	set_all_char_arrays(*cmds);

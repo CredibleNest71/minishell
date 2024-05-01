@@ -6,7 +6,7 @@
 /*   By: mresch <mresch@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 13:54:17 by mresch            #+#    #+#             */
-/*   Updated: 2024/04/24 14:36:30 by mresch           ###   ########.fr       */
+/*   Updated: 2024/04/30 12:04:42 by mresch           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ int			tilde(t_token *curr, t_bigshell *data);
 //expansion_routine_3
 t_token		*make_t(char *str);
 t_token		**split_to_token(char *expanded, int join);
-void		insert_tokenlist(t_token **list,\
+void		insert_tokenlist(t_token **list, \
 			t_token *curr, t_token **addlist);
 void		remove_token(t_token *curr);
 

@@ -6,7 +6,7 @@
 /*   By: mresch <mresch@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 14:46:26 by mresch            #+#    #+#             */
-/*   Updated: 2024/04/23 13:55:03 by mresch           ###   ########.fr       */
+/*   Updated: 2024/04/30 13:28:48 by mresch           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ t_token	**tokenmaker(char *str)
 	int		i;
 
 	i = 0;
-	tokenlist = (t_token **) malloc (sizeof(t_token **));
+	tokenlist = (t_token **) malloc (sizeof(t_token *));
 	if (!tokenlist)
 		return (NULL);
 	*tokenlist = create_token(str, &i);

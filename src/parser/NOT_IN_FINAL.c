@@ -6,7 +6,9 @@ void	print_cmds(t_command *cmd, t_bigshell *data)
 {
 	if (!cmd)
 	{
-		write(2, "(NO COMMANDS)\n", 15);
+		printf("==========================================\n");
+		printf("==	NUMBER OF COMMANDS: %d\n", 0);
+		printf("==========================================\n");
 		return ;
 	}
 	t_command *temp_cmd = cmd;

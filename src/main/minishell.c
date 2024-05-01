@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 11:33:48 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/05/01 14:36:26 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/05/01 17:56:13 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ int	main(int argc, char **argv, char **env)
 		remove_cmd_list_from_data(&data);
 		set_signals(0);
 		if (isatty(fileno(stdin)))
-			lineread = readline("smellyshell: ");
+			lineread = readline("minitrap: ");
 		else
 		{
 			char	*line;
@@ -99,17 +99,17 @@ int	main(int argc, char **argv, char **env)
 		// 	ft_heredoc(&data);
 		if (data.heredoc)
 			ft_heredoc(&data);
-		if (data.commands->input || data.commands->output)
-		{
-			if (redir(data.commands, &data))
-			{
-				store_restore_fds(&data, 2);
-				tmpfile_cleanup(&data);
-				continue ;
-			}
-		}
 		if (!data.commands->next)
 		{
+			if (data.commands->input || data.commands->output)
+			{
+				if (redir(data.commands, &data))
+				{
+					store_restore_fds(&data, 2);
+					tmpfile_cleanup(&data);
+					continue ;
+				}
+			}
 			if (builtin_allrounder(&data) == 0)
 			{
 				update_exit_stat(&data, 0);

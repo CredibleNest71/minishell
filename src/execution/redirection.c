@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 17:59:11 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/05/01 14:24:20 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/05/01 17:43:25 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,7 +131,7 @@ int	redir(t_command *command, t_bigshell *data)
 			if (check_file(data, out->str, 1) != 0)
 				return (EXIT_FAILURE);
 			if (data->fd_out == -1)
-				return(redir_error(data, 1, "redir.c: fd_out: open failed"), EXIT_FAILURE);
+				return(printf("minishell: %s: No such file or directory\n", out->str), EXIT_FAILURE);
 			if (!out->next)
 				break ;
 			if (out->next)

@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 10:43:53 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/05/01 14:35:25 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/05/01 17:51:09 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,11 @@ void	first_executor(t_bigshell *data, t_command *cmd, int out_fd)
 	data->exec->paths = NULL;
 	data->exec->path = NULL;
 
+	if (cmd->input || cmd->output)
+	{
+		if (redir(cmd, data))
+			exit_child(data, 1);
+	}
 	if (!cmd->output)
 	{
 		if (dup2(out_fd, 1) == -1 || close(data->pipe->read) == -1 || close(data->pipe->write) == -1)
@@ -120,6 +125,11 @@ void	last_executor(t_bigshell *data, t_command *cmd, int in_fd)
 
 	data->exec->paths = NULL;
 	data->exec->path = NULL;
+	if (cmd->input || cmd->output)
+	{
+		if (redir(cmd, data))
+			exit_child(data, 1);
+	}
 	if (!cmd->input)
 	{
 		if (dup2(in_fd, 0) == -1) //|| close(data->pipe->write) == -1 || close(data->pipe->read) == -1)
@@ -147,10 +157,6 @@ void	last_executor(t_bigshell *data, t_command *cmd, int in_fd)
 		exit_child(data, 127);
 	}
 	execve(data->exec->path, cmd->args_exec, data->mod_env);
-	//printf("execve failed\n");
-	// free(data->exec->path);
-	// free(data->exec->paths);
-	// free_struct(data);
 	exit_child(data, 126);
 
 }
@@ -162,6 +168,11 @@ void	middle_executor(t_bigshell *data, t_command *cmd, int out_fd, int in_fd)
 
 	data->exec->paths = NULL;
 	data->exec->path = NULL;
+	if (cmd->input || cmd->output)
+	{
+		if (redir(cmd, data))
+			exit_child(data, 1);
+	}
 	if (!cmd->input)
 	{
 		if (dup2(in_fd, 0) == -1 || close(data->pipe->read) == -1) // || close(data->pipe->write) == -1) cmd->prev->in_fd --> artem
@@ -175,12 +186,6 @@ void	middle_executor(t_bigshell *data, t_command *cmd, int out_fd, int in_fd)
 			CRITICAL_FAILURE(data, "complex exec: middle executor: dup2 failed (out_fd)");
 		//close(out_fd);
 	}
-	/* if (data->commands->input || data->commands->output)
-	{
-		printf("about to close in middle\n");
-		if (close(data->fd_in) == -1 || close(data->fd_out) == -1)
-			exit_child(data, 1);
-	// } */
 	close(data->std_in);
 	close(data->std_out);
 	convert_env(data);
@@ -195,10 +200,6 @@ void	middle_executor(t_bigshell *data, t_command *cmd, int out_fd, int in_fd)
 		exit_child(data, 127);	
 	}
 	execve(data->exec->path, cmd->args_exec, data->mod_env);
-	//printf("execve failed\n");
-	// free(data->exec->path);
-	// free(data->exec->paths);
-	// free_struct(data);
 	exit_child(data, 126);
 
 }
@@ -213,13 +214,8 @@ void	complex_exec(t_bigshell *data)
 	{
 		if (g_sig == SIGINT) //check for signal before executing any command. if yes, spit prompt again
 			CRITICAL_FAILURE(data, "complex exec: SIGINT received");
-		/* if (data->redir)
-			restore_fork(data); */
-		////printf("complex:: current command: %s current arg:%s\n", current_cmd->cmd->str, current_cmd->args->str); //debugging printf
 		if (current_cmd == data->commands)
 		{
-			//im at first command
-			////printf("complex: checkpoint first command: %s\n", current_cmd->cmd->str); //debugging printf
 			if (pipe(data->pipe_fd) == -1)
 				CRITICAL_FAILURE(data, "complex exec: pipe failed in first command");
 			data->pipe->read = data->pipe_fd[0];
@@ -232,23 +228,11 @@ void	complex_exec(t_bigshell *data)
 				if (current_cmd->pid == 0)
 					first_executor(data, current_cmd, data->pipe->write);
 			}
-			/* if (data->redir == 1)
-				restore_fork(data, 1); */
 			if (close(data->pipe->write) == -1)
 				CRITICAL_FAILURE(data, "complex exec: close(1) failed in parent process");
 		}
 		else
 		{
-			if (current_cmd->input || current_cmd->output)
-			{
-				//dprintf(2, "alo\n");
-				//store_restore_fds(data, 1);
-				if (redir(current_cmd, data))
-				{
-					//printf("redir failed in middle child\n");
-					exit_child(data, 1);
-				}
-			}
 			if (pipe(data->pipe_fd2) == -1)
 				CRITICAL_FAILURE(data, "complex exec: pipe 2 failed in middle command");
 			//dprintf(2, "pipe from middle: %d, %d\n", data->pipe_fd2[0], data->pipe_fd2[1]);
@@ -264,7 +248,6 @@ void	complex_exec(t_bigshell *data)
 				CRITICAL_FAILURE(data, "complex exec: close(1) failed in parent process");
 			data->pipe->read = data->pipe_fd2[0];
 		}
-		// wait(NULL);
 		current_cmd = current_cmd->next;
 	}
 	//wait_for_children(data);
@@ -273,14 +256,6 @@ void	complex_exec(t_bigshell *data)
 		if (g_sig == SIGINT) //check for signal before executing any command. if yes, spit prompt again
 			CRITICAL_FAILURE(data, "complex exec: SIGINT received");
 		restore_output(data);
-		if (current_cmd->input || current_cmd->output)
-		{
-			if (redir(current_cmd, data))
-			{
-				//printf("redir failed in last child\n");
-				exit_child(data, 1);
-			}
-		}
 		if (current_cmd->cmd)
 		{
 			if ((current_cmd->pid = fork()) == -1)

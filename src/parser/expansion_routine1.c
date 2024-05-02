@@ -6,7 +6,7 @@
 /*   By: mresch <mresch@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 14:48:48 by mresch            #+#    #+#             */
-/*   Updated: 2024/05/02 12:41:17 by mresch           ###   ########.fr       */
+/*   Updated: 2024/05/02 15:02:52 by mresch           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,21 +22,21 @@ int	expand_no_quotes(t_token **list, \
 
 	expanded = expand(curr->str, data);
 	curr->str = expanded;
-	if (!expanded || !ft_strlen(expanded))
+	if (!ft_strchr(expanded, ' '))
+		return (1);
+	addlist = split_to_token(expanded, curr->connected);
+	if (!addlist)
 	{
+		if (curr->next)
+			curr->next->distanced = 1;
 		if (*list == curr)
 			*list = curr->next;
 		remove_token(curr);
 		return (4);
 	}
-	if (!ft_strchr(expanded, ' '))
-		return (1);
-	addlist = split_to_token(expanded, curr->connected);
-	(*addlist)->type = curr->type;
+	else
+		(*addlist)->type = curr->type;
 	insert_tokenlist(list, curr, addlist);
-	free(curr->str);
-	free(curr);
-	free(addlist);
 	return (1);
 }
 

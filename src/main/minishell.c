@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mresch <mresch@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 11:33:48 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/05/02 15:53:32 by mresch           ###   ########.fr       */
+/*   Updated: 2024/05/02 17:26:05 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,10 +87,13 @@ int	main(int argc, char **argv, char **env)
 			free(line);
 		}
 		if (!lineread)
-			return (/*write(1, "exit\n", 5), */get_exitcode(&data), free_struct(&data), 0);
+		{
+			int exitcode = get_exitcode(&data);
+			return (/*write(1, "exit\n, 5"), */free_struct(&data), exitcode);
+		}
 		add_history(lineread);
 		data.commands = parse(lineread, &data);
-		//print_cmds(data.commands, &data);
+		print_cmds(data.commands, &data);
 		if (!data.commands)
 			continue ;
 		set_signals(1);
@@ -112,7 +115,8 @@ int	main(int argc, char **argv, char **env)
 			}
 			if (builtin_allrounder(&data) == 0)
 			{
-				update_exit_stat(&data, 0);
+				if (ft_strncmp(data.commands->cmd->str, "exit", 4))
+					update_exit_stat(&data, 0);
 				store_restore_fds(&data, 2);
 				tmpfile_cleanup(&data);
 				continue ;
@@ -135,5 +139,7 @@ int	main(int argc, char **argv, char **env)
 		close_unused_fds(&data);
 		tmpfile_cleanup(&data);
 	}
+	int exitcode = get_exitcode(&data);
 	free_struct(&data);
+	return (exitcode);
 }

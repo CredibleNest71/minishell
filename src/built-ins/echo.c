@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mresch <mresch@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 09:57:03 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/04/24 15:24:22 by mresch           ###   ########.fr       */
+/*   Updated: 2024/05/02 17:04:20 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,12 +46,13 @@ void	ft_echo(t_token *args)
 	flag = check_flag(args->str);
 	if (flag)
 		args = args->next;
+	while (check_flag(args->str))
+		args = args->next;
 	while (args)
 	{
 		if (count++)
 			ft_putchar_fd(' ', 1);
-		if (!flag || !check_flag(args->str))
-			ft_putstr_fd(args->str, 1);
+		ft_putstr_fd(args->str, 1);
 		args = args->next;
 	}
 	if (!flag)

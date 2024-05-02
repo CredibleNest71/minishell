@@ -6,7 +6,7 @@
 /*   By: mresch <mresch@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 10:43:53 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/04/30 16:44:52 by mresch           ###   ########.fr       */
+/*   Updated: 2024/05/02 12:49:46 by mresch           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,13 +77,17 @@ void	wait_for_children(t_bigshell *data)
 
 void	first_executor(t_bigshell *data, t_command *cmd, int out_fd)
 {
-	char	**paths;
-	char	*correct_path;
+	// char	**paths;
+	// char	*correct_path;
 
-	paths = NULL;
-	correct_path = NULL;
+	data->exec->paths = NULL;
+	data->exec->path = NULL;
 
-	set_signals(3);
+	if (cmd->input || cmd->output)
+	{
+		if (redir(cmd, data))
+			exit_child(data, 1);
+	}
 	if (!cmd->output)
 	{
 		if (dup2(out_fd, 1) == -1 || close(data->pipe->read) == -1 || close(data->pipe->write) == -1)
@@ -97,30 +101,37 @@ void	first_executor(t_bigshell *data, t_command *cmd, int out_fd)
 	close(data->std_in);
 	close(data->std_out);
 	convert_env(data);
-	paths = find_and_split_path(data->mod_env);
-	if (!paths)
-		printf("find&split failed\n"); //handle correctly
-	correct_path = check_if_correct_path(paths, data, cmd->cmd->str);
-	if (!correct_path)
-		printf("minishell: command %s not found\n", cmd->cmd->str); //exit code is 127 I think
-	execve(correct_path, cmd->args_exec, data->mod_env);
+	data->exec->paths = find_and_split_path(data->mod_env);
+	if (!data->exec->paths)
+		exit_child(data, 1);//printf("find&split failed\n"); //handle correctly
+	data->exec->path = check_if_correct_path(data->exec->paths, data, cmd->cmd->str);
+	if (!data->exec->path)
+	{
+		printf("minishell: command '%s' not found\n", cmd->cmd->str);
+		exit_child(data, 127);
+	}
+	execve(data->exec->path, cmd->args_exec, data->mod_env);
 	//printf("execve failed\n");
-	free(correct_path);
-	free_struct(data);
-	exit(126);
-
+	// free(data->exec->path);
+	// free_struct(data);
+	exit_child(data, 126);
 }
 
 void	last_executor(t_bigshell *data, t_command *cmd, int in_fd)
 {
-	char	**paths;
-	char	*correct_path;
+	// char	**paths;
+	// char	*correct_path;
 
 	//in_fd = 0;
 
-	paths = NULL;
-	correct_path = NULL;
 	set_signals(3);
+	data->exec->paths = NULL;
+	data->exec->path = NULL;
+	if (cmd->input || cmd->output)
+	{
+		if (redir(cmd, data))
+			exit_child(data, 1);
+	}
 	if (!cmd->input)
 	{
 		if (dup2(in_fd, 0) == -1) //|| close(data->pipe->write) == -1 || close(data->pipe->read) == -1)
@@ -138,29 +149,32 @@ void	last_executor(t_bigshell *data, t_command *cmd, int in_fd)
 			exit_child(data, 1);
 	} */
 	convert_env(data);
-	paths = find_and_split_path(data->mod_env);
-	if (!paths)
-		printf("find&split failed\n"); //handle correctly
-	correct_path = check_if_correct_path(paths, data, cmd->cmd->str);
-	if (!correct_path)
+	data->exec->paths = find_and_split_path(data->mod_env);
+	if (!data->exec->paths)
+		exit_child(data, 1); //printf("find&split failed\n"); //handle correctly
+	data->exec->path = check_if_correct_path(data->exec->paths, data, cmd->cmd->str);
+	if (!data->exec->path)
+	{
 		printf("minishell: command %s not found\n", cmd->cmd->str);
-	execve(correct_path, cmd->args_exec, data->mod_env);
-	//printf("execve failed\n");
-	free(correct_path);
-	free(paths);
-	free_struct(data);
-	exit (126);
+		exit_child(data, 127);
+	}
+	execve(data->exec->path, cmd->args_exec, data->mod_env);
+	exit_child(data, 126);
 
 }
 
 void	middle_executor(t_bigshell *data, t_command *cmd, int out_fd, int in_fd)
 {
-	char	**paths;
-	char	*correct_path;
+	// char	**paths;
+	// char	*correct_path;
 
-	paths = NULL;
-	correct_path = NULL;
-	set_signals(3);
+	data->exec->paths = NULL;
+	data->exec->path = NULL;
+	if (cmd->input || cmd->output)
+	{
+		if (redir(cmd, data))
+			exit_child(data, 1);
+	}
 	if (!cmd->input)
 	{
 		if (dup2(in_fd, 0) == -1 || close(data->pipe->read) == -1) // || close(data->pipe->write) == -1) cmd->prev->in_fd --> artem
@@ -174,28 +188,21 @@ void	middle_executor(t_bigshell *data, t_command *cmd, int out_fd, int in_fd)
 			CRITICAL_FAILURE(data, "complex exec: middle executor: dup2 failed (out_fd)");
 		//close(out_fd);
 	}
-	/* if (data->commands->input || data->commands->output)
-	{
-		printf("about to close in middle\n");
-		if (close(data->fd_in) == -1 || close(data->fd_out) == -1)
-			exit_child(data, 1);
-	// } */
 	close(data->std_in);
 	close(data->std_out);
 	convert_env(data);
-	paths = find_and_split_path(data->mod_env);
-	if (!paths)
-		printf("find&split failed\n"); //handle correctly
-	correct_path = check_if_correct_path(paths, data, cmd->cmd->str);
-	if (!correct_path)
+	data->exec->paths = find_and_split_path(data->mod_env);
+	if (!data->exec->paths)
+		exit_child(data, 1); //printf("find&split failed\n"); //handle correctly
+	data->exec->path = check_if_correct_path(data->exec->paths, data, cmd->cmd->str);
+	if (!data->exec->path)
+	{
 	// TODO: command not found needs to be printed to stderr (in all cases not only here)
 		printf("minishell: command %s not found\n", cmd->cmd->str);
-	execve(correct_path, cmd->args_exec, data->mod_env);
-	//printf("execve failed\n");
-	free(correct_path);
-	free(paths);
-	free_struct(data);
-	exit(126);
+		exit_child(data, 127);	
+	}
+	execve(data->exec->path, cmd->args_exec, data->mod_env);
+	exit_child(data, 126);
 
 }
 
@@ -209,18 +216,13 @@ void	complex_exec(t_bigshell *data)
 	{
 		if (g_sig == SIGINT) //check for signal before executing any command. if yes, spit prompt again
 			CRITICAL_FAILURE(data, "complex exec: SIGINT received");
-		/* if (data->redir)
-			restore_fork(data); */
-		////printf("complex:: current command: %s current arg:%s\n", current_cmd->cmd->str, current_cmd->args->str); //debugging printf
 		if (current_cmd == data->commands)
 		{
-			//im at first command
-			////printf("complex: checkpoint first command: %s\n", current_cmd->cmd->str); //debugging printf
 			if (pipe(data->pipe_fd) == -1)
 				CRITICAL_FAILURE(data, "complex exec: pipe failed in first command");
 			data->pipe->read = data->pipe_fd[0];
 			data->pipe->write = data->pipe_fd[1];
-			dprintf(2, "pipe from first: %d, %d\n", data->pipe_fd[0], data->pipe_fd[1]);
+			//dprintf(2, "pipe from first: %d, %d\n", data->pipe_fd[0], data->pipe_fd[1]);
 			if (current_cmd->cmd)
 			{
 				if ((current_cmd->pid = fork()) == -1)
@@ -228,26 +230,14 @@ void	complex_exec(t_bigshell *data)
 				if (current_cmd->pid == 0)
 					first_executor(data, current_cmd, data->pipe->write);
 			}
-			/* if (data->redir == 1)
-				restore_fork(data, 1); */
 			if (close(data->pipe->write) == -1)
 				CRITICAL_FAILURE(data, "complex exec: close(1) failed in parent process");
 		}
 		else
 		{
-			if (current_cmd->input || current_cmd->output)
-			{
-				//dprintf(2, "alo\n");
-				//store_restore_fds(data, 1);
-				if (redir(current_cmd, data))
-				{
-					printf("redir failed in middle child\n");
-					exit_child(data, 1);
-				}
-			}
 			if (pipe(data->pipe_fd2) == -1)
 				CRITICAL_FAILURE(data, "complex exec: pipe 2 failed in middle command");
-			dprintf(2, "pipe from middle: %d, %d\n", data->pipe_fd2[0], data->pipe_fd2[1]);
+			//dprintf(2, "pipe from middle: %d, %d\n", data->pipe_fd2[0], data->pipe_fd2[1]);
 			data->pipe->write = data->pipe_fd2[1];
 			if (current_cmd->cmd)
 			{
@@ -260,7 +250,6 @@ void	complex_exec(t_bigshell *data)
 				CRITICAL_FAILURE(data, "complex exec: close(1) failed in parent process");
 			data->pipe->read = data->pipe_fd2[0];
 		}
-		// wait(NULL);
 		current_cmd = current_cmd->next;
 	}
 	//wait_for_children(data);
@@ -269,14 +258,6 @@ void	complex_exec(t_bigshell *data)
 		if (g_sig == SIGINT) //check for signal before executing any command. if yes, spit prompt again
 			CRITICAL_FAILURE(data, "complex exec: SIGINT received");
 		restore_output(data);
-		if (current_cmd->input || current_cmd->output)
-		{
-			if (redir(current_cmd, data))
-			{
-				printf("redir failed in last child\n");
-				exit_child(data, 1);
-			}
-		}
 		if (current_cmd->cmd)
 		{
 			if ((current_cmd->pid = fork()) == -1)
@@ -287,7 +268,7 @@ void	complex_exec(t_bigshell *data)
 		////printf("i happened \n"); //debugging printf
 		/* if (data->redir == 3)
 			restore_fork(data, 3); */
-		dprintf(2, "pipe from last: %d\n", data->pipe->read);
+		//dprintf(2, "pipe from last: %d\n", data->pipe->read);
 		if (close(data->pipe->read) == -1)
 			CRITICAL_FAILURE(data, "complex exec: close(0) failed in parent process");
 	}

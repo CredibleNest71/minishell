@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 11:02:30 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/04/18 12:45:42 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/05/01 16:17:14 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,6 @@ void	ft_exit(t_bigshell *data, t_command *cmd)
 		update_exit_stat(data, ft_atoi(cmd->args->str));
 	exitcode = get_exitcode(data);
 	free_struct(data);
-	ft_putstr_fd("exit\n", 2);
+	//ft_putstr_fd("exit\n", 2);
 	exit(exitcode);
 }

@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 09:46:40 by a                 #+#    #+#             */
-/*   Updated: 2024/04/22 14:31:32 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/05/02 12:40:35 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ t_env   *create_node(t_bigshell *data, char *str)
 		return(create_var(data, str));
 	separator = ft_strchr(str, '=');
 	if (!separator)
-		simple_error(data, 1);
+		return(create_var(data, str));
 	var_len = separator - str;
 	value_len = ft_strlen(separator + 1);
 	new_node = (t_env *)malloc(sizeof(t_env));
@@ -113,6 +113,7 @@ void    convert_env(t_bigshell *data)
 {
     int		i;
 	char	*str;
+	char	*tmp;
 	t_env	*current;
     
     data->mod_env = (char **)malloc(sizeof(char *) * (strlen_env(data) + 1));
@@ -123,21 +124,23 @@ void    convert_env(t_bigshell *data)
 	current = data->env;
     while (current) // before while (current->next)
     {
-		str = ft_strjoin(current->var, "=");
-		if (!str)
+		tmp = ft_strjoin(current->var, "=");
+		if (!tmp)
 		{
-			printf("strjoin failed\n"); //delete later
+			//printf("strjoin failed\n"); //delete later
 			simple_error(data, 1);
 		}
-		str = ft_strjoin(str, current->value);
+		str = ft_strjoin(tmp, current->value);
+		free(tmp);
 		if (!str)
 		{
-			printf("strjoin failed\n"); //delete later
+			//printf("strjoin failed\n"); //delete later
 			simple_error(data, 1);
 		}
         data->mod_env[i] = ft_strdup(str);
         if (!data->mod_env[i])
             CRITICAL_FAILURE(data, "env_list: strdup failed 2");
+		free(str);
 		current = current->next;
 		i++;
     }

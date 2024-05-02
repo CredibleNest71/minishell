@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 17:59:11 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/04/29 17:32:27 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/05/01 17:43:25 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,20 +79,20 @@ int	redir(t_command *command, t_bigshell *data)
 {
 	t_token		*in;
 	t_token		*out;
-	t_command	*cmd;
+	//t_command	*cmd;
 	
 	in = command->input;
 	out = command->output;
-	cmd = data->commands;
+	//cmd = data->commands;
 	if (in)
 	{
-		if (!data->commands->cmd && !data->commands->next)
+		if (!command->cmd && !command->next) //!data->commands->cmd && !data->commands->next
 			return (EXIT_FAILURE);
 		else
 		{
 			while (in)
 			{
-				if (!in->next && in->type == (enum type)HEREDOC && cmd->cmd)
+				if (!in->next && in->type == (enum type)HEREDOC && command->cmd) // && cmd->cmd not sure why I added this //prob smt to do with pipes.
 				{
 					if (check_file(data, command->tmpfile, 0) != 0)
 						return (EXIT_FAILURE);
@@ -111,7 +111,7 @@ int	redir(t_command *command, t_bigshell *data)
 					if (close(data->fd_in) == -1)
 						return (redir_error(data, 1, "redir.c:110 close failed"), EXIT_FAILURE);
 					in = in->next;
-					cmd = cmd->next;
+					//cmd = cmd->next;
 				}
 			}
 			if (data->fd_in == -1)
@@ -131,7 +131,7 @@ int	redir(t_command *command, t_bigshell *data)
 			if (check_file(data, out->str, 1) != 0)
 				return (EXIT_FAILURE);
 			if (data->fd_out == -1)
-				return(redir_error(data, 1, "redir.c: fd_out: open failed"), EXIT_FAILURE);
+				return(printf("minishell: %s: No such file or directory\n", out->str), EXIT_FAILURE);
 			if (!out->next)
 				break ;
 			if (out->next)

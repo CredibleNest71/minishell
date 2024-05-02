@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 14:33:19 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/04/30 13:34:55 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/04/30 14:10:38 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,6 @@ char	*check_if_correct_path(char **paths, t_bigshell *data, char *str)
 	char	*to_check;
 
 	i = 0;
-	//check if paths &cmd exist?
-	//do I have to take care of absolute n relative paths 4 commands?
 	// what if cmd path is sth like foo/bar/executable
 	if (str[0] == '/' || str[0] == '.')
 		return (s_array_free(paths), (char *)str);
@@ -58,7 +56,8 @@ char	*check_if_correct_path(char **paths, t_bigshell *data, char *str)
 		if (!to_check)
 			return(double_free_array(paths, data->mod_env), free(tmp), CRITICAL_FAILURE(data, "pathfinder.c: to_check: strjoin failed"), NULL);
 		if (access(to_check, X_OK) == 0)
-			return (to_check);
+			return (free(tmp), to_check);
+		free(tmp);
 		free(to_check);
 		i++;
 	}

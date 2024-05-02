@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 17:04:24 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/04/30 13:25:37 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/04/30 14:03:12 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,8 +103,6 @@ void	free_paths(t_bigshell *data)
 		s_array_free(data->exec->paths);
 	if (data->exec->path)
 		free(data->exec->path);
-	// if (data->exec->tmp)
-	// 	free(data->exec->tmp);
 	if (data->exec)
 		free(data->exec);
 }
@@ -137,7 +135,6 @@ void	free_commands(t_bigshell *data)
 
 void	close_unused_fds(t_bigshell *data)
 {
-	dprintf(2, "closing unused fds\n");
 	if (data->std_in)
 		close(data->std_in);
 	if (data->std_out)

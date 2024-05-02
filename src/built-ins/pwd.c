@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 15:21:04 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/03/13 11:15:41 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/05/02 18:20:06 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,10 +34,9 @@ void	ft_pwd(t_bigshell *data)
 	if (!cwd)
 	{
 		ft_putstr_fd("Current Working Directory Not Found\n", 1);
-		update_exit_stat(data, 1);
-		return ;
+		return (update_exit_stat(data, 1));
 	}
 	ft_putstr_fd(cwd, 1);
 	ft_putchar_fd('\n', 1);
-	return ;
+	return (update_exit_stat(data, 0));
 }

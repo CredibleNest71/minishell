@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 12:34:44 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/05/02 14:54:24 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/05/02 18:17:25 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -169,9 +169,8 @@ int	check_var(t_bigshell *data, char *key)
 	if (!(var[0] == '_' || (var[0] >= 'A' && var[0] <= 'Z') || (var[0] >= 'a' && var[0] <= 'z')))
 	{
 		free(var);
-		printf("tinyshell: export: `%s': not a valid identifier\n", key); //key? tiene que ser full str
-		update_exit_stat(data, 1);
-		return (1);
+		printf("tinyshell: export: `%s': not a valid identifier\n", key); //key? tiene que ser full string
+		return (update_exit_stat(data, 1), 1);
 	}
 	while (var[++i])
 	{
@@ -276,8 +275,7 @@ void	ft_export(t_bigshell *data)
 	if (!data->commands->args)
 	{
 		print_env(data->s_env);
-		update_exit_stat(data, 0);
-		return ;
+		return (update_exit_stat(data, 0));
 	}
 	current = data->s_env;
 	current_env = data->env;
@@ -304,4 +302,5 @@ void	ft_export(t_bigshell *data)
 		data->var_i++;
 	}
 	sort_env(data);
+	return (update_exit_stat(data, 0));
 }

@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 11:02:30 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/05/02 17:21:41 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/05/02 18:14:39 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,8 @@ int	check_numeric(char *str)
 	int	i;
 
 	i = 0;
+	if (!str)
+		return (0);
 	if (str[i] == '-' || str[i] == '+')
 		i++;
 	while (str[i])
@@ -79,15 +81,13 @@ void	ft_exit(t_bigshell *data, t_command *cmd)
 	{
 		ft_putstr_fd("exit\n", 2);
 		ft_putstr_fd("minishell: exit: too many arguments\n", 2);
-		update_exit_stat(data, 1);
-		return ;
+		return (update_exit_stat(data, 1));
 	}
-	if (!check_numeric(cmd->args->str))
+	if (cmd->args && !check_numeric(cmd->args->str))
 	{
 		ft_putstr_fd("exit\n", 2);
 		ft_putstr_fd("minishell: exit: numeric argument required\n", 2);
-		update_exit_stat(data, 2);
-		return ;
+		return (update_exit_stat(data, 2));
 	}
 	if (cmd->arg_num == 1)
 		update_exit_stat(data, ft_atoi(cmd->args->str) % 256);

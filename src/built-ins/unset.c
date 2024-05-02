@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 11:00:47 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/04/19 12:49:05 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/05/02 13:51:43 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ void	ft_unset(t_bigshell *data)
 	{
 		if (current)
 			find_node_to_delete(data, &current, &prev, arg);
-		if (current_env)
+		if (current_env && ft_strncmp(arg->str, "?", 1) != 0) //to avoid deleting $? from env
 			find_node_to_delete(data, &current_env, &prev_env, arg);
 		arg = arg->next;
 		current = data->s_env;

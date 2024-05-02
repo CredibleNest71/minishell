@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 14:33:19 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/04/30 14:10:38 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/05/02 14:32:23 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ char	**find_and_split_path(char **env)
 			return (paths);
 		}
 	}
-	return (0);
+	return (NULL);
 }
 
 char	*check_if_correct_path(char **paths, t_bigshell *data, char *str)

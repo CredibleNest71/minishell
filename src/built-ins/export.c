@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 12:34:44 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/05/02 12:34:24 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/05/02 14:54:24 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -209,7 +209,7 @@ void	switch_values(t_bigshell *data, t_env *node, char *new_value, int len)
 		if (!node->value)
 			CRITICAL_FAILURE(data, "export: malloc failed");
 	}
-	ft_memcpy(node->value, new_value, len);
+	ft_memcpy(node->value, new_value, len + 1);
 }
 
 int	var_exists(t_bigshell *data, char *str)
@@ -230,6 +230,8 @@ int	var_exists(t_bigshell *data, char *str)
 	else
 		var_len = separator - str;
 	key = malloc(sizeof(char *) * var_len + 1);
+	if (!key)
+		;// well done TODO
 	ft_memcpy(key, str, var_len);
 	key[var_len] = '\0';
 	while (env)

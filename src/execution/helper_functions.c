@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 17:04:24 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/04/30 14:03:12 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/05/02 14:31:25 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,8 @@ void	s_array_free(char **s_array)
 	int	i;
 
 	i = 0;
+	if (!s_array)
+		return ;
 	while (s_array[i])
 		free(s_array[i++]);
 	free(s_array);

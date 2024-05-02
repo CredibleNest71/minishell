@@ -6,7 +6,7 @@
 /*   By: mresch <mresch@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 15:00:46 by mresch            #+#    #+#             */
-/*   Updated: 2024/04/30 14:00:24 by mresch           ###   ########.fr       */
+/*   Updated: 2024/05/02 15:28:26 by mresch           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,9 @@ t_command	*parse(char *input, t_bigshell *data)
 		return (NULL);
 	if (!*tokens)
 		return (free(tokens), NULL);
-	cmds = commands_finalized(tokens);
+	cmds = commands_finalized(tokens, data);
+	if (!cmds)
+		return (NULL);
 	set_counts(*cmds, data);
 	set_all_char_arrays(*cmds);
 	delete_token_list(*tokens);

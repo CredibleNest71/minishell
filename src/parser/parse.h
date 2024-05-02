@@ -6,7 +6,7 @@
 /*   By: mresch <mresch@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 13:54:17 by mresch            #+#    #+#             */
-/*   Updated: 2024/04/30 12:04:42 by mresch           ###   ########.fr       */
+/*   Updated: 2024/05/02 15:30:28 by mresch           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ void		token_list_add(t_token **tokenlist, t_token *token);
 t_token		**tokenmaker(char *str);
 
 //commander
-t_command	**commands_finalized(t_token **list);
+t_command	**commands_finalized(t_token **list, t_bigshell *data);
 
 //expansion
 char		*expand(char *str, t_bigshell *data);

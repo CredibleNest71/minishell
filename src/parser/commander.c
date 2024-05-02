@@ -6,7 +6,7 @@
 /*   By: mresch <mresch@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 14:44:18 by mresch            #+#    #+#             */
-/*   Updated: 2024/04/23 17:07:00 by mresch           ###   ########.fr       */
+/*   Updated: 2024/05/02 15:42:37 by mresch           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,18 @@
 #include "../../minishell.h"
 #include "../../libft/libft.h"
 
-void	mark_cmds(t_token **list)
+int	check_valid_cmd(char *str)
+{
+	int	i;
+
+	i = -1;
+	while (str[++i])
+		if (ft_isalnum(str[i]) || is_char(str[i], "/_"))
+			return (1);
+	return (0);
+}
+
+int	mark_cmds(t_token **list, t_bigshell *data)
 {
 	t_token	*temp;
 	int		pipe;
@@ -25,6 +36,11 @@ void	mark_cmds(t_token **list)
 	{
 		if (temp->type == (e_type) ARG && pipe)
 		{
+			if (!check_valid_cmd(temp->str))
+			{
+				write(2, "SYNTAX ERROR\n", 14);
+				return (update_exit_stat(data, 2), 0);
+			}
 			temp->type = (e_type) CMD;
 			pipe = 0;
 		}
@@ -32,6 +48,7 @@ void	mark_cmds(t_token **list)
 			pipe = 1;
 		temp = temp->next;
 	}
+	return (1);
 }
 
 void	assign(t_command *cmd, t_token *token)
@@ -96,11 +113,17 @@ t_command	**create_commandlist(t_token **list)
 	return (final);
 }
 
-t_command	**commands_finalized(t_token **list)
+t_command	**commands_finalized(t_token **list, t_bigshell *data)
 {
 	t_command	**final;
 
-	mark_cmds(list);
+	if (!mark_cmds(list, data))
+	{
+		update_exit_stat(data, 2);
+		delete_token_list(*list);
+		free(list);
+		return (NULL);
+	}
 	final = create_commandlist(list);
 	return (final);
 }

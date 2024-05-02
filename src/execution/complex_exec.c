@@ -6,7 +6,7 @@
 /*   By: mresch <mresch@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 10:43:53 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/04/30 16:44:52 by mresch           ###   ########.fr       */
+/*   Updated: 2024/05/02 13:14:08 by mresch           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,6 @@ void	first_executor(t_bigshell *data, t_command *cmd, int out_fd)
 	paths = NULL;
 	correct_path = NULL;
 
-	set_signals(3);
 	if (!cmd->output)
 	{
 		if (dup2(out_fd, 1) == -1 || close(data->pipe->read) == -1 || close(data->pipe->write) == -1)
@@ -120,7 +119,6 @@ void	last_executor(t_bigshell *data, t_command *cmd, int in_fd)
 
 	paths = NULL;
 	correct_path = NULL;
-	set_signals(3);
 	if (!cmd->input)
 	{
 		if (dup2(in_fd, 0) == -1) //|| close(data->pipe->write) == -1 || close(data->pipe->read) == -1)
@@ -160,7 +158,6 @@ void	middle_executor(t_bigshell *data, t_command *cmd, int out_fd, int in_fd)
 
 	paths = NULL;
 	correct_path = NULL;
-	set_signals(3);
 	if (!cmd->input)
 	{
 		if (dup2(in_fd, 0) == -1 || close(data->pipe->read) == -1) // || close(data->pipe->write) == -1) cmd->prev->in_fd --> artem

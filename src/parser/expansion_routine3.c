@@ -6,7 +6,7 @@
 /*   By: mresch <mresch@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 13:29:19 by mresch            #+#    #+#             */
-/*   Updated: 2024/04/24 15:49:05 by mresch           ###   ########.fr       */
+/*   Updated: 2024/05/02 14:59:54 by mresch           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,8 @@ t_token	**split_to_token(char *expanded, int join)
 	if (!expanded || !ft_strlen(expanded))
 		return (NULL);
 	split = ft_split(expanded, ' ');
+	if (!split || !*split)
+		return (free(split), NULL);
 	ret = (t_token **) ft_calloc (sizeof(t_token *), 1);
 	while (split[i])
 	{
@@ -74,6 +76,9 @@ void	insert_tokenlist(t_token **list, \
 	last->next = next;
 	if (next)
 		next->prev = last;
+	free(addlist);
+	free(curr->str);
+	free(curr);
 }
 
 void	remove_token(t_token *curr)

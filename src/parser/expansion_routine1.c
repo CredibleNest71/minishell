@@ -6,7 +6,7 @@
 /*   By: mresch <mresch@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 14:48:48 by mresch            #+#    #+#             */
-/*   Updated: 2024/04/29 13:36:05 by mresch           ###   ########.fr       */
+/*   Updated: 2024/05/02 12:41:17 by mresch           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,10 +61,10 @@ int	launch_expansion(t_token **list, \
 	int	ret;
 
 	ret = 1;
-	if (strchr(curr->str, '~'))
+	if (curr->str[0] == '~')
+	{
 		tilde(curr, data);
-	if (!strchr(curr->str, '$'))
-		return (1);
+	}
 	if (curr->str[0] == '\'')
 	{
 		curr->str = remove_quotes(curr->str);

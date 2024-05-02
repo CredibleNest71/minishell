@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mresch <mresch@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 11:33:48 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/05/02 12:46:36 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/05/02 15:39:54 by mresch           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,9 +91,9 @@ int	main(int argc, char **argv, char **env)
 		add_history(lineread);
 		data.commands = parse(lineread, &data);
 		//print_cmds(data.commands, &data);
-		set_signals(1);
 		if (!data.commands)
 			continue ;
+		set_signals(1);
 		store_restore_fds(&data, 1);
 		// if (heredoc_finder(&data) == 0)
 		// 	ft_heredoc(&data);

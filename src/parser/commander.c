@@ -6,7 +6,7 @@
 /*   By: mresch <mresch@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 14:44:18 by mresch            #+#    #+#             */
-/*   Updated: 2024/05/02 15:30:44 by mresch           ###   ########.fr       */
+/*   Updated: 2024/05/02 15:42:37 by mresch           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,9 @@ int	check_valid_cmd(char *str)
 {
 	int	i;
 
-	i = 0;
-	while (str[i])
-		if (ft_isalnum(str[i++]))
+	i = -1;
+	while (str[++i])
+		if (ft_isalnum(str[i]) || is_char(str[i], "/_"))
 			return (1);
 	return (0);
 }
@@ -37,7 +37,10 @@ int	mark_cmds(t_token **list, t_bigshell *data)
 		if (temp->type == (e_type) ARG && pipe)
 		{
 			if (!check_valid_cmd(temp->str))
+			{
+				write(2, "SYNTAX ERROR\n", 14);
 				return (update_exit_stat(data, 2), 0);
+			}
 			temp->type = (e_type) CMD;
 			pipe = 0;
 		}

@@ -6,12 +6,13 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 17:54:30 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/05/02 14:32:11 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/05/02 15:12:31 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../parser/parse.h"
 #include "../../minishell.h"
+#include "../main/sig.h"
 #include <stdio.h>
 #include <strings.h>
 

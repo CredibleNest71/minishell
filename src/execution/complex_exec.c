@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   complex_exec.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mresch <mresch@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 10:43:53 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/05/01 17:51:09 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/05/02 15:05:35 by mresch           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
+#include "../main/sig.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -123,6 +124,7 @@ void	last_executor(t_bigshell *data, t_command *cmd, int in_fd)
 
 	//in_fd = 0;
 
+	set_signals(3);
 	data->exec->paths = NULL;
 	data->exec->path = NULL;
 	if (cmd->input || cmd->output)

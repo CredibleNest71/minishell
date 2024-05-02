@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 12:34:44 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/04/18 18:37:26 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/05/02 12:34:24 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -170,6 +170,7 @@ int	check_var(t_bigshell *data, char *key)
 	{
 		free(var);
 		printf("tinyshell: export: `%s': not a valid identifier\n", key); //key? tiene que ser full str
+		update_exit_stat(data, 1);
 		return (1);
 	}
 	while (var[++i])

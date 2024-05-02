@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 09:46:40 by a                 #+#    #+#             */
-/*   Updated: 2024/05/01 14:35:37 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/05/02 12:40:35 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ t_env   *create_node(t_bigshell *data, char *str)
 		return(create_var(data, str));
 	separator = ft_strchr(str, '=');
 	if (!separator)
-		simple_error(data, 1);
+		return(create_var(data, str));
 	var_len = separator - str;
 	value_len = ft_strlen(separator + 1);
 	new_node = (t_env *)malloc(sizeof(t_env));

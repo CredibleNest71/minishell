@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 17:54:30 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/05/03 16:36:36 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/05/03 17:19:11 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	simple_exec(t_bigshell *data)
 	// char	**paths;
 	// char	*correct_path;
 	
-	store_restore_fds(data, 2);
+	//store_restore_fds(data, 2);
 	data->exec->paths = NULL;
 	data->exec->path = NULL;
 	if (g_sig == SIGINT) //check for signal before executing any command. if yes, spit prompt again

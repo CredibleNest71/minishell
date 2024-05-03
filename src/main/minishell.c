@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 11:33:48 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/05/03 14:10:13 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/05/03 17:30:32 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,14 @@ void	exec_init(t_bigshell *data)
 	data->exec = exec;
 }
 
+void	fd_init(t_bigshell *data)
+{
+	data->std_in = -1;
+	data->std_out = -1;
+	data->fd_in = -1;
+	data->fd_out = -1;
+}
+
 int	main(int argc, char **argv, char **env)
 {
 	t_bigshell			data;
@@ -84,6 +92,7 @@ int	main(int argc, char **argv, char **env)
 	lineread = NULL;
 	while (1)
 	{
+		fd_init(&data);
 		remove_cmd_list_from_data(&data);
 		set_signals(0);
 		if (isatty(fileno(stdin)))

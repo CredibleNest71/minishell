@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 10:32:36 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/05/02 18:07:10 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/05/03 14:02:47 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -347,6 +347,7 @@ void    ft_cd(t_bigshell *data)
             return ;
         }
         overwrite_pwd(data, cwd);
+		free(cwd);
 		update_exit_stat(data, 0);
     }
 }

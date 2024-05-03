@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 17:04:24 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/05/02 14:31:25 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/05/03 16:27:16 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,13 +138,29 @@ void	free_commands(t_bigshell *data)
 void	close_unused_fds(t_bigshell *data)
 {
 	if (data->std_in)
-		close(data->std_in);
+	{
+		if(close(data->std_in) == -1)
+			perror("close std_in");
+		data->std_in = -1;
+	}
 	if (data->std_out)
-		close(data->std_out);
+	{
+		if(close(data->std_out) == -1)
+			perror("close std_out");
+		data->std_out = -1;
+	}
 	if (data->fd_in)
-		close(data->fd_in);
+	{
+		if(close(data->fd_in) == -1)
+			perror("close fd_in");
+		data->fd_in = -1;
+	}
 	if (data->fd_out)
-		close(data->fd_out);
+	{
+		if(close(data->fd_out) == -1)
+			perror("close fd_out");
+		data->fd_out = -1;
+	}
 }
 
 void	free_tmpfile(t_bigshell *data)

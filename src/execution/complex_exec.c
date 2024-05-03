@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   complex_exec.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mresch <mresch@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 10:43:53 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/05/02 15:05:35 by mresch           ###   ########.fr       */
+/*   Updated: 2024/05/03 16:34:47 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,16 +75,48 @@ void	wait_for_children(t_bigshell *data)
 	}
 }
 
+void	close_redir_fds_in_child(t_bigshell *data, int mode)
+{
+	if (mode == 1)
+	{
+		if (data->fd_in != -1)
+		{
+			if (close(data->fd_in) == -1)
+				perror("close fd_in in child:");
+			data->fd_in = -1;
+		}
+		if (data->fd_out != -1)
+		{
+			if (close(data->fd_out) == -1)
+				perror("close fd_out in child:");
+			data->fd_out = -1;
+		}
+	}
+	if (mode == 2)
+	{
+		if (data->std_in != -1)
+		{
+			if (close(data->std_in) == -1)
+				perror("close std_in in child:");
+			data->std_in = -1;
+		}
+		if (data->std_out != -1)
+		{
+			if (close(data->std_out) == -1)
+				perror("close std_out in child:");
+			data->std_out = -1;
+		}
+	}
+}
+
 void	first_executor(t_bigshell *data, t_command *cmd, int out_fd)
 {
-	// char	**paths;
-	// char	*correct_path;
-
 	data->exec->paths = NULL;
 	data->exec->path = NULL;
 
 	if (cmd->input || cmd->output)
 	{
+		close_redir_fds_in_child(data, 1);
 		if (redir(cmd, data))
 			exit_child(data, 1);
 	}
@@ -98,8 +130,7 @@ void	first_executor(t_bigshell *data, t_command *cmd, int out_fd)
 		if (close(data->fd_in) == -1)
 			exit_child(data, 1);
 	}
-	close(data->std_in);
-	close(data->std_out);
+	close_redir_fds_in_child(data, 2);
 	convert_env(data);
 	data->exec->paths = find_and_split_path(data->mod_env);
 	if (!data->exec->paths)
@@ -111,24 +142,18 @@ void	first_executor(t_bigshell *data, t_command *cmd, int out_fd)
 		exit_child(data, 127);
 	}
 	execve(data->exec->path, cmd->args_exec, data->mod_env);
-	//printf("execve failed\n");
-	// free(data->exec->path);
-	// free_struct(data);
 	exit_child(data, 126);
 }
 
 void	last_executor(t_bigshell *data, t_command *cmd, int in_fd)
 {
-	// char	**paths;
-	// char	*correct_path;
-
-	//in_fd = 0;
-
 	set_signals(3);
 	data->exec->paths = NULL;
 	data->exec->path = NULL;
+
 	if (cmd->input || cmd->output)
 	{
+		close_redir_fds_in_child(data, 1);
 		if (redir(cmd, data))
 			exit_child(data, 1);
 	}
@@ -139,15 +164,8 @@ void	last_executor(t_bigshell *data, t_command *cmd, int in_fd)
 		
 	}
 	close(in_fd);
-	close(data->std_in);
-	close(data->std_out);
-	//redirect output as well
-	/* else
-	{
-		printf("closing in last\n");
-		 if (close(data->fd_out) == -1)
-			exit_child(data, 1);
-	} */
+	close_redir_fds_in_child(data, 2);
+	//TODO? redirect output as well
 	convert_env(data);
 	data->exec->paths = find_and_split_path(data->mod_env);
 	if (!data->exec->paths)
@@ -165,13 +183,12 @@ void	last_executor(t_bigshell *data, t_command *cmd, int in_fd)
 
 void	middle_executor(t_bigshell *data, t_command *cmd, int out_fd, int in_fd)
 {
-	// char	**paths;
-	// char	*correct_path;
-
 	data->exec->paths = NULL;
 	data->exec->path = NULL;
+	
 	if (cmd->input || cmd->output)
 	{
+		close_redir_fds_in_child(data, 1);
 		if (redir(cmd, data))
 			exit_child(data, 1);
 	}
@@ -188,8 +205,7 @@ void	middle_executor(t_bigshell *data, t_command *cmd, int out_fd, int in_fd)
 			CRITICAL_FAILURE(data, "complex exec: middle executor: dup2 failed (out_fd)");
 		//close(out_fd);
 	}
-	close(data->std_in);
-	close(data->std_out);
+	close_redir_fds_in_child(data, 2);
 	convert_env(data);
 	data->exec->paths = find_and_split_path(data->mod_env);
 	if (!data->exec->paths)
@@ -265,9 +281,6 @@ void	complex_exec(t_bigshell *data)
 			if (current_cmd->pid == 0)
 				last_executor(data, current_cmd, data->pipe->read);
 		}
-		////printf("i happened \n"); //debugging printf
-		/* if (data->redir == 3)
-			restore_fork(data, 3); */
 		//dprintf(2, "pipe from last: %d\n", data->pipe->read);
 		if (close(data->pipe->read) == -1)
 			CRITICAL_FAILURE(data, "complex exec: close(0) failed in parent process");

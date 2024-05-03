@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 11:33:48 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/05/03 13:27:48 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/05/03 14:10:13 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,13 +125,16 @@ int	main(int argc, char **argv, char **env)
 				tmpfile_cleanup(&data);
 				continue ;
 			}
-			data.commands->pid = fork();
-			if (data.commands->pid == -1)
-				CRITICAL_FAILURE(&data, "main: fork failed");
-			if (data.commands->pid == 0)
-				simple_exec(&data);
-			//wait(NULL);
-			wait_for_children(&data); //use specific children waiting ft here for correct exit code
+			if (data.commands->cmd)
+			{
+				data.commands->pid = fork();
+				if (data.commands->pid == -1)
+					CRITICAL_FAILURE(&data, "main: fork failed");
+				if (data.commands->pid == 0)
+					simple_exec(&data);
+				//wait(NULL);
+				wait_for_children(&data); //use specific children waiting ft here for correct exit code
+			}
 		}
 		else if (data.commands->next)
 		{
@@ -142,6 +145,8 @@ int	main(int argc, char **argv, char **env)
 		free(lineread);
 		close_unused_fds(&data);
 		tmpfile_cleanup(&data);
+		// if (data.built_ins)
+		// 	free_builtin_list(&data);
 	}
 	return (exitcode_and_freeshell(&data));
 }

@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 14:55:27 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/05/01 14:19:07 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/05/03 16:26:56 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -185,7 +185,13 @@ void	ft_heredoc(t_bigshell *data)
 				// 	unlink(cmd->tmpfile);
 				// }
 				free(mod_eof);
-				close(heredoc_fd);
+				mod_eof = NULL;
+				if (heredoc_fd)
+				{
+					if (close(heredoc_fd) == -1)
+						perror("close heredoc:");
+					heredoc_fd = -1;
+				}
 				eof = NULL;
 			}
 			input = input->next;

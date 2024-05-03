@@ -6,7 +6,7 @@
 /*   By: mresch <mresch@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 14:48:48 by mresch            #+#    #+#             */
-/*   Updated: 2024/05/03 16:24:15 by mresch           ###   ########.fr       */
+/*   Updated: 2024/05/03 16:31:02 by mresch           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int	expand_no_quotes(t_token **list, \
 	addlist = split_to_token(expanded, curr->connected);
 	if (!addlist)
 	{
-		if (curr->next)
+		if (curr->next && expanded)
 			curr->next->distanced = 1;
 		if (*list == curr)
 			*list = curr->next;

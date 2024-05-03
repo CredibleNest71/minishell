@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 10:32:36 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/05/02 15:33:11 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/05/02 18:07:10 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -319,6 +319,7 @@ void    ft_cd(t_bigshell *data)
     if (!arg)
 	{
        home_dir(data);
+	   update_exit_stat(data, 0);
 	   return ;
 	}
     // if (arg->str[0] == '/') //here add check for tilde flag if it is present delete first / & continue
@@ -346,5 +347,6 @@ void    ft_cd(t_bigshell *data)
             return ;
         }
         overwrite_pwd(data, cwd);
+		update_exit_stat(data, 0);
     }
 }

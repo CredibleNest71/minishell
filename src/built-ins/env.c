@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 11:01:30 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/03/15 17:23:53 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/05/02 18:13:54 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	ft_env(t_bigshell *data)
 
 	tmp = data->env;
 	if (!tmp)
-		return ;
+		return (update_exit_stat(data, 1));
 	if (data->commands->arg_num == 0)
 	{
 		while (tmp)
@@ -57,7 +57,7 @@ void	ft_env(t_bigshell *data)
 				printf("=%s\n", tmp->value);
 			tmp = tmp->next;
 		}
-		return ;
+		return (update_exit_stat(data, 0));
 	}
-	return ;
+	return (update_exit_stat(data, 1));
 }

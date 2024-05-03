@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mresch <mresch@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 11:33:48 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/05/03 11:53:56 by mresch           ###   ########.fr       */
+/*   Updated: 2024/05/03 13:27:48 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,7 +121,6 @@ int	main(int argc, char **argv, char **env)
 			}
 			if (builtin_allrounder(&data) == 0)
 			{
-				update_exit_stat(&data, 0);
 				store_restore_fds(&data, 2);
 				tmpfile_cleanup(&data);
 				continue ;

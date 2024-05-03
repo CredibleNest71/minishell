@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 11:00:47 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/05/02 13:51:43 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/05/02 18:20:59 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ void	ft_unset(t_bigshell *data)
 	t_token	*arg;
 	
 	if (!data->commands->args)
-		return ;
+		return (update_exit_stat(data, 0));
 	current = data->s_env;
 	prev = NULL;
 	current_env = data->env;
@@ -91,7 +91,7 @@ void	ft_unset(t_bigshell *data)
 		current = data->s_env;
 		current_env = data->env;
 	}
-	return ;
+	return (update_exit_stat(data, 0));
 }
 
 /* void	ft_unset(t_bigshell *data)

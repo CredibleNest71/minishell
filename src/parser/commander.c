@@ -6,7 +6,7 @@
 /*   By: mresch <mresch@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 14:44:18 by mresch            #+#    #+#             */
-/*   Updated: 2024/05/02 15:42:37 by mresch           ###   ########.fr       */
+/*   Updated: 2024/05/03 12:48:27 by mresch           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,13 @@
 #include "../../minishell.h"
 #include "../../libft/libft.h"
 
-int	check_valid_cmd(char *str)
+int	check_valid_cmd(char *str, t_bigshell *data)
 {
-	int	i;
-
-	i = -1;
-	while (str[++i])
-		if (ft_isalnum(str[i]) || is_char(str[i], "/_"))
-			return (1);
-	return (0);
+	if (!ft_strncmp(".", str, 2))
+		return (write(2, ".: filename argument required\n", 31), update_exit_stat(data, 2), 0);
+	if (str[ft_strlen(str) - 1] == '/')
+		return (write(2, "/: Is a directory\n", 19), update_exit_stat(data, 126), 0);
+	return (1);
 }
 
 int	mark_cmds(t_token **list, t_bigshell *data)
@@ -36,11 +34,8 @@ int	mark_cmds(t_token **list, t_bigshell *data)
 	{
 		if (temp->type == (e_type) ARG && pipe)
 		{
-			if (!check_valid_cmd(temp->str))
-			{
-				write(2, "SYNTAX ERROR\n", 14);
-				return (update_exit_stat(data, 2), 0);
-			}
+			if (!check_valid_cmd(temp->str, data))
+				return (0);
 			temp->type = (e_type) CMD;
 			pipe = 0;
 		}
@@ -119,7 +114,6 @@ t_command	**commands_finalized(t_token **list, t_bigshell *data)
 
 	if (!mark_cmds(list, data))
 	{
-		update_exit_stat(data, 2);
 		delete_token_list(*list);
 		free(list);
 		return (NULL);

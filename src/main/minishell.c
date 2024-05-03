@@ -6,7 +6,7 @@
 /*   By: mresch <mresch@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 11:33:48 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/05/02 15:53:32 by mresch           ###   ########.fr       */
+/*   Updated: 2024/05/03 11:53:56 by mresch           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,15 @@ extern int	g_sig;
 // 	bzero(data, sizeof(t_bigshell));
 // 	return (0);
 // }
+
+int	exitcode_and_freeshell(t_bigshell *data)
+{
+	int	exitcode;
+
+	exitcode = get_exitcode(data);
+	free_struct(data);
+	return (exitcode);
+}
 
 static int remove_cmd_list_from_data(t_bigshell *data)
 {
@@ -87,7 +96,7 @@ int	main(int argc, char **argv, char **env)
 			free(line);
 		}
 		if (!lineread)
-			return (/*write(1, "exit\n", 5), */get_exitcode(&data), free_struct(&data), 0);
+			return (/*write(1, "exit\n", 5), */exitcode_and_freeshell(&data));
 		add_history(lineread);
 		data.commands = parse(lineread, &data);
 		//print_cmds(data.commands, &data);
@@ -135,5 +144,5 @@ int	main(int argc, char **argv, char **env)
 		close_unused_fds(&data);
 		tmpfile_cleanup(&data);
 	}
-	free_struct(&data);
+	return (exitcode_and_freeshell(&data));
 }

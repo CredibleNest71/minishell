@@ -6,7 +6,7 @@
 /*   By: mresch <mresch@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 13:24:51 by mresch            #+#    #+#             */
-/*   Updated: 2024/04/23 13:25:01 by mresch           ###   ########.fr       */
+/*   Updated: 2024/05/03 13:19:43 by mresch           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,4 +55,22 @@ int	ft_token_count(t_token **list)
 		temp = temp->next;
 	}
 	return (i);
+}
+
+void	add_to_command_list(t_command **list, t_command *cmd)
+{
+	t_command	*temp;
+
+	if (!list || !cmd)
+		return ;
+	if (!*list)
+	{
+		*list = cmd;
+		return ;
+	}
+	temp = *list;
+	while (temp->next)
+		temp = temp->next;
+	temp->next = cmd;
+	cmd->prev = temp;
 }

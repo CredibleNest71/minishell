@@ -6,7 +6,7 @@
 /*   By: mresch <mresch@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 14:48:48 by mresch            #+#    #+#             */
-/*   Updated: 2024/05/02 15:02:52 by mresch           ###   ########.fr       */
+/*   Updated: 2024/05/03 16:31:02 by mresch           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,12 +22,12 @@ int	expand_no_quotes(t_token **list, \
 
 	expanded = expand(curr->str, data);
 	curr->str = expanded;
-	if (!ft_strchr(expanded, ' '))
+	if (expanded && !ft_strchr(expanded, ' '))
 		return (1);
 	addlist = split_to_token(expanded, curr->connected);
 	if (!addlist)
 	{
-		if (curr->next)
+		if (curr->next && expanded)
 			curr->next->distanced = 1;
 		if (*list == curr)
 			*list = curr->next;
@@ -50,7 +50,10 @@ char	*remove_quotes(char *str)
 	if (!is_char(str[0], "\"\'"))
 		return (str);
 	len = ft_strlen(str);
-	ret = ft_strndup(&str[1], len - 2);
+	if (len - 2 == 0)
+		ret = (char *) ft_calloc(1, 1);
+	else
+		ret = ft_strndup(&str[1], len - 2);
 	free(str);
 	return (ret);
 }

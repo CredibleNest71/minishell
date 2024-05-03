@@ -6,7 +6,7 @@
 /*   By: mresch <mresch@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 14:44:18 by mresch            #+#    #+#             */
-/*   Updated: 2024/05/03 12:48:27 by mresch           ###   ########.fr       */
+/*   Updated: 2024/05/03 13:19:38 by mresch           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,11 @@
 int	check_valid_cmd(char *str, t_bigshell *data)
 {
 	if (!ft_strncmp(".", str, 2))
-		return (write(2, ".: filename argument required\n", 31), update_exit_stat(data, 2), 0);
+		return (write(2, ".: filename argument required\n", 31), \
+				update_exit_stat(data, 2), 0);
 	if (str[ft_strlen(str) - 1] == '/')
-		return (write(2, "/: Is a directory\n", 19), update_exit_stat(data, 126), 0);
+		return (write(2, "/: Is a directory\n", 19), \
+				update_exit_stat(data, 126), 0);
 	return (1);
 }
 
@@ -60,24 +62,6 @@ void	assign(t_command *cmd, t_token *token)
 		token_list_add(&cmd->output, token_dup(token));
 	if (token->type == (e_type) HEREDOC)
 		token_list_add(&cmd->input, token_dup(token));
-}
-
-void	add_to_command_list(t_command **list, t_command *cmd)
-{
-	t_command	*temp;
-
-	if (!list || !cmd)
-		return ;
-	if (!*list)
-	{
-		*list = cmd;
-		return ;
-	}
-	temp = *list;
-	while (temp->next)
-		temp = temp->next;
-	temp->next = cmd;
-	cmd->prev = temp;
 }
 
 t_command	**create_commandlist(t_token **list)

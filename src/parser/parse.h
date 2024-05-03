@@ -6,7 +6,7 @@
 /*   By: mresch <mresch@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 13:54:17 by mresch            #+#    #+#             */
-/*   Updated: 2024/05/02 15:30:28 by mresch           ###   ########.fr       */
+/*   Updated: 2024/05/03 13:20:13 by mresch           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ void		token_append(t_token *lst, t_token *token);
 void		skip_white_space(char *str, int *i);
 void		skip_chars(char *str, int *i);
 int			ft_token_count(t_token **list);
+void		add_to_command_list(t_command **list, t_command *cmd);
 
 // //tokenv1
 // t_token	    *tokenify(char *str);

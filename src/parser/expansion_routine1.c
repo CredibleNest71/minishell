@@ -6,7 +6,7 @@
 /*   By: mresch <mresch@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 14:48:48 by mresch            #+#    #+#             */
-/*   Updated: 2024/05/02 15:02:52 by mresch           ###   ########.fr       */
+/*   Updated: 2024/05/03 14:09:13 by mresch           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,10 @@ char	*remove_quotes(char *str)
 	if (!is_char(str[0], "\"\'"))
 		return (str);
 	len = ft_strlen(str);
-	ret = ft_strndup(&str[1], len - 2);
+	if (len - 2 == 0)
+		ret = (char *) ft_calloc(1, 1);
+	else
+		ret = ft_strndup(&str[1], len - 2);
 	free(str);
 	return (ret);
 }

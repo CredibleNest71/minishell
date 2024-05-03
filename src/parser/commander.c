@@ -6,7 +6,7 @@
 /*   By: mresch <mresch@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 14:44:18 by mresch            #+#    #+#             */
-/*   Updated: 2024/05/03 13:19:38 by mresch           ###   ########.fr       */
+/*   Updated: 2024/05/03 15:40:53 by mresch           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@
 
 int	check_valid_cmd(char *str, t_bigshell *data)
 {
+	if (!str || !ft_strlen(str))
+		return (1);
 	if (!ft_strncmp(".", str, 2))
 		return (write(2, ".: filename argument required\n", 31), \
 				update_exit_stat(data, 2), 0);

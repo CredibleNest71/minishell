@@ -6,7 +6,7 @@
 /*   By: mresch <mresch@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 15:00:46 by mresch            #+#    #+#             */
-/*   Updated: 2024/05/02 15:28:26 by mresch           ###   ########.fr       */
+/*   Updated: 2024/05/03 14:28:27 by mresch           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,12 +51,17 @@ void	set_char_array(t_command *final)
 	if (!final->args_exec)
 		return ;
 	i = 0;
-	if (final && final->cmd)
+	if (final && final->cmd && ft_strlen(final->cmd->str))
 		final->args_exec[i++] = ft_strdup(final->cmd->str);
+	else
+		final->args_exec[i++] = ft_calloc(1, 1);
 	temparg = final->args;
 	while (temparg)
 	{
-		final->args_exec[i] = ft_strdup(temparg->str);
+		if (ft_strlen(temparg->str))
+			final->args_exec[i] = ft_strdup(temparg->str);
+		else
+			final->args_exec[i] = ft_calloc(1, 1);
 		temparg = temparg->next;
 		i++;
 	}

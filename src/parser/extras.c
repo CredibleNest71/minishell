@@ -6,7 +6,7 @@
 /*   By: mresch <mresch@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 14:59:33 by mresch            #+#    #+#             */
-/*   Updated: 2024/05/03 13:38:00 by mresch           ###   ########.fr       */
+/*   Updated: 2024/05/03 14:20:43 by mresch           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,10 @@ t_token	*token_dup(t_token *token)
 	dup = (t_token *) ft_calloc (sizeof(t_token), 1);
 	if (!dup)
 		return (NULL);
-	dup->str = ft_strdup(token->str);
+	if (ft_strlen(token->str))
+		dup->str = ft_strdup(token->str);
+	else
+		dup->str = (char *) ft_calloc(1, 1);
 	dup->type = token->type;
 	dup->next = NULL;
 	dup->prev = NULL;
@@ -60,8 +63,6 @@ char	*ft_strndup(const char *s, int n)
 	i = 0;
 	if (n < 0)
 		return (NULL);
-	if (!n)
-		return (ft_strdup(""));
 	ans = malloc(n + 1);
 	if (!ans)
 		return (0);

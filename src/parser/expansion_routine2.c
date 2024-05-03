@@ -6,7 +6,7 @@
 /*   By: mresch <mresch@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 13:27:10 by mresch            #+#    #+#             */
-/*   Updated: 2024/05/03 13:30:18 by mresch           ###   ########.fr       */
+/*   Updated: 2024/05/03 15:57:31 by mresch           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ int	tilde(t_token *curr, t_bigshell *data)
 	}
 	else if (!ft_strncmp(curr->str, "~/", 2))
 	{
-		joined = ft_strjoin(home, curr->str);
+		joined = ft_strjoin(home, curr->str + 1);
 		free(curr->str);
 		free(home);
 		curr->str = joined;

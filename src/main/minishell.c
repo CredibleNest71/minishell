@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 11:33:48 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/05/02 18:25:17 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/05/03 13:27:48 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,15 @@ extern int	g_sig;
 // 	bzero(data, sizeof(t_bigshell));
 // 	return (0);
 // }
+
+int	exitcode_and_freeshell(t_bigshell *data)
+{
+	int	exitcode;
+
+	exitcode = get_exitcode(data);
+	free_struct(data);
+	return (exitcode);
+}
 
 static int remove_cmd_list_from_data(t_bigshell *data)
 {
@@ -87,10 +96,7 @@ int	main(int argc, char **argv, char **env)
 			free(line);
 		}
 		if (!lineread)
-		{
-			int exitcode = get_exitcode(&data);
-			return (/*write(1, "exit\n, 5"), */free_struct(&data), exitcode);
-		}
+			return (/*write(1, "exit\n", 5), */exitcode_and_freeshell(&data));
 		add_history(lineread);
 		data.commands = parse(lineread, &data);
 		//print_cmds(data.commands, &data);
@@ -137,7 +143,5 @@ int	main(int argc, char **argv, char **env)
 		close_unused_fds(&data);
 		tmpfile_cleanup(&data);
 	}
-	int exitcode = get_exitcode(&data);
-	free_struct(&data);
-	return (exitcode);
+	return (exitcode_and_freeshell(&data));
 }

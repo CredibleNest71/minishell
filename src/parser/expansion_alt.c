@@ -6,37 +6,12 @@
 /*   By: mresch <mresch@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 14:55:07 by mresch            #+#    #+#             */
-/*   Updated: 2024/04/30 12:06:07 by mresch           ###   ########.fr       */
+/*   Updated: 2024/05/03 11:46:40 by mresch           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 #include "parse.h"
-
-// char	*ft_string_insert(char *str, char *in, int idx, int varlen)
-// {
-// 	char	*ret;
-// 	char	*intro;
-// 	char	*outro;
-// 	char	*first;
-
-// 	if (!str)
-// 		return (NULL);
-// 	intro = NULL;
-// 	if (idx)
-// 		intro = ft_strndup(str, idx);
-// 	outro = ft_strdup(str + idx + varlen + 1);
-// 	first = ft_strjoin(intro, in);
-// 	ret = ft_strjoin(first, outro);
-// 	if (idx)
-// 	{
-// 		free(intro);
-// 		free(first);
-// 	}
-// 	free(outro);
-// 	free(str);
-// 	return (ret);
-// }
 
 char	*find_var_name(char *str)
 {
@@ -124,7 +99,9 @@ char	*expand(char *str, t_bigshell *data)
 	char	*here;
 	char	*val;
 	char	*new;
+	int		idx;
 
+	idx = 0;
 	while (ft_strchr(str, '$'))
 	{
 		if (!strncmp(str, "$", 2))

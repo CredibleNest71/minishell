@@ -6,7 +6,7 @@
 /*   By: mresch <mresch@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 14:59:33 by mresch            #+#    #+#             */
-/*   Updated: 2024/04/24 14:06:27 by mresch           ###   ########.fr       */
+/*   Updated: 2024/05/03 13:38:00 by mresch           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,8 +58,10 @@ char	*ft_strndup(const char *s, int n)
 	char	*ans;
 
 	i = 0;
-	if (n <= 0)
+	if (n < 0)
 		return (NULL);
+	if (!n)
+		return (ft_strdup(""));
 	ans = malloc(n + 1);
 	if (!ans)
 		return (0);

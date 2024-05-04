@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 15:21:04 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/05/02 18:20:06 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/05/04 15:44:33 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@ void	ft_pwd(t_bigshell *data)
 	{
 		if (ft_strncmp(tmp->var, "PWD", 3) == 0)
 		{
-			//maybe protect in case PWD= is only 4char long
 			cwd = ft_strdup(tmp->value);
 			if (!cwd)
 				CRITICAL_FAILURE(data, "pwd: strdup failed");
@@ -38,5 +37,5 @@ void	ft_pwd(t_bigshell *data)
 	}
 	ft_putstr_fd(cwd, 1);
 	ft_putchar_fd('\n', 1);
-	return (update_exit_stat(data, 0));
+	return (free(cwd), update_exit_stat(data, 0));
 }

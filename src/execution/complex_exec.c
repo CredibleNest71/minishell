@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 10:43:53 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/05/04 15:10:56 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/05/04 16:21:25 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,8 +117,8 @@ void	first_executor(t_bigshell *data, t_command *cmd, int out_fd)
 	if (cmd->input || cmd->output)
 	{
 		close_redir_fds_in_child(data, 1);
-		if (redir(cmd, data))
-			printf("am I here2\n");
+		redir(cmd, data);
+		//exit was in if stat before //check
 		exit_child(data, 1);
 	}
 	if (!cmd->output)
@@ -134,6 +134,8 @@ void	first_executor(t_bigshell *data, t_command *cmd, int out_fd)
 	close_redir_fds_in_child(data, 2);
 	if (!cmd->cmd)
 		exit_child(data, 1);
+	if (!builtin_allrounder(data, cmd))
+		exit_child(data, 0);
 	convert_env(data);
 	data->exec->paths = find_and_split_path(data->mod_env);
 	if (!data->exec->paths)
@@ -164,13 +166,15 @@ void	last_executor(t_bigshell *data, t_command *cmd, int in_fd)
 	{
 		if (dup2(in_fd, 0) == -1) //|| close(data->pipe->write) == -1 || close(data->pipe->read) == -1)
 			CRITICAL_FAILURE(data, "complex exec: last executor: dup2 failed");
-		
 	}
+	
 	close(in_fd);
 	close_redir_fds_in_child(data, 2);
 	//TODO? redirect output as well
 	if (!cmd->cmd)
 		exit_child(data, 1);
+	if (!builtin_allrounder(data, cmd))
+	 	exit_child(data, 0);
 	convert_env(data);
 	data->exec->paths = find_and_split_path(data->mod_env);
 	if (!data->exec->paths)
@@ -212,6 +216,8 @@ void	middle_executor(t_bigshell *data, t_command *cmd, int out_fd, int in_fd)
 	close_redir_fds_in_child(data, 2);
 	if (!cmd->cmd)
 		exit_child(data, 1);
+	if (!builtin_allrounder(data, cmd))
+		exit_child(data, 0);
 	convert_env(data);
 	data->exec->paths = find_and_split_path(data->mod_env);
 	if (!data->exec->paths)

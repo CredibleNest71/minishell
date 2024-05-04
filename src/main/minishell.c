@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 11:33:48 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/05/04 15:07:58 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/05/04 16:32:26 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,9 +128,10 @@ int	main(int argc, char **argv, char **env)
 					continue ;
 				}
 			}
-			if (builtin_allrounder(&data) == 0)
+			if (!builtin_allrounder(&data, data.commands))
 			{
 				store_restore_fds(&data, 2);
+				close_unused_fds(&data);
 				tmpfile_cleanup(&data);
 				continue ;
 			}

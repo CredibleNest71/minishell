@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 17:59:11 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/05/04 15:05:13 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/05/04 17:51:04 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,7 @@ int	redir(t_command *command, t_bigshell *data)
 					break ;
 				else
 				{
-					if (close(data->fd_in) == -1)
+					if (data->fd_in != -1 && close(data->fd_in) == -1)
 						return (redir_error(data, 1, "redir.c:110 close failed"), EXIT_FAILURE);
 					in = in->next;
 					//cmd = cmd->next;
@@ -138,7 +138,7 @@ int	redir(t_command *command, t_bigshell *data)
 				break ;
 			if (out->next)
 			{
-				if (close(data->fd_out) == -1)
+				if (data->fd_out != -1 && close(data->fd_out) == -1)
 					return (redir_error(data, 1, "redir.c:137 close failed"), EXIT_FAILURE);
 				out = out->next;
 			}

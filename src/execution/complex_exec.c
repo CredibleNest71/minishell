@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 10:43:53 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/05/03 18:10:14 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/05/04 15:10:56 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -247,7 +247,6 @@ void	complex_exec(t_bigshell *data)
 			//dprintf(2, "pipe from first: %d, %d\n", data->pipe_fd[0], data->pipe_fd[1]);
 			if ((current_cmd->pid = fork()) == -1)
 				CRITICAL_FAILURE(data, "complex exec: fork failed in first command");
-			printf("first command\n");
 			if (current_cmd->pid == 0)
 				first_executor(data, current_cmd, data->pipe->write);
 			if (close(data->pipe->write) == -1)

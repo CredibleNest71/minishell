@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 17:59:11 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/05/03 18:06:14 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/05/04 15:05:13 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,7 +124,6 @@ int	redir(t_command *command, t_bigshell *data)
 	}
 	if (out)
 	{
-			printf("2\n");
 		while (out)
 		{
 			if (out->type == (enum type)APP)

@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 17:34:54 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/05/04 16:20:11 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/05/04 18:01:36 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -172,8 +172,10 @@ void	complex_exec(t_bigshell *data);
 
 void	ft_echo(t_bigshell *data, t_token *args);
 
-char	*delete_tail(char *full_path);
+
 void	overwrite_pwd(t_bigshell *data, char *new_path);
+void    home_dir(t_bigshell *data);
+char    *get_cwd(t_bigshell *data);
 void	ft_cd(t_bigshell *data);
 
 void	ft_pwd(t_bigshell *data);

@@ -6,13 +6,18 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 15:21:04 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/05/04 15:44:33 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/05/04 17:59:04 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
 void	ft_pwd(t_bigshell *data)
+{
+	
+}
+
+/* void	ft_pwd(t_bigshell *data)
 {
 	char	*cwd;
 	t_env	*tmp;
@@ -38,4 +43,4 @@ void	ft_pwd(t_bigshell *data)
 	ft_putstr_fd(cwd, 1);
 	ft_putchar_fd('\n', 1);
 	return (free(cwd), update_exit_stat(data, 0));
-}
+} */

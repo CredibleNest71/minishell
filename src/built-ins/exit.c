@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 11:02:30 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/05/05 18:15:45 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/05/05 18:26:18 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ void	ft_exit(t_bigshell *data, t_command *cmd)
 {
 	int	exitcode = 0;
 	
-	if (check_numeric(cmd->args->str) && cmd->arg_num > 1)
+	if (cmd->args && check_numeric(cmd->args->str) && cmd->arg_num > 1)
 	{
 		ft_putstr_fd("exit\n", 2);
 		ft_putstr_fd("minishell: exit: too many arguments\n", 2);

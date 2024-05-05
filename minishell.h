@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 17:34:54 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/05/04 18:12:59 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/05/05 17:11:52 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ typedef struct	s_token
 {
 	char 			*str;
 	int				type;
-	char			*dir; //FREED
+	char			*dir;
 	int				connected;
 	int				distanced;
 	struct s_token	*next;
@@ -63,7 +63,6 @@ typedef struct s_pipe
 	int		write;
 }	t_pipe;
 
-//cmd, args, input, output, args_exec: freed
 typedef struct s_command
 {
 	t_token				*cmd;		//command
@@ -72,7 +71,6 @@ typedef struct s_command
 	t_token				*output;	//> / append
 	int					arg_num;
 	int					pid;
-	//t_pipe				*pipe;
 	int					heredoc_fd;
 	char				*tmpfile;
 	char				**args_exec;
@@ -80,10 +78,9 @@ typedef struct s_command
 	struct s_command	*prev;
 }	 t_command;
 
-//env & s_env: freed
 typedef struct s_env
 {
-	char			*var; //previously str
+	char			*var;
 	char			*value;
 	struct s_env	*next;
 }	t_env;
@@ -94,11 +91,10 @@ typedef struct exec
 	char	**paths;
 }	t_exec;
 
-//mod_env, built_ins, pipe, heredoc, commands, env, s_env: freed
 typedef struct	s_bigshell
 {
 	int			num_cmd;
-	//int			exit_stat; storing exit stat in env
+
 	int			simple_error; //this will be set with stdlib macros to define whether I need to exit the minishell
 	int			pipe_fd[2];
 	int			pipe_fd2[2]; //possibly not necesary
@@ -109,7 +105,6 @@ typedef struct	s_bigshell
 	int			fd_in; //redirected in
 	int			fd_out; //redirected out
 	int			heredoc_fd; //redirected err
-	//int			redir;
 	
 	t_exec		*exec;
 	
@@ -118,13 +113,11 @@ typedef struct	s_bigshell
 	char		*cwd;
 	char		*mod_cwd;
 	
-//	char		*export_var; //tf is this
-//	char		**og_env; //do I use u?
 	char		**mod_env;
 	char		**built_ins; //FREED
 	t_pipe		*pipe;
 	t_token		*heredoc;	//token with delimiter and str;
-	t_command	*commands; //
+	t_command	*commands;
 	t_env		*env; //FREED
 	t_env		*s_env; //FREED
 }	t_bigshell;

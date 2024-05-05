@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 17:04:24 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/05/05 16:25:39 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/05/05 17:02:53 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,12 +88,9 @@ void	s_array_free(char **s_array)
 	i = 0;
 	if (!s_array)
 		return ;
-	if (s_array[i])
-	{
-		while (s_array[i])
-			free(s_array[i++]);
-		free(s_array);
-	}
+	while (s_array[i])
+		free(s_array[i++]);
+	free(s_array);
 }
 
 void	double_free_array(char **array1, char **array2)

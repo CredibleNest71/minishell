@@ -6,16 +6,21 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 15:21:04 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/05/04 18:06:11 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/05/05 19:47:30 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-void	ft_pwd(t_bigshell *data)
+void	ft_pwd(t_bigshell *data, t_command *cmd)
 {
 	char	*cwd;
 
+	if (cmd->args)
+	{
+		ft_putstr_fd("minishell: pwd: invalid option\n", 1);
+		return (update_exit_stat(data, 2));
+	}
 	cwd = get_cwd(data);
 	if (!cwd)
 	{

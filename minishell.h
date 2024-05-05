@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 17:34:54 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/05/05 17:11:52 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/05/05 19:47:50 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -171,7 +171,7 @@ void    home_dir(t_bigshell *data, char *oldpwd);
 char    *get_cwd(t_bigshell *data);
 void	ft_cd(t_bigshell *data);
 
-void	ft_pwd(t_bigshell *data);
+void	ft_pwd(t_bigshell *data, t_command *cmd);
 
 void	ft_export(t_bigshell *data);
 int		check_if_sorted(t_env *current);

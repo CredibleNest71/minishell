@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 14:33:19 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/05/03 18:08:48 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/05/05 16:26:53 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,8 @@ char	*check_if_correct_path(char **paths, t_bigshell *data, char *str)
 
 	i = 0;
 	// what if cmd path is sth like foo/bar/executable
+	if (!str[0])
+		return (NULL);
 	if (str[0] == '/' || str[0] == '.')
 		return (s_array_free(paths), (char *)str);
 	while (paths && paths[i] != NULL)

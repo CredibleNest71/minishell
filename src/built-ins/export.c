@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 12:34:44 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/05/04 17:45:51 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/05/04 18:50:00 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -264,6 +264,7 @@ int	var_exists(t_bigshell *data, char *str)
 		}
 		s_env = s_env->next;
 	}
+	free(key);
 	if (i == 2)
 		return (0);
 	return (1);

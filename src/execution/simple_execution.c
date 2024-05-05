@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 17:54:30 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/05/03 17:19:11 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/05/05 16:32:53 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,15 +24,11 @@
 
 void	simple_exec(t_bigshell *data)
 {
-	// char	**paths;
-	// char	*correct_path;
-	
-	//store_restore_fds(data, 2);
+	close_unused_fds(data);
 	data->exec->paths = NULL;
 	data->exec->path = NULL;
 	if (g_sig == SIGINT) //check for signal before executing any command. if yes, spit prompt again
 			CRITICAL_FAILURE(data, "complex exec: SIGINT received");
-	//dprintf(2, "segfault\n");
 	convert_env(data); //check this function env struct has changed
 	data->exec->paths = find_and_split_path(data->mod_env);
 	// if (!data->exec->paths)
@@ -43,17 +39,6 @@ void	simple_exec(t_bigshell *data)
 		printf("minishell: command '%s' not found\n", data->commands->cmd->str);
 		exit_child(data, 127);
 	}
-	//printf("path executed:%s\n", data->exec->path);
 	execve(data->exec->path, data->commands->args_exec, data->mod_env);
 	exit_child(data, 126);
 }
-
-/* void print_env_list(t_bigshell *data)
-{
-    t_env *current = data->env;
-    while (current != NULL)
-    {
-        printf("%s\n", current->str);
-        current = current->next;
-    }
-} */

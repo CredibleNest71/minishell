@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 09:46:40 by a                 #+#    #+#             */
-/*   Updated: 2024/05/02 12:40:35 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/05/04 18:45:51 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,8 @@ t_env   *create_node(t_bigshell *data, char *str)
 	int		var_len;
 	int		value_len;
 	
-	if (ft_strlen(str) == 1)
-		return(create_var(data, str));
+	// if (ft_strlen(str) == 1)
+	// 	return(create_var(data, str));
 	separator = ft_strchr(str, '=');
 	if (!separator)
 		return(create_var(data, str));

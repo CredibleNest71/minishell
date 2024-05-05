@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 10:32:36 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/05/04 18:26:02 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/05/04 18:28:43 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -170,6 +170,7 @@ void    ft_cd(t_bigshell *data)
     if (!arg)
 	{
        home_dir(data, oldpwd);
+	   free(oldpwd);
 	   update_exit_stat(data, 0);
 	   return ;
 	}
@@ -193,6 +194,7 @@ void    ft_cd(t_bigshell *data)
 		overwrite_oldpwd(data, oldpwd);
         overwrite_pwd(data, cwd);
 		free(cwd);
+		free(oldpwd);
 		update_exit_stat(data, 0);
     }
 }

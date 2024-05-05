@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 10:32:36 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/05/05 19:34:13 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/05/05 20:03:16 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,7 +136,9 @@ char    *get_cwd(t_bigshell *data)
             CRITICAL_FAILURE(data, "cd: malloc failed in cd.c:go_back");
         }
         getcwd(data->cwd, data->buffer_size);
-        if (!data->cwd && errno == ERANGE)
+        if (errno == ENOENT)
+			return(free_NULL(data->cwd), NULL);
+		if (!data->cwd && errno == ERANGE)
         {
             data->cwd = free_NULL(data->cwd);
             data->buffer_size += BUFFER_INCREMENT;
@@ -188,7 +190,7 @@ void    ft_cd(t_bigshell *data)
 		//printf("cwd = %s\n", cwd);
         if (!cwd)
         {
-            simple_error_message(data, "minishell: cd.c: cwd failed\n", 1);
+            simple_error_message(data, "minishell: cd.c: cwd failed", 1);
             return ;
         }
 		overwrite_oldpwd(data, oldpwd);

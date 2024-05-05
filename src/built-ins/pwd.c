@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 15:21:04 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/05/05 19:50:46 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/05/05 19:58:26 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	ft_pwd(t_bigshell *data, t_command *cmd)
 {
 	char	*cwd;
 
-	if (cmd->args->str[0] == '-')
+	if (cmd->args && cmd->args->str[0] == '-')
 	{
 		ft_putstr_fd("minishell: pwd: invalid option\n", 1);
 		return (update_exit_stat(data, 2));

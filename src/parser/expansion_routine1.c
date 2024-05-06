@@ -6,7 +6,7 @@
 /*   By: mresch <mresch@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 14:48:48 by mresch            #+#    #+#             */
-/*   Updated: 2024/05/06 14:49:36 by mresch           ###   ########.fr       */
+/*   Updated: 2024/05/06 14:52:41 by mresch           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,10 @@ int	check_heredoc_expansion(t_token *curr)
 	if (curr->type == (e_type) HEREDOC)
 		return (1);
 	temp = curr->prev;
+	if (!temp)
+		return (0);
+	if (!temp->connected)
+		return (0);
 	while (temp)
 	{
 		if (temp->connected && temp->type == (e_type) HEREDOC)

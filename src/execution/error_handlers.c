@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 11:41:58 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/04/19 17:08:00 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/05/06 18:43:18 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,9 @@ void	simple_error(t_bigshell *data, int exit_code)
 
 void	exit_child(t_bigshell *data, int exit_stat)
 {
+	if (!close_pipe(data, 3))
+		perror("close pipe in child:");
+	close_redir_fds_in_child(data);
 	free_struct(data);
 	update_exit_stat(data, exit_stat);
 	exit (exit_stat);

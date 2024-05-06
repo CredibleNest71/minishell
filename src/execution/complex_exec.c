@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 10:43:53 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/05/06 12:37:45 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/05/06 18:53:25 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,24 +32,11 @@ void	pipe_init(t_bigshell *data)
 	data->pipe = pipe;
 }
 
-/* int	get_exit_stat(t_bigshell *data)
+void    restore_output(t_bigshell *data)
 {
-	t_env	*tmp;
-	int		stat_loc;
-
-	tmp = data->env;
-	stat_loc = 0;
-	while (tmp)
-	{
-		if (strncmp(tmp->var, "?", ft_strlen(tmp->var)) == 0)
-		{
-			stat_loc = atoi(tmp->value);
-			return (stat_loc);
-		}
-		tmp = tmp->next;
-	}
-	return (stat_loc);
-} */
+    if (dup2(data->std_out, 1) == -1)
+        CRITICAL_FAILURE(data, "restoring stdout: dup2 fail");
+}
 
 void	wait_for_children(t_bigshell *data)
 {
@@ -75,40 +62,6 @@ void	wait_for_children(t_bigshell *data)
 	}
 }
 
-void	close_redir_fds_in_child(t_bigshell *data, int mode)
-{
-	if (mode == 1)
-	{
-		if (data->fd_in != -1)
-		{
-			if (close(data->fd_in) == -1)
-				perror("close fd_in in child:");
-			data->fd_in = -1;
-		}
-		if (data->fd_out != -1)
-		{
-			if (close(data->fd_out) == -1)
-				perror("close fd_out in child:");
-			data->fd_out = -1;
-		}
-	}
-	if (mode == 2)
-	{
-		if (data->std_in != -1)
-		{
-			if (close(data->std_in) == -1)
-				perror("close std_in in child:");
-			data->std_in = -1;
-		}
-		if (data->std_out != -1)
-		{
-			if (close(data->std_out) == -1)
-				perror("close std_out in child:");
-			data->std_out = -1;
-		}
-	}
-}
-
 void	first_executor(t_bigshell *data, t_command *cmd, int out_fd)
 {
 	data->exec->paths = NULL;
@@ -116,24 +69,15 @@ void	first_executor(t_bigshell *data, t_command *cmd, int out_fd)
 	
 	if (cmd->input || cmd->output)
 	{
-		close_redir_fds_in_child(data, 1);
-		redir(cmd, data);
-		//exit was in if stat before //check
-		exit_child(data, 1);
+		close_redir_fds_in_child(data);
+		if (redir(cmd, data))
+			exit_child(data, 1);
 	}
 	if (!cmd->output)
 	{
-		if (dup2(out_fd, 1) == -1 || close(data->pipe->read) == -1 || close(data->pipe->write) == -1)
+		if (dup2(out_fd, 1) == -1 || close_pipe(data, 3)) //close(data->pipe->read) == -1 || close(data->pipe->write) == -1
 			CRITICAL_FAILURE(data, "complex exec: first executor: dup2 failed");
 	}
-	else
-	{
-		if (close(data->fd_in) == -1)
-			exit_child(data, 1);
-	}
-	close_redir_fds_in_child(data, 2);
-	if (!cmd->cmd)
-		exit_child(data, 1);
 	if (!builtin_allrounder(data, cmd))
 		exit_child(data, 0);
 	convert_env(data);
@@ -143,7 +87,8 @@ void	first_executor(t_bigshell *data, t_command *cmd, int out_fd)
 	data->exec->path = check_if_correct_path(data->exec->paths, data, cmd->cmd->str);
 	if (!data->exec->path)
 	{
-		printf("minishell: command '%s' not found\n", cmd->cmd->str);
+		//printf("minishell: command '%s' not found\n", cmd->cmd->str);
+		ft_putstr_fd("minishell: command not found\n", 2);
 		exit_child(data, 127);
 	}
 	execve(data->exec->path, cmd->args_exec, data->mod_env);
@@ -163,7 +108,7 @@ void	last_executor(t_bigshell *data, t_command *cmd, int in_fd)
 
 	if (cmd->input || cmd->output)
 	{
-		close_redir_fds_in_child(data, 1);
+		close_redir_fds_in_child(data);
 		if (redir(cmd, data))
 			exit_child(data, 1);
 	}
@@ -172,14 +117,11 @@ void	last_executor(t_bigshell *data, t_command *cmd, int in_fd)
 		if (dup2(in_fd, 0) == -1) //|| close(data->pipe->write) == -1 || close(data->pipe->read) == -1)
 			CRITICAL_FAILURE(data, "complex exec: last executor: dup2 failed");
 	}
-	
-	close(in_fd);
-	close_redir_fds_in_child(data, 2);
-	//TODO? redirect output as well
-	if (!cmd->cmd)
-		exit_child(data, 1);
+	close_read(data);
+	//close(in_fd);
 	if (!builtin_allrounder(data, cmd))
 	 	exit_child(data, 0);
+	//close_redir_fds_in_child(data);
 	convert_env(data);
 	data->exec->paths = find_and_split_path(data->mod_env);
 	if (!data->exec->paths)
@@ -187,7 +129,8 @@ void	last_executor(t_bigshell *data, t_command *cmd, int in_fd)
 	data->exec->path = check_if_correct_path(data->exec->paths, data, cmd->cmd->str);
 	if (!data->exec->path)
 	{
-		printf("minishell: command %s not found\n", cmd->cmd->str);
+		ft_putstr_fd("minishell: command not found\n", 2);
+		//printf("minishell: command %s not found\n", cmd->cmd->str);
 		exit_child(data, 127);
 	}
 	execve(data->exec->path, cmd->args_exec, data->mod_env);
@@ -207,36 +150,38 @@ void	middle_executor(t_bigshell *data, t_command *cmd, int out_fd, int in_fd)
 	
 	if (cmd->input || cmd->output)
 	{
-		close_redir_fds_in_child(data, 1);
+		close_redir_fds_in_child(data);
 		if (redir(cmd, data))
 			exit_child(data, 1);
 	}
 	if (!cmd->input)
 	{
-		if (dup2(in_fd, 0) == -1 || close(data->pipe->read) == -1) // || close(data->pipe->write) == -1) cmd->prev->in_fd --> artem
+		if (dup2(in_fd, 0) == -1 || close_read(data)) // || close(data->pipe->write) == -1) cmd->prev->in_fd --> artem
 			CRITICAL_FAILURE(data, "complex exec: middle executor: dup2 failed (in_fd)");
 		//close(in_fd);
 	}
 	if (!cmd->output)
 	{
-		if (dup2(out_fd, 1) == -1 || close(data->pipe->write) == -1) //close(data->pipe->read) == -1 ||
+		if (dup2(out_fd, 1) == -1 || close_write(data)) //close(data->pipe->read) == -1 ||
 			CRITICAL_FAILURE(data, "complex exec: middle executor: dup2 failed (out_fd)");
 		//close(out_fd);
 	}
-	close_redir_fds_in_child(data, 2);
-	if (!cmd->cmd)
-		exit_child(data, 1);
+	//this should be closed if redir didnt fail
+	// close(out_fd);
+	// close(in_fd);
 	if (!builtin_allrounder(data, cmd))
 		exit_child(data, 0);
+	//close_redir_fds_in_child(data);
 	convert_env(data);
 	data->exec->paths = find_and_split_path(data->mod_env);
 	if (!data->exec->paths)
-		exit_child(data, 1); //printf("find&split failed\n"); //handle correctly
+		exit_child(data, 1);
 	data->exec->path = check_if_correct_path(data->exec->paths, data, cmd->cmd->str);
 	if (!data->exec->path)
 	{
 	// TODO: command not found needs to be printed to stderr (in all cases not only here)
-		printf("minishell: command %s not found\n", cmd->cmd->str);
+		ft_putstr_fd("minishell: command not found\n", 2);
+		//printf("minishell: command %s not found\n", cmd->cmd->str);
 		exit_child(data, 127);	
 	}
 	execve(data->exec->path, cmd->args_exec, data->mod_env);

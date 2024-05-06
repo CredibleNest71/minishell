@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 17:59:11 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/05/06 16:32:05 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/05/06 17:59:11 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,37 +90,33 @@ int	redir(t_command *command, t_bigshell *data)
 	{
 		if (!command->cmd && data->heredoc) //!data->commands->cmd && !data->commands->next //deleted && !command->next 6.5
 			return (EXIT_FAILURE);
-		else
+		while (in)
 		{
-			while (in)
+			if (!in->next && in->type == (enum type)HEREDOC && command->cmd) // && cmd->cmd not sure why I added this //prob smt to do with pipes.
 			{
-				if (!in->next && in->type == (enum type)HEREDOC && command->cmd) // && cmd->cmd not sure why I added this //prob smt to do with pipes.
-				{
-					if (check_file(data, command->tmpfile, 0) != 0)
-						return (EXIT_FAILURE);
-					data->fd_in = open(command->tmpfile, O_RDONLY);
-				}
-				else if (in->type != (enum type)HEREDOC)
-				{
-					if (check_file(data, in->str, 0) != 0)
-						return (EXIT_FAILURE);
-					data->fd_in = open(in->str, O_RDONLY);
-				}
-				if (!in->next)
-					break ;
-				else
-				{
-					if (data->fd_in != -1 && close(data->fd_in) == -1)
-						return (redir_error(data, 1, "redir.c:110 close failed"), EXIT_FAILURE);
-					in = in->next;
-					//cmd = cmd->next;
-				}
+				if (check_file(data, command->tmpfile, 0) != 0)
+					return (EXIT_FAILURE);
+				data->fd_in = open(command->tmpfile, O_RDONLY);
 			}
-			if (data->fd_in == -1)
-				return(redir_error(data, 1, "redir.c: fd_in: open failed"), EXIT_FAILURE);
-			if (dup2(data->fd_in, 0) == -1)
-				return(redir_error(data, 1, "redir.c: fd_in: dup2 failed"), EXIT_FAILURE);
+			else if (in->type != (enum type)HEREDOC)
+			{
+				if (check_file(data, in->str, 0) != 0)
+					return (EXIT_FAILURE);
+				data->fd_in = open(in->str, O_RDONLY);
+			}
+			if (!in->next)
+				break ;
+			else
+			{
+				if (data->fd_in != -1 && close(data->fd_in) == -1)
+					return (redir_error(data, 1, "redir.c:110 close failed"), EXIT_FAILURE);
+				in = in->next;
+			}
 		}
+		if (data->fd_in == -1)
+			return(redir_error(data, 1, "redir.c: fd_in: open failed"), EXIT_FAILURE);
+		if (dup2(data->fd_in, 0) == -1)
+			return(redir_error(data, 1, "redir.c: fd_in: dup2 failed"), EXIT_FAILURE);
 	}
 	if (out)
 	{

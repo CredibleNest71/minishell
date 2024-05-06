@@ -6,7 +6,7 @@
 /*   By: mresch <mresch@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 14:48:48 by mresch            #+#    #+#             */
-/*   Updated: 2024/05/03 16:31:02 by mresch           ###   ########.fr       */
+/*   Updated: 2024/05/06 14:34:35 by mresch           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,8 +93,9 @@ t_token	**expander(t_token **list, t_bigshell *data)
 	while (curr)
 	{
 		next = curr->next;
-		if (curr->type == (e_type) HEREDOC)
-			;
+		if (curr->type == (e_type) HEREDOC || \
+			(curr->prev && curr->prev->type == (e_type) HEREDOC && curr->prev->connected))
+			curr->str = remove_quotes(curr->str);
 		else if (ft_strchr(curr->str, '$') || ft_strchr(curr->str, '~'))
 			check = launch_expansion(list, curr, data);
 		else

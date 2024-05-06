@@ -6,7 +6,7 @@
 /*   By: mresch <mresch@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 11:33:48 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/05/06 16:26:53 by mresch           ###   ########.fr       */
+/*   Updated: 2024/05/06 17:54:03 by mresch           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,9 +78,9 @@ int	main(int argc, char **argv, char **env)
 	lineread = NULL;
 	while (1)
 	{
+		set_signals(0);
 		fd_init(&data);
 		remove_cmd_list_from_data(&data);
-		set_signals(0);
 		if (isatty(fileno(stdin)))
 			lineread = readline("minitrap: ");
 		else

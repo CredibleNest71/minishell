@@ -38,6 +38,12 @@ static void    newline_to_readline(int sig)
     }
 }
 
+// void	sigquittest(int	sig)
+// {
+// 	write(2, "SIGQUITTEST\n", 13);
+// 	exit(128 + sig);
+// }
+
 void	set_signals(int mode)
 {
 	g_sig = 0;
@@ -50,7 +56,7 @@ void	set_signals(int mode)
 	else if (mode == 1)
 	{
 		signal(SIGINT, &set_global);
-		signal(SIGQUIT, SIG_DFL);
+		signal(SIGQUIT, SIG_IGN);
 	}	
 	else if (mode == 2)
 	{
@@ -60,6 +66,7 @@ void	set_signals(int mode)
 	else if (mode == 3)
 	{
 		signal(SIGINT, SIG_DFL);
+		//signal(SIGQUIT, &sigquittest);
 		signal(SIGQUIT, SIG_DFL);
 	}
 }

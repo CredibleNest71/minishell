@@ -6,7 +6,7 @@
 /*   By: mresch <mresch@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 14:48:48 by mresch            #+#    #+#             */
-/*   Updated: 2024/05/06 14:34:35 by mresch           ###   ########.fr       */
+/*   Updated: 2024/05/06 14:49:36 by mresch           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,26 @@ int	launch_expansion(t_token **list, \
 	return (ret);
 }
 
+int	check_heredoc_expansion(t_token *curr)
+{
+	t_token	*temp;
+
+	if (curr->type == (e_type) HEREDOC)
+		return (1);
+	temp = curr->prev;
+	while (temp)
+	{
+		if (temp->connected && temp->type == (e_type) HEREDOC)
+			return (1);
+		temp = temp->prev;
+		if (!temp)
+			break ;
+		if (!temp->connected)
+			break ;
+	}
+	return (0);
+}
+
 t_token	**expander(t_token **list, t_bigshell *data)
 {
 	t_token	*curr;
@@ -93,8 +113,7 @@ t_token	**expander(t_token **list, t_bigshell *data)
 	while (curr)
 	{
 		next = curr->next;
-		if (curr->type == (e_type) HEREDOC || \
-			(curr->prev && curr->prev->type == (e_type) HEREDOC && curr->prev->connected))
+		if (check_heredoc_expansion(curr))
 			curr->str = remove_quotes(curr->str);
 		else if (ft_strchr(curr->str, '$') || ft_strchr(curr->str, '~'))
 			check = launch_expansion(list, curr, data);

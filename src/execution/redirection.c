@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 17:59:11 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/05/06 16:20:58 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/05/06 16:32:05 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ int	redir(t_command *command, t_bigshell *data)
 	//cmd = data->commands;
 	if (in)
 	{
-		if (!command->cmd && !command->next && data->heredoc) //!data->commands->cmd && !data->commands->next
+		if (!command->cmd && data->heredoc) //!data->commands->cmd && !data->commands->next //deleted && !command->next 6.5
 			return (EXIT_FAILURE);
 		else
 		{

@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 11:33:48 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/05/06 14:26:54 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/05/06 16:05:37 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ int	main(int argc, char **argv, char **env)
 			return (/*write(1, "exit\n", 5), */exitcode_and_freeshell(&data));
 		add_history(lineread);
 		data.commands = parse(lineread, &data);
-		//print_cmds(data.commands, &data);
+		print_cmds(data.commands, &data);
 		if (!data.commands)
 			continue ;
 		set_signals(1);

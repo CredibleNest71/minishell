@@ -44,7 +44,10 @@ void	print_cmds(t_command *cmd, t_bigshell *data)
 			if (curr->type == (e_type) IN)
 				printf("==	IN:			%s\n", curr->str);
 			else if (curr->type == (e_type) HEREDOC)
+			{
 				printf("==	HEREDOC: 	%s\n", curr->str);
+				printf("==	QUOTED: 	%d\n", curr->quoted);
+			}
 		}
 		for (t_token *curr = temp_cmd->output; curr; curr = curr->next)
 		{

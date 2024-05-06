@@ -6,7 +6,7 @@
 /*   By: mresch <mresch@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 13:41:37 by mresch            #+#    #+#             */
-/*   Updated: 2024/04/23 13:50:38 by mresch           ###   ########.fr       */
+/*   Updated: 2024/05/06 15:22:58 by mresch           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ int	quotes(t_token *token, char *str, int *i, char quote)
 	*i += found - &str[*i] + 1;
 	if (str[*i] && !is_char(str[*i], "\n\t\v \r\f"))
 		token->connected = 1;
+	token->quoted = 1;
 	return (1);
 }
 

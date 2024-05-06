@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mresch <mresch@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 17:34:54 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/05/05 19:47:50 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/05/06 15:23:25 by mresch           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ typedef struct	s_token
 	char			*dir;
 	int				connected;
 	int				distanced;
+	int				quoted;
 	struct s_token	*next;
 	struct s_token	*prev;
 }	t_token;

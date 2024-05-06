@@ -6,7 +6,7 @@
 /*   By: mresch <mresch@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 13:27:10 by mresch            #+#    #+#             */
-/*   Updated: 2024/05/03 15:57:31 by mresch           ###   ########.fr       */
+/*   Updated: 2024/05/06 15:27:50 by mresch           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,8 @@ static int	do_join(t_token *curr, char *jstr)
 		curr->str = jstr;
 		curr->connected = next->connected;
 		curr->next = next->next;
+		if (next->quoted)
+			curr->quoted = 1;
 		free(next);
 		return (1);
 	}

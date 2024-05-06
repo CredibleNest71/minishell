@@ -6,7 +6,7 @@
 /*   By: mresch <mresch@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 14:46:26 by mresch            #+#    #+#             */
-/*   Updated: 2024/05/03 12:07:12 by mresch           ###   ########.fr       */
+/*   Updated: 2024/05/06 15:24:22 by mresch           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ t_token	*create_token(char *str, int *i)
 	token = (t_token *) ft_calloc (sizeof(t_token), 1);
 	if (!token)
 		return (NULL);
+	ft_bzero(token, sizeof(t_token));
 	token->next = NULL;
 	check = fill_token(token, str, i);
 	if (check <= 0)

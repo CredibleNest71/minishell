@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 12:10:32 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/05/03 14:31:31 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/05/05 19:48:06 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@
 	return (str);
 } */
 
-int	builtin_allrounder(t_bigshell *data)
+int	builtin_allrounder(t_bigshell *data, t_command *current_command)
 {
 	int	result;
 	
@@ -39,9 +39,9 @@ int	builtin_allrounder(t_bigshell *data)
 		data->built_ins = (char **)malloc(sizeof(char *) * 8);
 		built_in_list(data);
 	}
-	if (!data->commands->cmd)
+	if (!current_command->cmd)
 		return (EXIT_FAILURE);
-	result = builtin_check_exec(data, data->commands->cmd->str, data->commands);
+	result = builtin_check_exec(data, current_command->cmd->str, current_command);
 	return (result);
 }
 
@@ -113,7 +113,7 @@ void	builtin_exec(t_bigshell *data, int builtin_index, t_command *cmd)
 	else if (builtin_index == 1)
 		ft_cd(data);
 	else if (builtin_index == 2)
-		ft_pwd(data);
+		ft_pwd(data, cmd);
 	else if (builtin_index == 3)
 		ft_export(data);
 	else if (builtin_index == 4)

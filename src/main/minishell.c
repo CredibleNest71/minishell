@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 11:33:48 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/05/03 14:10:13 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/05/05 17:21:03 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,20 +19,6 @@
 #include <string.h>
 
 extern int	g_sig;
-
-// static int	reset_data(t_bigshell *data)
-// {
-// 	data->commands = NULL;
-// 	data->mod_cwd = NULL;
-// 	data->mod_env = NULL;
-// 	data->built_ins = NULL;
-// 	data->pipe = NULL;
-// 	data->s_env = NULL;
-// 	data->pipe = NULL;
-// 	data->heredoc = NULL;
-// 	bzero(data, sizeof(t_bigshell));
-// 	return (0);
-// }
 
 int	exitcode_and_freeshell(t_bigshell *data)
 {
@@ -70,6 +56,14 @@ void	exec_init(t_bigshell *data)
 	data->exec = exec;
 }
 
+void	fd_init(t_bigshell *data)
+{
+	data->std_in = -1;
+	data->std_out = -1;
+	data->fd_in = -1;
+	data->fd_out = -1;
+}
+
 int	main(int argc, char **argv, char **env)
 {
 	t_bigshell			data;
@@ -84,6 +78,7 @@ int	main(int argc, char **argv, char **env)
 	lineread = NULL;
 	while (1)
 	{
+		fd_init(&data);
 		remove_cmd_list_from_data(&data);
 		set_signals(0);
 		if (isatty(fileno(stdin)))
@@ -104,8 +99,6 @@ int	main(int argc, char **argv, char **env)
 			continue ;
 		set_signals(1);
 		store_restore_fds(&data, 1);
-		// if (heredoc_finder(&data) == 0)
-		// 	ft_heredoc(&data);
 		if (data.heredoc)
 			ft_heredoc(&data);
 		if (!data.commands->next)
@@ -119,9 +112,10 @@ int	main(int argc, char **argv, char **env)
 					continue ;
 				}
 			}
-			if (builtin_allrounder(&data) == 0)
+			if (!builtin_allrounder(&data, data.commands))
 			{
 				store_restore_fds(&data, 2);
+				close_unused_fds(&data);
 				tmpfile_cleanup(&data);
 				continue ;
 			}
@@ -132,7 +126,6 @@ int	main(int argc, char **argv, char **env)
 					CRITICAL_FAILURE(&data, "main: fork failed");
 				if (data.commands->pid == 0)
 					simple_exec(&data);
-				//wait(NULL);
 				wait_for_children(&data); //use specific children waiting ft here for correct exit code
 			}
 		}
@@ -140,13 +133,10 @@ int	main(int argc, char **argv, char **env)
 		{
 			complex_exec(&data);
 		}
-		//printf("am I here?\n"); //debugging printf
 		store_restore_fds(&data, 2);
 		free(lineread);
 		close_unused_fds(&data);
 		tmpfile_cleanup(&data);
-		// if (data.built_ins)
-		// 	free_builtin_list(&data);
 	}
 	return (exitcode_and_freeshell(&data));
 }

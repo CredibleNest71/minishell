@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 12:34:44 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/05/02 18:17:25 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/05/04 18:50:00 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,28 +123,33 @@ void	make_copy(t_bigshell *data)
 {
 	t_env	*current;
 	t_env	*current_env;
-	char	*str;
+	char	*tmp;
+	char	*tmp1;
+	char	*tmp2;
+	char	*tmp3;
 
-	str = ft_strjoin(data->env->var, "=");
-	if (!str)
+	tmp = ft_strjoin(data->env->var, "=");
+	if (!tmp)
 		CRITICAL_FAILURE(data, "export: strjoin failed 1");
-	str = ft_strjoin(str, data->env->value);
-	if (!str)
+	tmp1 = ft_strjoin(tmp, data->env->value);
+	free(tmp);
+	if (!tmp1)
 		CRITICAL_FAILURE(data, "export: strjoin failed 2");
-	data->s_env = create_node(data, str);
-	free(str);
+	data->s_env = create_node(data, tmp1);
+	free(tmp1);
 	current = data->s_env;
 	current_env = data->env->next;
 	while (current_env)
 	{
-		str = ft_strjoin(current_env->var, "=");
-		if (!str)
+		tmp2 = ft_strjoin(current_env->var, "=");
+		if (!tmp2)
 			CRITICAL_FAILURE(data, "export: strjoin failed 3");
-		str = ft_strjoin(str, current_env->value);
-		if (!str)
+		tmp3 = ft_strjoin(tmp2, current_env->value);
+		free(tmp2);
+		if (!tmp3)
 			CRITICAL_FAILURE(data, "export: strjoin failed 4");
-		current->next = create_node(data, str);
-		free(str);
+		current->next = create_node(data, tmp3);
+		free(tmp3);
 		current = current->next;
 		current_env = current_env->next;
 		data->reference_i++;
@@ -259,6 +264,7 @@ int	var_exists(t_bigshell *data, char *str)
 		}
 		s_env = s_env->next;
 	}
+	free(key);
 	if (i == 2)
 		return (0);
 	return (1);

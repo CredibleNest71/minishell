@@ -6,7 +6,7 @@
 /*   By: mresch <mresch@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 14:59:33 by mresch            #+#    #+#             */
-/*   Updated: 2024/05/03 14:20:43 by mresch           ###   ########.fr       */
+/*   Updated: 2024/05/06 12:59:39 by mresch           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,4 +73,25 @@ char	*ft_strndup(const char *s, int n)
 	}
 	ans[i] = 0;
 	return (ans);
+}
+int	check_long_overflow(char *str)
+{
+	long long int	new;
+	long long int	prev;
+	int 					i;
+
+	i = 0;
+	new = 0;
+	prev = 0;
+	while (str[i] == '-' || str[i] == '+')
+		i++;
+	while (str[i])
+	{
+		new = prev * 10 + (str[i] - 48);
+		if (new < prev)
+			return (1);
+		prev = new;
+		i++;
+	}
+	return (0);
 }

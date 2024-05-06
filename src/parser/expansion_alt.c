@@ -6,7 +6,7 @@
 /*   By: mresch <mresch@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 14:55:07 by mresch            #+#    #+#             */
-/*   Updated: 2024/05/03 11:46:40 by mresch           ###   ########.fr       */
+/*   Updated: 2024/05/06 13:30:08 by mresch           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,9 +106,18 @@ char	*expand(char *str, t_bigshell *data)
 	{
 		if (!strncmp(str, "$", 2))
 			return (str);
-		here = ft_strchr(str, '$');
+		here = ft_strchr(&str[idx], '$');
+		if (!here)
+			break ;
+		idx = here - str;
+		if (here[1])
+			idx++;
+		else
+			break ;
 		if (here)
 		{
+			if (is_char(here[1], SPACE3))
+				continue ; 
 			val = var2val(here, data);
 			new = ft_string_insert(str, val, here);
 			free(str);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   simple_execution.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mresch <mresch@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 17:54:30 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/05/05 17:15:06 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/05/06 16:23:17 by mresch           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@
 
 void	simple_exec(t_bigshell *data)
 {
+	set_signals(3);
 	close_unused_fds(data);
 	data->exec->paths = NULL;
 	data->exec->path = NULL;

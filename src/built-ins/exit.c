@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mresch <mresch@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 11:02:30 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/05/05 18:26:18 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/05/06 12:55:51 by mresch           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
+#include "../parser/parse.h"
 
 int	get_exitcode(t_bigshell *data)
 {
@@ -95,7 +96,7 @@ void	ft_exit(t_bigshell *data, t_command *cmd)
 		ft_putstr_fd("minishell: exit: too many arguments\n", 2);
 		return (update_exit_stat(data, 1));
 	}
-	if (cmd->args && !check_numeric(cmd->args->str))
+	if (cmd->args && (!check_numeric(cmd->args->str) || check_long_overflow(cmd->args->str)))
 	{
 		ft_putstr_fd("exit\n", 2);
 		ft_putstr_fd("minishell: exit: numeric argument required\n", 2);

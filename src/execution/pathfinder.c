@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 14:33:19 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/05/05 17:03:12 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/05/06 12:20:48 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ char	*check_if_correct_path(char **paths, t_bigshell *data, char *str)
 	if (!str[0])
 		return (NULL);
 	if (str[0] == '/' || str[0] == '.')
-		return ((char *)str);
+		return (ft_strdup((char *)str));
 	while (paths && paths[i] != NULL)
 	{
 		tmp = ft_strjoin(paths[i], "/");

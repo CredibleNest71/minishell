@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mresch <mresch@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 11:02:30 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/05/06 12:55:51 by mresch           ###   ########.fr       */
+/*   Updated: 2024/05/06 14:52:15 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,7 @@ void	ft_exit(t_bigshell *data, t_command *cmd)
 	}
 	if (cmd->arg_num == 1)
 	{
-		update_exit_stat(data, ft_atoi(cmd->args->str) % 256);
+		update_exit_stat(data, (unsigned int)ft_atoi(cmd->args->str) % 256);
 	}
 	exitcode = get_exitcode(data);
 	free_struct(data);

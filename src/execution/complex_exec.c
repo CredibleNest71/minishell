@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 10:43:53 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/05/04 16:21:25 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/05/06 12:37:45 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,6 +147,11 @@ void	first_executor(t_bigshell *data, t_command *cmd, int out_fd)
 		exit_child(data, 127);
 	}
 	execve(data->exec->path, cmd->args_exec, data->mod_env);
+	if (data->exec->path[0] == '/' || data->exec->path[0] == '.')
+	{
+		printf("minishell: command '%s' not found\n", data->exec->path);
+		exit_child(data, 127);
+	}
 	exit_child(data, 126);
 }
 
@@ -186,6 +191,11 @@ void	last_executor(t_bigshell *data, t_command *cmd, int in_fd)
 		exit_child(data, 127);
 	}
 	execve(data->exec->path, cmd->args_exec, data->mod_env);
+	if (data->exec->path[0] == '/' || data->exec->path[0] == '.')
+	{
+		printf("minishell: command '%s' not found\n", data->exec->path);
+		exit_child(data, 127);
+	}
 	exit_child(data, 126);
 
 }
@@ -230,6 +240,11 @@ void	middle_executor(t_bigshell *data, t_command *cmd, int out_fd, int in_fd)
 		exit_child(data, 127);	
 	}
 	execve(data->exec->path, cmd->args_exec, data->mod_env);
+	if (data->exec->path[0] == '/' || data->exec->path[0] == '.')
+	{
+		printf("minishell: command '%s' not found\n", data->exec->path);
+		exit_child(data, 127);
+	}
 	exit_child(data, 126);
 
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
+/*   By: a <a@student.42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 14:55:27 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/05/06 16:30:04 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/05/07 10:50:32 by a                ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,11 +140,11 @@ void	ft_heredoc(t_bigshell *data)
 	char		*eof;
 	char		*mod_eof;
 	int			heredoc_fd;
-	int			i;
+	//int			i;
 	t_command	*cmd;
 	t_token		*input;
 	
-	i = 0;
+	//i = 0;
 	cmd = data->commands;
 	set_signals(2);
 	while (cmd)
@@ -177,7 +177,8 @@ void	ft_heredoc(t_bigshell *data)
 					free(lineread);
 				}
 				if (!lineread)
-					printf("minishell: warning: heredoc (wanted '%s')\n", eof);
+					ft_putstr_fd("minishell: warning: heredoc wanted eof\n", 2); //do function to add str
+				//printf("minishell: warning: heredoc (wanted '%s')\n", eof);
 				// if (!cmd->cmd)
 				// {
 				// 	if(close(heredoc_fd) == -1)

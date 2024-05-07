@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   simple_execution.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mresch <mresch@student.42.fr>              +#+  +:+       +#+        */
+/*   By: a <a@student.42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 17:54:30 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/05/06 16:26:31 by mresch           ###   ########.fr       */
+/*   Updated: 2024/05/07 10:48:53 by a                ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,13 +37,15 @@ void	simple_exec(t_bigshell *data)
 	data->exec->path = check_if_correct_path(data->exec->paths, data, data->commands->cmd->str);
 	if (!data->exec->path)
 	{
-		printf("minishell: command '%s' not found\n", data->commands->cmd->str);
+		ft_putstr_fd("minishell: command not found\n", 2);
+		//printf("minishell: command '%s' not found\n", data->commands->cmd->str);
 		exit_child(data, 127);
 	}
 	execve(data->exec->path, data->commands->args_exec, data->mod_env);
 	if (data->exec->path[0] == '/' || data->exec->path[0] == '.')
 	{
-		printf("minishell: %s: No such file or directory\n", data->exec->path);
+		ft_putstr_fd("minishell: command not found\n", 2);
+		//printf("minishell: %s: No such file or directory\n", data->exec->path);
 		exit_child(data, 127);
 	}
 	exit_child(data, 126);

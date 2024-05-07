@@ -91,13 +91,8 @@ void	first_executor(t_bigshell *data, t_command *cmd, int out_fd)
 	data->exec->path = check_if_correct_path(data->exec->paths, data, cmd->cmd->str);
 	if (!data->exec->path)
 	{
-<<<<<<< HEAD
-		//printf("minishell: command '%s' not found\n", cmd->cmd->str);
-		ft_putstr_fd("minishell: command not found\n", 2);
-=======
 		ft_putstr_fd("minishell: command not found\n", 2);
 		//printf("minishell: command '%s' not found\n", cmd->cmd->str);
->>>>>>> refs/remotes/origin/exec
 		exit_child(data, 127);
 	}
 	execve(data->exec->path, cmd->args_exec, data->mod_env);

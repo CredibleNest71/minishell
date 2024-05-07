@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 10:43:53 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/05/07 14:02:17 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/05/07 18:07:27 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,7 @@ void	last_executor(t_bigshell *data, t_command *cmd, int in_fd)
 	}
 	if (!cmd->input)
 	{
-		if (dup2(in_fd, 0) == -1) //|| close(data->pipe->write) == -1 || close(data->pipe->read) == -1)
+		if (dup2(in_fd, 0) == -1 || close(data->pipe->read)) //|| close(data->pipe->write) == -1 || close(data->pipe->read) == -1)
 			CRITICAL_FAILURE(data, "complex exec: last executor: dup2 failed");
 	}
 	//close_read(data);
@@ -173,6 +173,8 @@ void	middle_executor(t_bigshell *data, t_command *cmd, int out_fd, int in_fd)
 	//this should be closed if redir didnt fail
 	// close(out_fd);
 	// close(in_fd);
+	if (close(data->pipe_fd[1]) == -1)
+		dprintf(2, "closed prev pipe write end\n");
 	if (!builtin_allrounder(data, cmd))
 		exit_child(data, 0);
 	close_redir_fds_in_child(data);

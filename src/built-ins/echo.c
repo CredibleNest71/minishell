@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 09:57:03 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/03/14 12:11:13 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/05/02 18:10:51 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,10 @@ static int check_flag(char *str)
 {
 	int	i;
 
-	i = 0;
-	if (str[i++] != '-')
+	i = 1;
+	if (!str)
+		return (0);
+	if (ft_strncmp(str, "-n", 2))
 		return (0);
 	while (str[i])
 	{
@@ -30,25 +32,32 @@ static int check_flag(char *str)
 
 //-n: this option is used to omit echoing trailing newline.
 //maybe check if args is empty
-void	ft_echo(t_token *args)
+void	ft_echo(t_bigshell *data, t_token *args)
 {
 	int	count;
 	int	flag;
 
 	count = 0;
+	if (!args)
+	{
+		ft_putchar_fd('\n', 1);
+		update_exit_stat(data, 0);
+		return ;
+	}
 	flag = check_flag(args->str);
 	if (flag)
+		args = args->next;
+	while (args && check_flag(args->str))
 		args = args->next;
 	while (args)
 	{
 		if (count++)
 			ft_putchar_fd(' ', 1);
-		//thats how bash does it (echo -nl -nnn prints all|| echo -nnnn -nnn prints nothing)
-		if (!flag || !check_flag(args->str))
-			ft_putstr_fd(args->str, 1);
+		ft_putstr_fd(args->str, 1);
 		args = args->next;
 	}
 	if (!flag)
 		ft_putchar_fd('\n', 1);
+	update_exit_stat(data, 0);
 	return ;
 }

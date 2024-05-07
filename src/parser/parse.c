@@ -1,51 +1,32 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parse.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mresch <mresch@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/04/10 15:00:46 by mresch            #+#    #+#             */
+/*   Updated: 2024/05/03 14:28:27 by mresch           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../minishell.h"
+#include <stdio.h>
 #include "parse.h"
 
-void	print_cmds(t_command *cmd, t_bigshell *data)
-{
-	if (!cmd)
-	{
-		write(2, "(NO COMMANDS)\n", 8);
-		return ;
-	}
-	t_command *temp_cmd = cmd;
-	printf("\n==========================================\n");
-	printf("NUMBER OF COMMANDS: %d\n", data->num_cmd);
-	for (;temp_cmd; temp_cmd = temp_cmd->next)
-	{
-		printf("\n==========================================");
-		if (temp_cmd->cmd)
-			printf("\nCOMMAND(%d):		%s",temp_cmd->arg_num, temp_cmd->cmd->str);
-		for (t_token *curr = temp_cmd->args;curr; curr = curr->next)
-			printf("\n	ARG:		%s", curr->str);
-		for (t_token *curr = temp_cmd->input;curr; curr = curr->next)
-		{
-			printf("\nIN:			%s", curr->str);
-			if (curr->type == (e_type) HEREDOC)
-				printf("\n	Delimiter: 	%s", curr->delimiter);
-		}
-		for (t_token *curr = temp_cmd->output;curr; curr = curr->next)
-		{
-			if (curr->type == (e_type) APP)
-				printf("\nAPP:			%s", curr->str);
-			else
-				printf("\nOUT:			%s", curr->str);
-		}
-		printf("\n==========================================\n");
-	}
-}
-
-static int set_counts(t_command *cmd, t_bigshell *data)
+static int	set_counts(t_command *cmd, t_bigshell *data)
 {
 	t_command	*temp;
 	t_token		*arg;
-	int	i;
-	int j;
+	int			i;
+	int			j;
 
 	j = 0;
 	temp = cmd;
 	while (temp)
 	{
+		if (temp->cmd)
+			j++;
 		i = 0;
 		arg = temp->args;
 		while (arg)
@@ -55,32 +36,98 @@ static int set_counts(t_command *cmd, t_bigshell *data)
 		}
 		temp->arg_num = i;
 		temp = temp->next;
-		j++;
 	}
 	if (data)
 		data->num_cmd = j;
 	return (j);
 }
 
+void	set_char_array(t_command *final)
+{
+	t_token		*temparg;
+	int			i;
+
+	final->args_exec = (char **) ft_calloc (sizeof(char *), final->arg_num + 3);
+	if (!final->args_exec)
+		return ;
+	i = 0;
+	if (final && final->cmd && ft_strlen(final->cmd->str))
+		final->args_exec[i++] = ft_strdup(final->cmd->str);
+	else
+		final->args_exec[i++] = ft_calloc(1, 1);
+	temparg = final->args;
+	while (temparg)
+	{
+		if (ft_strlen(temparg->str))
+			final->args_exec[i] = ft_strdup(temparg->str);
+		else
+			final->args_exec[i] = ft_calloc(1, 1);
+		temparg = temparg->next;
+		i++;
+	}
+	return ;
+}
+
+void	set_all_char_arrays(t_command *final)
+{
+	t_command	*temp;
+
+	temp = final;
+	while (temp)
+	{
+		set_char_array(temp);
+		temp = temp->next;
+	}
+	return ;
+}
+
+void	heredocs_to_bigshell(t_token **tokens, t_bigshell *data)
+{
+	t_token	*temp;
+	t_token	*new;
+
+	if (!tokens || !data || !(*tokens))
+		return ;
+	temp = *tokens;
+	while (temp)
+	{
+		if (temp->type == (e_type) HEREDOC)
+		{
+			new = token_dup(temp);
+			if (!data->heredoc)
+				data->heredoc = new;
+			else
+				ft_tokenlast(data->heredoc)->next = new;
+		}
+		temp = temp->next;
+	}
+}
+
 t_command	*parse(char *input, t_bigshell *data)
 {
-	t_token		*parsed;
-	t_command	*final;
+	t_token		**tokens;
+	t_command	**cmds;
+	t_command	*ret;
 
-	//input = prexpand(input, data);
 	if (!input)
 		return (NULL);
-	parsed = parse_tokens(input);
-	if (!parsed)
-		return (write(2, "ERROR in::parse::parsed\n", 25), NULL);
-	if (data && parsed->type == (e_type) HEREDOC)
-	{
-		data->heredoc = parsed;
-		parsed = parsed->next;
-	}
-	final = transform(parsed, data);
-	if (!final)
-		return (write(2, "ERROR in::parse::final\n", 24), NULL);
-	set_counts(final, data);
-	return (final);
+	if (!check_syntax(data, input))
+		return (NULL);
+	tokens = tokenmaker(input);
+	heredocs_to_bigshell(tokens, data);
+	tokens = expander(tokens, data);
+	if (!tokens)
+		return (NULL);
+	if (!*tokens)
+		return (free(tokens), NULL);
+	cmds = commands_finalized(tokens, data);
+	if (!cmds)
+		return (NULL);
+	set_counts(*cmds, data);
+	set_all_char_arrays(*cmds);
+	delete_token_list(*tokens);
+	free(tokens);
+	ret = *cmds;
+	free(cmds);
+	return (ret);
 }

@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 12:34:44 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/03/14 16:50:23 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/05/04 18:50:00 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,12 +67,17 @@ void	print_env(t_env *head)
 {
 	while (head)
 	{
+		if (ft_strncmp(head->var, "?", ft_strlen(head->var)) == 0)
+		{
+			head = head->next;
+			continue ;
+		}
 		printf("declare -x ");
 		printf("%s", head->var);
-		head->value = NULL;
-		printf("\n\nvalue: %s\n\n", head->value);
+		if (!head->value)
+			printf("=\"\"\n");
 		if (head->value)
-			printf("=%s\n", head->value);
+			printf("=%c%s%c\n", 34, head->value, 34);
 		head = head->next;
 	}
 }
@@ -118,29 +123,33 @@ void	make_copy(t_bigshell *data)
 {
 	t_env	*current;
 	t_env	*current_env;
-	char	*str;
+	char	*tmp;
+	char	*tmp1;
+	char	*tmp2;
+	char	*tmp3;
 
-	str = ft_strjoin(data->env->var, "=");
-	if (!str)
-		fatal_error(data, 1);
-	str = ft_strjoin(str, data->env->value);
-	if (!str)
-		fatal_error(data, 1);
-	//if (!data->s_env) //check that s-env is empty
-	data->s_env = create_node(data, str);
-	free(str);
+	tmp = ft_strjoin(data->env->var, "=");
+	if (!tmp)
+		CRITICAL_FAILURE(data, "export: strjoin failed 1");
+	tmp1 = ft_strjoin(tmp, data->env->value);
+	free(tmp);
+	if (!tmp1)
+		CRITICAL_FAILURE(data, "export: strjoin failed 2");
+	data->s_env = create_node(data, tmp1);
+	free(tmp1);
 	current = data->s_env;
 	current_env = data->env->next;
 	while (current_env)
 	{
-		str = ft_strjoin(current_env->var, "=");
-		if (!str)
-			fatal_error(data, 1);
-		str = ft_strjoin(str, current_env->value);
-		if (!str)
-			fatal_error(data, 1);
-		current->next = create_node(data, str);
-		free(str);
+		tmp2 = ft_strjoin(current_env->var, "=");
+		if (!tmp2)
+			CRITICAL_FAILURE(data, "export: strjoin failed 3");
+		tmp3 = ft_strjoin(tmp2, current_env->value);
+		free(tmp2);
+		if (!tmp3)
+			CRITICAL_FAILURE(data, "export: strjoin failed 4");
+		current->next = create_node(data, tmp3);
+		free(tmp3);
 		current = current->next;
 		current_env = current_env->next;
 		data->reference_i++;
@@ -157,7 +166,7 @@ int	check_var(t_bigshell *data, char *key)
 
 	var = ft_strdup(key);
 	if (!var)
-		fatal_error(data, 1);
+		CRITICAL_FAILURE(data, "export: strdup failed");
 	end = ft_strchr(var, '=');
 	if (end)
 		*end = 0;
@@ -165,8 +174,8 @@ int	check_var(t_bigshell *data, char *key)
 	if (!(var[0] == '_' || (var[0] >= 'A' && var[0] <= 'Z') || (var[0] >= 'a' && var[0] <= 'z')))
 	{
 		free(var);
-		printf("tinyshell: export: `%s': not a valid identifier\n", key); //key? tiene que ser full str
-		return (1);
+		printf("tinyshell: export: `%s': not a valid identifier\n", key); //key? tiene que ser full string
+		return (update_exit_stat(data, 1), 1);
 	}
 	while (var[++i])
 	{
@@ -197,10 +206,14 @@ int	check_var(t_bigshell *data, char *key)
 void	switch_values(t_bigshell *data, t_env *node, char *new_value, int len)
 {
 	free(node->value);
-	node->value = (char *)malloc(sizeof(char) * len + 1);
-	if (!node->value)
-		fatal_error(data, 1);
-	memcpy(node->value, new_value, len);
+	node->value = NULL;
+	if (new_value)
+	{
+		node->value = (char *)malloc(sizeof(char) * len + 1);
+		if (!node->value)
+			CRITICAL_FAILURE(data, "export: malloc failed");
+	}
+	ft_memcpy(node->value, new_value, len + 1);
 }
 
 int	var_exists(t_bigshell *data, char *str)
@@ -208,28 +221,52 @@ int	var_exists(t_bigshell *data, char *str)
 	t_env	*env;
 	t_env	*s_env;
 	char	*separator;
+	char	*key;
+	int		var_len;
+	int		i;
 
+	i = 0;
 	env = data->env;
 	s_env = data->s_env;
 	separator = ft_strchr(str, '=');
+	if (!separator)
+		var_len = ft_strlen(str);
+	else
+		var_len = separator - str;
+	key = malloc(sizeof(char *) * var_len + 1);
+	if (!key)
+		;// well done TODO
+	ft_memcpy(key, str, var_len);
+	key[var_len] = '\0';
 	while (env)
 	{
-		if (ft_strncmp(env->var, str, (size_t)(separator - str)) == 0)
+		if (ft_strncmp(env->var, key, ft_strlen(env->var)) == 0)
 		{
-			switch_values(data, env, separator + 1, ft_strlen(separator + 1));
-			return (0);
+			if (!separator || *(separator + 1) == '\0')
+				switch_values(data, env, NULL, 1);
+			else
+				switch_values(data, env, separator + 1, ft_strlen(separator + 1));
+			i++;
+			break ;
 		}
 		env = env->next;
 	}
 	while (s_env)
 	{
-		if (ft_strncmp(s_env->var, str, (size_t)(separator - str)) == 0)
+		if (ft_strncmp(s_env->var, key, ft_strlen(s_env->var)) == 0)
 		{
-			switch_values(data, s_env, separator + 1, ft_strlen(separator +1));
-			return (0);
+			if (!separator || *(separator + 1) == '\0')
+				switch_values(data, s_env, NULL, 1);
+			else
+				switch_values(data, s_env, separator + 1, ft_strlen(separator + 1));
+			i++;
+			break ;
 		}
 		s_env = s_env->next;
 	}
+	free(key);
+	if (i == 2)
+		return (0);
 	return (1);
 }
 
@@ -239,13 +276,12 @@ void	ft_export(t_bigshell *data)
 	t_env	*current_env;
 	t_token	*arg;
 	
-	/*if (!data->s_env)*/
+	if (!data->s_env)
 		make_copy(data);
 	if (!data->commands->args)
 	{
 		print_env(data->s_env);
-		data->exit_stat = 0;
-		return ;
+		return (update_exit_stat(data, 0));
 	}
 	current = data->s_env;
 	current_env = data->env;
@@ -259,7 +295,7 @@ void	ft_export(t_bigshell *data)
 	{
 		if (check_var(data, arg->str) == 1)
 			return ;
-		if (var_exists(data, arg->str) == 0)
+		if (!var_exists(data, arg->str))
 		{
 			arg = arg->next;
 			continue ;
@@ -272,4 +308,5 @@ void	ft_export(t_bigshell *data)
 		data->var_i++;
 	}
 	sort_env(data);
+	return (update_exit_stat(data, 0));
 }

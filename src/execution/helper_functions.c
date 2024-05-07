@@ -6,11 +6,21 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 17:04:24 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/03/13 11:02:00 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/05/05 17:02:53 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
+#include "../parser/parse.h"
+#include <stdlib.h>
+
+/* void	free_exec(t_bigshell *data)
+{
+	if (data->exec_args)
+	{
+		s_array_free(data->exec_args);
+	}
+} */
 
 //frees the node_to_delete in unset
 void	free_single_node(t_bigshell *data, t_env **node)
@@ -18,7 +28,7 @@ void	free_single_node(t_bigshell *data, t_env **node)
 	free((*node)->var);
 	free((*node)->value);
 	free(*node);
-	data->exit_stat = 0;
+	update_exit_stat(data, 0); //why is this here?
 }
 
 //frees env & sorted env linked list (used in export & unset)
@@ -70,6 +80,35 @@ void	free_tokens(t_token *data)
 		free(data->dir);
 }
 
+//frees string arrays (like exec_args)
+void	s_array_free(char **s_array)
+{
+	int	i;
+
+	i = 0;
+	if (!s_array)
+		return ;
+	while (s_array[i])
+		free(s_array[i++]);
+	free(s_array);
+}
+
+void	double_free_array(char **array1, char **array2)
+{
+	s_array_free(array1);
+	s_array_free(array2);
+}
+
+void	free_paths(t_bigshell *data)
+{
+	if (data->exec->paths)
+		s_array_free(data->exec->paths);
+	if (data->exec->path)
+		free(data->exec->path);
+	if (data->exec)
+		free(data->exec);
+}
+
 void	free_commands(t_bigshell *data)
 {
 	if (data->commands->input)
@@ -92,22 +131,71 @@ void	free_commands(t_bigshell *data)
 		free_tokens(data->commands->args);
 		free(data->commands->args);
 	}
-	/* if (data->commands->nexus) //tf is nexus??
-	{} */
+	if (data->commands->args_exec)
+		s_array_free(data->commands->args_exec);
 }
 
+void	close_unused_fds(t_bigshell *data)
+{
+	if (data->std_in != -1)
+	{
+		if(close(data->std_in) == -1)
+			perror("close std_in");
+		data->std_in = -1;
+	}
+	if (data->std_out != -1)
+	{
+		if(close(data->std_out) == -1)
+			perror("close std_out");
+		data->std_out = -1;
+	}
+	if (data->fd_in != -1)
+	{
+		if(close(data->fd_in) == -1)
+			perror("close fd_in");
+		data->fd_in = -1;
+	}
+	if (data->fd_out != -1)
+	{
+		if(close(data->fd_out) == -1)
+			perror("close fd_out");
+		data->fd_out = -1;
+	}
+}
+
+void	free_tmpfile(t_bigshell *data)
+{
+	t_command	*cmd;
+
+	cmd = data->commands;
+	while (cmd)
+	{
+		if (cmd->tmpfile)
+			free(cmd->tmpfile);
+		cmd = cmd->next;
+	}
+}
+ 
 void	free_struct(t_bigshell *data)
 {
 	//free everything before exiting minishell;
-	free_env(data);
-	free_builtin_list(data);
+	//puts("Haha i was called");
+	close_unused_fds(data);
+	free_paths(data);
+	free_tmpfile(data);
 	if (data->commands)
 	{
-		while (data->commands)
-		{
-			free_commands(data);
-			data->commands = data->commands->next;
-		}
-		free(data->commands);
+		delete_command_list(data->commands);
 	}
+	free_env(data);
+	free_builtin_list(data);
+	if (data->mod_env)
+		s_array_free(data->mod_env);
+	if (data->heredoc)
+	{
+		free_tokens(data->heredoc);
+		//free(data->heredoc);
+	}
+	if (data->pipe)
+		free(data->pipe);
 }

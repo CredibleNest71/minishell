@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 11:00:47 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/03/13 12:19:16 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/05/02 18:20:59 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ void	ft_unset(t_bigshell *data)
 	t_token	*arg;
 	
 	if (!data->commands->args)
-		return ;
+		return (update_exit_stat(data, 0));
 	current = data->s_env;
 	prev = NULL;
 	current_env = data->env;
@@ -83,13 +83,15 @@ void	ft_unset(t_bigshell *data)
 	arg = data->commands->args;
 	while (arg)
 	{
-		find_node_to_delete(data, &current, &prev, arg);
-		find_node_to_delete(data, &current_env, &prev_env, arg);
+		if (current)
+			find_node_to_delete(data, &current, &prev, arg);
+		if (current_env && ft_strncmp(arg->str, "?", 1) != 0) //to avoid deleting $? from env
+			find_node_to_delete(data, &current_env, &prev_env, arg);
 		arg = arg->next;
 		current = data->s_env;
 		current_env = data->env;
 	}
-	return ;
+	return (update_exit_stat(data, 0));
 }
 
 /* void	ft_unset(t_bigshell *data)
@@ -115,19 +117,19 @@ void	ft_unset(t_bigshell *data)
 			if ((ft_strncmp(data->commands->args->str, current->str, len) == 0) ||
 			(ft_strncmp(data->commands->args->str, current_env->str, len) == 0))
 			{
-				//printf("current str: %s\n", current->str);
+				printf("current str: %s\n", current->str);
 				if (ft_strncmp(data->commands->args->str, current->str, len) == 0)
 				{
 					unset_var(data, current, prev); 
 					prev = current->next;
 					free(current);
 					current = prev;
-					//printf("current is: %s\n", current->str);
+					printf("current is: %s\n", current->str);
 				}
-				//printf("current env str: %s\n", current_env->next->str);
+				printf("current env str: %s\n", current_env->next->str);
 				if (ft_strncmp(data->commands->args->str, current_env->str, len) == 0)
 				{
-					//printf("b\n");
+					printf("b\n");
 					unset_var(data, current_env, prev_env);
 					prev_env = current_env;
 					current_env  = current_env->next;

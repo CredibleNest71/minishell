@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pathfinder.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: a <a@student.42.fr>                        +#+  +:+       +#+        */
+/*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 14:33:19 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/02/13 13:08:15 by a                ###   ########.fr       */
+/*   Updated: 2024/05/06 12:20:48 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,17 +24,17 @@ char	**find_and_split_path(char **env)
 	{
 		if (ft_strncmp(env[i], "PATH=", 5) == 0)
 		{
-			path = ft_strdup(env[i]);
+			path = ft_strdup(env[i] + 5);
 			if (!path)
-				return (NULL);
+				return (s_array_free(env), NULL);
 			paths = ft_split(path, ':');
 			free(path);
 			if (!paths)
-				return (NULL);
+				return (s_array_free(env), NULL);
 			return (paths);
 		}
 	}
-	return (0);
+	return (NULL);
 }
 
 char	*check_if_correct_path(char **paths, t_bigshell *data, char *str)
@@ -44,22 +44,26 @@ char	*check_if_correct_path(char **paths, t_bigshell *data, char *str)
 	char	*to_check;
 
 	i = 0;
-	//check if paths &cmd exist?
-	//do I have to take care of absolute n relative paths 4 commands?
+	// what if cmd path is sth like foo/bar/executable
+	if (!str[0])
+		return (NULL);
 	if (str[0] == '/' || str[0] == '.')
-		return ((char *)str);
-	while (paths[i] != NULL)
+		return (ft_strdup((char *)str));
+	while (paths && paths[i] != NULL)
 	{
 		tmp = ft_strjoin(paths[i], "/");
 		if (!tmp)
-			fatal_error(data, 1);
+			return(double_free_array(paths, data->mod_env), CRITICAL_FAILURE(data, "pathfinder.c: tmp: strjoin failed"), NULL);
 		to_check = ft_strjoin(tmp, str);
 		if (!to_check)
-			fatal_error(data, 1);
+			return(double_free_array(paths, data->mod_env), free(tmp), CRITICAL_FAILURE(data, "pathfinder.c: to_check: strjoin failed"), NULL);
 		if (access(to_check, X_OK) == 0)
-			return (to_check);
+			return (free(tmp), to_check);
+		free(tmp);
 		free(to_check);
 		i++;
 	}
 	return (NULL);
 }
+
+

@@ -3,16 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   complex_exec.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: a <a@student.42.fr>                        +#+  +:+       +#+        */
+/*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 10:43:53 by ischmutz          #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2024/05/06 19:05:01 by ischmutz         ###   ########.fr       */
-=======
-/*   Updated: 2024/05/07 10:44:53 by a                ###   ########.fr       */
->>>>>>> refs/remotes/origin/exec
+/*   Updated: 2024/05/07 14:02:17 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #include "../../minishell.h"
 #include "../main/sig.h"
@@ -79,11 +76,12 @@ void	first_executor(t_bigshell *data, t_command *cmd, int out_fd)
 	}
 	if (!cmd->output)
 	{
-		if (dup2(out_fd, 1) == -1 || close_pipe(data, 3)) //close(data->pipe->read) == -1 || close(data->pipe->write) == -1
+		if (dup2(out_fd, 1) == -1 || close(data->pipe->read) == -1 || close(data->pipe->write) == -1) //close_pipe(data, 3)
 			CRITICAL_FAILURE(data, "complex exec: first executor: dup2 failed");
 	}
 	if (!builtin_allrounder(data, cmd))
 		exit_child(data, 0);
+	close_redir_fds_in_child(data);
 	convert_env(data);
 	data->exec->paths = find_and_split_path(data->mod_env);
 	if (!data->exec->paths)
@@ -122,11 +120,11 @@ void	last_executor(t_bigshell *data, t_command *cmd, int in_fd)
 		if (dup2(in_fd, 0) == -1) //|| close(data->pipe->write) == -1 || close(data->pipe->read) == -1)
 			CRITICAL_FAILURE(data, "complex exec: last executor: dup2 failed");
 	}
-	close_read(data);
+	//close_read(data);
 	//close(in_fd);
 	if (!builtin_allrounder(data, cmd))
 	 	exit_child(data, 0);
-	//close_redir_fds_in_child(data);
+	close_redir_fds_in_child(data);
 	convert_env(data);
 	data->exec->paths = find_and_split_path(data->mod_env);
 	if (!data->exec->paths)
@@ -162,13 +160,13 @@ void	middle_executor(t_bigshell *data, t_command *cmd, int out_fd, int in_fd)
 	}
 	if (!cmd->input)
 	{
-		if (dup2(in_fd, 0) == -1 || close_read(data)) // || close(data->pipe->write) == -1) cmd->prev->in_fd --> artem
+		if (dup2(in_fd, 0) == -1 || close(data->pipe->read) == -1) // || close(data->pipe->write) == -1) cmd->prev->in_fd --> artem
 			CRITICAL_FAILURE(data, "complex exec: middle executor: dup2 failed (in_fd)");
 		//close(in_fd);
 	}
 	if (!cmd->output)
 	{
-		if (dup2(out_fd, 1) == -1 || close_write(data)) //close(data->pipe->read) == -1 ||
+		if (dup2(out_fd, 1) == -1 || close(data->pipe->write) == -1) //close(data->pipe->read) == -1 ||
 			CRITICAL_FAILURE(data, "complex exec: middle executor: dup2 failed (out_fd)");
 		//close(out_fd);
 	}
@@ -177,7 +175,7 @@ void	middle_executor(t_bigshell *data, t_command *cmd, int out_fd, int in_fd)
 	// close(in_fd);
 	if (!builtin_allrounder(data, cmd))
 		exit_child(data, 0);
-	//close_redir_fds_in_child(data);
+	close_redir_fds_in_child(data);
 	convert_env(data);
 	data->exec->paths = find_and_split_path(data->mod_env);
 	if (!data->exec->paths)

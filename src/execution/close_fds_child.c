@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/06 17:19:41 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/05/06 18:42:09 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/05/07 13:42:26 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,3 +91,11 @@ void	close_redir_fds_in_child(t_bigshell *data)
 	close_redir_fds(data);
 	close_std_fds(data);
 }
+
+// void	close_redir_fds_in_child(t_bigshell *data, int mode)
+// {
+// 	if (mode == 1)
+// 		close_redir_fds(data);
+// 	if (mode == 2)
+// 		close_std_fds(data);
+// }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
+/*   By: a <a@student.42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 12:34:44 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/05/04 18:50:00 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/05/07 10:38:45 by a                ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -174,7 +174,8 @@ int	check_var(t_bigshell *data, char *key)
 	if (!(var[0] == '_' || (var[0] >= 'A' && var[0] <= 'Z') || (var[0] >= 'a' && var[0] <= 'z')))
 	{
 		free(var);
-		printf("tinyshell: export: `%s': not a valid identifier\n", key); //key? tiene que ser full string
+		ft_putstr_fd("minishell: export: not a valid identifier\n", 2);
+		//printf("tinyshell: export: `%s': not a valid identifier\n", key); //key? tiene que ser full string
 		return (update_exit_stat(data, 1), 1);
 	}
 	while (var[++i])
@@ -235,7 +236,7 @@ int	var_exists(t_bigshell *data, char *str)
 		var_len = separator - str;
 	key = malloc(sizeof(char *) * var_len + 1);
 	if (!key)
-		;// well done TODO
+		CRITICAL_FAILURE(data, "malloc failed\n");// well done TODO
 	ft_memcpy(key, str, var_len);
 	key[var_len] = '\0';
 	while (env)

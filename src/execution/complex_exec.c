@@ -3,10 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   complex_exec.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
+/*   By: a <a@student.42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 10:43:53 by ischmutz          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2024/05/06 19:05:01 by ischmutz         ###   ########.fr       */
+=======
+/*   Updated: 2024/05/07 10:44:53 by a                ###   ########.fr       */
+>>>>>>> refs/remotes/origin/exec
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,12 +87,17 @@ void	first_executor(t_bigshell *data, t_command *cmd, int out_fd)
 	convert_env(data);
 	data->exec->paths = find_and_split_path(data->mod_env);
 	if (!data->exec->paths)
-		exit_child(data, 1);//printf("find&split failed\n"); //handle correctly
+		exit_child(data, 1);
 	data->exec->path = check_if_correct_path(data->exec->paths, data, cmd->cmd->str);
 	if (!data->exec->path)
 	{
+<<<<<<< HEAD
 		//printf("minishell: command '%s' not found\n", cmd->cmd->str);
 		ft_putstr_fd("minishell: command not found\n", 2);
+=======
+		ft_putstr_fd("minishell: command not found\n", 2);
+		//printf("minishell: command '%s' not found\n", cmd->cmd->str);
+>>>>>>> refs/remotes/origin/exec
 		exit_child(data, 127);
 	}
 	execve(data->exec->path, cmd->args_exec, data->mod_env);

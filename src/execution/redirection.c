@@ -3,10 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   redirection.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
+/*   By: a <a@student.42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 17:59:11 by ischmutz          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2024/05/06 17:59:11 by ischmutz         ###   ########.fr       */
+=======
+/*   Updated: 2024/05/07 10:47:09 by a                ###   ########.fr       */
+>>>>>>> refs/remotes/origin/exec
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,7 +133,7 @@ int	redir(t_command *command, t_bigshell *data)
 			if (check_file(data, out->str, 1) != 0)
 				return (EXIT_FAILURE);
 			if (data->fd_out == -1)
-				return(update_exit_stat(data, 1), printf("minishell: %s: No such file or directory\n", out->str), EXIT_FAILURE);
+				return(update_exit_stat(data, 1), ft_putstr_fd("minishell: No such file or directory\n", 2), EXIT_FAILURE); //printf("minishell: %s: No such file or directory\n", out->str)
 			if (!out->next)
 				break ;
 			if (out->next)

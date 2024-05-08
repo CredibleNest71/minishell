@@ -6,10 +6,9 @@
 /*   By: mresch <mresch@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 17:34:54 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/05/08 12:46:54 by mresch           ###   ########.fr       */
+/*   Updated: 2024/05/08 12:56:59 by mresch           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
@@ -29,11 +28,11 @@
 //# include "src/parser/parse.h"
 
 # ifndef BUFFER
-# define BUFFER 50
+#  define BUFFER 50
 # endif
 
 # ifndef BUFFER_INCREMENT
-# define BUFFER_INCREMENT 50
+#  define BUFFER_INCREMENT 50
 # endif
 
 typedef enum type {
@@ -161,6 +160,13 @@ void	CRITICAL_FAILURE(t_bigshell *data, char *str);
 void	simple_exec(t_bigshell *data);
 
 void    restore_output(t_bigshell *data);
+
+int		close_read(t_bigshell *data);
+int		close_write(t_bigshell *data);
+int		close_pipe(t_bigshell *data, int mode);
+void	close_redir_fds(t_bigshell *data);
+void	close_std_fds(t_bigshell *data);
+void	close_redir_fds_in_child(t_bigshell *data);
 
 void	pipe_init(t_bigshell *data);
 void	wait_for_children(t_bigshell *data);

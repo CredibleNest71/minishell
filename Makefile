@@ -16,8 +16,9 @@ EXEC_DIR = execution/
 
 BUILT_INS = built-ins/
 
-SRCS = ${SRC_DIR}${EXEC_DIR}complex_exec.c\
-			${SRC_DIR}${EXEC_DIR}built_in_list.c\
+SRCS = ${SRC_DIR}${EXEC_DIR}built_in_list.c\
+			${SRC_DIR}${EXEC_DIR}close_fds_child.c\
+			${SRC_DIR}${EXEC_DIR}complex_exec.c\
 			${SRC_DIR}${EXEC_DIR}env_list.c\
 			${SRC_DIR}${EXEC_DIR}error_handlers.c\
 			${SRC_DIR}${EXEC_DIR}helper_functions.c\
@@ -25,7 +26,6 @@ SRCS = ${SRC_DIR}${EXEC_DIR}complex_exec.c\
 			${SRC_DIR}${EXEC_DIR}pathfinder.c\
 			${SRC_DIR}${EXEC_DIR}redirection.c\
 			${SRC_DIR}${EXEC_DIR}simple_execution.c\
-			${SRC_DIR}${EXEC_DIR}complex_redir.c\
 \
 			${SRC_DIR}${BUILT_INS}cd.c\
 			${SRC_DIR}${BUILT_INS}echo.c\

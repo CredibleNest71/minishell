@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
+/*   By: a <a@student.42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 10:32:36 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/05/05 20:03:16 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/05/07 10:37:32 by a                ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,8 @@ void    home_dir(t_bigshell *data, char *oldpwd)
     }
 	if (chdir(home) == -1)
 	{
-		printf("minishell: cd: %s: No such file or directory\n", home);
+		ft_putstr_fd("minishell: cd: No such file or directory\n", 2);
+		//printf("minishell: cd: %s: No such file or directory\n", home);
         update_exit_stat(data, 1);
         return ;
 	}
@@ -181,7 +182,8 @@ void    ft_cd(t_bigshell *data)
 		path = arg->str;
         if (chdir(path) != 0)
         {
-            printf("minishell: cd: %s: No such file or directory\n", arg->str);
+			ft_putstr_fd("minishell: cd: No such file or directory\n", 2);
+            //printf("minishell: cd: %s: No such file or directory\n", arg->str);
             update_exit_stat(data, 1);
             return ;
         }

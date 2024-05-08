@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mresch <mresch@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 11:02:30 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/05/08 15:28:38 by mresch           ###   ########.fr       */
+/*   Updated: 2024/05/08 18:22:01 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int	get_exitcode(t_bigshell *data)
 	return (0);
 }
 
-void	update_exit_stat(t_bigshell *data, int exit_code) //gotta free code (LEAK)
+void	update_exit_stat(t_bigshell *data, int exit_code)
 {
 	t_env	*tmp;
 	char	*code;
@@ -47,7 +47,8 @@ void	update_exit_stat(t_bigshell *data, int exit_code) //gotta free code (LEAK)
 			}
 			tmp->value = ft_strdup(code);
 			if (!tmp->value)
-				CRITICAL_FAILURE(data, "redir error: couldn't reassign exit status to env");
+				CRITICAL_FAILURE(data, "redir error: couldn't reassign \
+				exit status to env");
 			break ;
 		}
 		tmp = tmp->next;
@@ -71,7 +72,6 @@ int	check_numeric(char *str)
 	int	i;
 
 	i = 0;
-	//check_for_longlong(str);
 	if (!str)
 		return (0);
 	if (str[i] == '-' || str[i] == '+')
@@ -90,15 +90,17 @@ int	check_numeric(char *str)
 //update: closing stored original stdin stdout in free struct
 void	ft_exit(t_bigshell *data, t_command *cmd)
 {
-	int	exitcode = 0;
-	
+	int	exitcode;
+
+	exitcode = 0;
 	if (cmd->args && check_numeric(cmd->args->str) && cmd->arg_num > 1)
 	{
 		ft_putstr_fd("exit\n", 2);
 		ft_putstr_fd("minishell: exit: too many arguments\n", 2);
 		return (update_exit_stat(data, 1));
 	}
-	if (cmd->args && (!check_numeric(cmd->args->str) || check_long_overflow(cmd->args->str)))
+	if (cmd->args && (!check_numeric(cmd->args->str) || \
+			check_long_overflow(cmd->args->str)))
 	{
 		ft_putstr_fd("exit\n", 2);
 		ft_putstr_fd("minishell: exit: numeric argument required\n", 2);

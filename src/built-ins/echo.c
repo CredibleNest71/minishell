@@ -6,13 +6,13 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 09:57:03 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/05/02 18:10:51 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/05/08 18:18:22 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-static int check_flag(char *str)
+static int	check_flag(char *str)
 {
 	int	i;
 
@@ -58,6 +58,5 @@ void	ft_echo(t_bigshell *data, t_token *args)
 	}
 	if (!flag)
 		ft_putchar_fd('\n', 1);
-	update_exit_stat(data, 0);
-	return ;
+	return (update_exit_stat(data, 0));
 }

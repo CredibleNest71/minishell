@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 10:43:53 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/05/08 12:14:51 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/05/08 15:01:03 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -185,7 +185,6 @@ void	middle_executor(t_bigshell *data, t_command *cmd, int out_fd, int in_fd)
 	data->exec->path = check_if_correct_path(data->exec->paths, data, cmd->cmd->str);
 	if (!data->exec->path)
 	{
-	// TODO: command not found needs to be printed to stderr (in all cases not only here)
 		ft_putstr_fd("minishell: command not found\n", 2);
 		//printf("minishell: command %s not found\n", cmd->cmd->str);
 		exit_child(data, 127);	

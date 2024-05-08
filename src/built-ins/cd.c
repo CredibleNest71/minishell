@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: a <a@student.42.fr>                        +#+  +:+       +#+        */
+/*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 10:32:36 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/05/07 10:37:32 by a                ###   ########.fr       */
+/*   Updated: 2024/05/08 12:36:53 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -185,6 +185,7 @@ void    ft_cd(t_bigshell *data)
 			ft_putstr_fd("minishell: cd: No such file or directory\n", 2);
             //printf("minishell: cd: %s: No such file or directory\n", arg->str);
             update_exit_stat(data, 1);
+			free(oldpwd);
             return ;
         }
 		//data->cwd = NULL;

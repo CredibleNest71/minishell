@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 10:43:53 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/05/07 18:07:27 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/05/08 12:14:51 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -174,7 +174,7 @@ void	middle_executor(t_bigshell *data, t_command *cmd, int out_fd, int in_fd)
 	// close(out_fd);
 	// close(in_fd);
 	if (close(data->pipe_fd[1]) == -1)
-		dprintf(2, "closed prev pipe write end\n");
+		CRITICAL_FAILURE(data, "closing pipe");
 	if (!builtin_allrounder(data, cmd))
 		exit_child(data, 0);
 	close_redir_fds_in_child(data);

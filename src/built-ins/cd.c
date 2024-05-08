@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mresch <mresch@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 10:32:36 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/05/08 12:36:53 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/05/08 17:29:51 by mresch           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void	overwrite_s_env(t_bigshell *data, char *env_var, char *str)
 	tmp = data->s_env;
 	while (tmp)
 	{
-		if (ft_strncmp(tmp->var, env_var, ft_strlen(tmp->var)) == 0)
+		if (ft_strcmp(tmp->var, env_var) == 0)
 		{
 			free(tmp->value);
 			tmp->value = NULL;
@@ -58,7 +58,7 @@ void	overwrite_oldpwd(t_bigshell *data, char *oldpwd)
 	tmp = data->env;
 	while (tmp)
 	{
-		if (ft_strncmp(tmp->var, "OLDPWD", ft_strlen(tmp->var)) == 0)
+		if (ft_strcmp(tmp->var, "OLDPWD") == 0)
 		{
 			free(tmp->value);
 			tmp->value = NULL;
@@ -80,7 +80,7 @@ void	overwrite_pwd(t_bigshell *data, char *new_path)
 	tmp = data->env; //should I also change them in s_env?
 	while (tmp)
 	{
-		if (ft_strncmp(tmp->var, "PWD", ft_strlen(tmp->var)) == 0)
+		if (ft_strcmp(tmp->var, "PWD") == 0)
 		{
 			free(tmp->value);
 			tmp->value = NULL;

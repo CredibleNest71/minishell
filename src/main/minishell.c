@@ -6,7 +6,7 @@
 /*   By: mresch <mresch@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 11:33:48 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/05/06 17:54:03 by mresch           ###   ########.fr       */
+/*   Updated: 2024/05/08 16:46:50 by mresch           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,6 +102,8 @@ int	main(int argc, char **argv, char **env)
 		store_restore_fds(&data, 1);
 		if (data.heredoc)
 			ft_heredoc(&data);
+		if (g_sig == SIGINT)
+			continue ;
 		if (!data.commands->next)
 		{
 			if (data.commands->input || data.commands->output)

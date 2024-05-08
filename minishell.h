@@ -6,7 +6,7 @@
 /*   By: mresch <mresch@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 17:34:54 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/05/06 15:23:25 by mresch           ###   ########.fr       */
+/*   Updated: 2024/05/08 12:46:54 by mresch           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,6 +133,8 @@ typedef struct s_signal
 }	t_sig;
 
 extern int    g_sig;
+
+void	free_null(void **ptr);
 
 void	restore_fork(t_bigshell *data, int mode);
 void	store_restore_fds(t_bigshell *data, int mode);

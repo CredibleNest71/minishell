@@ -6,7 +6,7 @@
 /*   By: mresch <mresch@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 14:55:07 by mresch            #+#    #+#             */
-/*   Updated: 2024/05/06 13:30:08 by mresch           ###   ########.fr       */
+/*   Updated: 2024/05/08 12:46:37 by mresch           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,10 +53,11 @@ char	*ft_string_insert(char *str, char *in, char *here)
 		ft_strlen(here + ft_strlen(var)));
 	free(var);
 	if (!ft_strlen(ret))
-	{
-		free(ret);
-		ret = NULL;
-	}
+		free_null(&ret);
+	// {
+	// 	free(ret);
+	// 	ret = NULL;
+	// }
 	return (ret);
 }
 

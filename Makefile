@@ -16,6 +16,8 @@ EXEC_DIR = execution/
 
 BUILT_INS = built-ins/
 
+EXPORT = export/
+
 SRCS = ${SRC_DIR}${EXEC_DIR}built_in_list.c\
 			${SRC_DIR}${EXEC_DIR}close_fds_child.c\
 			${SRC_DIR}${EXEC_DIR}complex_exec.c\
@@ -31,9 +33,11 @@ SRCS = ${SRC_DIR}${EXEC_DIR}built_in_list.c\
 			${SRC_DIR}${BUILT_INS}echo.c\
 			${SRC_DIR}${BUILT_INS}env.c\
 			${SRC_DIR}${BUILT_INS}exit.c\
-			${SRC_DIR}${BUILT_INS}export.c\
 			${SRC_DIR}${BUILT_INS}pwd.c\
 			${SRC_DIR}${BUILT_INS}unset.c\
+			${SRC_DIR}${BUILT_INS}${EXPORT}export.c\
+			${SRC_DIR}${BUILT_INS}${EXPORT}export_sort.c\
+			${SRC_DIR}${BUILT_INS}${EXPORT}export_print_copy.c\
 \
 			${SRC_DIR}${PARSER_DIR}parse.c\
 			${SRC_DIR}${PARSER_DIR}commander.c\

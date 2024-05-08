@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   helper_functions.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mresch <mresch@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 17:04:24 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/05/05 17:02:53 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/05/08 13:29:53 by mresch           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -192,10 +192,7 @@ void	free_struct(t_bigshell *data)
 	if (data->mod_env)
 		s_array_free(data->mod_env);
 	if (data->heredoc)
-	{
-		free_tokens(data->heredoc);
-		//free(data->heredoc);
-	}
+		delete_token_list(data->heredoc);
 	if (data->pipe)
 		free(data->pipe);
 }

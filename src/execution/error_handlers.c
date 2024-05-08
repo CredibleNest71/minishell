@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error_handlers.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mresch <mresch@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 11:41:58 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/05/07 14:10:04 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/05/08 12:57:18 by mresch           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,8 @@ void	exit_child(t_bigshell *data, int exit_stat)
 	// close_redir_fds_in_child(data);
 	free_struct(data);
 	update_exit_stat(data, exit_stat);
+	if (g_sig)
+		exit(128 + g_sig);
 	exit (exit_stat);
 }
 

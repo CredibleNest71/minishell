@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mresch <mresch@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 17:34:54 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/05/07 13:42:34 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/05/08 15:24:35 by mresch           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,6 +132,9 @@ typedef struct s_signal
 }	t_sig;
 
 extern int    g_sig;
+
+void	free_null(void **ptr);
+int		ft_strcmp(const char *s1, const char *s2);
 
 void	restore_fork(t_bigshell *data, int mode);
 void	store_restore_fds(t_bigshell *data, int mode);

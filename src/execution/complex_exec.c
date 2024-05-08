@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 10:43:53 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/05/08 15:01:03 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/05/08 16:58:23 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,8 @@ void	wait_for_children(t_bigshell *data)
 		if (WIFSIGNALED(stat_loc))
 		{
 			stat_loc = WTERMSIG(stat_loc);
+			if (stat_loc == SIGINT || stat_loc == SIGQUIT)
+				stat_loc += 128;
 			update_exit_stat(data, stat_loc);
 		}
 		cmd = cmd->next;
@@ -68,6 +70,7 @@ void	first_executor(t_bigshell *data, t_command *cmd, int out_fd)
 	data->exec->paths = NULL;
 	data->exec->path = NULL;
 	
+	set_signals(3);
 	if (cmd->input || cmd->output)
 	{
 		close_redir_fds_in_child(data);
@@ -151,6 +154,7 @@ void	middle_executor(t_bigshell *data, t_command *cmd, int out_fd, int in_fd)
 {
 	data->exec->paths = NULL;
 	data->exec->path = NULL;
+	set_signals(3);
 	
 	if (cmd->input || cmd->output)
 	{
@@ -205,6 +209,7 @@ void	complex_exec(t_bigshell *data)
 {
 	t_command	*current_cmd;
 
+	set_signals(0);
 	current_cmd = data->commands;
 	while (current_cmd->next)
 	{

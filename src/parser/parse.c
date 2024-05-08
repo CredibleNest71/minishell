@@ -6,7 +6,7 @@
 /*   By: mresch <mresch@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 15:00:46 by mresch            #+#    #+#             */
-/*   Updated: 2024/05/03 14:28:27 by mresch           ###   ########.fr       */
+/*   Updated: 2024/05/08 14:11:44 by mresch           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,12 +114,12 @@ t_command	*parse(char *input, t_bigshell *data)
 	if (!check_syntax(data, input))
 		return (NULL);
 	tokens = tokenmaker(input);
-	heredocs_to_bigshell(tokens, data);
 	tokens = expander(tokens, data);
 	if (!tokens)
 		return (NULL);
 	if (!*tokens)
 		return (free(tokens), NULL);
+	heredocs_to_bigshell(tokens, data);
 	cmds = commands_finalized(tokens, data);
 	if (!cmds)
 		return (NULL);

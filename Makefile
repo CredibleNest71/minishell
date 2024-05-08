@@ -51,6 +51,7 @@ SRCS = ${SRC_DIR}${EXEC_DIR}built_in_list.c\
 \
 			${SRC_DIR}${MAIN_DIR}minishell.c\
 			${SRC_DIR}${MAIN_DIR}sig.c\
+			${SRC_DIR}${MAIN_DIR}mainextra.c\
 \
 			${SRC_DIR}${PARSER_DIR}NOT_IN_FINAL.c\
 

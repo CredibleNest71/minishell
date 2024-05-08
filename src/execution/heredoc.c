@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: a <a@student.42.fr>                        +#+  +:+       +#+        */
+/*   By: mresch <mresch@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 14:55:27 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/05/07 10:50:32 by a                ###   ########.fr       */
+/*   Updated: 2024/05/08 12:57:28 by mresch           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,6 +157,12 @@ void	ft_heredoc(t_bigshell *data)
 				lineread = NULL;
 				eof = input->str;
 				mod_eof = check_for_quotes(data, eof);
+				if (cmd->tmpfile)
+				{
+					unlink(cmd->tmpfile);
+					free(cmd->tmpfile);
+					cmd->tmpfile = 0;
+				}
 				cmd->tmpfile = ft_strjoin("tmpfile", input->str);
 				if (!cmd->tmpfile)
 					simple_error(data, 1); //check if correct error handling

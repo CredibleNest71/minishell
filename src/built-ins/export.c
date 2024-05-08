@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: a <a@student.42.fr>                        +#+  +:+       +#+        */
+/*   By: mresch <mresch@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 12:34:44 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/05/07 10:38:45 by a                ###   ########.fr       */
+/*   Updated: 2024/05/08 17:23:46 by mresch           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -241,7 +241,7 @@ int	var_exists(t_bigshell *data, char *str)
 	key[var_len] = '\0';
 	while (env)
 	{
-		if (ft_strncmp(env->var, key, ft_strlen(env->var)) == 0)
+		if (ft_strcmp(env->var, key) == 0)
 		{
 			if (!separator || *(separator + 1) == '\0')
 				switch_values(data, env, NULL, 1);
@@ -254,7 +254,7 @@ int	var_exists(t_bigshell *data, char *str)
 	}
 	while (s_env)
 	{
-		if (ft_strncmp(s_env->var, key, ft_strlen(s_env->var)) == 0)
+		if (ft_strcmp(s_env->var, key) == 0)
 		{
 			if (!separator || *(separator + 1) == '\0')
 				switch_values(data, s_env, NULL, 1);

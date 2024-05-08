@@ -6,7 +6,7 @@
 /*   By: mresch <mresch@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 14:55:27 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/05/08 12:57:28 by mresch           ###   ########.fr       */
+/*   Updated: 2024/05/08 16:51:28 by mresch           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,8 @@ char	*check_for_quotes(t_bigshell *data, char *eof)
 	
 	i = 0;
 	j = -1;
+	if (!ft_strlen(eof))
+		return (ft_strdup(""));
 	delimiter = malloc(sizeof(char) * (ft_strlen(eof) - 1));
 	if (!delimiter)
 		CRITICAL_FAILURE(data, "heredoc.c:97 malloc failed");
@@ -163,7 +165,7 @@ void	ft_heredoc(t_bigshell *data)
 					free(cmd->tmpfile);
 					cmd->tmpfile = 0;
 				}
-				cmd->tmpfile = ft_strjoin("tmpfile", input->str);
+				cmd->tmpfile = ft_strjoin("tmpfile", eof);
 				if (!cmd->tmpfile)
 					simple_error(data, 1); //check if correct error handling
 				heredoc_fd = open(cmd->tmpfile, O_CREAT | O_TRUNC | O_RDWR, 00644);

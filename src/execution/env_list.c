@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_list.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mresch <mresch@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 09:46:40 by a                 #+#    #+#             */
-/*   Updated: 2024/05/04 18:45:51 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/05/08 17:05:44 by mresch           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ t_env	*create_var(t_bigshell *data, char *str)
 	if (!new_node->var)
 		CRITICAL_FAILURE(data, "env_list: malloc failed 2");
 	new_node->var = ft_strdup(str);
-	if (!new_node)
+	if (!new_node->var)
 		CRITICAL_FAILURE(data, "env_list: strdup failed 1");
 	new_node->value = NULL;
 	new_node->next = NULL;

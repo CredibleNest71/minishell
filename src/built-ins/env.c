@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mresch <mresch@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 11:01:30 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/05/02 18:13:54 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/05/08 15:28:14 by mresch           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ void	ft_env(t_bigshell *data)
 	{
 		while (tmp)
 		{
-			if (ft_strncmp(tmp->var, "?", ft_strlen(tmp->var)) == 0)
+			if (ft_strcmp(tmp->var, "?") == 0)
 			{
 				tmp = tmp->next;
 				continue ;

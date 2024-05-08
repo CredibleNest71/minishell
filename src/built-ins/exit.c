@@ -6,7 +6,7 @@
 /*   By: mresch <mresch@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 11:02:30 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/05/08 15:18:07 by mresch           ###   ########.fr       */
+/*   Updated: 2024/05/08 15:28:38 by mresch           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	get_exitcode(t_bigshell *data)
 	tmp = data->env;
 	while (tmp)
 	{
-		if (ft_strncmp(tmp->var, "?", ft_strlen(tmp->var)) == 0)
+		if (ft_strcmp(tmp->var, "?") == 0)
 			return (ft_atoi(tmp->value));
 		tmp = tmp->next;
 	}
@@ -38,7 +38,7 @@ void	update_exit_stat(t_bigshell *data, int exit_code) //gotta free code (LEAK)
 		CRITICAL_FAILURE(data, "redir error: itoa failed");
 	while (tmp)
 	{
-		if (!ft_strncmp(tmp->var, "?", ft_strlen(tmp->var)))
+		if (!ft_strcmp(tmp->var, "?"))
 		{
 			if (tmp->value)
 			{

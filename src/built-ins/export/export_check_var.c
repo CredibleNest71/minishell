@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/09 14:21:34 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/05/09 15:32:32 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/05/09 18:45:47 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ int	check_var(t_bigshell *data, char *key)
 {
 	char	*end;
 	char	*var;
-
+	
 	var = ft_strdup(key);
 	if (!var)
 		CRITICAL_FAILURE(data, "export: strdup failed");

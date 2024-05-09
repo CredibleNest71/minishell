@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 12:34:44 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/05/09 15:16:13 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/05/09 18:48:16 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,22 +15,25 @@
 #include <stdio.h>
 #include <string.h>
 
-static void	add_to_env(t_bigshell *data, t_env *current, t_token *arg)
+static int	add_to_env(t_bigshell *data, t_env *current, t_env *current_env, t_token *arg)
 {
 	while (arg)
 	{
 		if (check_var(data, arg->str) == 1)
-			return ;
+			return (1);
 		if (!var_exists(data, arg->str))
 		{
 			arg = arg->next;
 			continue ;
 		}
 		current->next = create_node(data, arg->str);
+		current_env->next = create_node(data, arg->str);
 		current = current->next;
+		current_env = current_env->next;
 		arg = arg->next;
 		data->var_i++;
 	}
+	return (0);
 }
 
 void	ft_export(t_bigshell *data)
@@ -54,8 +57,8 @@ void	ft_export(t_bigshell *data)
 		current = current->next;
 		current_env = current_env->next;
 	}
-	add_to_env(data, current, arg);
-	add_to_env(data, current_env, arg);
+	if (add_to_env(data, current, current_env, arg) == 1)
+		return (update_exit_stat(data, 1));
 	sort_env(data);
 	return (update_exit_stat(data, 0));
 }

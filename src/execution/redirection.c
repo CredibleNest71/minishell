@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 17:59:11 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/05/07 13:24:46 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/05/09 19:25:49 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,22 +22,22 @@ void	store_restore_fds(t_bigshell *data, int mode)
 		data->std_in = dup(0);
 		if (data->std_in == -1)
 		{
-			CRITICAL_FAILURE(data, "dup_stdin dup fail");
+			critical_failure(data, "dup_stdin dup fail");
 		}
 		data->std_out = dup(1);
 		if (data->std_out == -1)
 		{
-			CRITICAL_FAILURE(data, "dup_stdout dup fail");
+			critical_failure(data, "dup_stdout dup fail");
 		}
 	}
 	else if (mode == 2)
 	{
 		if ((dup2(data->std_in, 0)) == -1)
-			CRITICAL_FAILURE(data, "dup_stdin dup2 fail");
+			critical_failure(data, "dup_stdin dup2 fail");
 		if ((dup2(data->std_out, 1)) == -1)
-			CRITICAL_FAILURE(data, "dup_stdout dup2 fail");
+			critical_failure(data, "dup_stdout dup2 fail");
 		if (close(data->std_in) == - 1 || close(data->std_out) == -1)
-		 	CRITICAL_FAILURE(data, "close std_in/std_out fail");
+		 	critical_failure(data, "close std_in/std_out fail");
 		data->std_in = -1;
 		data->std_out = -1;
 	}

@@ -6,11 +6,11 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 15:21:04 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/05/05 19:58:26 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/05/09 19:25:49 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../minishell.h"
+#include "../../../minishell.h"
 
 void	ft_pwd(t_bigshell *data, t_command *cmd)
 {
@@ -45,7 +45,7 @@ void	ft_pwd(t_bigshell *data, t_command *cmd)
 		{
 			cwd = ft_strdup(tmp->value);
 			if (!cwd)
-				CRITICAL_FAILURE(data, "pwd: strdup failed");
+				critical_failure(data, "pwd: strdup failed");
 			break ;
 		}
 		tmp = tmp->next;

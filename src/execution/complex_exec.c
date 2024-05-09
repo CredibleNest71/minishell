@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 10:43:53 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/05/08 16:58:23 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/05/09 19:25:49 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,14 +29,14 @@ void	pipe_init(t_bigshell *data)
 
 	pipe = malloc(sizeof(t_pipe));
 	if (!pipe)
-		CRITICAL_FAILURE(data, "pipe_init: malloc fail");
+		critical_failure(data, "pipe_init: malloc fail");
 	data->pipe = pipe;
 }
 
 void    restore_output(t_bigshell *data)
 {
     if (dup2(data->std_out, 1) == -1)
-        CRITICAL_FAILURE(data, "restoring stdout: dup2 fail");
+        critical_failure(data, "restoring stdout: dup2 fail");
 }
 
 void	wait_for_children(t_bigshell *data)
@@ -80,7 +80,7 @@ void	first_executor(t_bigshell *data, t_command *cmd, int out_fd)
 	if (!cmd->output)
 	{
 		if (dup2(out_fd, 1) == -1 || close(data->pipe->read) == -1 || close(data->pipe->write) == -1) //close_pipe(data, 3)
-			CRITICAL_FAILURE(data, "complex exec: first executor: dup2 failed");
+			critical_failure(data, "complex exec: first executor: dup2 failed");
 	}
 	if (!builtin_allrounder(data, cmd))
 		exit_child(data, 0);
@@ -121,7 +121,7 @@ void	last_executor(t_bigshell *data, t_command *cmd, int in_fd)
 	if (!cmd->input)
 	{
 		if (dup2(in_fd, 0) == -1 || close(data->pipe->read)) //|| close(data->pipe->write) == -1 || close(data->pipe->read) == -1)
-			CRITICAL_FAILURE(data, "complex exec: last executor: dup2 failed");
+			critical_failure(data, "complex exec: last executor: dup2 failed");
 	}
 	//close_read(data);
 	//close(in_fd);
@@ -165,20 +165,20 @@ void	middle_executor(t_bigshell *data, t_command *cmd, int out_fd, int in_fd)
 	if (!cmd->input)
 	{
 		if (dup2(in_fd, 0) == -1 || close(data->pipe->read) == -1) // || close(data->pipe->write) == -1) cmd->prev->in_fd --> artem
-			CRITICAL_FAILURE(data, "complex exec: middle executor: dup2 failed (in_fd)");
+			critical_failure(data, "complex exec: middle executor: dup2 failed (in_fd)");
 		//close(in_fd);
 	}
 	if (!cmd->output)
 	{
 		if (dup2(out_fd, 1) == -1 || close(data->pipe->write) == -1) //close(data->pipe->read) == -1 ||
-			CRITICAL_FAILURE(data, "complex exec: middle executor: dup2 failed (out_fd)");
+			critical_failure(data, "complex exec: middle executor: dup2 failed (out_fd)");
 		//close(out_fd);
 	}
 	//this should be closed if redir didnt fail
 	// close(out_fd);
 	// close(in_fd);
 	if (close(data->pipe_fd[1]) == -1)
-		CRITICAL_FAILURE(data, "closing pipe");
+		critical_failure(data, "closing pipe");
 	if (!builtin_allrounder(data, cmd))
 		exit_child(data, 0);
 	close_redir_fds_in_child(data);
@@ -214,33 +214,33 @@ void	complex_exec(t_bigshell *data)
 	while (current_cmd->next)
 	{
 		if (g_sig == SIGINT) //check for signal before executing any command. if yes, spit prompt again
-			CRITICAL_FAILURE(data, "complex exec: SIGINT received");
+			critical_failure(data, "complex exec: SIGINT received");
 		if (current_cmd == data->commands)
 		{
 			if (pipe(data->pipe_fd) == -1)
-				CRITICAL_FAILURE(data, "complex exec: pipe failed in first command");
+				critical_failure(data, "complex exec: pipe failed in first command");
 			data->pipe->read = data->pipe_fd[0];
 			data->pipe->write = data->pipe_fd[1];
 			//dprintf(2, "pipe from first: %d, %d\n", data->pipe_fd[0], data->pipe_fd[1]);
 			if ((current_cmd->pid = fork()) == -1)
-				CRITICAL_FAILURE(data, "complex exec: fork failed in first command");
+				critical_failure(data, "complex exec: fork failed in first command");
 			if (current_cmd->pid == 0)
 				first_executor(data, current_cmd, data->pipe->write);
 			if (close(data->pipe->write) == -1)
-				CRITICAL_FAILURE(data, "complex exec: close(1) failed in parent process");
+				critical_failure(data, "complex exec: close(1) failed in parent process");
 		}
 		else
 		{
 			if (pipe(data->pipe_fd2) == -1)
-				CRITICAL_FAILURE(data, "complex exec: pipe 2 failed in middle command");
+				critical_failure(data, "complex exec: pipe 2 failed in middle command");
 			//dprintf(2, "pipe from middle: %d, %d\n", data->pipe_fd2[0], data->pipe_fd2[1]);
 			data->pipe->write = data->pipe_fd2[1];
 			if ((current_cmd->pid = fork()) == -1)
-					CRITICAL_FAILURE(data, "complex exec: fork failed in middle command");
+					critical_failure(data, "complex exec: fork failed in middle command");
 			if (current_cmd->pid == 0)
 				middle_executor(data, current_cmd, data->pipe->write, data->pipe->read);
 			if (close(data->pipe->write) == -1 || close(data->pipe->read) == -1)
-				CRITICAL_FAILURE(data, "complex exec: close(1) failed in parent process");
+				critical_failure(data, "complex exec: close(1) failed in parent process");
 			data->pipe->read = data->pipe_fd2[0];
 		}
 		current_cmd = current_cmd->next;
@@ -249,15 +249,15 @@ void	complex_exec(t_bigshell *data)
 	if (!current_cmd->next)
 	{
 		if (g_sig == SIGINT) //check for signal before executing any command. if yes, spit prompt again
-			CRITICAL_FAILURE(data, "complex exec: SIGINT received");
+			critical_failure(data, "complex exec: SIGINT received");
 		restore_output(data);
 		if ((current_cmd->pid = fork()) == -1)
-			CRITICAL_FAILURE(data, "complex exec: fork failed in last command");
+			critical_failure(data, "complex exec: fork failed in last command");
 		if (current_cmd->pid == 0)
 			last_executor(data, current_cmd, data->pipe->read);
 		//dprintf(2, "pipe from last: %d\n", data->pipe->read);
 		if (close(data->pipe->read) == -1)
-			CRITICAL_FAILURE(data, "complex exec: close(0) failed in parent process");
+			critical_failure(data, "complex exec: close(0) failed in parent process");
 	}
 	wait_for_children(data);
 }

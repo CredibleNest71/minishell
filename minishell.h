@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 17:34:54 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/05/09 16:02:20 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/05/09 19:25:49 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,10 +159,10 @@ int		builtin_allrounder(t_bigshell *data, t_command *current_command);
 //REDIRECTION FUNCTIONS:
 
 void	redir_error(t_bigshell *data, int exit_code, char *str);
-void	error_message(t_bigshell *data, char *str, int exit_code);
+void	error1(t_bigshell *data, char *str, int exit_code);
 void	simple_error(t_bigshell *data, int exit_code);
 void	exit_child(t_bigshell *data, int exit_stat);
-void	CRITICAL_FAILURE(t_bigshell *data, char *str);
+void	critical_failure(t_bigshell *data, char *str);
 
 //SINGLE CMD EXECUTION FUNCTIONS:
 

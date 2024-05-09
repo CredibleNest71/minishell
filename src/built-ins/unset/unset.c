@@ -6,11 +6,11 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 11:00:47 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/05/08 18:27:08 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/05/09 18:59:48 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../minishell.h"
+#include "../../../minishell.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <strings.h>

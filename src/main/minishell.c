@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 11:33:48 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/05/09 16:14:34 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/05/09 19:25:49 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ void	exec_init(t_bigshell *data)
 
 	exec = malloc(sizeof(t_exec));
 	if (!exec)
-		CRITICAL_FAILURE(data, "exec_init: malloc fail");
+		critical_failure(data, "exec_init: malloc fail");
 	exec->path = NULL;
 	exec->paths = NULL;
 	data->exec = exec;
@@ -126,7 +126,7 @@ int	main(int argc, char **argv, char **env)
 			{
 				data.commands->pid = fork();
 				if (data.commands->pid == -1)
-					CRITICAL_FAILURE(&data, "main: fork failed");
+					critical_failure(&data, "main: fork failed");
 				if (data.commands->pid == 0)
 					simple_exec(&data);
 				wait_for_children(&data); //use specific children waiting ft here for correct exit code

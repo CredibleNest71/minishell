@@ -20,12 +20,27 @@ EXPORT = export/
 
 CD = cd/
 
-SRCS = ${SRC_DIR}${EXEC_DIR}built_in_list.c\
+ECHO = echo/
+
+ENV = env/
+
+EXIT = exit/
+
+PWD = pwd/
+
+UNSET = unset/
+
+BUILT-IN-LIST = built-in-list/
+
+HELPER = helper_functions/
+
+SRCS = ${SRC_DIR}${EXEC_DIR}${BUILT-IN-LIST}built_in_list.c\
+			${SRC_DIR}${EXEC_DIR}${BUILT-IN-LIST}put_built_in.c\
 			${SRC_DIR}${EXEC_DIR}close_fds_child.c\
 			${SRC_DIR}${EXEC_DIR}complex_exec.c\
 			${SRC_DIR}${EXEC_DIR}env_list.c\
 			${SRC_DIR}${EXEC_DIR}error_handlers.c\
-			${SRC_DIR}${EXEC_DIR}helper_functions.c\
+			${SRC_DIR}${EXEC_DIR}${HELPER}helper_functions.c\
 			${SRC_DIR}${EXEC_DIR}heredoc.c\
 			${SRC_DIR}${EXEC_DIR}pathfinder.c\
 			${SRC_DIR}${EXEC_DIR}redirection.c\
@@ -33,11 +48,11 @@ SRCS = ${SRC_DIR}${EXEC_DIR}built_in_list.c\
 \
 			${SRC_DIR}${BUILT_INS}${CD}cd.c\
 			${SRC_DIR}${BUILT_INS}${CD}cd_overwrite.c\
-			${SRC_DIR}${BUILT_INS}echo.c\
-			${SRC_DIR}${BUILT_INS}env.c\
-			${SRC_DIR}${BUILT_INS}exit.c\
-			${SRC_DIR}${BUILT_INS}pwd.c\
-			${SRC_DIR}${BUILT_INS}unset.c\
+			${SRC_DIR}${BUILT_INS}${ECHO}echo.c\
+			${SRC_DIR}${BUILT_INS}${ENV}env.c\
+			${SRC_DIR}${BUILT_INS}${EXIT}exit.c\
+			${SRC_DIR}${BUILT_INS}${PWD}pwd.c\
+			${SRC_DIR}${BUILT_INS}${UNSET}unset.c\
 			${SRC_DIR}${BUILT_INS}${EXPORT}export.c\
 			${SRC_DIR}${BUILT_INS}${EXPORT}export_sort.c\
 			${SRC_DIR}${BUILT_INS}${EXPORT}export_print_copy.c\

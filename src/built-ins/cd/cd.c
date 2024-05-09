@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 10:32:36 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/05/09 16:04:24 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/05/09 19:25:49 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ char	*get_cwd(t_bigshell *data)
 			break ;
 		data->cwd = malloc(sizeof(char) * data->buffer_size);
 		if (!data->cwd)
-			CRITICAL_FAILURE(data, "cd: malloc failed in cd.c:go_back");
+			critical_failure(data, "cd: malloc failed in cd.c:go_back");
 		getcwd(data->cwd, data->buffer_size);
 		if (errno == ENOENT)
 			return (free_null_cd(data->cwd), NULL);
@@ -64,7 +64,7 @@ char	*get_cwd(t_bigshell *data)
 		if (!data->cwd && errno != ERANGE)
 		{
 			data->cwd = free_null_cd(data->cwd);
-			error_message(data, "minishell: cd: unable to get current directory", 1);
+			error1(data, "minishell: cd: unable to get current directory", 1);
 			break ;
 		}
 	}
@@ -86,7 +86,7 @@ void	ft_cd2(t_bigshell *data, t_token *arg, char *cwd, char *oldpwd)
 	cwd = get_cwd(data);
 	if (!cwd)
 	{
-		error_message(data, "minishell: cd.c: cwd failed", 1);
+		error1(data, "minishell: cd.c: cwd failed", 1);
 		return ;
 	}
 	overwrite_oldpwd(data, oldpwd);

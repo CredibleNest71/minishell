@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/09 14:45:39 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/05/09 15:07:48 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/05/09 19:25:49 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,14 +26,15 @@ void	switch_values(t_bigshell *data, t_env *node, char *new_value, int len)
 	{
 		node->value = (char *)malloc(sizeof(char) * len + 1);
 		if (!node->value)
-			CRITICAL_FAILURE(data, "export: malloc failed");
+			critical_failure(data, "export: malloc failed");
 	}
 	ft_memcpy(node->value, new_value, len + 1);
 }
 
 //goes through env and if the variable is found it swithes its value
 //  ->norminette
-static int	var_exists3(t_bigshell *data, t_env *env, char *separator, char *key)
+static int	var_exists3(t_bigshell *data, t_env *env, char *separator,
+	char *key)
 {
 	while (env)
 	{
@@ -87,7 +88,7 @@ int	var_exists(t_bigshell *data, char *str)
 		var_len = separator - str;
 	key = malloc(sizeof(char *) * var_len + 1);
 	if (!key)
-		CRITICAL_FAILURE(data, "malloc failed\n");
+		critical_failure(data, "malloc failed\n");
 	ft_memcpy(key, str, var_len);
 	key[var_len] = '\0';
 	return (var_exists2(data, separator, key));
@@ -112,7 +113,7 @@ int	var_exists(t_bigshell *data, char *str)
 // 		var_len = separator - str;
 // 	key = malloc(sizeof(char *) * var_len + 1);
 // 	if (!key)
-// 		CRITICAL_FAILURE(data, "malloc failed\n");
+// 		critical_failure(data, "malloc failed\n");
 // 	ft_memcpy(key, str, var_len);
 // 	key[var_len] = '\0';
 // 	while (env)

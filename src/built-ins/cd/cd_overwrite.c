@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/19 14:25:29 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/05/09 15:45:35 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/05/09 19:25:49 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	overwrite_s_env(t_bigshell *data, char *env_var, char *str)
 			tmp->value = NULL;
 			tmp->value = ft_strdup(str);
 			if (!tmp->value)
-				CRITICAL_FAILURE(data,
+				critical_failure(data,
 					"minishell: cd: strdup failed in overwrite_s_env");
 			break ;
 		}
@@ -54,7 +54,7 @@ void	overwrite_oldpwd(t_bigshell *data, char *oldpwd)
 			tmp->value = NULL;
 			tmp->value = ft_strdup(oldpwd);
 			if (!tmp->value)
-				CRITICAL_FAILURE(data,
+				critical_failure(data,
 					"minishell: cd: strdup failed in overwrite_oldpwd");
 			break ;
 		}
@@ -77,7 +77,7 @@ void	overwrite_pwd(t_bigshell *data, char *new_path)
 			tmp->value = NULL;
 			tmp->value = ft_strdup(new_path);
 			if (!tmp->value)
-				CRITICAL_FAILURE(data,
+				critical_failure(data,
 					"minishell: cd: strdup failed in overwrite");
 			break ;
 		}

@@ -6,12 +6,12 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 11:02:30 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/05/08 18:22:01 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/05/09 19:25:49 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../minishell.h"
-#include "../parser/parse.h"
+#include "../../../minishell.h"
+#include "../../parser/parse.h"
 
 int	get_exitcode(t_bigshell *data)
 {
@@ -35,7 +35,7 @@ void	update_exit_stat(t_bigshell *data, int exit_code)
 	tmp = data->env;
 	code = ft_itoa(exit_code);
 	if (!code)
-		CRITICAL_FAILURE(data, "redir error: itoa failed");
+		critical_failure(data, "redir error: itoa failed");
 	while (tmp)
 	{
 		if (!ft_strcmp(tmp->var, "?"))
@@ -47,7 +47,7 @@ void	update_exit_stat(t_bigshell *data, int exit_code)
 			}
 			tmp->value = ft_strdup(code);
 			if (!tmp->value)
-				CRITICAL_FAILURE(data, "redir error: couldn't reassign \
+				critical_failure(data, "redir error: couldn't reassign \
 				exit status to env");
 			break ;
 		}

@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/08 19:35:30 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/05/09 15:08:51 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/05/09 19:25:49 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,11 +24,11 @@ static void	create_first_node_s_env(t_bigshell *data)
 
 	tmp = ft_strjoin(data->env->var, "=");
 	if (!tmp)
-		CRITICAL_FAILURE(data, "export: strjoin failed 1");
+		critical_failure(data, "export: strjoin failed 1");
 	tmp1 = ft_strjoin(tmp, data->env->value);
 	free(tmp);
 	if (!tmp1)
-		CRITICAL_FAILURE(data, "export: strjoin failed 2");
+		critical_failure(data, "export: strjoin failed 2");
 	data->s_env = create_node(data, tmp1);
 	free(tmp1);
 }
@@ -48,11 +48,11 @@ void	make_copy(t_bigshell *data)
 	{
 		tmp = ft_strjoin(current_env->var, "=");
 		if (!tmp)
-			CRITICAL_FAILURE(data, "export: strjoin failed 3");
+			critical_failure(data, "export: strjoin failed 3");
 		tmp1 = ft_strjoin(tmp, current_env->value);
 		free(tmp);
 		if (!tmp1)
-			CRITICAL_FAILURE(data, "export: strjoin failed 4");
+			critical_failure(data, "export: strjoin failed 4");
 		current->next = create_node(data, tmp1);
 		free(tmp1);
 		current = current->next;

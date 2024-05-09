@@ -6,34 +6,17 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 12:10:32 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/05/05 19:48:06 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/05/09 19:14:34 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../minishell.h"
+#include "../../../minishell.h"
 #include <stdlib.h>
-
-/* char	*put_str(char *s) //do I even use this
-{
-	int		len;
-	int		i;
-	char	*str;
-
-	len = ft_strlen(s);
-	str = malloc((len + 1) * sizeof(char));
-	if (!str)
-		return (NULL);
-	str[len] = '\0';
-	i = -1;
-	while (str[++i])
-		str[i] = s[i];
-	return (str);
-} */
 
 int	builtin_allrounder(t_bigshell *data, t_command *current_command)
 {
 	int	result;
-	
+
 	if (!data->built_ins)
 	{
 		data->built_ins = (char **)malloc(sizeof(char *) * 8);
@@ -41,54 +24,9 @@ int	builtin_allrounder(t_bigshell *data, t_command *current_command)
 	}
 	if (!current_command->cmd)
 		return (EXIT_FAILURE);
-	result = builtin_check_exec(data, current_command->cmd->str, current_command);
+	result = builtin_check_exec(data, current_command->cmd->str,
+			current_command);
 	return (result);
-}
-
-void	put_built_in(int index, t_bigshell *data)
-{
-	if (index == 0)
-	{
-		data->built_ins[index] = ft_strdup("echo -n");
-		if (!data->built_ins[index])
-			CRITICAL_FAILURE(data, "built_in_list: strdup failed for echo");
-	}
-	else if (index == 1)
-	{
-		data->built_ins[index] = ft_strdup("cd");
-		if (!data->built_ins[index])
-			CRITICAL_FAILURE(data, "built_in_list: strdup failed for cd");
-	}
-	else if (index == 2)
-	{
-		data->built_ins[index] = ft_strdup("pwd");
-		if (!data->built_ins[index])
-			CRITICAL_FAILURE(data, "built_in_list: strdup failed for pwd");
-	}
-	else if (index == 3)
-	{
-		data->built_ins[index] = ft_strdup("export");
-		if (!data->built_ins[index])
-			CRITICAL_FAILURE(data, "built_in_list: strdup failed for export");
-	}
-	else if (index == 4)
-	{
-		data->built_ins[index] = ft_strdup("unset");
-		if (!data->built_ins[index])
-			CRITICAL_FAILURE(data, "built_in_list: strdup failed for unset");
-	}
-	else if (index == 5)
-	{
-		data->built_ins[index] = ft_strdup("env");
-		if (!data->built_ins[index])
-			CRITICAL_FAILURE(data, "built_in_list: strdup failed for env");
-	}
-	else if (index == 6)
-	{
-		data->built_ins[index] = ft_strdup("exit");
-		if (!data->built_ins[index])
-			CRITICAL_FAILURE(data, "built_in_list: strdup failed for exit");
-	}
 }
 
 void	built_in_list(t_bigshell *data)
@@ -107,7 +45,7 @@ void	builtin_exec(t_bigshell *data, int builtin_index, t_command *cmd)
 	{
 		if (!cmd->args)
 			ft_echo(data, cmd->args);
-		else 
+		else
 			ft_echo(data, cmd->args);
 	}
 	else if (builtin_index == 1)
@@ -128,7 +66,7 @@ int	builtin_check_exec(t_bigshell *data, char *cmd, t_command *command)
 {
 	int		len;
 	int		i;
-	
+
 	i = 0;
 	len = ft_strlen(cmd);
 	while (data->built_ins[i] != NULL)
@@ -141,14 +79,26 @@ int	builtin_check_exec(t_bigshell *data, char *cmd, t_command *command)
 		else if (ft_strncmp(cmd, data->built_ins[i], len + 1) == 0)
 		{
 			builtin_exec(data, i, command);
-			return(0);
+			return (0);
 		}
 		i++;
 	}
-	return(1);
+	return (1);
 }
 
-/* while (list[i])
+/* char	*put_str(char *s) //do I even use this
 {
-	i++;
+	int		len;
+	int		i;
+	char	*str;
+
+	len = ft_strlen(s);
+	str = malloc((len + 1) * sizeof(char));
+	if (!str)
+		return (NULL);
+	str[len] = '\0';
+	i = -1;
+	while (str[++i])
+		str[i] = s[i];
+	return (str);
 } */

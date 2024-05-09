@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/09 14:21:34 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/05/09 18:45:47 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/05/09 19:25:49 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,8 @@
 
 //Functions present in this file:
 // -> check_var -> checks whether the variable name is a valid identifier
-// -> var-exists -> checks whether the variable already exists in the environment
+// -> var-exists -> checks whether the variable already exists in the
+//	environment
 
 //extension of check var -> norminette
 static int	check_var2(t_bigshell *data, char *var)
@@ -48,10 +49,10 @@ int	check_var(t_bigshell *data, char *key)
 {
 	char	*end;
 	char	*var;
-	
+
 	var = ft_strdup(key);
 	if (!var)
-		CRITICAL_FAILURE(data, "export: strdup failed");
+		critical_failure(data, "export: strdup failed");
 	end = ft_strchr(var, '=');
 	if (!end)
 		return (free(var), update_exit_stat(data, 0), 1);

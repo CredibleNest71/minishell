@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 14:33:19 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/05/08 18:13:21 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/05/09 19:25:49 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,11 +51,11 @@ char	*check_unset_path(t_bigshell *data, char *str)
 	{
 		tmp = ft_strjoin(get_cwd(data), "/");
 		if (!tmp)
-			return (CRITICAL_FAILURE(data, "pathfinder.c: tmp: strjoin failed"),
+			return (critical_failure(data, "pathfinder.c: tmp: strjoin failed"),
 				NULL);
 		to_check = ft_strjoin(tmp, str);
 		if (!to_check)
-			return (free(tmp), CRITICAL_FAILURE(data, "pathfinder.c: \
+			return (free(tmp), critical_failure(data, "pathfinder.c: \
 				to_check: strjoin failed"), NULL);
 		if (access(to_check, X_OK) == 0)
 			return (free(tmp), to_check);
@@ -69,7 +69,7 @@ char	*check_unset_path(t_bigshell *data, char *str)
 void	free_arrays_exit_child(t_bigshell *data, char **paths)
 {
 	double_free_array(paths, data->mod_env);
-	CRITICAL_FAILURE(data, "pathfinder.c: tmp: strjoin failed");
+	critical_failure(data, "pathfinder.c: tmp: strjoin failed");
 }
 
 // what if cmd path is sth like foo/bar/executable

@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 12:34:44 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/05/09 18:48:16 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/05/09 18:50:27 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,8 @@
 #include <stdio.h>
 #include <string.h>
 
-static int	add_to_env(t_bigshell *data, t_env *current, t_env *current_env, t_token *arg)
+static int	add_to_env(t_bigshell *data, t_env *current, t_env *current_env,
+	t_token *arg)
 {
 	while (arg)
 	{

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mresch <mresch@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 14:55:27 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/05/08 16:51:28 by mresch           ###   ########.fr       */
+/*   Updated: 2024/05/09 19:25:49 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ char	*check_for_quotes(t_bigshell *data, char *eof)
 		return (ft_strdup(""));
 	delimiter = malloc(sizeof(char) * (ft_strlen(eof) - 1));
 	if (!delimiter)
-		CRITICAL_FAILURE(data, "heredoc.c:97 malloc failed");
+		critical_failure(data, "heredoc.c:97 malloc failed");
 	if (eof[i] == '"' || eof[i] == '\'')
 	{
 		while (++i < (int)ft_strlen(eof))

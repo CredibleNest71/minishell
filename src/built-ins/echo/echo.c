@@ -6,11 +6,11 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 09:57:03 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/05/08 18:18:22 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/05/09 18:55:21 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../minishell.h"
+#include "../../../minishell.h"
 
 static int	check_flag(char *str)
 {

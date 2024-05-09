@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error_handlers.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mresch <mresch@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 11:41:58 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/05/08 12:57:18 by mresch           ###   ########.fr       */
+/*   Updated: 2024/05/09 16:02:39 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	redir_error(t_bigshell *data, int exit_code, char *str)
 	update_exit_stat(data, exit_code);
 }
 
-void	simple_error_message(t_bigshell *data, char *str, int exit_code)
+void	error_message(t_bigshell *data, char *str, int exit_code)
 {
 	printf("%s\n", str);
 	update_exit_stat(data, exit_code);

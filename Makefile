@@ -18,6 +18,8 @@ BUILT_INS = built-ins/
 
 EXPORT = export/
 
+CD = cd/
+
 SRCS = ${SRC_DIR}${EXEC_DIR}built_in_list.c\
 			${SRC_DIR}${EXEC_DIR}close_fds_child.c\
 			${SRC_DIR}${EXEC_DIR}complex_exec.c\
@@ -29,7 +31,8 @@ SRCS = ${SRC_DIR}${EXEC_DIR}built_in_list.c\
 			${SRC_DIR}${EXEC_DIR}redirection.c\
 			${SRC_DIR}${EXEC_DIR}simple_execution.c\
 \
-			${SRC_DIR}${BUILT_INS}cd.c\
+			${SRC_DIR}${BUILT_INS}${CD}cd.c\
+			${SRC_DIR}${BUILT_INS}${CD}cd_overwrite.c\
 			${SRC_DIR}${BUILT_INS}echo.c\
 			${SRC_DIR}${BUILT_INS}env.c\
 			${SRC_DIR}${BUILT_INS}exit.c\

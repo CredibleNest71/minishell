@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 17:34:54 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/05/09 15:13:59 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/05/09 16:02:20 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,7 +159,7 @@ int		builtin_allrounder(t_bigshell *data, t_command *current_command);
 //REDIRECTION FUNCTIONS:
 
 void	redir_error(t_bigshell *data, int exit_code, char *str);
-void	simple_error_message(t_bigshell *data, char *str, int exit_code);
+void	error_message(t_bigshell *data, char *str, int exit_code);
 void	simple_error(t_bigshell *data, int exit_code);
 void	exit_child(t_bigshell *data, int exit_stat);
 void	CRITICAL_FAILURE(t_bigshell *data, char *str);
@@ -189,7 +189,10 @@ void	ft_echo(t_bigshell *data, t_token *args);
 
 //CD FUNCTIONS:
 
+void	overwrite_s_env(t_bigshell *data, char *env_var, char *str);
+void	overwrite_oldpwd(t_bigshell *data, char *oldpwd);
 void	overwrite_pwd(t_bigshell *data, char *new_path);
+
 void    home_dir(t_bigshell *data, char *oldpwd);
 char    *get_cwd(t_bigshell *data);
 void	ft_cd(t_bigshell *data);

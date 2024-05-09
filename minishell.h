@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mresch <mresch@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 17:34:54 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/05/08 15:24:35 by mresch           ###   ########.fr       */
+/*   Updated: 2024/05/09 15:13:59 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,8 +141,12 @@ void	store_restore_fds(t_bigshell *data, int mode);
 int		check_file(t_bigshell *data, const char *file, int mode);
 int		redir(t_command *command, t_bigshell *data);
 
+//PATH CONSTRUCTION FUNCTIONS:
+
 char	**find_and_split_path(char **env);
 char	*check_if_correct_path(char **paths, t_bigshell *data, char *str);
+
+//BUILT-IN CHECKER FUNCTIONS:
 
 char	*put_str(char *s);
 void	put_built_in(int index, t_bigshell *data);
@@ -152,13 +156,19 @@ int		builtin_check_exec(t_bigshell *data, char *cmd, t_command *command);
 
 int		builtin_allrounder(t_bigshell *data, t_command *current_command);
 
+//REDIRECTION FUNCTIONS:
+
 void	redir_error(t_bigshell *data, int exit_code, char *str);
 void	simple_error_message(t_bigshell *data, char *str, int exit_code);
 void	simple_error(t_bigshell *data, int exit_code);
 void	exit_child(t_bigshell *data, int exit_stat);
 void	CRITICAL_FAILURE(t_bigshell *data, char *str);
 
+//SINGLE CMD EXECUTION FUNCTIONS:
+
 void	simple_exec(t_bigshell *data);
+
+//PIPELINE FUNCTIONS:
 
 void    restore_output(t_bigshell *data);
 
@@ -173,36 +183,55 @@ void	pipe_init(t_bigshell *data);
 void	wait_for_children(t_bigshell *data);
 void	complex_exec(t_bigshell *data);
 
+//ECHO FUNCTIONS:
+
 void	ft_echo(t_bigshell *data, t_token *args);
 
+//CD FUNCTIONS:
 
 void	overwrite_pwd(t_bigshell *data, char *new_path);
 void    home_dir(t_bigshell *data, char *oldpwd);
 char    *get_cwd(t_bigshell *data);
 void	ft_cd(t_bigshell *data);
 
+//PWD FUNCTIONS:
+
 void	ft_pwd(t_bigshell *data, t_command *cmd);
 
-void	ft_export(t_bigshell *data);
+//EXPORT FUNCTIONS:
+
+void	switch_values(t_bigshell *data, t_env *node, char	*new_value, int len);
+int		var_exists(t_bigshell *data, char *str);
+
+int		check_var(t_bigshell *data, char *key);
+
+void	make_copy(t_bigshell *data);
+void	print_env(t_env *head);
+
 int		check_if_sorted(t_env *current);
 void	switch_nodes(t_env *current);
 void	sort_env(t_bigshell *data);
-void	print_env(t_env *head);
-void	make_copy(t_bigshell *data);
-int		check_var(t_bigshell *data, char *key);
-void	switch_values(t_bigshell *data, t_env *node, char	*new_value, int len);
-int		var_exists(t_bigshell *data, char *str);
+
+void	ft_export(t_bigshell *data);
+
+//UNSET FUNCTIONS:
 
 void	ft_unset(t_bigshell *data);
 void	unset_var(t_bigshell *data, t_env **current, t_env **prev);
 void	find_node_to_delete(t_bigshell *data, t_env **current, t_env **prev, t_token *arg);
 
+//ENV FUNCTIONS:
+
 void	ft_env(t_bigshell *data);
 //void	add_env_variable(t_bigshell *data);
+
+//EXIT FUNCTIONS:
 
 int		get_exitcode(t_bigshell *data);
 void	update_exit_stat(t_bigshell *data, int exit_code);
 void	ft_exit(t_bigshell *data, t_command *cmd);
+
+//
 
 t_env   *create_node(t_bigshell *data, char *str);
 void    store_env(t_bigshell *data, char **env);
@@ -218,6 +247,8 @@ void	free_commands(t_bigshell *data);
 void	close_unused_fds(t_bigshell *data);
 void	free_tmpfile(t_bigshell *data);
 void	free_struct(t_bigshell *data);
+
+//HEREDOC FUNCTIONS:
 
 void	ft_heredoc(t_bigshell *data);
 char	*delimiter_finder(t_bigshell *data);

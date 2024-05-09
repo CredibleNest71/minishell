@@ -38,6 +38,8 @@ SRCS = ${SRC_DIR}${EXEC_DIR}built_in_list.c\
 			${SRC_DIR}${BUILT_INS}${EXPORT}export.c\
 			${SRC_DIR}${BUILT_INS}${EXPORT}export_sort.c\
 			${SRC_DIR}${BUILT_INS}${EXPORT}export_print_copy.c\
+			${SRC_DIR}${BUILT_INS}${EXPORT}export_check_var.c\
+			${SRC_DIR}${BUILT_INS}${EXPORT}export_check_var_exists.c\
 \
 			${SRC_DIR}${PARSER_DIR}parse.c\
 			${SRC_DIR}${PARSER_DIR}commander.c\

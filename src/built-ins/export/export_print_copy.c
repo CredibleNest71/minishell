@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   export2.c                                          :+:      :+:    :+:   */
+/*   export_print_copy.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/08 19:35:30 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/05/08 19:42:37 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/05/09 15:08:51 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 // -> print_env -> prints env when export no args is called
 
 //creates the first node in sorted env ->norminette
-void	create_first_node_s_env(t_bigshell *data)
+static void	create_first_node_s_env(t_bigshell *data)
 {
 	char	*tmp;
 	char	*tmp1;

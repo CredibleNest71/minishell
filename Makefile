@@ -30,25 +30,34 @@ PWD = pwd/
 
 UNSET = unset/
 
-BUILT-IN-LIST = built-in-list/
+BUILT-IN-LIST = execution/built-in-list/
 
-HELPER = helper_functions/
+HELPER = execution/helper_functions/
 
-HEREDOC = heredoc/
+HEREDOC = execution/heredoc/
 
-SRCS = ${SRC_DIR}${EXEC_DIR}${BUILT-IN-LIST}built_in_list.c\
-			${SRC_DIR}${EXEC_DIR}${BUILT-IN-LIST}put_built_in.c\
+REDIR = execution/redirection/
+
+SRCS = ${SRC_DIR}${BUILT-IN-LIST}built_in_list.c\
+			${SRC_DIR}${BUILT-IN-LIST}put_built_in.c\
+\
 			${SRC_DIR}${EXEC_DIR}close_fds_child.c\
 			${SRC_DIR}${EXEC_DIR}complex_exec.c\
 			${SRC_DIR}${EXEC_DIR}env_list.c\
 			${SRC_DIR}${EXEC_DIR}error_handlers.c\
-			${SRC_DIR}${EXEC_DIR}${HELPER}helper_functions.c\
-			${SRC_DIR}${EXEC_DIR}${HELPER}helper_functions2.c\
-			${SRC_DIR}${EXEC_DIR}${HEREDOC}heredoc.c\
-			${SRC_DIR}${EXEC_DIR}${HEREDOC}heredoc_tmpfile.c\
-			${SRC_DIR}${EXEC_DIR}${HEREDOC}heredoc_close_fd.c\
+\
+			${SRC_DIR}${HELPER}helper_functions.c\
+			${SRC_DIR}${HELPER}helper_functions2.c\
+\
+			${SRC_DIR}${HEREDOC}heredoc.c\
+			${SRC_DIR}${HEREDOC}heredoc_tmpfile.c\
+			${SRC_DIR}${HEREDOC}heredoc_close_fd.c\
+\
 			${SRC_DIR}${EXEC_DIR}pathfinder.c\
-			${SRC_DIR}${EXEC_DIR}redirection.c\
+\
+			${SRC_DIR}${REDIR}redirection.c\
+			${SRC_DIR}${REDIR}redirection2.c\
+\
 			${SRC_DIR}${EXEC_DIR}simple_execution.c\
 \
 			${SRC_DIR}${BUILT_INS}${CD}cd.c\

@@ -60,7 +60,6 @@ void	set_signals(int mode)
 	else if (mode == 3)
 	{
 		signal(SIGINT, SIG_DFL);
-		//signal(SIGQUIT, &sigquittest);
 		signal(SIGQUIT, SIG_DFL);
 	}
 }

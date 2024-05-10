@@ -84,6 +84,8 @@ int	check_long_overflow(char *str)
 	i = 0;
 	new = 0;
 	prev = 0;
+	if (!str)
+		return (0);
 	while (str[i] == '-' || str[i] == '+')
 		i++;
 	while (str[i])

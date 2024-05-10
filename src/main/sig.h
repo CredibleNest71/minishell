@@ -9,7 +9,7 @@
 
 void			handler(int sig);
 void			sig_init(t_bigshell *data, void *handler);
-void            set_signals(int mode);
+void			set_signals(int mode);
 int				check_sigs();
 extern int		g_sig;
 #endif

@@ -34,6 +34,8 @@ BUILT-IN-LIST = built-in-list/
 
 HELPER = helper_functions/
 
+HEREDOC = heredoc/
+
 SRCS = ${SRC_DIR}${EXEC_DIR}${BUILT-IN-LIST}built_in_list.c\
 			${SRC_DIR}${EXEC_DIR}${BUILT-IN-LIST}put_built_in.c\
 			${SRC_DIR}${EXEC_DIR}close_fds_child.c\
@@ -42,7 +44,9 @@ SRCS = ${SRC_DIR}${EXEC_DIR}${BUILT-IN-LIST}built_in_list.c\
 			${SRC_DIR}${EXEC_DIR}error_handlers.c\
 			${SRC_DIR}${EXEC_DIR}${HELPER}helper_functions.c\
 			${SRC_DIR}${EXEC_DIR}${HELPER}helper_functions2.c\
-			${SRC_DIR}${EXEC_DIR}heredoc.c\
+			${SRC_DIR}${EXEC_DIR}${HEREDOC}heredoc.c\
+			${SRC_DIR}${EXEC_DIR}${HEREDOC}heredoc_tmpfile.c\
+			${SRC_DIR}${EXEC_DIR}${HEREDOC}heredoc_close_fd.c\
 			${SRC_DIR}${EXEC_DIR}pathfinder.c\
 			${SRC_DIR}${EXEC_DIR}redirection.c\
 			${SRC_DIR}${EXEC_DIR}simple_execution.c\

@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 17:54:30 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/05/09 19:25:49 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/05/09 19:34:10 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	simple_exec(t_bigshell *data)
 	if (g_sig == SIGINT)
 		critical_failure(data, "simple exec: SIGINT received");
 	convert_env(data);
-	data->exec->paths = find_and_split_path(data->mod_env); //should it be exit_child?
+	data->exec->paths = find_and_split_path(data->mod_env);
 	data->exec->path = check_if_correct_path(data->exec->paths, data, \
 		data->commands->cmd->str);
 	if (!data->exec->path)

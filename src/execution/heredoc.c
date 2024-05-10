@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 14:55:27 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/05/09 19:25:49 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/05/09 19:37:33 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,13 +20,12 @@
 int	tmpfile_cleanup(t_bigshell *data)
 {
 	t_command	*cmd;
-	
+
 	cmd = data->commands;
 	while (cmd)
 	{
 		if (cmd->tmpfile)
 		{
-			//close(cmd->heredoc_fd);
 			if (unlink(cmd->tmpfile) == -1)
 				simple_error(data, 1);
 		}
@@ -44,7 +43,7 @@ int	heredoc_finder(t_bigshell *data)
 	if (!data->commands->cmd)
 	{
 		if (data->heredoc)
-			return(0);
+			return (0);
 	}
 	else
 	{
@@ -90,7 +89,7 @@ char	*check_for_quotes(t_bigshell *data, char *eof)
 	int		i;
 	size_t	j;
 	char	*delimiter;
-	
+
 	i = 0;
 	j = -1;
 	if (!ft_strlen(eof))
@@ -116,9 +115,11 @@ char	*check_for_quotes(t_bigshell *data, char *eof)
 
 //${SRC_DIR}${EXEC_DIR}heredoc.c
 //00644 = S_IRUSR | S_IWUSR
-//ft_heredoc creates a tmp file that will be deleted the moment heredoc_fd is closed
+//ft_heredoc creates a tmp file that will be deleted the moment
+//heredoc_fd is closed
 //heredoc_fd = open(".", O_TMPFILE | O_RDWR | S_IRUSR | S_IWUSR);
-/* if (lineread == EOF || lineread == NULL) //if delimiter is found then exit loop
+/* if (lineread == EOF || lineread == NULL) //if delimiter is found
+//then exit loop
 	break ; */
 //if heredoc fails nothing gets executed
 
@@ -130,7 +131,7 @@ char	*find_eof(t_token *input)
 	while (tmp)
 	{
 		if (tmp->type == (enum type)HEREDOC)
-			return(tmp->str);
+			return (tmp->str);
 		tmp = tmp->next;
 	}
 	return (NULL);
@@ -142,7 +143,7 @@ void	ft_heredoc(t_bigshell *data)
 	char		*eof;
 	char		*mod_eof;
 	int			heredoc_fd;
-	//int			i;
+
 	t_command	*cmd;
 	t_token		*input;
 	

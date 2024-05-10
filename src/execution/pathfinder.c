@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 14:33:19 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/05/09 19:25:49 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/05/10 13:00:58 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,11 +45,14 @@ char	*check_unset_path(t_bigshell *data, char *str)
 {
 	char	*tmp;
 	char	*to_check;
+	char	*cwd;
 
 	tmp = NULL;
 	if (access(str, F_OK) == 0)
 	{
-		tmp = ft_strjoin(get_cwd(data), "/");
+		cwd = get_cwd(data);
+		tmp = ft_strjoin(cwd, "/");
+		free(cwd);
 		if (!tmp)
 			return (critical_failure(data, "pathfinder.c: tmp: strjoin failed"),
 				NULL);

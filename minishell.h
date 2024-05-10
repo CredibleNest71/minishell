@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 17:34:54 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/05/09 19:25:49 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/05/10 14:32:38 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -253,10 +253,16 @@ void	free_struct(t_bigshell *data);
 
 //HEREDOC FUNCTIONS:
 
+int		tmpfile_cleanup(t_bigshell *data);
+char	*create_unique_name(t_bigshell *data, t_command *cmd, char *eof);
+
+int		open_heredoc_fd(t_bigshell *data, t_command *cmd);
+void	close_heredoc_fd(int fd);
+char	*free_set_null(char *mod_eof);
+
 void	ft_heredoc(t_bigshell *data);
 char	*delimiter_finder(t_bigshell *data);
 char	*check_for_quotes(t_bigshell *data, char *eof);
-int		heredoc_finder(t_bigshell *data);
 int		tmpfile_cleanup(t_bigshell *data);
 
 #endif

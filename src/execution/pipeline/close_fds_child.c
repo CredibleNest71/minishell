@@ -6,11 +6,11 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/06 17:19:41 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/05/07 13:42:26 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/05/10 16:50:55 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../minishell.h"
+#include "../../../minishell.h"
 
 int	close_read(t_bigshell *data)
 {

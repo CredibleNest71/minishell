@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 17:59:11 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/05/10 16:07:18 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/05/10 17:55:45 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ static int	check_redir_input(t_bigshell *data, t_command *cmd, t_token *input)
 			break ;
 		else
 		{
-			if (data->fd_in == -1 || close(data->fd_in) == -1)
+			if (data->fd_in != -1 && close(data->fd_in) == -1)
 				return (redir_error(data, 1, "redir.c: open/close failed"),
 					EXIT_FAILURE);
 			input = input->next;
@@ -52,27 +52,27 @@ static int	check_redir_input(t_bigshell *data, t_command *cmd, t_token *input)
 	return (redir_input(data, data->fd_in));
 }
 
-static int	check_redir_output(t_bigshell *data, t_token *output)
+static int	check_redir_output(t_bigshell *data, t_token *out)
 {
-	while (output)
+	while (out)
 	{
-		if (output->type == (enum type)APP)
-			data->fd_out = open(output->str, O_CREAT | O_APPEND | O_WRONLY, 00644);
+		if (out->type == (enum type)APP)
+			data->fd_out = open(out->str, O_CREAT | O_APPEND | O_WRONLY, 00644);
 		else
-			data->fd_out = open(output->str, O_CREAT | O_TRUNC | O_WRONLY, 00644);
-		if (check_file(data, output->str, 1) != 0)
+			data->fd_out = open(out->str, O_CREAT | O_TRUNC | O_WRONLY, 00644);
+		if (check_file(data, out->str, 1) != 0)
 			return (EXIT_FAILURE);
 		if (data->fd_out == -1)
 			return (update_exit_stat(data, 1), ft_putstr_fd("minishell: \
 						No such file or directory\n", 2), EXIT_FAILURE);
-		if (!output->next)
+		if (!out->next)
 			break ;
-		if (output->next)
+		if (out->next)
 		{
 			if (data->fd_out != -1 && close(data->fd_out) == -1)
 				return (redir_error(data, 1, "redir.c:137 close failed"),
 					EXIT_FAILURE);
-			output = output->next;
+			out = out->next;
 		}
 	}
 	if ((dup2(data->fd_out, 1)) == -1)

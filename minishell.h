@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 17:34:54 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/05/10 14:32:38 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/05/10 17:21:28 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -170,7 +170,10 @@ void	simple_exec(t_bigshell *data);
 
 //PIPELINE FUNCTIONS:
 
+void	pipe_init(t_bigshell *data);
 void    restore_output(t_bigshell *data);
+void	error_exit(t_bigshell *data, int status, char *msg);
+void	wait_for_children(t_bigshell *data);
 
 int		close_read(t_bigshell *data);
 int		close_write(t_bigshell *data);
@@ -179,8 +182,11 @@ void	close_redir_fds(t_bigshell *data);
 void	close_std_fds(t_bigshell *data);
 void	close_redir_fds_in_child(t_bigshell *data);
 
-void	pipe_init(t_bigshell *data);
-void	wait_for_children(t_bigshell *data);
+void	execute_command(t_bigshell *data, t_command *cmd);
+void	first_executor(t_bigshell *data, t_command *cmd, int out_fd);
+void	middle_executor(t_bigshell *data, t_command *cmd, int out_fd, int in_fd);
+void	last_executor(t_bigshell *data, t_command *cmd, int in_fd);
+
 void	complex_exec(t_bigshell *data);
 
 //ECHO FUNCTIONS:

@@ -53,11 +53,10 @@ char	*ft_string_insert(char *str, char *in, char *here)
 		ft_strlen(here + ft_strlen(var)));
 	free(var);
 	if (!ft_strlen(ret))
-		free_null((void **)&ret);
-	// {
-	// 	free(ret);
-	// 	ret = NULL;
-	// }
+	{
+		free(ret);
+		ret = NULL;
+	}
 	return (ret);
 }
 
@@ -111,19 +110,15 @@ char	*expand(char *str, t_bigshell *data)
 		if (!here)
 			break ;
 		idx = here - str;
-		if (here[1])
-			idx++;
-		else
+		idx = here[1] ? here - str + 1 : here - str;
+		if (!here[1])
 			break ;
-		if (here)
-		{
-			if (is_char(here[1], SPACE3))
-				continue ; 
-			val = var2val(here, data);
-			new = ft_string_insert(str, val, here);
-			free(str);
-			str = new;
-		}
+		if (is_char(here[1], SPACE3))
+			continue ; 
+		val = var2val(here, data);
+		new = ft_string_insert(str, val, here);
+		free(str);
+		str = new;
 	}
 	return (str);
 }

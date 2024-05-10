@@ -38,12 +38,6 @@ static void    newline_to_readline(int sig)
     }
 }
 
-// void	sigquittest(int	sig)
-// {
-// 	write(2, "SIGQUITTEST\n", 13);
-// 	exit(128 + sig);
-// }
-
 void	set_signals(int mode)
 {
 	g_sig = 0;

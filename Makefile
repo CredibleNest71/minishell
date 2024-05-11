@@ -40,6 +40,8 @@ REDIR = execution/redirection/
 
 PIPELINE = execution/pipeline/
 
+EXEC_ENV = execution/env/
+
 SRCS = ${SRC_DIR}${BUILT-IN-LIST}built_in_list.c\
 			${SRC_DIR}${BUILT-IN-LIST}put_built_in.c\
 \
@@ -48,7 +50,9 @@ SRCS = ${SRC_DIR}${BUILT-IN-LIST}built_in_list.c\
 			${SRC_DIR}${PIPELINE}executors.c\
 			${SRC_DIR}${PIPELINE}complex_exec.c\
 \
-			${SRC_DIR}${EXEC_DIR}env_list.c\
+			${SRC_DIR}${EXEC_ENV}env_list.c\
+			${SRC_DIR}${EXEC_ENV}create_nodes.c\
+\
 			${SRC_DIR}${EXEC_DIR}error_handlers.c\
 \
 			${SRC_DIR}${HELPER}helper_functions.c\

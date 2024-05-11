@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mainextra2.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mresch <mresch@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/11 12:32:02 by mresch            #+#    #+#             */
-/*   Updated: 2024/05/11 12:35:01 by mresch           ###   ########.fr       */
+/*   Updated: 2024/05/11 18:31:36 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,7 @@ int	get_input(t_bigshell *data, char *lineread)
 		//return (/*write(1, "exit\n", 5), */exitcode_and_freeshell(&data));
 	add_history(lineread);
 	data->commands = parse(lineread, data);
+	free(lineread);
 	if (!data->commands)
 		return (0);
 	else

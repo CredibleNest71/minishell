@@ -6,21 +6,13 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 17:04:24 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/05/10 17:53:56 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/05/11 18:07:41 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../minishell.h"
 #include "../../parser/parse.h"
 #include <stdlib.h>
-
-/* void	free_exec(t_bigshell *data)
-{
-	if (data->exec_args)
-	{
-		s_array_free(data->exec_args);
-	}
-} */
 
 void	free_tokens(t_token *data)
 {
@@ -38,32 +30,6 @@ void	free_paths(t_bigshell *data)
 		free(data->exec->path);
 	if (data->exec)
 		free(data->exec);
-}
-
-void	free_commands(t_bigshell *data)
-{
-	if (data->commands->input)
-	{
-		free_tokens(data->commands->input);
-		free(data->commands->input);
-	}
-	if (data->commands->output)
-	{
-		free_tokens(data->commands->output);
-		free(data->commands->output);
-	}
-	if (data->commands->cmd)
-	{
-		free_tokens(data->commands->cmd);
-		free(data->commands->cmd);
-	}
-	if (data->commands->args)
-	{
-		free_tokens(data->commands->args);
-		free(data->commands->args);
-	}
-	if (data->commands->args_exec)
-		s_array_free(data->commands->args_exec);
 }
 
 void	close_unused_fds(t_bigshell *data)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mresch <mresch@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 17:34:54 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/05/11 13:36:35 by mresch           ###   ########.fr       */
+/*   Updated: 2024/05/11 15:32:50 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -209,7 +209,7 @@ void	ft_export(t_bigshell *data);
 
 //UNSET FUNCTIONS:
 
-void	ft_unset(t_bigshell *data);
+void	ft_unset(t_bigshell *data, t_command *cmd);
 void	unset_var(t_bigshell *data, t_env **current, t_env **prev);
 void	find_node_to_delete(t_bigshell *data, t_env **current, \
 		t_env **prev, t_token *arg);

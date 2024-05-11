@@ -90,8 +90,8 @@ SRCS = ${SRC_DIR}${BUILT-IN-LIST}built_in_list.c\
 			${SRC_DIR}${MAIN_DIR}minimain.c\
 			${SRC_DIR}${MAIN_DIR}sig.c\
 			${SRC_DIR}${MAIN_DIR}mainextra.c\
+			${SRC_DIR}${MAIN_DIR}mainextra2.c\
 \
-			${SRC_DIR}${PARSER_DIR}NOT_IN_FINAL.c\
 
 OBJS := $(SRCS:%.c=%.o)
 

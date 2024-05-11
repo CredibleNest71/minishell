@@ -6,7 +6,7 @@
 /*   By: mresch <mresch@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 13:29:19 by mresch            #+#    #+#             */
-/*   Updated: 2024/05/02 14:59:54 by mresch           ###   ########.fr       */
+/*   Updated: 2024/05/11 12:20:44 by mresch           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ t_token	*make_t(char *str)
 	if (!token)
 		return (NULL);
 	token->str = str;
-	token->type = (e_type) ARG;
+	token->type = (t_type) ARG;
 	return (token);
 }
 

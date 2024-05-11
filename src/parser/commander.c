@@ -6,7 +6,7 @@
 /*   By: mresch <mresch@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 14:44:18 by mresch            #+#    #+#             */
-/*   Updated: 2024/05/03 15:40:53 by mresch           ###   ########.fr       */
+/*   Updated: 2024/05/11 12:20:22 by mresch           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,14 +36,14 @@ int	mark_cmds(t_token **list, t_bigshell *data)
 	pipe = 1;
 	while (temp)
 	{
-		if (temp->type == (e_type) ARG && pipe)
+		if (temp->type == (t_type) ARG && pipe)
 		{
 			if (!check_valid_cmd(temp->str, data))
 				return (0);
-			temp->type = (e_type) CMD;
+			temp->type = (t_type) CMD;
 			pipe = 0;
 		}
-		else if (temp->type == (e_type) PIPE)
+		else if (temp->type == (t_type) PIPE)
 			pipe = 1;
 		temp = temp->next;
 	}
@@ -52,17 +52,17 @@ int	mark_cmds(t_token **list, t_bigshell *data)
 
 void	assign(t_command *cmd, t_token *token)
 {
-	if (token->type == (e_type) CMD)
+	if (token->type == (t_type) CMD)
 		cmd->cmd = token_dup(token);
-	if (token->type == (e_type) ARG)
+	if (token->type == (t_type) ARG)
 		token_list_add(&cmd->args, token_dup(token));
-	if (token->type == (e_type) IN)
+	if (token->type == (t_type) IN)
 		token_list_add(&cmd->input, token_dup(token));
-	if (token->type == (e_type) OUT)
+	if (token->type == (t_type) OUT)
 		token_list_add(&cmd->output, token_dup(token));
-	if (token->type == (e_type) APP)
+	if (token->type == (t_type) APP)
 		token_list_add(&cmd->output, token_dup(token));
-	if (token->type == (e_type) HEREDOC)
+	if (token->type == (t_type) HEREDOC)
 		token_list_add(&cmd->input, token_dup(token));
 }
 
@@ -86,7 +86,7 @@ t_command	**create_commandlist(t_token **list)
 			add_to_command_list(final, cmd);
 			pipe = 0;
 		}
-		if (temp->type == (e_type) PIPE)
+		if (temp->type == (t_type) PIPE)
 			pipe = 1;
 		assign(cmd, temp);
 		temp = temp->next;

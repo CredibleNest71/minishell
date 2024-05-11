@@ -41,9 +41,9 @@ void	print_cmds(t_command *cmd, t_bigshell *data)
 			printf("==	ARG:		%s\n", curr->str);
 		for (t_token *curr = temp_cmd->input;curr; curr = curr->next)
 		{
-			if (curr->type == (e_type) IN)
+			if (curr->type == (t_type) IN)
 				printf("==	IN:			%s\n", curr->str);
-			else if (curr->type == (e_type) HEREDOC)
+			else if (curr->type == (t_type) HEREDOC)
 			{
 				printf("==	HEREDOC: 	%s\n", curr->str);
 				printf("==	QUOTED: 	%d\n", curr->quoted);
@@ -51,7 +51,7 @@ void	print_cmds(t_command *cmd, t_bigshell *data)
 		}
 		for (t_token *curr = temp_cmd->output; curr; curr = curr->next)
 		{
-			if (curr->type == (e_type) APP)
+			if (curr->type == (t_type) APP)
 				printf("==	APP:			%s\n", curr->str);
 			else
 				printf("==	OUT:			%s\n", curr->str);

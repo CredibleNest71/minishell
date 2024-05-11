@@ -6,7 +6,7 @@
 /*   By: mresch <mresch@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 11:33:48 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/05/11 14:38:47 by mresch           ###   ########.fr       */
+/*   Updated: 2024/05/11 16:21:22 by mresch           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ int	mainloop(t_bigshell *data, char *lineread)
 		set_signals(1);
 		if (g_sig == SIGINT)
 		{
+			update_exit_stat(data, 130);
 			make_over(data, lineread);
 			continue ;
 		}

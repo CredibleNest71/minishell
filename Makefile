@@ -105,7 +105,7 @@ $(NAME): $(OBJS)
 	cc $(FLAGS) $(OBJS) -lreadline ./$(LIB_DIR)/libft.a -o $(NAME)
 
 valgrind : $(NAME)
-	valgrind --suppressions=valgrind_ignore_leaks.txt --leak-check=full --show-leak-kinds=all --track-fds=yes --trace-children=yes ./minishell
+	valgrind --suppressions=$(HOME)/valgrind_ignore_leaks.txt --leak-check=full --show-leak-kinds=all --track-fds=yes --trace-children=yes ./minishell
 
 clean:
 	cd $(LIB_DIR) && $(MAKE) fclean

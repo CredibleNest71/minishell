@@ -6,7 +6,7 @@
 /*   By: mresch <mresch@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/11 11:16:55 by mresch            #+#    #+#             */
-/*   Updated: 2024/05/11 11:17:15 by mresch           ###   ########.fr       */
+/*   Updated: 2024/05/11 14:43:36 by mresch           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,9 @@
 # include "../../minishell.h"
 # include "../parser/parse.h"
 
-extern int		g_sig;
-void			handler(int sig);
-void			sig_init(t_bigshell *data, void *handler);
-void			set_signals(int mode);
-int				check_sigs(void);
+extern int	g_sig;
+void		handler(int sig);
+void		sig_init(t_bigshell *data, void *handler);
+void		set_signals(int mode);
+int			check_sigs(void);
 #endif

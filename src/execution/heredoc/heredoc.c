@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mresch <mresch@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 14:55:27 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/05/10 14:31:45 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/05/11 11:34:52 by mresch           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,8 @@ void	ft_heredoc(t_bigshell *data)
 	t_command	*cmd;
 	t_token		*input;
 
+	if (!data->heredoc)
+		return ;
 	cmd = data->commands;
 	set_signals(2);
 	while (cmd)

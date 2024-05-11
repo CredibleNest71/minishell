@@ -38,11 +38,16 @@ HEREDOC = execution/heredoc/
 
 REDIR = execution/redirection/
 
+PIPELINE = execution/pipeline/
+
 SRCS = ${SRC_DIR}${BUILT-IN-LIST}built_in_list.c\
 			${SRC_DIR}${BUILT-IN-LIST}put_built_in.c\
 \
-			${SRC_DIR}${EXEC_DIR}close_fds_child.c\
-			${SRC_DIR}${EXEC_DIR}complex_exec.c\
+			${SRC_DIR}${PIPELINE}close_fds_child.c\
+			${SRC_DIR}${PIPELINE}complex_exec.c\
+			${SRC_DIR}${PIPELINE}executors.c\
+			${SRC_DIR}${PIPELINE}helper_functions.c\
+\
 			${SRC_DIR}${EXEC_DIR}env_list.c\
 			${SRC_DIR}${EXEC_DIR}error_handlers.c\
 \

@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 17:18:44 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/05/11 16:06:47 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/05/11 16:52:58 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,11 @@ void	first_executor(t_bigshell *data, t_command *cmd, int out_fd)
 	set_signals(3);
 	if (cmd->input || cmd->output)
 	{
+		if (cmd->output)
+		{
+			if (close(data->pipe->write) == -1 || close(data->pipe->read) == -1)
+				critical_failure(data, "close failed in first executor");
+		}
 		close_redir_fds_in_child(data);
 		if (redir(cmd, data))
 			exit_child(data, 1);
@@ -61,23 +66,17 @@ void	last_executor(t_bigshell *data, t_command *cmd, int in_fd)
 	data->exec->path = NULL;
 	if (cmd->input || cmd->output)
 	{
+		if (cmd->input)
+			close(data->pipe->read);
 		close_redir_fds_in_child(data);
 		if (redir(cmd, data))
-		{
-			close(data->pipe_fd[0]);	
 			exit_child(data, 1);
-		}
 	}
 	if (!cmd->input)
 	{
 		if (dup2(in_fd, 0) == -1 || close(data->pipe->read))
 			critical_failure(data, "complex exec: last executor: dup2 failed");
 	}
-	//  if (data->pipe_fd[0])
-	//  	close(data->pipe_fd2[0]);
-	//  if (data->pipe_fd[1])
-	//  	close(data->pipe_fd2[1]);
-	//close(in_fd);
 	execute_command(data, cmd);
 }
 
@@ -90,11 +89,16 @@ void	middle_executor(t_bigshell *data, t_command *cmd, int out_fd, int in_fd)
 	{
 		close_redir_fds_in_child(data);
 		if (redir(cmd, data))
+		{
+			if (close(data->pipe->read) == -1 || close(data->pipe->write) == -1 || \
+				close(data->pipe_fd2[0]) == -1)
+				critical_failure(data, "close failed in first executor");
 			exit_child(data, 1);
+		}
 	}
 	if (!cmd->input)
 	{
-		if (dup2(in_fd, 0) == -1 || close(in_fd) == -1)
+		if (dup2(in_fd, 0) == -1 || close(in_fd) == -1 )
 			critical_failure(data, "complex exec: middle executor: \
 			dup2 failed (in_fd)");
 	}
@@ -107,7 +111,7 @@ void	middle_executor(t_bigshell *data, t_command *cmd, int out_fd, int in_fd)
 	//this should be closed if redir didnt fail
 	// close(out_fd);
 	// close(in_fd);
-	if (close(data->pipe_fd[1]) == -1)
-		critical_failure(data, "closing pipe");
+	// if (close(data->pipe_fd[1]) == -1)
+	// 	critical_failure(data, "closing pipe");
 	execute_command(data, cmd);
 }

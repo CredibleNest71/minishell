@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 14:30:47 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/05/10 14:37:39 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/05/10 16:31:02 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	open_heredoc_fd(t_bigshell *data, t_command *cmd)
 {
 	int	fd;
 
-    fd = 0;
+	fd = 0;
 	if (cmd->tmpfile)
 	{
 		fd = open(cmd->tmpfile, O_CREAT | O_TRUNC | O_RDWR, 00644);

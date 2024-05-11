@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 17:18:44 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/05/11 00:09:11 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/05/11 16:05:05 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,10 +73,10 @@ void	last_executor(t_bigshell *data, t_command *cmd, int in_fd)
 		if (dup2(in_fd, 0) == -1 || close(data->pipe->read))
 			critical_failure(data, "complex exec: last executor: dup2 failed");
 	}
-	 if (data->pipe_fd[0])
-	 	close(data->pipe_fd2[0]);
-	 if (data->pipe_fd[1])
-	 	close(data->pipe_fd2[1]);
+	//  if (data->pipe_fd[0])
+	//  	close(data->pipe_fd2[0]);
+	//  if (data->pipe_fd[1])
+	//  	close(data->pipe_fd2[1]);
 	//close(in_fd);
 	execute_command(data, cmd);
 }

@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/11 12:32:02 by mresch            #+#    #+#             */
-/*   Updated: 2024/05/11 18:31:36 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/05/11 19:03:01 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ int	get_input(t_bigshell *data, char *lineread)
 {
 	char	*line;
 
+	g_sig = 0;
 	set_signals(0);
 	fd_init(data);
 	remove_cmd_list_from_data(data);
@@ -75,9 +76,10 @@ int	get_input(t_bigshell *data, char *lineread)
 		lineread = ft_strtrim(line, "\n");
 		free(line);
 	}
+	if (g_sig == SIGINT)
+		update_exit_stat(data, 130);
 	if (!lineread)
 		return (-1);
-		//return (/*write(1, "exit\n", 5), */exitcode_and_freeshell(&data));
 	add_history(lineread);
 	data->commands = parse(lineread, data);
 	free(lineread);

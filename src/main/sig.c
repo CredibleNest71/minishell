@@ -6,7 +6,7 @@
 /*   By: mresch <mresch@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/11 11:17:53 by mresch            #+#    #+#             */
-/*   Updated: 2024/05/11 13:37:44 by mresch           ###   ########.fr       */
+/*   Updated: 2024/05/11 16:22:34 by mresch           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ void	reset_sig(int sig)
 
 static void	redo_rl(int sig)
 {
+	g_sig = sig;
 	sig++;
 	write(1, "\n", 1);
 	rl_on_new_line();

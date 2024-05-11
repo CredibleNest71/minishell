@@ -5,12 +5,12 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/11 18:14:24 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/05/11 18:14:43 by ischmutz         ###   ########.fr       */
+/*   Created: 2024/02/16 09:46:40 by a                 #+#    #+#             */
+/*   Updated: 2024/05/11 19:02:52 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../../minishell.h"
+#include "../../minishell.h"
 
 t_env	*create_var(t_bigshell *data, char *str)
 {
@@ -57,4 +57,77 @@ t_env	*create_node(t_bigshell *data, char *str)
 	new_node->value[value_len] = '\0';
 	new_node->next = NULL;
 	return (new_node);
+}
+
+//this ft stores the initial env given when the executable is 1st ran
+void	store_env(t_bigshell *data, char **env)
+{
+	int		i;
+	t_env	*current_node;
+
+	i = 0;
+	if (!env || !env[0])
+	{
+		data->env = create_node(data, "?=0");
+		data->var_i = 1;
+	}
+	else
+	{
+		data->env = create_node(data, env[i]);
+		current_node = data->env;
+		while (env[++i])
+		{
+			current_node->next = create_node(data, env[i]);
+			current_node = current_node->next;
+		}
+		current_node->next = create_node(data, "?=0");
+		i++;
+		data->var_i = i;
+	}
+}
+
+int	strlen_env(t_bigshell *data)
+{
+	int		i;
+	t_env	*tmp;
+
+	i = 0;
+	tmp = data->env;
+	while (tmp)
+	{
+		tmp = tmp->next;
+		i++;
+	}
+	return (i);
+}
+
+void	convert_env(t_bigshell *data)
+{
+	int		i;
+	char	*str;
+	char	*tmp;
+	t_env	*current;
+
+	data->mod_env = (char **)malloc(sizeof(char *) * (strlen_env(data) + 1));
+	if (!data->mod_env)
+		critical_failure(data, "env_list: malloc failed 6");
+	data->mod_env[strlen_env(data)] = NULL;
+	i = 0;
+	current = data->env;
+	while (current)
+	{
+		tmp = ft_strjoin(current->var, "=");
+		if (!tmp)
+			simple_error(data, 1);
+		str = ft_strjoin(tmp, current->value);
+		free(tmp);
+		if (!str)
+			simple_error(data, 1);
+		data->mod_env[i] = ft_strdup(str);
+		if (!data->mod_env[i])
+			critical_failure(data, "env_list: strdup failed 2");
+		free(str);
+		current = current->next;
+		i++;
+	}
 }

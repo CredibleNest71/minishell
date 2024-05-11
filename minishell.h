@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mresch <mresch@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 17:34:54 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/05/11 13:36:35 by mresch           ###   ########.fr       */
+/*   Updated: 2024/05/11 16:06:26 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -166,15 +166,23 @@ void	simple_exec(t_bigshell *data);
 
 //PIPELINE FUNCTIONS:
 
-void	restore_output(t_bigshell *data);
+void	pipe_init(t_bigshell *data);
+void    restore_output(t_bigshell *data);
+void	error_exit(t_bigshell *data, int status, char *msg);
+void	wait_for_children(t_bigshell *data);
+
 int		close_read(t_bigshell *data);
 int		close_write(t_bigshell *data);
 int		close_pipe(t_bigshell *data, int mode);
 void	close_redir_fds(t_bigshell *data);
 void	close_std_fds(t_bigshell *data);
 void	close_redir_fds_in_child(t_bigshell *data);
-void	pipe_init(t_bigshell *data);
-void	wait_for_children(t_bigshell *data);
+
+void	execute_command(t_bigshell *data, t_command *cmd);
+void	first_executor(t_bigshell *data, t_command *cmd, int out_fd);
+void	middle_executor(t_bigshell *data, t_command *cmd, int out_fd, int in_fd);
+void	last_executor(t_bigshell *data, t_command *cmd, int in_fd);
+
 void	complex_exec(t_bigshell *data);
 
 //ECHO FUNCTIONS:
@@ -209,7 +217,7 @@ void	ft_export(t_bigshell *data);
 
 //UNSET FUNCTIONS:
 
-void	ft_unset(t_bigshell *data);
+void	ft_unset(t_bigshell *data, t_command *cmd);
 void	unset_var(t_bigshell *data, t_env **current, t_env **prev);
 void	find_node_to_delete(t_bigshell *data, t_env **current, \
 		t_env **prev, t_token *arg);

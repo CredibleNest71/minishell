@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/08 19:35:30 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/05/09 19:25:49 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/05/11 15:20:10 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,8 @@ void	print_env(t_env *head)
 {
 	while (head)
 	{
-		if (ft_strncmp(head->var, "?", ft_strlen(head->var)) == 0)
+		if (ft_strncmp(head->var, "?", ft_strlen(head->var)) == 0
+			|| ft_strncmp(head->var, "_", ft_strlen(head->var)) == 0)
 		{
 			head = head->next;
 			continue ;

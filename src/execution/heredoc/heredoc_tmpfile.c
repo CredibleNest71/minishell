@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 14:20:50 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/05/10 14:26:44 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/05/10 18:51:10 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,10 @@ int	tmpfile_cleanup(t_bigshell *data)
 		{
 			if (unlink(cmd->tmpfile) == -1)
 				simple_error(data, 1);
+			free(cmd->tmpfile);
 		}
 		cmd = cmd->next;
 	}
-	free_tmpfile(data);
 	return (0);
 }
 

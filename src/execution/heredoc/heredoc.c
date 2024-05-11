@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mresch <mresch@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 14:55:27 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/05/11 14:22:36 by mresch           ###   ########.fr       */
+/*   Updated: 2024/05/11 14:41:15 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,11 @@ void	ft_heredoc(t_bigshell *data)
 		{
 			if (input->type == (enum type)HEREDOC)
 			{
+			{
 				ft_heredoc2(data, cmd, input);
+				if (g_sig == SIGINT)
+					return (update_exit_stat(data, 130));
+			}
 				if (g_sig == SIGINT)
 					return (update_exit_stat(data, 130));
 			}

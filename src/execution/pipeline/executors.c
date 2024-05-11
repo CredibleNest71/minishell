@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 17:18:44 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/05/11 19:01:04 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/05/11 19:49:05 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,11 +80,16 @@ void	last_executor(t_bigshell *data, t_command *cmd, int in_fd)
 	execute_command(data, cmd);
 }
 
-void	middle_executor(t_bigshell *data, t_command *cmd, int out_fd, int in_fd)
+static void	middle_exec2(t_bigshell *data)
 {
 	data->exec->paths = NULL;
 	data->exec->path = NULL;
 	set_signals(3);
+}
+
+void	middle_executor(t_bigshell *data, t_command *cmd, int out_fd, int in_fd)
+{
+	middle_exec2(data);
 	if (cmd->input || cmd->output)
 	{
 		close_redir_fds_in_child(data);
@@ -99,14 +104,12 @@ void	middle_executor(t_bigshell *data, t_command *cmd, int out_fd, int in_fd)
 	if (!cmd->input)
 	{
 		if (dup2(in_fd, 0) == -1 || close(in_fd) == -1)
-			critical_failure(data, "complex exec: middle executor: \
-			dup2 failed (in_fd)");
+			critical_failure(data, "complex exec: dup2 fail");
 	}
 	if (!cmd->output)
 	{
 		if (dup2(out_fd, 1) == -1 || close(out_fd) == -1)
-			critical_failure(data, "complex exec: middle executor: \
-			dup2 failed (out_fd)");
+			critical_failure(data, "complex exec: dup2 fail");
 	}
 	close(data->pipe_fd[1]);
 	execute_command(data, cmd);

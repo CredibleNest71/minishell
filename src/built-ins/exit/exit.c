@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 11:02:30 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/05/09 19:25:49 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/05/11 19:43:37 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,17 +56,6 @@ void	update_exit_stat(t_bigshell *data, int exit_code)
 	free(code);
 }
 
-/* int	check_for_longlong(char *str)
-{
-	if (ft_strlen(str) > 20)
-	{
-		ft_putstr_fd("exit\n", 2);
-		ft_putstr_fd("minishell: exit: numeric argument required\n", 2);
-		return (0);
-	}
-	return (1);
-} */
-
 int	check_numeric(char *str)
 {
 	int	i;
@@ -112,6 +101,6 @@ void	ft_exit(t_bigshell *data, t_command *cmd)
 	}
 	exitcode = get_exitcode(data);
 	free_struct(data);
-	//ft_putstr_fd("exit\n", 2);
+	ft_putstr_fd("exit\n", 2);
 	exit(exitcode);
 }

@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/09 14:21:34 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/05/09 19:25:49 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/05/11 19:43:58 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,7 @@ int	check_var(t_bigshell *data, char *key)
 		critical_failure(data, "export: strdup failed");
 	end = ft_strchr(var, '=');
 	if (!end)
-		return (free(var), update_exit_stat(data, 0), 1);
-		//banned but exit status is 0 for tester??
+		return (free(var), update_exit_stat(data, 1), 1);
 	if (end)
 		*end = 0;
 	return (check_var2(data, var));

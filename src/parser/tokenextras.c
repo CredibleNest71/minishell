@@ -6,13 +6,12 @@
 /*   By: mresch <mresch@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 12:47:26 by mresch            #+#    #+#             */
-/*   Updated: 2024/04/30 12:06:58 by mresch           ###   ########.fr       */
+/*   Updated: 2024/05/11 13:37:28 by mresch           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 #include "parse.h"
-#include "../../libft/libft.h"
 
 void	delete_token(t_token *token)
 {

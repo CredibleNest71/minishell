@@ -6,7 +6,7 @@
 /*   By: mresch <mresch@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 17:34:54 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/05/11 12:33:32 by mresch           ###   ########.fr       */
+/*   Updated: 2024/05/11 13:36:35 by mresch           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <errno.h>
-# include "libft/libft.h"
+# include "minilib/libft.h"
 # include <sys/types.h>
 # include <sys/wait.h>
 # include <signal.h>

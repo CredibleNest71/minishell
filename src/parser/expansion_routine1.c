@@ -6,13 +6,12 @@
 /*   By: mresch <mresch@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 14:48:48 by mresch            #+#    #+#             */
-/*   Updated: 2024/05/11 12:20:38 by mresch           ###   ########.fr       */
+/*   Updated: 2024/05/11 13:37:14 by mresch           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parse.h"
 #include "../../minishell.h"
-#include "../../libft/libft.h"
 
 int	expand_no_quotes(t_token **list, \
 	t_token *curr, t_bigshell *data)

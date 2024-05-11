@@ -6,7 +6,7 @@
 /*   By: mresch <mresch@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 14:55:07 by mresch            #+#    #+#             */
-/*   Updated: 2024/05/11 18:52:18 by mresch           ###   ########.fr       */
+/*   Updated: 2024/05/11 19:04:12 by mresch           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,8 +104,8 @@ char	*append_to_final(char *final, char *var_ptr, int *i, int *j, t_bigshell *da
 	val = get_val(var, data);
 	if (!val)
 	{
-		free(var);
 		*i += ft_strlen(var) + 1;
+		free(var);
 		return (final);
 	}
 	ft_strlcpy(final, val, ft_strlen(val) + 10);

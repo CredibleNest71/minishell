@@ -6,7 +6,7 @@
 /*   By: mresch <mresch@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 13:54:17 by mresch            #+#    #+#             */
-/*   Updated: 2024/05/11 12:38:50 by mresch           ###   ########.fr       */
+/*   Updated: 2024/05/11 19:56:30 by mresch           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,11 @@
 # include "../../minishell.h"
 # define SPACE3 "\n\t\v \r\f"
 
-// //classifier
-// void	    classify(t_token *list);
-// void	    mark_commands(t_token *list);
-// void	    clean_token(t_token *token, t_bigshell *data);
-// t_command   *transform(t_token *list, t_bigshell *data);
+typedef struct s_ptr_pair
+{
+	int	*i;
+	int	*j;
+}	t_ptr_pair;
 //extras
 char		*ft_strndup(const char *s, int n);
 int			is_char(char c, char *chars);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mainextra2.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mresch <mresch@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/11 12:32:02 by mresch            #+#    #+#             */
-/*   Updated: 2024/05/11 19:03:01 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/05/11 20:03:27 by mresch           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	just_do_the_thing(t_bigshell *data)
 			critical_failure(data, "main: fork failed");
 		if (data->commands->pid == 0)
 			simple_exec(data);
-		wait_for_children(data); //use specific children waiting ft here for correct exit code
+		wait_for_children(data);
 	}
 	return (1);
 }
@@ -62,20 +62,11 @@ void	init_all(t_bigshell *data, char **env)
 
 int	get_input(t_bigshell *data, char *lineread)
 {
-	char	*line;
-
 	g_sig = 0;
 	set_signals(0);
 	fd_init(data);
 	remove_cmd_list_from_data(data);
-	if (isatty(fileno(stdin)))
-		lineread = readline("minitrap: ");
-	else
-	{
-		line = get_next_line(fileno(stdin));
-		lineread = ft_strtrim(line, "\n");
-		free(line);
-	}
+	lineread = readline("minitrap: ");
 	if (g_sig == SIGINT)
 		update_exit_stat(data, 130);
 	if (!lineread)

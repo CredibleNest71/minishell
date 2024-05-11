@@ -6,7 +6,7 @@
 /*   By: mresch <mresch@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 13:27:10 by mresch            #+#    #+#             */
-/*   Updated: 2024/05/11 13:37:16 by mresch           ###   ########.fr       */
+/*   Updated: 2024/05/11 19:55:46 by mresch           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,4 +100,24 @@ int	tilde(t_token *curr, t_bigshell *data)
 	else
 		free(home);
 	return (0);
+}
+
+char	*get_val(char *var, t_bigshell *data)
+{
+	t_env	*curr;
+	t_env	*ans;
+
+	ans = NULL;
+	if (!data || !var)
+		return (NULL);
+	curr = data->env;
+	while (curr)
+	{
+		if (!ft_strncmp(curr->var, var, ft_strlen(var) + 1))
+			ans = curr;
+		curr = curr->next;
+	}
+	if (!ans)
+		return (NULL);
+	return (ans->value);
 }

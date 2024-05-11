@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mresch <mresch@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 17:34:54 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/05/11 18:07:33 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/05/11 20:09:53 by mresch           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,18 +95,17 @@ typedef struct exec
 typedef struct s_bigshell
 {
 	int			num_cmd;
-	int			simple_error; //this will be set with stdlib macros to define whether I need to exit the minishell
+	int			simple_error;
 	int			pipe_fd[2];
-	int			pipe_fd2[2]; //possibly not necesary
-	int			var_i;	//counts how many variables exist in the environment
-	int			reference_i; //keeps count of data->env
-	int			std_in; //stored std_in
-	int			std_out; //stored std_out
-	int			fd_in; //redirected in
-	int			fd_out; //redirected out
-	int			heredoc_fd; //redirected err
+	int			pipe_fd2[2];
+	int			var_i;
+	int			reference_i;
+	int			std_in;
+	int			std_out;
+	int			fd_in;
+	int			fd_out;
+	int			heredoc_fd;
 	t_exec		*exec;
-	//stuff to make cd norminette compliant
 	size_t		buffer_size;
 	char		*cwd;
 	char		*mod_cwd;
@@ -167,7 +166,7 @@ void	simple_exec(t_bigshell *data);
 //PIPELINE FUNCTIONS:
 
 void	pipe_init(t_bigshell *data);
-void    restore_output(t_bigshell *data);
+void	restore_output(t_bigshell *data);
 void	error_exit(t_bigshell *data, int status, char *msg);
 void	wait_for_children(t_bigshell *data);
 
@@ -180,7 +179,8 @@ void	close_redir_fds_in_child(t_bigshell *data);
 
 void	execute_command(t_bigshell *data, t_command *cmd);
 void	first_executor(t_bigshell *data, t_command *cmd, int out_fd);
-void	middle_executor(t_bigshell *data, t_command *cmd, int out_fd, int in_fd);
+void	middle_executor(t_bigshell *data, t_command *cmd, \
+		int out_fd, int in_fd);
 void	last_executor(t_bigshell *data, t_command *cmd, int in_fd);
 
 void	complex_exec(t_bigshell *data);

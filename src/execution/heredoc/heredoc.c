@@ -6,7 +6,7 @@
 /*   By: mresch <mresch@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 14:55:27 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/05/11 11:34:52 by mresch           ###   ########.fr       */
+/*   Updated: 2024/05/11 14:22:36 by mresch           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ static void	ft_heredoc2(t_bigshell *data, t_command *cmd, t_token *input)
 	while (1)
 	{
 		if (g_sig == SIGINT)
-			break ;
+			return ;
 		lineread = readline("> ");
 		if (!lineread || !(ft_strncmp(mod_eof, lineread, ft_strlen(mod_eof) + 1)))
 			break ;
@@ -92,7 +92,11 @@ void	ft_heredoc(t_bigshell *data)
 		while (input)
 		{
 			if (input->type == (enum type)HEREDOC)
+			{
 				ft_heredoc2(data, cmd, input);
+				if (g_sig == SIGINT)
+					return (update_exit_stat(data, 130));
+			}
 			input = input->next;
 		}
 		cmd = cmd->next;

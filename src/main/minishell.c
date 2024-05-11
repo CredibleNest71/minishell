@@ -6,7 +6,7 @@
 /*   By: mresch <mresch@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 11:33:48 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/05/11 11:21:10 by mresch           ###   ########.fr       */
+/*   Updated: 2024/05/11 13:17:43 by mresch           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ int	exitcode_and_freeshell(t_bigshell *data)
 
 	exitcode = get_exitcode(data);
 	free_struct(data);
+	rl_clear_history();
 	return (exitcode);
 }
 

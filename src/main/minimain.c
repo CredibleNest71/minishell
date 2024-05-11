@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minimain.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mresch <mresch@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 11:33:48 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/05/11 14:18:03 by mresch           ###   ########.fr       */
+/*   Updated: 2024/05/11 14:33:14 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int	mainloop(t_bigshell *data, char *lineread)
 	{
 		in = get_input(data, lineread);
 		if (in == -1)
-			return (write(1, "exit\n", 6), 1);
+			return (/*write(1, "exit\n", 6),*/ 1);
 		else if (!in)
 			continue ;
 		store_restore_fds(data, 1);

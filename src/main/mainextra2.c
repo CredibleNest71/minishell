@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/11 12:32:02 by mresch            #+#    #+#             */
-/*   Updated: 2024/05/11 19:03:01 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/05/11 19:50:22 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	just_do_the_thing(t_bigshell *data)
 			critical_failure(data, "main: fork failed");
 		if (data->commands->pid == 0)
 			simple_exec(data);
-		wait_for_children(data); //use specific children waiting ft here for correct exit code
+		wait_for_children(data);
 	}
 	return (1);
 }

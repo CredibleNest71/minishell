@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mresch <mresch@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 11:00:47 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/05/11 15:39:37 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/05/11 19:38:42 by mresch           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,8 +93,8 @@ void	ft_unset(t_bigshell *data, t_command *cmd)
 	{
 		if (current && ft_strcmp(arg->str, "_") != 0)
 			find_node_to_delete(data, &current, &prev, arg);
-		if (current_env && (ft_strcmp(arg->str, "?") != 0 || \
-			ft_strcmp(arg->str, "_") != 0))
+		if (current_env && (ft_strcmp(arg->str, "?") && \
+			ft_strcmp(arg->str, "_")))
 			find_node_to_delete(data, &current_env, &prev_env, arg);
 		arg = arg->next;
 		current = data->s_env;

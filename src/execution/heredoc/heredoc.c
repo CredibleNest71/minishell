@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mresch <mresch@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 14:55:27 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/05/11 18:05:02 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/05/11 19:37:57 by mresch           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,10 +67,9 @@ static void	ft_heredoc2(t_bigshell *data, t_command *cmd, t_token *input)
 	while (1)
 	{
 		if (g_sig == SIGINT)
-			return ;
+			return (close_heredoc_fd(heredoc_fd), free(mod_eof));
 		lineread = readline("> ");
-		if (!lineread || !(ft_strncmp(mod_eof, lineread,
-					ft_strlen(mod_eof) + 1)))
+		if (!lineread || !(ft_strncmp(mod_eof, lineread, ft_strlen(mod_eof) + 1)))
 			break ;
 		if (!input->quoted)
 			lineread = expand(lineread, data);

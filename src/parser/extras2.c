@@ -6,13 +6,12 @@
 /*   By: mresch <mresch@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 13:24:51 by mresch            #+#    #+#             */
-/*   Updated: 2024/05/03 13:19:43 by mresch           ###   ########.fr       */
+/*   Updated: 2024/05/11 13:37:21 by mresch           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 #include "parse.h"
-#include "../../libft/libft.h"
 
 int	is_char(char c, char *chars)
 {

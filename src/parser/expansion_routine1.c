@@ -6,13 +6,12 @@
 /*   By: mresch <mresch@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 14:48:48 by mresch            #+#    #+#             */
-/*   Updated: 2024/05/06 15:22:09 by mresch           ###   ########.fr       */
+/*   Updated: 2024/05/11 13:37:14 by mresch           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parse.h"
 #include "../../minishell.h"
-#include "../../libft/libft.h"
 
 int	expand_no_quotes(t_token **list, \
 	t_token *curr, t_bigshell *data)
@@ -86,7 +85,7 @@ int	check_heredoc_expansion(t_token *curr)
 {
 	t_token	*temp;
 
-	if (curr->type == (e_type) HEREDOC)
+	if (curr->type == (t_type) HEREDOC)
 		return (1);
 	temp = curr->prev;
 	if (!temp)
@@ -95,7 +94,7 @@ int	check_heredoc_expansion(t_token *curr)
 		return (0);
 	while (temp)
 	{
-		if (temp->connected && temp->type == (e_type) HEREDOC)
+		if (temp->connected && temp->type == (t_type) HEREDOC)
 			return (1);
 		temp = temp->prev;
 		if (!temp)

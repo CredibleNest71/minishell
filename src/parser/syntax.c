@@ -6,13 +6,12 @@
 /*   By: mresch <mresch@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 14:54:17 by mresch            #+#    #+#             */
-/*   Updated: 2024/05/03 12:01:31 by mresch           ###   ########.fr       */
+/*   Updated: 2024/05/11 13:37:26 by mresch           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parse.h"
 #include "../../minishell.h"
-#include "../../libft/libft.h"
 
 int	skip_quotes(char *str, int *i, char c)
 {

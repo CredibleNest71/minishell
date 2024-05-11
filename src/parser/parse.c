@@ -6,7 +6,7 @@
 /*   By: mresch <mresch@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 15:00:46 by mresch            #+#    #+#             */
-/*   Updated: 2024/05/08 14:11:44 by mresch           ###   ########.fr       */
+/*   Updated: 2024/05/11 12:20:54 by mresch           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ void	heredocs_to_bigshell(t_token **tokens, t_bigshell *data)
 	temp = *tokens;
 	while (temp)
 	{
-		if (temp->type == (e_type) HEREDOC)
+		if (temp->type == (t_type) HEREDOC)
 		{
 			new = token_dup(temp);
 			if (!data->heredoc)

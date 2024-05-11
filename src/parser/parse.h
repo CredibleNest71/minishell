@@ -6,7 +6,7 @@
 /*   By: mresch <mresch@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 13:54:17 by mresch            #+#    #+#             */
-/*   Updated: 2024/05/06 12:54:42 by mresch           ###   ########.fr       */
+/*   Updated: 2024/05/11 12:38:50 by mresch           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,8 +83,8 @@ void		insert_tokenlist(t_token **list, \
 void		remove_token(t_token *curr);
 
 //parse
+//void		print_cmds(t_command *cmd, t_bigshell *data);
 t_command	*parse(char *input, t_bigshell *data);
-void		print_cmds(t_command *cmd, t_bigshell *data);
 
 //SYNTAX
 int			check_syntax(t_bigshell *data, char *str);

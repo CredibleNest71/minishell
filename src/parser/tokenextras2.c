@@ -6,13 +6,12 @@
 /*   By: mresch <mresch@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 13:41:37 by mresch            #+#    #+#             */
-/*   Updated: 2024/05/06 15:22:58 by mresch           ###   ########.fr       */
+/*   Updated: 2024/05/11 13:37:32 by mresch           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 #include "parse.h"
-#include "../../libft/libft.h"
 
 int	quotes(t_token *token, char *str, int *i, char quote)
 {
@@ -66,21 +65,21 @@ void	set_type(t_token *token, char *str, int *i)
 	if (!token)
 		return ;
 	if (is_char(str[*i], "\"\'"))
-		token->type = (e_type) ARG;
+		token->type = (t_type) ARG;
 	else if (!strncmp(&str[*i], "<<", 2))
-		token->type = (e_type) HEREDOC;
+		token->type = (t_type) HEREDOC;
 	else if (!strncmp(&str[*i], ">>", 2))
-		token->type = (e_type) APP;
+		token->type = (t_type) APP;
 	else if (str[*i] == '<')
-		token->type = (e_type) IN;
+		token->type = (t_type) IN;
 	else if (str[*i] == '>')
-		token->type = (e_type) OUT;
+		token->type = (t_type) OUT;
 	else if (str[*i] == '|')
-		token->type = (e_type) PIPE;
+		token->type = (t_type) PIPE;
 	else
-		token->type = (e_type) ARG;
-	if (token->type == (e_type) HEREDOC || token->type == (e_type) APP)
+		token->type = (t_type) ARG;
+	if (token->type == (t_type) HEREDOC || token->type == (t_type) APP)
 		*i += 2;
-	else if (token->type == (e_type) IN || token->type == (e_type) OUT)
+	else if (token->type == (t_type) IN || token->type == (t_type) OUT)
 		*i += 1;
 }

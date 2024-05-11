@@ -6,21 +6,17 @@
 /*   By: mresch <mresch@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/08 12:27:06 by mresch            #+#    #+#             */
-/*   Updated: 2024/05/08 16:14:52 by mresch           ###   ########.fr       */
+/*   Updated: 2024/05/11 13:18:17 by mresch           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
-
-void free_null(void **ptr)
-{
-    free(*ptr);
-    *ptr = NULL;
-}
+#include "../parser/parse.h"
+#include "sig.h"
 
 int	ft_strcmp(const char *s1, const char *s2)
 {
-	size_t i;
+	size_t	i;
 
 	i = 0;
 	if (!s1 || !s2)
@@ -34,3 +30,47 @@ int	ft_strcmp(const char *s1, const char *s2)
 	return (s1[i] - s2[i]);
 }
 
+int	exitcode_and_freeshell(t_bigshell *data)
+{
+	int	exitcode;
+
+	exitcode = get_exitcode(data);
+	free_struct(data);
+	rl_clear_history();
+	return (exitcode);
+}
+
+int	remove_cmd_list_from_data(t_bigshell *data)
+{
+	if (data->commands)
+	{
+		delete_command_list(data->commands);
+		data->commands = NULL;
+	}
+	if (data->heredoc)
+	{
+		delete_token_list(data->heredoc);
+		data->heredoc = NULL;
+	}
+	return (0);
+}
+
+void	exec_init(t_bigshell *data)
+{
+	t_exec	*exec;
+
+	exec = malloc(sizeof(t_exec));
+	if (!exec)
+		critical_failure(data, "exec_init: malloc fail");
+	exec->path = NULL;
+	exec->paths = NULL;
+	data->exec = exec;
+}
+
+void	fd_init(t_bigshell *data)
+{
+	data->std_in = -1;
+	data->std_out = -1;
+	data->fd_in = -1;
+	data->fd_out = -1;
+}

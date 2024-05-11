@@ -6,7 +6,7 @@
 /*   By: ischmutz <ischmutz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 17:34:54 by ischmutz          #+#    #+#             */
-/*   Updated: 2024/05/10 17:21:28 by ischmutz         ###   ########.fr       */
+/*   Updated: 2024/05/11 14:34:37 by ischmutz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <errno.h>
-# include "libft/libft.h"
+# include "minilib/libft.h"
 # include <sys/types.h>
 # include <sys/wait.h>
 # include <signal.h>
@@ -35,7 +35,8 @@
 #  define BUFFER_INCREMENT 50
 # endif
 
-typedef enum type {
+typedef enum type
+{
 	CMD = 0,
 	ARG,
 	PIPE,
@@ -43,11 +44,11 @@ typedef enum type {
 	OUT,
 	APP,
 	HEREDOC,
-}	 e_type;
+}	t_type;
 
-typedef struct	s_token
+typedef struct s_token
 {
-	char 			*str;
+	char			*str;
 	int				type;
 	char			*dir;
 	int				connected;
@@ -65,10 +66,10 @@ typedef struct s_pipe
 
 typedef struct s_command
 {
-	t_token				*cmd;		//command
-	t_token				*args;		//arguments
-	t_token				*input;		//< / heredoc
-	t_token				*output;	//> / append
+	t_token				*cmd;
+	t_token				*args;
+	t_token				*input;
+	t_token				*output;
 	int					arg_num;
 	int					pid;
 	int					heredoc_fd;
@@ -76,7 +77,7 @@ typedef struct s_command
 	char				**args_exec;
 	struct s_command	*next;
 	struct s_command	*prev;
-}	 t_command;
+}	t_command;
 
 typedef struct s_env
 {
@@ -91,10 +92,9 @@ typedef struct exec
 	char	**paths;
 }	t_exec;
 
-typedef struct	s_bigshell
+typedef struct s_bigshell
 {
 	int			num_cmd;
-
 	int			simple_error; //this will be set with stdlib macros to define whether I need to exit the minishell
 	int			pipe_fd[2];
 	int			pipe_fd2[2]; //possibly not necesary
@@ -105,14 +105,11 @@ typedef struct	s_bigshell
 	int			fd_in; //redirected in
 	int			fd_out; //redirected out
 	int			heredoc_fd; //redirected err
-	
 	t_exec		*exec;
-	
 	//stuff to make cd norminette compliant
 	size_t		buffer_size;
 	char		*cwd;
 	char		*mod_cwd;
-	
 	char		**mod_env;
 	char		**built_ins; //FREED
 	t_pipe		*pipe;
@@ -122,16 +119,15 @@ typedef struct	s_bigshell
 	t_env		*s_env; //FREED
 }	t_bigshell;
 
-
 typedef struct s_signal
 {
 	int			sigint;
 	int			sigquit;
 	int			pid;
-	t_bigshell *data;
+	t_bigshell	*data;
 }	t_sig;
 
-extern int    g_sig;
+extern int	g_sig;
 
 void	free_null(void **ptr);
 int		ft_strcmp(const char *s1, const char *s2);
@@ -198,9 +194,8 @@ void	ft_echo(t_bigshell *data, t_token *args);
 void	overwrite_s_env(t_bigshell *data, char *env_var, char *str);
 void	overwrite_oldpwd(t_bigshell *data, char *oldpwd);
 void	overwrite_pwd(t_bigshell *data, char *new_path);
-
-void    home_dir(t_bigshell *data, char *oldpwd);
-char    *get_cwd(t_bigshell *data);
+void	home_dir(t_bigshell *data, char *oldpwd);
+char	*get_cwd(t_bigshell *data);
 void	ft_cd(t_bigshell *data);
 
 //PWD FUNCTIONS:
@@ -209,25 +204,23 @@ void	ft_pwd(t_bigshell *data, t_command *cmd);
 
 //EXPORT FUNCTIONS:
 
-void	switch_values(t_bigshell *data, t_env *node, char	*new_value, int len);
+void	switch_values(t_bigshell *data, t_env *node, \
+		char *new_value, int len);
 int		var_exists(t_bigshell *data, char *str);
-
 int		check_var(t_bigshell *data, char *key);
-
 void	make_copy(t_bigshell *data);
 void	print_env(t_env *head);
-
 int		check_if_sorted(t_env *current);
 void	switch_nodes(t_env *current);
 void	sort_env(t_bigshell *data);
-
 void	ft_export(t_bigshell *data);
 
 //UNSET FUNCTIONS:
 
 void	ft_unset(t_bigshell *data);
 void	unset_var(t_bigshell *data, t_env **current, t_env **prev);
-void	find_node_to_delete(t_bigshell *data, t_env **current, t_env **prev, t_token *arg);
+void	find_node_to_delete(t_bigshell *data, t_env **current, \
+		t_env **prev, t_token *arg);
 
 //ENV FUNCTIONS:
 
@@ -239,13 +232,9 @@ void	ft_env(t_bigshell *data);
 int		get_exitcode(t_bigshell *data);
 void	update_exit_stat(t_bigshell *data, int exit_code);
 void	ft_exit(t_bigshell *data, t_command *cmd);
-
-//
-
-t_env   *create_node(t_bigshell *data, char *str);
-void    store_env(t_bigshell *data, char **env);
-void    convert_env(t_bigshell *data);
-
+t_env	*create_node(t_bigshell *data, char *str);
+void	store_env(t_bigshell *data, char **env);
+void	convert_env(t_bigshell *data);
 void	free_single_node(t_bigshell *data, t_env **node);
 void	free_env(t_bigshell *data);
 void	free_builtin_list(t_bigshell *data);
@@ -261,14 +250,23 @@ void	free_struct(t_bigshell *data);
 
 int		tmpfile_cleanup(t_bigshell *data);
 char	*create_unique_name(t_bigshell *data, t_command *cmd, char *eof);
-
 int		open_heredoc_fd(t_bigshell *data, t_command *cmd);
 void	close_heredoc_fd(int fd);
 char	*free_set_null(char *mod_eof);
-
 void	ft_heredoc(t_bigshell *data);
 char	*delimiter_finder(t_bigshell *data);
 char	*check_for_quotes(t_bigshell *data, char *eof);
 int		tmpfile_cleanup(t_bigshell *data);
+
+//MAIN EXTRAS
+int		exitcode_and_freeshell(t_bigshell *data);
+int		remove_cmd_list_from_data(t_bigshell *data);
+void	exec_init(t_bigshell *data);
+void	fd_init(t_bigshell *data);
+
+int		just_do_the_thing(t_bigshell *data);
+int		execute(t_bigshell *data);
+void	init_all(t_bigshell *data, char **env);
+int		get_input(t_bigshell *data, char *lineread);
 
 #endif

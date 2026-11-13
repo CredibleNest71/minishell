@@ -16,8 +16,6 @@
 #include <signal.h>
 #include "../../minishell.h"
 #include "sig.h"
-#include <sys/ioctl.h>
-#include <asm/termbits.h>
 
 int	g_sig;
 
@@ -42,20 +40,19 @@ static void	set_global(int sig)
 	g_sig = sig;
 }
 
-static void	newline_to_readline(int sig)
+// readline calls this periodically while waiting for input;
+// setting rl_done makes readline return so the heredoc can abort
+static int	heredoc_event_hook(void)
 {
-	if (sig == SIGINT)
-	{
-		ioctl(0, TIOCSTI, "\n");
-		g_sig = SIGINT;
-		rl_replace_line("", 0);
-		rl_on_new_line();
-	}
+	if (g_sig == SIGINT)
+		rl_done = 1;
+	return (0);
 }
 
 void	set_signals(int mode)
 {
 	g_sig = 0;
+	rl_event_hook = NULL;
 	if (!mode)
 	{
 		signal(SIGINT, &redo_rl);
@@ -68,7 +65,8 @@ void	set_signals(int mode)
 	}
 	else if (mode == 2)
 	{
-		signal(SIGINT, &newline_to_readline);
+		rl_event_hook = &heredoc_event_hook;
+		signal(SIGINT, &set_global);
 		signal(SIGQUIT, SIG_IGN);
 	}
 	else if (mode == 3)

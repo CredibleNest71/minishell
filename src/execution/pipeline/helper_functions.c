@@ -39,25 +39,27 @@ void	error_exit(t_bigshell *data, int status, char *msg)
 void	wait_for_children(t_bigshell *data)
 {
 	t_command	*cmd;
-	int			stat_loc;
+	int			status;
+	int			last_sig;
 
 	cmd = data->commands;
-	stat_loc = get_exitcode(data);
+	last_sig = 0;
 	while (cmd)
 	{
-		waitpid(cmd->pid, &stat_loc, 0);
-		if (WIFEXITED(stat_loc))
+		if (waitpid(cmd->pid, &status, 0) != -1)
 		{
-			stat_loc = WEXITSTATUS(stat_loc);
-			update_exit_stat(data, stat_loc);
-		}
-		if (WIFSIGNALED(stat_loc))
-		{
-			stat_loc = WTERMSIG(stat_loc);
-			if (stat_loc == SIGINT || stat_loc == SIGQUIT)
-				stat_loc += 128;
-			update_exit_stat(data, stat_loc);
+			if (WIFEXITED(status))
+				update_exit_stat(data, WEXITSTATUS(status));
+			else if (WIFSIGNALED(status))
+			{
+				last_sig = WTERMSIG(status);
+				update_exit_stat(data, 128 + last_sig);
+			}
 		}
 		cmd = cmd->next;
 	}
+	if (last_sig == SIGINT)
+		write(1, "\n", 1);
+	else if (last_sig == SIGQUIT)
+		ft_putstr_fd("Quit (core dumped)\n", 2);
 }

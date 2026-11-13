@@ -40,14 +40,15 @@ int	mainloop(t_bigshell *data, char *lineread)
 		else if (!in)
 			continue ;
 		store_restore_fds(data, 1);
+		g_sig = 0;
 		ft_heredoc(data);
-		set_signals(1);
 		if (g_sig == SIGINT)
 		{
 			update_exit_stat(data, 130);
 			make_over(data, lineread);
 			continue ;
 		}
+		set_signals(1);
 		if (!execute(data))
 			continue ;
 		make_over(data, lineread);

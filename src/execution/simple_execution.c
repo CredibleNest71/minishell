@@ -29,8 +29,6 @@ void	simple_exec(t_bigshell *data)
 	close_unused_fds(data);
 	data->exec->paths = NULL;
 	data->exec->path = NULL;
-	if (g_sig == SIGINT)
-		critical_failure(data, "simple exec: SIGINT received");
 	convert_env(data);
 	data->exec->paths = find_and_split_path(data->mod_env);
 	data->exec->path = check_if_correct_path(data->exec->paths, data, \

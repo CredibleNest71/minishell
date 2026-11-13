@@ -75,20 +75,13 @@ void	complex_exec(t_bigshell *data)
 {
 	t_command	*current_cmd;
 
-	set_signals(0);
+	set_signals(1);
 	current_cmd = data->commands;
 	while (current_cmd->next)
 	{
-		if (g_sig == SIGINT)
-			critical_failure(data, "complex exec: SIGINT received");
 		complex_exec2(data, current_cmd);
 		current_cmd = current_cmd->next;
 	}
-	if (!current_cmd->next)
-	{
-		if (g_sig == SIGINT)
-			critical_failure(data, "complex exec: SIGINT received");
-		fork_last_cmd(data, current_cmd);
-	}
+	fork_last_cmd(data, current_cmd);
 	wait_for_children(data);
 }

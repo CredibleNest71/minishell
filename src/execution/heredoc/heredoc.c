@@ -54,21 +54,31 @@ static void	write_to_fd(int heredoc_fd, char *lineread)
 	write(heredoc_fd, "\n", 1);
 }
 
+static int	heredoc_interrupted(char *lineread, int heredoc_fd, char *mod_eof)
+{
+	if (g_sig != SIGINT)
+		return (0);
+	write(1, "\n", 1);
+	free(lineread);
+	close_heredoc_fd(heredoc_fd);
+	free(mod_eof);
+	return (1);
+}
+
 static void	ft_heredoc2(t_bigshell *data, t_command *cmd, t_token *input)
 {
 	char	*mod_eof;
 	char	*lineread;
 	int		heredoc_fd;
 
-	lineread = NULL;
 	mod_eof = check_for_quotes(data, input->str);
 	cmd->tmpfile = create_unique_name(data, cmd, mod_eof);
 	heredoc_fd = open_heredoc_fd(data, cmd);
 	while (1)
 	{
-		if (g_sig == SIGINT)
-			return (close_heredoc_fd(heredoc_fd), free(mod_eof));
 		lineread = readline("> ");
+		if (heredoc_interrupted(lineread, heredoc_fd, mod_eof))
+			return ;
 		if (!lineread || !(ft_strncmp(mod_eof, lineread,
 					ft_strlen(mod_eof) + 1)))
 			break ;
